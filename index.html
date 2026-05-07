@@ -12,8 +12,11 @@
     <style>
         body { font-family: 'Tajawal', sans-serif; scroll-behavior: smooth; background-color: #f8fafc; overflow-x: hidden; }
         .page-section { display: none; }
-        .page-section.active { display: block; animation: fadeIn 0.4s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .page-section.active { display: block; animation: premiumFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes premiumFade { 
+            0% { opacity: 0; transform: translateY(15px) scale(0.98); } 
+            100% { opacity: 1; transform: translateY(0) scale(1); } 
+        }
         
         .sticky-header {
             position: sticky;
@@ -214,7 +217,8 @@
 
         <!-- Desktop Navigation -->
         <nav class="bg-white border-t border-gray-100 hidden lg:block shadow-sm">
-            <div class="container mx-auto px-12 flex justify-start space-x-8 space-x-reverse font-black text-gray-600">
+            <!-- تم التعديل هنا لدعم المسافات بشكل احترافي على الكمبيوتر لمنع تداخل القوائم -->
+            <div class="container mx-auto px-12 flex flex-wrap justify-start gap-x-8 gap-y-2 font-black text-gray-600">
                 <a onclick="navigateTo('home')" class="py-5 px-1 hover:text-rose-700 transition-all text-sm cursor-pointer">الرئيسية</a>
 
                 <div class="dropdown-container">
@@ -224,7 +228,7 @@
                         <a onclick="navigateTo('products')" class="dropdown-card">مقالات و عروض</a>
                         <a onclick="navigateTo('products')" class="dropdown-card">أخبارنا</a>
                         <a onclick="navigateTo('products')" class="dropdown-card">أسئلة و أجوبة</a>
-                        <a onclick="navigateTo('home')" class="dropdown-card">عملاؤنا</a>
+                        <a onclick="navigateTo('products')" class="dropdown-card">عملاؤنا</a>
                     </div>
                 </div>
 
@@ -257,9 +261,10 @@
                     </div>
                 </div>
 
+                <!-- تم التعديل هنا لضمان عدم خروج القوائم اليسرى عن مساحة الشاشة -->
                 <div class="dropdown-container">
                     <button class="py-5 px-1 flex items-center gap-2 hover:text-rose-700 transition-all text-sm font-black text-right">قطع غيار <i class="fa fa-chevron-down text-[9px] opacity-40"></i></button>
-                    <div id="d-parts" class="dropdown-menu text-right">
+                    <div id="d-parts" class="dropdown-menu text-right" style="left: 0; right: auto;">
                         <a onclick="navigateTo('products')" class="dropdown-card">قطع غيار ماكينات تصوير ابيض واسود</a>
                         <a onclick="navigateTo('products')" class="dropdown-card">قطع غيار ماكينات لوحات هندسية</a>
                         <a onclick="navigateTo('products')" class="dropdown-card">قطع غيار ماكينات تصوير الوان</a>
@@ -269,7 +274,7 @@
 
                 <div class="dropdown-container">
                     <button class="py-5 px-1 flex items-center gap-2 hover:text-rose-700 transition-all text-sm font-black text-right">أحبار <i class="fa fa-chevron-down text-[9px] opacity-40"></i></button>
-                    <div id="d-toners" class="dropdown-menu text-right">
+                    <div id="d-toners" class="dropdown-menu text-right" style="left: 0; right: auto;">
                         <a onclick="navigateTo('products')" class="dropdown-card">احبار ماكينات تصوير ابيض واسود</a>
                         <a onclick="navigateTo('products')" class="dropdown-card">احبار ماكينات تصوير الوان</a>
                         <a onclick="navigateTo('products')" class="dropdown-card">احبار ماكينات طباعة ديجيتال</a>
@@ -282,7 +287,7 @@
 
                 <div class="dropdown-container">
                     <button class="py-5 px-1 flex items-center gap-2 hover:text-rose-700 transition-all text-sm text-rose-700 font-black text-right">خدمات ما بعد البيع <i class="fa fa-chevron-down text-[9px] opacity-40"></i></button>
-                    <div id="d-serv-after" class="dropdown-menu text-right">
+                    <div id="d-serv-after" class="dropdown-menu text-right" style="left: 0; right: auto;">
                         <a onclick="navigateTo('products')" class="dropdown-card">الدعم الفنى</a>
                         <a href="#booking" class="dropdown-card font-black text-rose-700 underline decoration-2">بلاغات الأعطال</a>
                         <a onclick="navigateTo('products')" class="dropdown-card">الشكاوى و الأقتراحات</a>
@@ -298,14 +303,15 @@
         <img src="header.jpeg" alt="بانر شركة العدل" onerror="this.src=''">
     </div>
 
-    <!-- PAGE: HOME (RESTORED ORIGINAL DESIGN) -->
+    <!-- PAGE: HOME -->
     <main id="page-home" class="page-section active text-right">
         <section class="py-12 container mx-auto px-4 md:px-12 text-right">
             <div class="flex flex-col lg:flex-row gap-10">
                 
                 <!-- Sidebar -->
                 <aside class="w-full lg:w-1/4 hidden lg:block text-right">
-                    <div class="bg-zinc-900 rounded-3xl shadow-sm border border-gray-100 overflow-hidden sticky top-80">
+                    <!-- تم التعديل هنا لرفع القائمة الجانبية قليلاً لتظهر بوضوح تحت الهيدر -->
+                    <div class="bg-zinc-900 rounded-3xl shadow-sm border border-gray-100 overflow-hidden sticky top-36">
                         <div class="bg-rose-900 text-white p-5 font-black flex items-center justify-between">
                             <span>الأقسام الرئيسية</span><i class="fa fa-th-large opacity-30"></i>
                         </div>
