@@ -10,11 +10,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
-        body { font-family: 'Tajawal', sans-serif; scroll-behavior: smooth; background-color: #f8fafc; overflow-x: hidden; }
+        body { font-family: 'Tajawal', sans-serif; scroll-behavior: smooth; background-color: #f8fafc; }
         .page-section { display: none; }
         .page-section.active { display: block; animation: fadeIn 0.4s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         
+        /* Sticky Header */
         .sticky-header {
             position: sticky;
             top: 0;
@@ -23,7 +24,7 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
         }
 
-        /* Dropdown Desktop */
+        /* Dropdown Desktop Styles */
         .dropdown-container { position: relative; }
         .dropdown-menu {
             display: none;
@@ -42,7 +43,7 @@
             flex-direction: column;
             gap: 8px;
         }
-        .dropdown-container:hover .dropdown-menu { display: flex; animation: slideDown 0.3s ease; }
+        .dropdown-menu.show { display: flex; animation: slideDown 0.3s ease; }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
         .dropdown-card {
@@ -64,22 +65,28 @@
         .sub-link-group { display: flex; gap: 6px; padding-right: 20px; flex-wrap: wrap; margin-top: 4px; }
         .sub-link-item { font-size: 11px; background: #fef2f2; color: #be123c; padding: 3px 10px; border-radius: 6px; font-weight: 800; border: 1px solid #fee2e2; }
 
+        /* Hero Banner */
+        .hero-banner-box { width: 100%; overflow: hidden; background: #fff; max-height: 400px; display: flex; justify-content: center; border-bottom: 4px solid #be123c; }
+        .hero-banner-box img { width: 100%; height: auto; object-fit: contain; }
+
         /* Mobile Menu */
         #mobile-menu { position: fixed; top: 0; right: -100%; width: 85%; height: 100%; background: #f8fafc; z-index: 2000; transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: -10px 0 40px rgba(0,0,0,0.2); display: flex; flex-direction: column; }
         #mobile-menu.open { right: 0; }
         .menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1500; display: none; backdrop-filter: blur(4px); }
         .menu-overlay.show { display: block; }
-        .mobile-card { background: white; margin-bottom: 6px; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; }
-        .mobile-trigger { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; width: 100%; font-weight: 800; color: #1e293b; }
-        .mobile-nested { display: none; background: #fcfcfc; padding-bottom: 10px; border-top: 1px solid #f1f5f9; }
-        .mobile-nested.active { display: block; }
-        .nested-link { display: block; padding: 12px 20px; font-size: 13px; color: #4b5563; font-weight: 700; border-bottom: 1px solid #f1f5f9; cursor: pointer; }
+        .mobile-card { background: white; margin-bottom: 8px; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; }
+        .mobile-trigger { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; width: 100%; font-weight: 800; color: #1e293b; white-space: nowrap; }
+        .nested-link { display: block; padding: 10px 20px; font-size: 12px; color: #4b5563; border-top: 1px solid #f1f5f9; font-weight: 700; white-space: nowrap; cursor: pointer; }
 
-        /* Banner */
-        .hero-banner-box { width: 100%; overflow: hidden; background: #fff; max-height: 450px; border-bottom: 4px solid #be123c; }
-        .hero-banner-box img { width: 100%; height: auto; object-fit: contain; }
+        /* Animation Styles */
+        .gear-spin { animation: spin 4s linear infinite; transform-origin: center; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .pulse-soft { animation: pulse-anim 2s infinite ease-in-out; }
+        @keyframes pulse-anim { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
-        @media (max-width: 1024px) { .hero-banner-box { max-height: 250px; } }
+        @media (max-width: 1024px) { 
+            .hero-banner-box { max-height: 250px; } 
+        }
     </style>
 </head>
 <body class="text-gray-800 pb-16 lg:pb-0 text-right">
@@ -90,13 +97,13 @@
     <div id="mobile-menu">
         <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-white">
             <div class="flex items-center gap-3">
-                <div class="bg-rose-900 text-white w-10 h-10 rounded-xl flex items-center justify-center font-black">ع</div>
+                <img src="logo.png" class="w-10 h-10 object-contain" alt="Logo">
                 <div class="text-right">
                     <span class="font-black text-rose-900 text-lg block leading-none">شركة العدل</span>
                     <span class="text-[8px] font-extrabold text-gray-400 block mt-1 uppercase">لبيع وصيانة الطابعات والماكينات</span>
                 </div>
             </div>
-            <button onclick="toggleMobileMenu()" class="text-rose-900 text-3xl font-bold">&times;</button>
+            <button onclick="toggleMobileMenu()" class="text-gray-400 text-3xl">&times;</button>
         </div>
         
         <div class="flex-1 overflow-y-auto p-4 text-right">
@@ -104,31 +111,58 @@
                 <button onclick="navigateTo('home'); toggleMobileMenu()" class="mobile-trigger"><span>الرئيسية</span><i class="fa fa-home text-rose-700"></i></button>
             </div>
 
+            <!-- من نحن -->
             <div class="mobile-card">
                 <button onclick="toggleAccordion('m-who')" class="mobile-trigger"><span>من نحن</span><i class="fa fa-chevron-down text-[10px] opacity-30"></i></button>
-                <div id="m-who" class="mobile-nested">
-                    <a onclick="navigateTo('home'); toggleMobileMenu()" class="nested-link">من نحن</a>
-                    <a onclick="navigateTo('home'); toggleMobileMenu()" class="nested-link">عملاؤنا</a>
+                <div id="m-who" class="hidden bg-gray-50 pb-2 text-right">
+                    <a onclick="navigateTo('about'); toggleMobileMenu()" class="nested-link">من نحن</a>
+                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">مقالات و عروض</a>
+                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">أخبارنا</a>
+                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">أسئلة و أجوبة</a>
+                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">عملاؤنا</a>
                 </div>
             </div>
 
+            <!-- المنتجات -->
             <div class="mobile-card">
                 <button onclick="toggleAccordion('m-prods')" class="mobile-trigger text-rose-700"><span>المنتجات</span><i class="fa fa-chevron-down text-[10px] opacity-30"></i></button>
-                <div id="m-prods" class="mobile-nested">
-                    <div class="p-3 bg-gray-50 font-bold text-xs">ماكينات تصوير مستندات</div>
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link pr-8 italic">● ابيض واسود (جديد/استيراد)</a>
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link pr-8 italic">● الوان (جديد/استيراد)</a>
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">ماكينات طباعة ديجيتال</a>
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">ماكينات لوحات هندسية</a>
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">طابعات إنكجيت</a>
+                <div id="m-prods" class="hidden bg-gray-50 pb-2 text-right">
+                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">ماكينات تصوير ابيض واسود</a>
+                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">ماكينات تصوير الوان</a>
+                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">ماكينات طباعة ديجيتال الوان</a>
+                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">ماكينات طباعة ديجيتال ابيض واسود</a>
+                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">ماكينات لوحات هندسية ابيض واسود</a>
+                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">ماكينات لوحات هندسية الوان</a>
+                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">ماكينات طباعة تصويرية</a>
+                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">ماكينات طباعة الاشعة الطبية</a>
+                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">طابعات إنكجيت (بأحبار سائلة)</a>
+                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">ماكينات ما بعد الطباعة</a>
+                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">بلوتر اوت دور Outdoor Plotter</a>
+                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">أجهزة كهربائية - تكييفات</a>
                 </div>
             </div>
 
+            <!-- قطع غيار -->
             <div class="mobile-card">
-                <button onclick="toggleAccordion('m-parts')" class="mobile-trigger"><span>قطع غيار وأحبار</span><i class="fa fa-chevron-down text-[10px] opacity-30"></i></button>
-                <div id="m-parts" class="mobile-nested">
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">قطع غيار ماكينات</a>
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">أحبار أصلية وكارتريدج</a>
+                <button onclick="toggleAccordion('m-parts')" class="mobile-trigger"><span>قطع غيار</span><i class="fa fa-chevron-down text-[10px] opacity-30"></i></button>
+                <div id="m-parts" class="hidden bg-gray-50 pb-2 text-right">
+                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">قطع غيار ماكينات تصوير ابيض واسود</a>
+                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">قطع غيار ماكينات لوحات هندسية الوان</a>
+                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">قطع غيار ماكينات تصوير مستندات الوان</a>
+                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">قطع غيار ماكينات طباعة ديجيتال الوان</a>
+                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">قطع غيار ماكينات طباعة تصويرية</a>
+                </div>
+            </div>
+
+            <!-- أحبار -->
+            <div class="mobile-card">
+                <button onclick="toggleAccordion('m-toners')" class="mobile-trigger"><span>أحبار</span><i class="fa fa-chevron-down text-[10px] opacity-30"></i></button>
+                <div id="m-toners" class="hidden bg-gray-50 pb-2 text-right">
+                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">احبار ماكينات تصوير مستندات الوان</a>
+                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">احبار ماكينات طباعة ديجيتال ابيض واسود</a>
+                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">احبار ماكينات لوحات هندسية الوان</a>
+                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">احبار ماكينات طباعة ديجيتال الوان</a>
+                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">احبار ماكينات طباعة تصويرية</a>
                 </div>
             </div>
 
@@ -136,97 +170,202 @@
                 <a href="#booking" onclick="toggleMobileMenu()" class="mobile-trigger text-rose-700 font-bold"><span>بلاغات الأعطال</span><i class="fa fa-tools"></i></a>
             </div>
         </div>
-        <div class="p-6 bg-white border-t text-center">
+
+        <div class="p-6 bg-white border-t border-gray-100 text-center">
+            <p class="text-[10px] text-gray-400 font-bold mb-2 uppercase">الدعم الفني المباشر</p>
             <a href="tel:01094799247" class="text-2xl font-black text-rose-950">01094799247</a>
         </div>
     </div>
 
-    <!-- Header -->
+    <!-- Main Sticky Header -->
     <header class="sticky-header">
-        <div class="bg-white container mx-auto px-4 md:px-12 py-3 md:py-4 flex flex-wrap justify-between items-center text-right">
+        <!-- Brand Area - Top Row for Mobile -->
+        <div class="bg-white container mx-auto px-4 md:px-12 py-3 md:py-4 flex flex-wrap justify-between items-center gap-2">
             <div class="flex items-center justify-between w-full lg:w-auto">
-                <div class="flex items-center gap-3 text-right">
+                <div class="flex items-center gap-3">
                     <button onclick="toggleMobileMenu()" class="lg:hidden text-rose-900 text-2xl bg-gray-50 p-2 rounded-xl"><i class="fa fa-bars"></i></button>
                     <div class="flex items-center gap-2 md:gap-3 cursor-pointer" onclick="navigateTo('home')">
-                        <div class="bg-rose-900 text-white w-10 h-10 md:w-16 md:h-16 rounded-2xl flex items-center justify-center font-black text-xl md:text-3xl shadow-lg">ع</div>
-                        <div class="text-right leading-none">
-                            <span class="text-base md:text-2xl font-black text-rose-950 block">شركة العدل</span>
+                        <img src="logo.png" class="w-10 h-10 md:w-16 md:h-16 object-contain" alt="لوجو">
+                        <div class="text-right">
+                            <span class="text-base md:text-2xl font-black text-rose-950 block leading-none">شركة العدل</span>
                             <span class="text-[8px] md:text-[10px] font-extrabold text-gray-400 block mt-1 uppercase leading-tight">لبيع وصيانة الطابعات وماكينات التصوير</span>
                         </div>
                     </div>
                 </div>
-                <a href="tel:01094799247" class="lg:hidden bg-rose-700 text-white p-2.5 rounded-full shadow-lg"><i class="fa fa-phone-alt text-xs"></i></a>
+                <!-- Mobile Contact Icon -->
+                <a href="tel:01094799247" class="lg:hidden bg-rose-700 text-white p-2.5 rounded-full shadow-lg hover:bg-rose-800 transition"><i class="fa fa-phone-alt text-xs"></i></a>
             </div>
 
-            <!-- Search Bar (Independent line on mobile) -->
-            <div class="w-full lg:flex-1 lg:max-w-xl relative lg:mx-12 mt-3 lg:mt-0 order-last lg:order-none">
-                <input type="text" placeholder="ابحث عن موديل الماكينة أو نوع الحبر..." class="w-full bg-gray-50 border border-gray-100 lg:border-transparent focus:border-rose-700 focus:bg-white rounded-xl py-3 px-6 pr-12 outline-none transition-all text-sm shadow-inner font-bold">
-                <i class="fa fa-search absolute right-4 top-3.5 text-gray-300 text-lg"></i>
+            <!-- Search Bar - Independent Row on Mobile -->
+            <div class="w-full lg:flex-1 lg:max-w-xl relative lg:mx-12">
+                <input type="text" placeholder="ابحث عن (ريكو 5002، حبر HP، قطع غيار)..." class="w-full bg-gray-50 border border-gray-100 lg:border-transparent focus:border-rose-700 focus:bg-white rounded-xl py-2.5 px-6 pr-12 outline-none transition-all text-sm shadow-inner">
+                <i class="fa fa-search absolute left-4 top-3 text-gray-300"></i>
             </div>
 
+            <!-- Desktop Call Info Only -->
             <div class="hidden lg:flex items-center gap-3">
-                <div class="text-right">
-                    <p class="text-[9px] text-gray-400 font-bold uppercase mb-1">الدعم الفني المباشر</p>
-                    <p class="text-xl font-black text-rose-900 leading-none">01094799247</p>
+                <div class="text-right hidden xl:block">
+                    <p class="text-[9px] text-gray-400 font-bold uppercase leading-none">الدعم الفني</p>
+                    <p class="text-lg font-black text-rose-900 leading-none">01094799247</p>
                 </div>
                 <a href="tel:01094799247" class="bg-rose-700 text-white p-3 rounded-full shadow-lg hover:bg-rose-800 transition"><i class="fa fa-phone-alt text-sm"></i></a>
             </div>
         </div>
 
         <nav class="bg-white border-t border-gray-100 hidden lg:block shadow-sm">
-            <div class="container mx-auto px-12 flex justify-start space-x-8 space-x-reverse font-black text-gray-600">
-                <a onclick="navigateTo('home')" class="py-5 px-1 hover:text-rose-700 transition-all text-sm cursor-pointer">الرئيسية</a>
+            <div class="container mx-auto px-12 flex justify-start space-x-6 space-x-reverse font-black text-gray-600">
+                <a onclick="navigateTo('home')" class="py-4 px-2 hover:text-rose-700 transition-all text-sm cursor-pointer">الرئيسية</a>
+
                 <div class="dropdown-container">
-                    <button class="py-5 px-1 flex items-center gap-2 hover:text-rose-700 transition-all text-sm text-rose-700">المنتجات <i class="fa fa-chevron-down text-[9px] opacity-40"></i></button>
-                    <div class="dropdown-menu">
-                        <div class="dropdown-card !bg-white !cursor-default flex flex-col items-start gap-1">
+                    <button onclick="toggleDropdown('d-who', event)" class="py-4 px-2 flex items-center gap-2 hover:text-rose-700 transition-all text-sm">من نحن <i class="fa fa-chevron-down text-[9px] opacity-40"></i></button>
+                    <div id="d-who" class="dropdown-menu">
+                        <a onclick="navigateTo('about')" class="dropdown-card">من نحن</a>
+                        <a onclick="navigateTo('products')" class="dropdown-card">مقالات و عروض</a>
+                        <a onclick="navigateTo('products')" class="dropdown-card">أخبارنا</a>
+                        <a onclick="navigateTo('products')" class="dropdown-card">أسئلة و أجوبة</a>
+                        <a onclick="navigateTo('home')" class="dropdown-card">عملاؤنا</a>
+                    </div>
+                </div>
+
+                <div class="dropdown-container">
+                    <button onclick="toggleDropdown('d-prods', event)" class="py-4 px-2 flex items-center gap-2 hover:text-rose-700 transition-all text-sm text-rose-700 font-black">المنتجات <i class="fa fa-chevron-down text-[9px] opacity-40"></i></button>
+                    <div id="d-prods" class="dropdown-menu">
+                        <div class="dropdown-card !bg-white !cursor-default flex flex-col items-start gap-1 text-right">
                             <span>ماكينات تصوير مستندات ابيض واسود</span>
                             <div class="sub-link-group">
                                 <a onclick="navigateTo('products')" class="sub-link-item">جديدة</a>
                                 <a onclick="navigateTo('products')" class="sub-link-item">استيراد الخارج</a>
                             </div>
                         </div>
-                        <a onclick="navigateTo('products')" class="dropdown-card">ماكينات طباعة ديجيتال</a>
-                        <a onclick="navigateTo('products')" class="dropdown-card">قطع غيار وأحبار أصلية</a>
+                        <div class="dropdown-card !bg-white !cursor-default flex flex-col items-start gap-1 text-right">
+                            <span>ماكينات تصوير مستندات الوان</span>
+                            <div class="sub-link-group">
+                                <a onclick="navigateTo('products')" class="sub-link-item">جديدة</a>
+                                <a onclick="navigateTo('products')" class="sub-link-item">استيراد الخارج</a>
+                            </div>
+                        </div>
+                        <a onclick="navigateTo('products')" class="dropdown-card">ماكينات طباعة ديجيتال الوان</a>
+                        <a onclick="navigateTo('products')" class="dropdown-card">ماكينات طباعة ديجيتال ابيض واسود</a>
+                        <a onclick="navigateTo('products')" class="dropdown-card">ماكينات لوحات هندسية</a>
+                        <a onclick="navigateTo('products')" class="dropdown-card">ماكينات طباعة تصويرية</a>
+                        <a onclick="navigateTo('products')" class="dropdown-card">ماكينات طباعة الاشعة الطبية</a>
+                        <a onclick="navigateTo('products')" class="dropdown-card">طابعات إنكجيت (بأحبار سائلة)</a>
+                        <a onclick="navigateTo('products')" class="dropdown-card">ماكينات ما بعد الطباعة</a>
+                        <a onclick="navigateTo('products')" class="dropdown-card">بلوتر اوت دور Outdoor Plotter</a>
+                        <a onclick="navigateTo('products')" class="dropdown-card">أجهزة كهربائية - تكييفات</a>
                     </div>
                 </div>
-                <a href="#booking" class="py-5 px-1 text-rose-700 transition-all text-sm font-black underline decoration-2 underline-offset-8"><i class="fa fa-tools ml-1"></i> بلاغ صيانة</a>
+
+                <div class="dropdown-container text-right">
+                    <button onclick="toggleDropdown('d-parts', event)" class="py-4 px-2 flex items-center gap-2 hover:text-rose-700 transition-all text-sm font-black">قطع غيار <i class="fa fa-chevron-down text-[9px] opacity-40"></i></button>
+                    <div id="d-parts" class="dropdown-menu">
+                        <a onclick="navigateTo('products')" class="dropdown-card">قطع غيار ماكينات تصوير ابيض واسود</a>
+                        <a onclick="navigateTo('products')" class="dropdown-card">قطع غيار ماكينات لوحات هندسية الوان</a>
+                        <a onclick="navigateTo('products')" class="dropdown-card">قطع غيار ماكينات تصوير مستندات الوان</a>
+                        <a onclick="navigateTo('products')" class="dropdown-card">قطع غيار ماكينات طباعة ديجيتال الوان</a>
+                    </div>
+                </div>
+
+                <div class="dropdown-container text-right">
+                    <button onclick="toggleDropdown('d-toners', event)" class="py-4 px-2 flex items-center gap-2 hover:text-rose-700 transition-all text-sm font-black">أحبار <i class="fa fa-chevron-down text-[9px] opacity-40"></i></button>
+                    <div id="d-toners" class="dropdown-menu">
+                        <a onclick="navigateTo('products')" class="dropdown-card">احبار ماكينات تصوير مستندات الوان</a>
+                        <a onclick="navigateTo('products')" class="dropdown-card">احبار ماكينات طباعة ديجيتال ابيض واسود</a>
+                        <a onclick="navigateTo('products')" class="dropdown-card">احبار ماكينات لوحات هندسية الوان</a>
+                        <a onclick="navigateTo('products')" class="dropdown-card">احبار ماكينات طباعة ديجيتال الوان</a>
+                    </div>
+                </div>
+
+                <div class="dropdown-container text-right">
+                    <button onclick="toggleDropdown('d-serv', event)" class="py-4 px-2 flex items-center gap-2 hover:text-rose-700 transition-all text-sm text-rose-700 font-black">خدمات ما بعد البيع <i class="fa fa-chevron-down text-[9px] opacity-40"></i></button>
+                    <div id="d-serv" class="dropdown-menu">
+                        <a onclick="navigateTo('products')" class="dropdown-card">الدعم الفنى</a>
+                        <a onclick="navigateTo('products')" class="dropdown-card">الشكاوى و الأقتراحات</a>
+                        <a href="#booking" class="dropdown-card font-black text-rose-700 font-black underline">بلاغات الأعطال</a>
+                        <a onclick="navigateTo('products')" class="dropdown-card">سيرفيس مانوال</a>
+                    </div>
+                </div>
             </div>
         </nav>
     </header>
 
-    <!-- Main Banner Image (FIXED AND RESTORED) -->
-    <div class="hero-banner-box">
-        <img src="header.jpeg" alt="بانر شركة العدل">
-    </div>
+    <!-- Hero Banner -->
+    <div class="hero-banner-box"><img src="header.jpeg" alt="شركة العدل - بانر"></div>
 
     <!-- PAGE: HOME -->
-    <main id="page-home" class="page-section active text-right">
-        <section class="py-16 container mx-auto px-4 md:px-12">
-            <div class="text-center py-20 bg-white rounded-[3rem] shadow-sm border border-gray-100">
-                <h2 class="text-3xl font-black text-rose-950 mb-4 tracking-tighter italic">شركة العدل للحلول المتكاملة</h2>
-                <p class="text-gray-500 font-bold italic text-lg leading-loose max-w-2xl mx-auto px-4">المركز المعتمد الأول لبيع وصيانة ماكينات التصوير والطابعات.</p>
-                <button onclick="navigateTo('products')" class="mt-10 bg-rose-700 text-white px-10 py-4 rounded-2xl font-black shadow-xl hover:bg-rose-800 transition transform hover:-translate-y-1">تصفح الكتالوج</button>
+    <main id="page-home" class="page-section active">
+        <section class="py-12 container mx-auto px-4 md:px-12 text-right">
+            <div class="flex flex-col lg:flex-row gap-10">
+                <aside class="w-full lg:w-1/4 hidden lg:block">
+                    <div class="bg-zinc-900 rounded-3xl shadow-sm border border-gray-100 overflow-hidden sticky top-80">
+                        <div class="bg-rose-900 text-white p-5 font-black flex items-center justify-between">
+                            <span>الأقسام الرئيسية</span><i class="fa fa-th-large opacity-30"></i>
+                        </div>
+                        <ul class="text-right font-extrabold text-gray-200">
+                            <li class="p-4 border-b border-white/5 cursor-pointer hover:bg-rose-700 transition" onclick="navigateTo('products')">ماكينات تصوير ريكو</li>
+                            <li class="p-4 border-b border-white/5 cursor-pointer hover:bg-rose-700 transition" onclick="navigateTo('products')">أحبار أصلية</li>
+                            <li class="p-4 cursor-pointer hover:bg-rose-700 transition" onclick="navigateTo('products')">قطع غيار استيراد</li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <div class="flex-1">
+                    <div class="flex items-center justify-between mb-8 border-r-4 border-rose-700 pr-4">
+                        <h2 class="text-2xl font-black text-rose-950 tracking-tighter">الأكثر مبيعاً</h2>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-8">
+                        <div class="product-card bg-white border border-gray-100 p-4 rounded-3xl shadow-sm group">
+                            <div class="h-44 md:h-52 bg-gray-50 rounded-[2rem] mb-4 flex items-center justify-center p-4 relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="Ricoh" class="h-full object-contain group-hover:scale-110 transition duration-500">
+                            </div>
+                            <h3 class="text-sm md:text-base font-black text-rose-950 mb-1 leading-tight">ريكو MP 5002</h3>
+                            <button onclick="orderNowWA('ريكو 5002')" class="bg-rose-700 text-white py-2.5 rounded-xl font-bold text-xs shadow-lg hover:bg-rose-800 transition mt-auto w-full">اطلب الآن</button>
+                        </div>
+                        <div class="product-card bg-white border border-gray-100 p-4 rounded-3xl shadow-sm group">
+                            <div class="h-44 md:h-52 bg-zinc-50 rounded-[2rem] mb-4 flex items-center justify-center p-4 text-gray-300"><i class="fa fa-fill-drip text-5xl"></i></div>
+                            <h3 class="text-sm md:text-base font-black text-rose-950 mb-1 leading-tight">حبر ريكو بودرة</h3>
+                            <button onclick="orderNowWA('حبر ريكو بودرة')" class="bg-rose-700 text-white py-2.5 rounded-xl font-bold text-xs shadow-lg hover:bg-rose-800 transition mt-auto w-full">اطلب الآن</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
         <!-- Booking Section -->
         <section id="booking" class="py-20 bg-white">
             <div class="container mx-auto px-4 md:px-6 max-w-5xl">
-                <div class="bg-rose-950 rounded-[3rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row border-b-8 border-rose-700 text-right">
+                <div class="bg-rose-950 rounded-[3rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row border-b-8 border-rose-700">
                     <div class="lg:w-2/5 p-8 md:p-14 text-white text-right flex flex-col justify-center bg-rose-900/40">
                         <h2 class="text-3xl md:text-4xl font-black mb-6 italic leading-tight uppercase">مركز الصيانة</h2>
-                        <p class="text-rose-100 text-base md:text-lg mb-10 leading-relaxed border-r-4 border-rose-400 pr-6 text-right">سجل بياناتك بدقة وسيصلك المهندس المختص في أسرع وقت.</p>
+                        <p class="text-rose-100 text-base md:text-lg mb-10 leading-relaxed border-r-4 border-rose-400 pr-6">سجل بياناتك بدقة وسيصلك المهندس المختص في أسرع وقت.</p>
                         <div class="bg-white/10 p-5 rounded-2xl flex items-center justify-between"><span class="text-xl md:text-2xl font-black text-yellow-400">01094799247</span><i class="fa fa-tools text-2xl text-rose-400"></i></div>
                     </div>
                     <div class="lg:w-3/5 bg-white p-8 md:p-14 text-right">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <input type="text" id="mName" oninput="updateWA()" placeholder="اسم العميل بالكامل" class="col-span-full p-4 bg-gray-50 rounded-xl outline-none border-2 border-transparent focus:border-rose-700 transition font-bold text-sm text-right">
-                            <input type="tel" id="mPhone" oninput="updateWA()" placeholder="رقم الهاتف الأساسي" class="p-4 bg-gray-50 rounded-xl outline-none border-2 border-transparent focus:border-rose-700 transition text-left font-mono font-bold text-sm" dir="ltr">
-                            <input type="tel" id="mPhone2" oninput="updateWA()" placeholder="رقم هاتف آخر" class="p-4 bg-gray-50 rounded-xl outline-none border-2 border-transparent focus:border-rose-700 transition text-left font-mono font-bold text-sm" dir="ltr">
-                            <input type="text" id="mAddress" oninput="updateWA()" placeholder="العنوان بالتفصيل" class="col-span-full p-4 bg-gray-50 rounded-xl outline-none border-2 border-transparent focus:border-rose-700 transition font-bold text-sm text-right">
-                            <textarea id="mDesc" oninput="updateWA()" placeholder="أوصف العطل بدقة..." class="col-span-full p-4 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-rose-700 transition font-bold text-sm text-right min-h-[120px]"></textarea>
-                            <a id="waFinalBtn" href="javascript:void(0)" target="_blank" class="col-span-full bg-rose-700 text-white font-black py-5 rounded-[1.5rem] text-lg flex items-center justify-center gap-4 shadow-xl hover:bg-rose-800 transition-all no-underline opacity-50 cursor-not-allowed">إرسال البلاغ <i class="fab fa-whatsapp"></i></a>
+                        <div id="bookingAlert" class="hidden mb-6 p-4 rounded-2xl text-center font-black text-sm bg-red-50 text-red-600 border border-red-100"></div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-right">
+                            <div class="col-span-full">
+                                <label class="text-[11px] font-black text-gray-400 mb-1 block mr-2 italic">اسم العميل بالكامل</label>
+                                <input type="text" id="mName" oninput="updateWA()" placeholder="اكتب اسمك هنا" class="w-full p-4 bg-gray-50 rounded-xl outline-none border-2 border-transparent focus:border-rose-700 transition font-bold text-sm text-right">
+                            </div>
+                            <div>
+                                <label class="text-[11px] font-black text-gray-400 mb-1 block mr-2 italic">رقم الهاتف الأساسي</label>
+                                <input type="tel" id="mPhone" oninput="updateWA()" placeholder="01xxxxxxxxx" class="w-full p-4 bg-gray-50 rounded-xl outline-none border-2 border-transparent focus:border-rose-700 transition text-left font-mono font-bold text-sm" dir="ltr">
+                            </div>
+                            <div>
+                                <label class="text-[11px] font-black text-gray-400 mb-1 block mr-2 italic">رقم هاتف آخر (اختياري)</label>
+                                <input type="tel" id="mPhone2" oninput="updateWA()" placeholder="رقم إضافي" class="w-full p-4 bg-gray-50 rounded-xl outline-none border-2 border-transparent focus:border-rose-700 transition text-left font-mono font-bold text-sm" dir="ltr">
+                            </div>
+                            <div class="col-span-full">
+                                <label class="text-[11px] font-black text-gray-400 mb-1 block mr-2 italic">العنوان بالتفصيل</label>
+                                <input type="text" id="mAddress" oninput="updateWA()" placeholder="المحافظة - المركز - الشارع - المقر" class="w-full p-4 bg-gray-50 rounded-xl outline-none border-2 border-transparent focus:border-rose-700 transition font-bold text-sm text-right">
+                            </div>
+                            <div class="col-span-full">
+                                <label class="text-[11px] font-black text-gray-400 mb-1 block mr-2 italic">أوصف العطل بدقة</label>
+                                <textarea id="mDesc" oninput="updateWA()" placeholder="ما هي المشكلة التي تظهر في الجهاز؟" class="w-full p-4 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-rose-700 transition font-bold text-sm text-right min-h-[100px]"></textarea>
+                            </div>
+                            <div class="col-span-full pt-4">
+                                <a id="waFinalBtn" href="javascript:void(0)" onclick="checkForm(event)" target="_blank" class="w-full bg-rose-700 text-white font-black py-5 rounded-[1.5rem] text-lg flex items-center justify-center gap-4 shadow-xl hover:bg-rose-800 transition-all no-underline opacity-50 cursor-not-allowed text-center">إرسال الطلب الآن <i class="fab fa-whatsapp"></i></a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -236,54 +375,125 @@
 
     <!-- PAGE: PRODUCTS -->
     <main id="page-products" class="page-section">
-        <section class="py-20 container mx-auto px-6 text-center">
-            <h2 class="text-4xl font-black text-rose-950 mb-10 tracking-tighter">كتالوج المنتجات</h2>
-            <p class="text-gray-400 font-bold italic mb-20 leading-relaxed">جاري تحديث القائمة الكاملة بالصور والمواصفات...</p>
-            <button onclick="navigateTo('home')" class="bg-rose-700 text-white px-12 py-4 rounded-[2rem] font-black shadow-xl hover:bg-rose-800 transition">العودة للرئيسية</button>
+        <section class="container mx-auto px-6 py-24 text-center">
+            <div class="max-w-3xl mx-auto bg-white p-12 md:p-20 rounded-[4rem] shadow-2xl border-t-8 border-rose-700 relative overflow-hidden">
+                <div class="absolute -top-10 -right-10 w-40 h-40 bg-rose-50 rounded-full opacity-50"></div>
+                <div class="relative z-10 mb-12 flex justify-center">
+                    <svg class="w-32 h-32 md:w-40 md:h-40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="20" y="45" width="60" height="35" rx="5" fill="#1e293b" />
+                        <rect x="30" y="35" width="40" height="15" rx="3" fill="#334155" />
+                        <g class="gear-spin" style="transform-origin: 80px 75px;">
+                            <circle cx="80" cy="75" r="8" fill="#be123c" />
+                            <path d="M80 64V68M80 82V86M69 75H73M87 75H91M72.2 67.2L75 70M85 80L87.8 82.8M72.2 82.8L75 80M85 70L87.8 67.2" stroke="#be123c" stroke-width="3" stroke-linecap="round"/>
+                        </g>
+                        <rect class="pulse-soft" x="35" y="55" width="30" height="2" fill="#be123c" />
+                        <rect class="pulse-soft" x="35" y="62" width="20" height="2" fill="#be123c" />
+                        <circle cx="20" cy="20" r="4" fill="#cbd5e1" class="pulse-soft" style="animation-delay: 0.5s"/>
+                        <circle cx="80" cy="20" r="4" fill="#cbd5e1" class="pulse-soft" style="animation-delay: 1s"/>
+                        <path d="M25 20H75" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4 4" />
+                    </svg>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-black text-rose-950 mb-6 leading-tight">جاري العمل على تحديث القائمة الكاملة</h2>
+                <p class="text-xl text-gray-500 font-bold italic mb-10 leading-relaxed text-center">"نحن نقوم الآن بفرز وتجهيز أفضل الماكينات الاستيراد والأحبار الأصلية لضمان تقديم أعلى جودة لكم."</p>
+                <button onclick="navigateTo('home')" class="bg-rose-700 text-white px-12 py-4 rounded-[2rem] font-black shadow-xl hover:bg-rose-800 transition">العودة للرئيسية</button>
+            </div>
         </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-zinc-950 text-white pt-24 pb-12 px-6 border-t-8 border-rose-700 mt-20 text-right">
-        <div class="container mx-auto grid md:grid-cols-2 lg:grid-cols-4 gap-16 border-b border-white/5 pb-20">
-            <div>
-                <h4 class="text-3xl font-black mb-8 text-rose-50 italic">شركة العدل</h4>
-                <p class="text-gray-400 text-sm leading-loose font-medium italic mb-10">المنصة الرسمية المعتمدة لبيع وصيانة الطابعات وماكينات التصوير.</p>
+    <!-- PAGE: ABOUT -->
+    <main id="page-about" class="page-section">
+        <section class="py-24 container mx-auto px-6 text-right">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-5xl font-black text-rose-950 mb-8 leading-tight tracking-tighter">عن شركة العدل</h2>
+                <p class="text-2xl text-gray-600 leading-relaxed italic border-r-8 border-rose-700 pr-8">نحن متخصصون في تجارة وصيانة ماكينات التصوير والطابعات منذ أكثر من عشرين عاماً. نلتزم بالأمانة والعدل في تقديم خدماتنا لكافة عملائنا في الدقهلية وكافة المحافظات.</p>
             </div>
+        </section>
+    </main>
+
+    <!-- Footer - Professional Design -->
+    <footer class="bg-zinc-950 text-white pt-20 pb-10 px-6 border-t-8 border-rose-700 mt-20 text-right">
+        <div class="container mx-auto grid md:grid-cols-2 lg:grid-cols-4 gap-12 border-b border-white/5 pb-16">
+            <!-- Col 1: About Info -->
             <div>
-                <h4 class="text-xl font-bold mb-10 text-white border-r-4 border-rose-700 pr-5 uppercase tracking-widest">بيانات التواصل</h4>
-                <ul class="space-y-8 text-sm">
-                    <li class="flex items-center gap-5 group">
-                        <div class="w-12 h-12 bg-rose-900/30 rounded-2xl flex items-center justify-center text-rose-500 group-hover:bg-rose-700 transition shadow-inner"><i class="fa fa-phone-alt"></i></div>
-                        <div><p class="text-gray-500 text-[10px] font-black uppercase mb-1 tracking-tighter">الرقم الأرضي</p><p class="text-gray-200 font-black tracking-widest font-mono text-base">0502776746</p></div>
+                <h4 class="text-2xl font-black mb-8 text-rose-50 uppercase tracking-tighter">شركة العدل للصيانة</h4>
+                <p class="text-gray-400 text-sm leading-loose font-medium">المركز المعتمد الأول لبيع وصيانة ماكينات التصوير والطابعات، خبرة تثق بها وجودة تدوم لسنوات طويلة.</p>
+                <div class="mt-8 flex gap-4">
+                    <a href="https://www.facebook.com/AlAdlCom" target="_blank" class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center hover:bg-rose-700 transition shadow-lg text-rose-100">
+                        <i class="fab fa-facebook-f text-lg"></i>
+                    </a>
+                    <a href="https://wa.me/201094799247" target="_blank" class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center hover:bg-green-600 transition shadow-lg text-green-100">
+                        <i class="fab fa-whatsapp text-lg"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Col 2: Support Points -->
+            <div>
+                <h4 class="text-lg font-bold mb-8 text-white border-r-4 border-rose-700 pr-4">بيانات التواصل</h4>
+                <ul class="space-y-6 text-sm text-right">
+                    <li class="flex items-center gap-4 group">
+                        <div class="w-10 h-10 bg-rose-900/30 rounded-xl flex items-center justify-center text-rose-500 group-hover:bg-rose-700 group-hover:text-white transition-all"><i class="fa fa-phone-alt"></i></div>
+                        <div>
+                            <p class="text-gray-500 text-[10px] font-bold uppercase mb-1">الرقم الأرضي</p>
+                            <p class="text-gray-200 font-bold tracking-widest font-mono">0502776746</p>
+                        </div>
                     </li>
-                    <li class="flex items-center gap-5 group">
-                        <div class="w-12 h-12 bg-rose-900/30 rounded-2xl flex items-center justify-center text-rose-500 group-hover:bg-rose-700 transition shadow-inner"><i class="fa fa-tools"></i></div>
-                        <div><p class="text-gray-500 text-[10px] font-black uppercase mb-1 tracking-tighter">الدعم الفني</p><p class="text-gray-200 font-black tracking-widest font-mono text-base text-rose-400">01094799247</p></div>
+                    <li class="flex items-center gap-4 group">
+                        <div class="w-10 h-10 bg-rose-900/30 rounded-xl flex items-center justify-center text-rose-500 group-hover:bg-rose-700 group-hover:text-white transition-all"><i class="fa fa-tools"></i></div>
+                        <div>
+                            <p class="text-gray-500 text-[10px] font-bold uppercase mb-1">الصيانة والدعم الفني</p>
+                            <p class="text-gray-200 font-bold tracking-widest font-mono">01094799247</p>
+                        </div>
                     </li>
                 </ul>
             </div>
+
+            <!-- Col 3: Sales & Email -->
             <div>
-                <h4 class="text-xl font-bold mb-10 text-white border-r-4 border-rose-700 pr-5 invisible md:visible italic uppercase">المبيعات</h4>
-                <ul class="space-y-8 text-sm">
-                    <li class="flex items-center gap-5 group">
-                        <div class="w-12 h-12 bg-rose-900/30 rounded-2xl flex items-center justify-center text-rose-500 group-hover:bg-rose-700 transition shadow-inner"><i class="fa fa-chart-line"></i></div>
-                        <div><p class="text-gray-500 text-[10px] font-black uppercase mb-1 tracking-tighter">التسويق</p><p class="text-gray-200 font-black tracking-widest font-mono text-base">01094799247</p></div>
+                <h4 class="text-lg font-bold mb-8 text-white border-r-4 border-rose-700 pr-4">المبيعات والبريد</h4>
+                <ul class="space-y-6 text-sm text-right">
+                    <li class="flex items-center gap-4 group">
+                        <div class="w-10 h-10 bg-rose-900/30 rounded-xl flex items-center justify-center text-rose-500 group-hover:bg-rose-700 group-hover:text-white transition-all"><i class="fa fa-chart-line"></i></div>
+                        <div>
+                            <p class="text-gray-500 text-[10px] font-bold uppercase mb-1">التسويق والمبيعات</p>
+                            <p class="text-gray-200 font-bold tracking-widest font-mono">01094799247</p>
+                        </div>
                     </li>
-                    <li class="flex items-center gap-5 group">
-                        <div class="w-12 h-12 bg-rose-900/30 rounded-2xl flex items-center justify-center text-rose-500 group-hover:bg-rose-700 transition shadow-inner"><i class="fa fa-envelope"></i></div>
-                        <div><p class="text-gray-500 text-[10px] font-black uppercase mb-1 tracking-tighter italic">البريد الإلكتروني</p><p class="text-gray-200 font-black text-xs lowercase break-all">zeyadamr2020@gmail.com</p></div>
+                    <li class="flex items-center gap-4 group">
+                        <div class="w-10 h-10 bg-rose-900/30 rounded-xl flex items-center justify-center text-rose-500 group-hover:bg-rose-700 group-hover:text-white transition-all"><i class="fa fa-envelope"></i></div>
+                        <div>
+                            <p class="text-gray-500 text-[10px] font-bold uppercase mb-1">البريد الإلكتروني</p>
+                            <p class="text-gray-200 font-bold break-all">zeyadamr2020@gmail.com</p>
+                        </div>
                     </li>
                 </ul>
             </div>
+
+            <!-- Col 4: Work Hours -->
             <div>
-                <h4 class="text-xl font-bold mb-10 text-white border-r-4 border-rose-700 pr-5 italic uppercase tracking-tighter">مقر الشركة</h4>
-                <p class="text-slate-300 text-sm font-bold mb-6 italic">الدقهلية – جمصة – شارع الشباب بجوار مسجد السلام</p>
-                <div class="flex items-center gap-4 text-rose-500"><i class="fa fa-clock text-xl"></i><span class="text-rose-50 font-black text-xs">9 ص - 6 م (سبت - خميس)</span></div>
+                <h4 class="text-lg font-bold mb-8 text-white border-r-4 border-rose-700 pr-4">أوقات العمل</h4>
+                <div class="bg-white/5 p-6 rounded-[2rem] border border-white/5 text-right">
+                    <div class="flex items-center gap-4 mb-4">
+                        <i class="fa fa-clock text-rose-500 text-xl"></i>
+                        <span class="text-gray-200 font-bold text-sm leading-relaxed">أوقات العمل الرسمية</span>
+                    </div>
+                    <p class="text-gray-400 text-xs font-medium leading-loose">
+                        من 9 صباحاً إلى 6 مساءاً<br>
+                        من السبت إلى الخميس
+                    </p>
+                </div>
             </div>
         </div>
+
+        <!-- Copyright & Address Row -->
         <div class="container mx-auto mt-12 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="text-gray-600 text-[11px] font-extrabold uppercase tracking-widest text-center">جميع الحقوق محفوظة لشركة العدل لبيع وصيانة الطابعات وماكينات التصوير © 2024</div>
+            <div class="flex items-center gap-3 text-gray-500 font-bold text-sm">
+                <i class="fa fa-map-marker-alt text-rose-600"></i>
+                <span>العنوان: الدقهلية – جمصة – شارع الشباب بجوار مسجد السلام</span>
+            </div>
+            <div class="text-gray-600 text-[11px] font-extrabold uppercase tracking-widest text-center md:text-left">
+                جميع الحقوق محفوظة © 2024 لشركة العدل لبيع وصيانة الطابعات وماكينات التصوير
+            </div>
         </div>
     </footer>
 
@@ -294,17 +504,22 @@
             document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
             const target = document.getElementById('page-' + targetId);
             if (target) { target.classList.add('active'); window.scrollTo({top: 0, behavior: 'smooth'}); }
+            closeAllDropdowns();
         }
 
-        function toggleMobileMenu() {
-            document.getElementById('mobile-menu').classList.toggle('open');
-            document.getElementById('overlay').classList.toggle('show');
-        }
+        function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
+        function toggleAccordion(id) { document.getElementById(id).classList.toggle('hidden'); }
 
-        function toggleAccordion(id) {
+        function toggleDropdown(id, event) {
+            event.stopPropagation();
             const el = document.getElementById(id);
-            el.classList.toggle('active');
+            const isShown = el.classList.contains('show');
+            closeAllDropdowns();
+            if (!isShown) el.classList.add('show');
         }
+
+        function closeAllDropdowns() { document.querySelectorAll('.dropdown-menu').forEach(d => d.classList.remove('show')); }
+        window.addEventListener('click', (e) => { if (!e.target.closest('.dropdown-container')) closeAllDropdowns(); });
 
         function updateWA() {
             const n = document.getElementById('mName').value.trim();
@@ -313,11 +528,26 @@
             const addr = document.getElementById('mAddress').value.trim();
             const desc = document.getElementById('mDesc').value.trim();
             const btn = document.getElementById('waFinalBtn');
+            const alert = document.getElementById('bookingAlert');
+
             if (n !== "" && p.length >= 10 && desc !== "") {
+                alert.classList.add('hidden');
                 btn.classList.remove('opacity-50', 'cursor-not-allowed');
-                let text = `السلام عليكم شركة العدل،\nأود طلب صيانة فنية:\n👤 الاسم: ${n}\n📞 الهاتف: ${p}\n🛠️ وصف العطل: ${desc}`;
+                let text = `السلام عليكم شركة العدل،\nأود طلب صيانة فنية:\n👤 الاسم: ${n}\n📞 الهاتف: ${p}\n📞 هاتف 2: ${p2 || '-'}\n📍 العنوان: ${addr || '-'}\n🛠️ وصف العطل: ${desc}`;
                 btn.href = `https://wa.me/${MAIN_NUM}?text=${encodeURIComponent(text)}`;
             } else { btn.classList.add('opacity-50', 'cursor-not-allowed'); btn.href = "javascript:void(0)"; }
+        }
+
+        function checkForm(e) {
+            const n = document.getElementById('mName').value.trim();
+            const p = document.getElementById('mPhone').value.trim();
+            const desc = document.getElementById('mDesc').value.trim();
+            if (n === "" || p === "" || desc === "") {
+                e.preventDefault();
+                const alert = document.getElementById('bookingAlert');
+                alert.innerText = "يرجى كتابة الاسم ورقم الهاتف ووصف العطل للمتابعة.";
+                alert.classList.remove('hidden');
+            }
         }
     </script>
 </body>
