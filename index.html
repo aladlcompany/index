@@ -74,7 +74,8 @@
         .menu-overlay.show { display: block; }
         .mobile-card { background: white; margin-bottom: 6px; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; }
         .mobile-trigger { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; width: 100%; font-weight: 800; color: #1e293b; }
-        .nested-link { display: block; padding: 12px 20px; font-size: 13px; color: #4b5563; font-weight: 700; border-bottom: 1px solid #f1f5f9; cursor: pointer; }
+        .nested-link { display: block; padding: 12px 20px; font-size: 13px; color: #4b5563; font-weight: 700; border-bottom: 1px solid #f1f5f9; cursor: pointer; transition: all 0.25s ease; }
+        .nested-link:hover, .nested-link:active { background-color: #be123c; color: #ffffff; transform: translateX(-5px); }
 
         /* Banner */
         .hero-banner-box { width: 100%; overflow: hidden; background: #fff; max-height: 450px; border-bottom: 4px solid #be123c; }
@@ -170,7 +171,7 @@
                 <button onclick="toggleAccordion('m-serv')" class="mobile-trigger"><span>خدمات ما بعد البيع</span><i class="fa fa-chevron-down text-[10px] opacity-30"></i></button>
                 <div id="m-serv" class="hidden bg-gray-50 pb-2 text-right">
                     <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">الدعم الفنى</a>
-                    <a href="#booking" onclick="toggleMobileMenu()" class="nested-link font-black text-rose-700">بلاغات الأعطال</a>
+                    <a href="#booking" onclick="toggleMobileMenu()" class="nested-link">بلاغات الأعطال</a>
                     <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">الشكاوى و الأقتراحات</a>
                     <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">سيرفيس مانوال</a>
                 </div>
@@ -289,7 +290,7 @@
                     <button class="py-5 px-1 flex items-center gap-2 hover:text-rose-700 transition-all text-sm text-rose-700 font-black text-right">خدمات ما بعد البيع <i class="fa fa-chevron-down text-[9px] opacity-40"></i></button>
                     <div id="d-serv-after" class="dropdown-menu text-right" style="left: 0; right: auto;">
                         <a onclick="navigateTo('products')" class="dropdown-card">الدعم الفنى</a>
-                        <a href="#booking" class="dropdown-card font-black text-rose-700 underline decoration-2">بلاغات الأعطال</a>
+                        <a href="#booking" class="dropdown-card">بلاغات الأعطال</a>
                         <a onclick="navigateTo('products')" class="dropdown-card">الشكاوى و الأقتراحات</a>
                         <a onclick="navigateTo('products')" class="dropdown-card">سيرفيس مانوال</a>
                     </div>
