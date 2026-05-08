@@ -73,8 +73,9 @@
         .menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1500; display: none; backdrop-filter: blur(4px); }
         .menu-overlay.show { display: block; }
         .mobile-card { background: white; margin-bottom: 6px; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; }
-        .mobile-trigger { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; width: 100%; font-weight: 800; color: #1e293b; }
-        .nested-link { display: block; padding: 12px 20px; font-size: 13px; color: #4b5563; font-weight: 700; border-bottom: 1px solid #f1f5f9; cursor: pointer; transition: all 0.25s ease; }
+        .mobile-trigger { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; width: 100%; font-weight: 800; color: #1e293b; cursor: pointer; transition: all 0.2s ease; -webkit-tap-highlight-color: transparent; }
+        .mobile-trigger:active { background-color: #fef2f2; }
+        .nested-link { display: block; padding: 12px 20px; font-size: 13px; color: #4b5563; font-weight: 700; border-bottom: 1px solid #f1f5f9; cursor: pointer; transition: all 0.15s ease; -webkit-tap-highlight-color: transparent; }
         .nested-link:hover, .nested-link:active { background-color: #be123c; color: #ffffff; transform: translateX(-5px); }
 
         /* Banner */
@@ -84,7 +85,7 @@
         @media (max-width: 1024px) { .hero-banner-box { max-height: 250px; } }
     </style>
 </head>
-<body class="text-gray-800 pb-16 lg:pb-0 text-right">
+<body class="text-gray-800 pb-16 lg:pb-0 text-right" ontouchstart="">
 
     <div id="overlay" class="menu-overlay" onclick="toggleMobileMenu()"></div>
 
@@ -103,18 +104,18 @@
         
         <div class="flex-1 overflow-y-auto p-4 text-right">
             <div class="mobile-card">
-                <button onclick="navigateTo('home'); toggleMobileMenu()" class="mobile-trigger"><span>الرئيسية</span><i class="fa fa-home text-rose-700"></i></button>
+                <button onclick="navigateTo('home')" class="mobile-trigger"><span>الرئيسية</span><i class="fa fa-home text-rose-700"></i></button>
             </div>
 
             <!-- من نحن -->
             <div class="mobile-card">
                 <button onclick="toggleAccordion('m-who')" class="mobile-trigger"><span>من نحن</span><i class="fa fa-chevron-down text-[10px] opacity-30"></i></button>
                 <div id="m-who" class="hidden bg-gray-50 pb-2 text-right">
-                    <a onclick="navigateTo('about'); toggleMobileMenu()" class="nested-link">من نحن</a>
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">مقالات و عروض</a>
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">أخبارنا</a>
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">أسئلة و أجوبة</a>
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">عملاؤنا</a>
+                    <a onclick="navigateTo('about')" class="nested-link">من نحن</a>
+                    <a onclick="navigateTo('products', 'all')" class="nested-link">مقالات و عروض</a>
+                    <a onclick="navigateTo('products', 'all')" class="nested-link">أخبارنا</a>
+                    <a onclick="navigateTo('products', 'all')" class="nested-link">أسئلة و أجوبة</a>
+                    <a onclick="navigateTo('products', 'all')" class="nested-link">عملاؤنا</a>
                 </div>
             </div>
 
@@ -123,17 +124,17 @@
                 <button onclick="toggleAccordion('m-prods')" class="mobile-trigger text-rose-700"><span>المنتجات</span><i class="fa fa-chevron-down text-[10px] opacity-30"></i></button>
                 <div id="m-prods" class="hidden bg-gray-50 pb-2 text-right">
                     <div class="p-3 bg-gray-100 font-bold text-xs text-rose-900">ماكينات تصوير مستندات</div>
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link pr-8 italic">● ابيض واسود (جديد/استيراد)</a>
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link pr-8 italic">● الوان (جديد/استيراد)</a>
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">ماكينات طباعة ديجيتال الوان</a>
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">ماكينات طباعة ديجيتال ابيض واسود</a>
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">ماكينات لوحات هندسية</a>
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">ماكينات طباعة تصويرية</a>
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">ماكينات طباعة الاشعة الطبية</a>
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">طابعات إنكجيت (بأحبار سائلة)</a>
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">ماكينات ما بعد الطباعة</a>
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">بلوتر اوت دور Outdoor Plotter</a>
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">أجهزة كهربائية - تكييفات</a>
+                    <a onclick="navigateTo('products', 'bw-copiers')" class="nested-link pr-8 italic">● ابيض واسود (جديد/استيراد)</a>
+                    <a onclick="navigateTo('products', 'color-copiers')" class="nested-link pr-8 italic">● الوان (جديد/استيراد)</a>
+                    <a onclick="navigateTo('products', 'digital-color')" class="nested-link">ماكينات طباعة ديجيتال الوان</a>
+                    <a onclick="navigateTo('products', 'digital-bw')" class="nested-link">ماكينات طباعة ديجيتال ابيض واسود</a>
+                    <a onclick="navigateTo('products', 'plotters')" class="nested-link">ماكينات لوحات هندسية</a>
+                    <a onclick="navigateTo('products', 'photographic')" class="nested-link">ماكينات طباعة تصويرية</a>
+                    <a onclick="navigateTo('products', 'medical')" class="nested-link">ماكينات طباعة الاشعة الطبية</a>
+                    <a onclick="navigateTo('products', 'inkjet')" class="nested-link">طابعات إنكجيت (بأحبار سائلة)</a>
+                    <a onclick="navigateTo('products', 'post-print')" class="nested-link">ماكينات ما بعد الطباعة</a>
+                    <a onclick="navigateTo('products', 'outdoor')" class="nested-link">بلوتر اوت دور Outdoor Plotter</a>
+                    <a onclick="navigateTo('products', 'appliances')" class="nested-link">أجهزة كهربائية - تكييفات</a>
                 </div>
             </div>
 
@@ -141,10 +142,10 @@
             <div class="mobile-card">
                 <button onclick="toggleAccordion('m-parts')" class="mobile-trigger"><span>قطع غيار</span><i class="fa fa-chevron-down text-[10px] opacity-30"></i></button>
                 <div id="m-parts" class="hidden bg-gray-50 pb-2 text-right">
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">قطع غيار ماكينات تصوير ابيض واسود</a>
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">قطع غيار ماكينات لوحات هندسية</a>
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">قطع غيار ماكينات تصوير الوان</a>
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">قطع غيار ماكينات طباعة ديجيتال</a>
+                    <a onclick="navigateTo('products', 'parts-bw')" class="nested-link">قطع غيار ماكينات تصوير ابيض واسود</a>
+                    <a onclick="navigateTo('products', 'parts-plotter')" class="nested-link">قطع غيار ماكينات لوحات هندسية</a>
+                    <a onclick="navigateTo('products', 'parts-color')" class="nested-link">قطع غيار ماكينات تصوير الوان</a>
+                    <a onclick="navigateTo('products', 'parts-digital')" class="nested-link">قطع غيار ماكينات طباعة ديجيتال</a>
                 </div>
             </div>
 
@@ -152,29 +153,34 @@
             <div class="mobile-card">
                 <button onclick="toggleAccordion('m-toners')" class="mobile-trigger"><span>أحبار</span><i class="fa fa-chevron-down text-[10px] opacity-30"></i></button>
                 <div id="m-toners" class="hidden bg-gray-50 pb-2 text-right">
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">احبار ماكينات تصوير ابيض واسود</a>
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">احبار ماكينات تصوير الوان</a>
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">احبار ماكينات طباعة ديجيتال</a>
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">احبار ماكينات لوحات هندسية</a>
+                    <a onclick="navigateTo('products', 'toner-bw')" class="nested-link">احبار ماكينات تصوير ابيض واسود</a>
+                    <a onclick="navigateTo('products', 'toner-color')" class="nested-link">احبار ماكينات تصوير الوان</a>
+                    <a onclick="navigateTo('products', 'toner-digital')" class="nested-link">احبار ماكينات طباعة ديجيتال</a>
+                    <a onclick="navigateTo('products', 'toner-plotter')" class="nested-link">احبار ماكينات لوحات هندسية</a>
                 </div>
             </div>
 
             <div class="mobile-card">
-                <button onclick="navigateTo('products'); toggleMobileMenu()" class="mobile-trigger"><span>أنظمة البيع</span></button>
+                <button onclick="navigateTo('products', 'all')" class="mobile-trigger"><span>أنظمة البيع</span></button>
             </div>
             <div class="mobile-card">
-                <button onclick="navigateTo('products'); toggleMobileMenu()" class="mobile-trigger"><span>المعرض</span></button>
+                <button onclick="navigateTo('products', 'all')" class="mobile-trigger"><span>المعرض</span></button>
             </div>
 
             <!-- خدمات ما بعد البيع -->
             <div class="mobile-card">
                 <button onclick="toggleAccordion('m-serv')" class="mobile-trigger"><span>خدمات ما بعد البيع</span><i class="fa fa-chevron-down text-[10px] opacity-30"></i></button>
                 <div id="m-serv" class="hidden bg-gray-50 pb-2 text-right">
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">الدعم الفنى</a>
-                    <a href="#booking" onclick="toggleMobileMenu()" class="nested-link">بلاغات الأعطال</a>
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">الشكاوى و الأقتراحات</a>
-                    <a onclick="navigateTo('products'); toggleMobileMenu()" class="nested-link">سيرفيس مانوال</a>
+                    <a onclick="navigateTo('products', 'all')" class="nested-link">الدعم الفنى</a>
+                    <a onclick="navigateTo('home'); setTimeout(() => document.getElementById('booking').scrollIntoView({behavior: 'smooth'}), 100);" class="nested-link">بلاغات الأعطال</a>
+                    <a onclick="navigateTo('products', 'all')" class="nested-link">الشكاوى و الأقتراحات</a>
+                    <a onclick="navigateTo('products', 'all')" class="nested-link">سيرفيس مانوال</a>
                 </div>
+            </div>
+
+            <!-- زر بلاغات الأعطال المنفصل -->
+            <div class="mobile-card border-rose-200">
+                <a onclick="navigateTo('home'); setTimeout(() => document.getElementById('booking').scrollIntoView({behavior: 'smooth'}), 100);" class="mobile-trigger text-rose-700 font-bold cursor-pointer"><span>بلاغات الأعطال</span><i class="fa fa-tools"></i></a>
             </div>
         </div>
 
@@ -218,7 +224,6 @@
 
         <!-- Desktop Navigation -->
         <nav class="bg-white border-t border-gray-100 hidden lg:block shadow-sm">
-            <!-- تم التعديل هنا لدعم المسافات بشكل احترافي على الكمبيوتر لمنع تداخل القوائم -->
             <div class="container mx-auto px-12 flex flex-wrap justify-start gap-x-8 gap-y-2 font-black text-gray-600">
                 <a onclick="navigateTo('home')" class="py-5 px-1 hover:text-rose-700 transition-all text-sm cursor-pointer">الرئيسية</a>
 
@@ -226,10 +231,10 @@
                     <button class="py-5 px-1 flex items-center gap-2 hover:text-rose-700 transition-all text-sm">من نحن <i class="fa fa-chevron-down text-[9px] opacity-40"></i></button>
                     <div id="d-who" class="dropdown-menu text-right">
                         <a onclick="navigateTo('about')" class="dropdown-card">من نحن</a>
-                        <a onclick="navigateTo('products')" class="dropdown-card">مقالات و عروض</a>
-                        <a onclick="navigateTo('products')" class="dropdown-card">أخبارنا</a>
-                        <a onclick="navigateTo('products')" class="dropdown-card">أسئلة و أجوبة</a>
-                        <a onclick="navigateTo('products')" class="dropdown-card">عملاؤنا</a>
+                        <a onclick="navigateTo('products', 'all')" class="dropdown-card">مقالات و عروض</a>
+                        <a onclick="navigateTo('products', 'all')" class="dropdown-card">أخبارنا</a>
+                        <a onclick="navigateTo('products', 'all')" class="dropdown-card">أسئلة و أجوبة</a>
+                        <a onclick="navigateTo('products', 'all')" class="dropdown-card">عملاؤنا</a>
                     </div>
                 </div>
 
@@ -239,62 +244,64 @@
                         <div class="dropdown-card !bg-white !cursor-default flex flex-col items-start gap-1 text-right">
                             <span>ماكينات تصوير مستندات ابيض واسود</span>
                             <div class="sub-link-group">
-                                <a onclick="navigateTo('products')" class="sub-link-item">جديدة</a>
-                                <a onclick="navigateTo('products')" class="sub-link-item">استيراد الخارج</a>
+                                <a onclick="navigateTo('products', 'bw-copiers')" class="sub-link-item">جديدة</a>
+                                <a onclick="navigateTo('products', 'bw-copiers')" class="sub-link-item">استيراد الخارج</a>
                             </div>
                         </div>
                         <div class="dropdown-card !bg-white !cursor-default flex flex-col items-start gap-1 text-right">
                             <span>ماكينات تصوير مستندات الوان</span>
                             <div class="sub-link-group">
-                                <a onclick="navigateTo('products')" class="sub-link-item">جديدة</a>
-                                <a onclick="navigateTo('products')" class="sub-link-item">استيراد الخارج</a>
+                                <a onclick="navigateTo('products', 'color-copiers')" class="sub-link-item">جديدة</a>
+                                <a onclick="navigateTo('products', 'color-copiers')" class="sub-link-item">استيراد الخارج</a>
                             </div>
                         </div>
-                        <a onclick="navigateTo('products')" class="dropdown-card">ماكينات طباعة ديجيتال الوان</a>
-                        <a onclick="navigateTo('products')" class="dropdown-card">ماكينات طباعة ديجيتال ابيض واسود</a>
-                        <a onclick="navigateTo('products')" class="dropdown-card">ماكينات لوحات هندسية</a>
-                        <a onclick="navigateTo('products')" class="dropdown-card">ماكينات طباعة تصويرية</a>
-                        <a onclick="navigateTo('products')" class="dropdown-card">ماكينات طباعة الاشعة الطبية</a>
-                        <a onclick="navigateTo('products')" class="dropdown-card">طابعات إنكجيت (بأحبار سائلة)</a>
-                        <a onclick="navigateTo('products')" class="dropdown-card">ماكينات ما بعد الطباعة</a>
-                        <a onclick="navigateTo('products')" class="dropdown-card">بلوتر اوت دور Outdoor Plotter</a>
-                        <a onclick="navigateTo('products')" class="dropdown-card">أجهزة كهربائية - تكييفات</a>
+                        <a onclick="navigateTo('products', 'digital-color')" class="dropdown-card">ماكينات طباعة ديجيتال الوان</a>
+                        <a onclick="navigateTo('products', 'digital-bw')" class="dropdown-card">ماكينات طباعة ديجيتال ابيض واسود</a>
+                        <a onclick="navigateTo('products', 'plotters')" class="dropdown-card">ماكينات لوحات هندسية</a>
+                        <a onclick="navigateTo('products', 'photographic')" class="dropdown-card">ماكينات طباعة تصويرية</a>
+                        <a onclick="navigateTo('products', 'medical')" class="dropdown-card">ماكينات طباعة الاشعة الطبية</a>
+                        <a onclick="navigateTo('products', 'inkjet')" class="dropdown-card">طابعات إنكجيت (بأحبار سائلة)</a>
+                        <a onclick="navigateTo('products', 'post-print')" class="dropdown-card">ماكينات ما بعد الطباعة</a>
+                        <a onclick="navigateTo('products', 'outdoor')" class="dropdown-card">بلوتر اوت دور Outdoor Plotter</a>
+                        <a onclick="navigateTo('products', 'appliances')" class="dropdown-card">أجهزة كهربائية - تكييفات</a>
                     </div>
                 </div>
 
-                <!-- تم التعديل هنا لضمان عدم خروج القوائم اليسرى عن مساحة الشاشة -->
                 <div class="dropdown-container">
                     <button class="py-5 px-1 flex items-center gap-2 hover:text-rose-700 transition-all text-sm font-black text-right">قطع غيار <i class="fa fa-chevron-down text-[9px] opacity-40"></i></button>
                     <div id="d-parts" class="dropdown-menu text-right" style="left: 0; right: auto;">
-                        <a onclick="navigateTo('products')" class="dropdown-card">قطع غيار ماكينات تصوير ابيض واسود</a>
-                        <a onclick="navigateTo('products')" class="dropdown-card">قطع غيار ماكينات لوحات هندسية</a>
-                        <a onclick="navigateTo('products')" class="dropdown-card">قطع غيار ماكينات تصوير الوان</a>
-                        <a onclick="navigateTo('products')" class="dropdown-card">قطع غيار ماكينات طباعة ديجيتال</a>
+                        <a onclick="navigateTo('products', 'parts-bw')" class="dropdown-card">قطع غيار ماكينات تصوير ابيض واسود</a>
+                        <a onclick="navigateTo('products', 'parts-plotter')" class="dropdown-card">قطع غيار ماكينات لوحات هندسية</a>
+                        <a onclick="navigateTo('products', 'parts-color')" class="dropdown-card">قطع غيار ماكينات تصوير الوان</a>
+                        <a onclick="navigateTo('products', 'parts-digital')" class="dropdown-card">قطع غيار ماكينات طباعة ديجيتال</a>
                     </div>
                 </div>
 
                 <div class="dropdown-container">
                     <button class="py-5 px-1 flex items-center gap-2 hover:text-rose-700 transition-all text-sm font-black text-right">أحبار <i class="fa fa-chevron-down text-[9px] opacity-40"></i></button>
                     <div id="d-toners" class="dropdown-menu text-right" style="left: 0; right: auto;">
-                        <a onclick="navigateTo('products')" class="dropdown-card">احبار ماكينات تصوير ابيض واسود</a>
-                        <a onclick="navigateTo('products')" class="dropdown-card">احبار ماكينات تصوير الوان</a>
-                        <a onclick="navigateTo('products')" class="dropdown-card">احبار ماكينات طباعة ديجيتال</a>
-                        <a onclick="navigateTo('products')" class="dropdown-card">احبار ماكينات لوحات هندسية</a>
+                        <a onclick="navigateTo('products', 'toner-bw')" class="dropdown-card">احبار ماكينات تصوير ابيض واسود</a>
+                        <a onclick="navigateTo('products', 'toner-color')" class="dropdown-card">احبار ماكينات تصوير الوان</a>
+                        <a onclick="navigateTo('products', 'toner-digital')" class="dropdown-card">احبار ماكينات طباعة ديجيتال</a>
+                        <a onclick="navigateTo('products', 'toner-plotter')" class="dropdown-card">احبار ماكينات لوحات هندسية</a>
                     </div>
                 </div>
 
-                <a onclick="navigateTo('products')" class="py-5 px-1 hover:text-rose-700 transition-all text-sm cursor-pointer">أنظمة البيع</a>
-                <a onclick="navigateTo('products')" class="py-5 px-1 hover:text-rose-700 transition-all text-sm cursor-pointer">المعرض</a>
+                <a onclick="navigateTo('products', 'all')" class="py-5 px-1 hover:text-rose-700 transition-all text-sm cursor-pointer">أنظمة البيع</a>
+                <a onclick="navigateTo('products', 'all')" class="py-5 px-1 hover:text-rose-700 transition-all text-sm cursor-pointer">المعرض</a>
 
                 <div class="dropdown-container">
                     <button class="py-5 px-1 flex items-center gap-2 hover:text-rose-700 transition-all text-sm text-rose-700 font-black text-right">خدمات ما بعد البيع <i class="fa fa-chevron-down text-[9px] opacity-40"></i></button>
                     <div id="d-serv-after" class="dropdown-menu text-right" style="left: 0; right: auto;">
-                        <a onclick="navigateTo('products')" class="dropdown-card">الدعم الفنى</a>
-                        <a href="#booking" class="dropdown-card">بلاغات الأعطال</a>
-                        <a onclick="navigateTo('products')" class="dropdown-card">الشكاوى و الأقتراحات</a>
-                        <a onclick="navigateTo('products')" class="dropdown-card">سيرفيس مانوال</a>
+                        <a onclick="navigateTo('products', 'all')" class="dropdown-card">الدعم الفنى</a>
+                        <a onclick="navigateTo('home'); setTimeout(() => document.getElementById('booking').scrollIntoView({behavior: 'smooth'}), 100);" class="dropdown-card">بلاغات الأعطال</a>
+                        <a onclick="navigateTo('products', 'all')" class="dropdown-card">الشكاوى و الأقتراحات</a>
+                        <a onclick="navigateTo('products', 'all')" class="dropdown-card">سيرفيس مانوال</a>
                     </div>
                 </div>
+
+                <!-- زر بلاغات الأعطال في القائمة العلوية -->
+                <a onclick="navigateTo('home'); setTimeout(() => document.getElementById('booking').scrollIntoView({behavior: 'smooth'}), 100);" class="py-5 px-1 text-rose-700 transition-all text-sm font-black underline decoration-2 underline-offset-8 cursor-pointer"><i class="fa fa-tools ml-1"></i> بلاغ صيانة</a>
             </div>
         </nav>
     </header>
@@ -311,15 +318,14 @@
                 
                 <!-- Sidebar -->
                 <aside class="w-full lg:w-1/4 hidden lg:block text-right">
-                    <!-- تم التعديل هنا لرفع القائمة الجانبية قليلاً لتظهر بوضوح تحت الهيدر -->
                     <div class="bg-zinc-900 rounded-3xl shadow-sm border border-gray-100 overflow-hidden sticky top-36">
                         <div class="bg-rose-900 text-white p-5 font-black flex items-center justify-between">
                             <span>الأقسام الرئيسية</span><i class="fa fa-th-large opacity-30"></i>
                         </div>
                         <ul class="text-right font-extrabold text-gray-200">
-                            <li class="p-4 border-b border-white/5 cursor-pointer hover:bg-rose-700 transition" onclick="navigateTo('products')">ماكينات تصوير ريكو</li>
-                            <li class="p-4 border-b border-white/5 cursor-pointer hover:bg-rose-700 transition" onclick="navigateTo('products')">أحبار أصلية</li>
-                            <li class="p-4 cursor-pointer hover:bg-rose-700 transition" onclick="navigateTo('products')">قطع غيار استيراد</li>
+                            <li class="p-4 border-b border-white/5 cursor-pointer hover:bg-rose-700 transition" onclick="navigateTo('products', 'bw-copiers')">ماكينات تصوير ريكو</li>
+                            <li class="p-4 border-b border-white/5 cursor-pointer hover:bg-rose-700 transition" onclick="navigateTo('products', 'toner-bw')">أحبار أصلية</li>
+                            <li class="p-4 cursor-pointer hover:bg-rose-700 transition" onclick="navigateTo('products', 'parts-bw')">قطع غيار استيراد</li>
                         </ul>
                     </div>
                 </aside>
@@ -327,23 +333,11 @@
                 <!-- Products Grid -->
                 <div class="flex-1">
                     <div class="flex items-center justify-between mb-8 border-r-4 border-rose-700 pr-4">
-                        <h2 class="text-2xl font-black text-rose-950 tracking-tighter">الأكثر مبيعاً</h2>
+                        <h2 class="text-2xl font-black text-rose-950 tracking-tighter">المنتجات المضافة حديثاً</h2>
                     </div>
-                    <div class="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-8">
-                        <div class="product-card bg-white border border-gray-100 p-4 rounded-3xl shadow-sm group">
-                            <div class="h-44 md:h-52 bg-gray-50 rounded-[2rem] mb-4 flex items-center justify-center p-4 relative overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="Ricoh" class="h-full object-contain group-hover:scale-110 transition duration-500">
-                            </div>
-                            <h3 class="text-sm md:text-base font-black text-rose-950 mb-1 leading-tight">ريكو MP 5002</h3>
-                            <button onclick="orderNowWA('ريكو 5002')" class="bg-rose-700 text-white py-2.5 rounded-xl font-bold text-xs shadow-lg hover:bg-rose-800 transition mt-auto w-full">اطلب الآن</button>
-                        </div>
-                        <div class="product-card bg-white border border-gray-100 p-4 rounded-3xl shadow-sm group">
-                            <div class="h-44 md:h-52 bg-zinc-50 rounded-[2rem] mb-4 flex items-center justify-center p-4 text-gray-300">
-                                <i class="fa fa-fill-drip text-5xl"></i>
-                            </div>
-                            <h3 class="text-sm md:text-base font-black text-rose-950 mb-1 leading-tight">حبر ريكو بودرة</h3>
-                            <button onclick="orderNowWA('حبر ريكو بودرة')" class="bg-rose-700 text-white py-2.5 rounded-xl font-bold text-xs shadow-lg hover:bg-rose-800 transition mt-auto w-full">اطلب الآن</button>
-                        </div>
+                    
+                    <div id="recentProductsGrid" class="grid grid-cols-2 xl:grid-cols-3 gap-4 md:gap-8">
+                        <!-- يتم ملء المنتجات هنا عبر الجافاسكريبت -->
                     </div>
                 </div>
 
@@ -392,12 +386,16 @@
         </section>
     </main>
 
-    <!-- PAGE: PRODUCTS -->
-    <main id="page-products" class="page-section">
-        <section class="py-20 container mx-auto px-6 text-center">
-            <h2 class="text-4xl font-black text-rose-950 mb-10 tracking-tighter">كتالوج المنتجات</h2>
-            <p class="text-gray-400 font-bold italic mb-20 leading-relaxed">جاري تحديث القائمة الكاملة بالصور والمواصفات...</p>
-            <button onclick="navigateTo('home')" class="bg-rose-700 text-white px-12 py-4 rounded-[2rem] font-black shadow-xl hover:bg-rose-800 transition">العودة للرئيسية</button>
+    <!-- PAGE: PRODUCTS (CATALOG) -->
+    <main id="page-products" class="page-section text-right">
+        <section class="py-16 container mx-auto px-4 md:px-12">
+            <div class="flex items-center justify-between mb-10 border-r-[8px] border-rose-700 pr-4">
+                <h2 class="text-3xl md:text-4xl font-black text-rose-950 tracking-tighter">كتالوج المنتجات</h2>
+            </div>
+            <!-- الحاوية التي سيتم عرض المنتجات فيها بتفاصيل كاملة في صفحة الكتالوج -->
+            <div id="catalogGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- يتم ملء المنتجات هنا عبر الجافاسكريبت -->
+            </div>
         </section>
     </main>
 
@@ -484,16 +482,44 @@
     <script>
         const MAIN_NUM = "201094799247";
 
-        function navigateTo(targetId) {
-            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
-            const target = document.getElementById('page-' + targetId);
-            if (target) { target.classList.add('active'); window.scrollTo({top: 0, behavior: 'smooth'}); }
-            closeAllDropdowns();
+        // Navigation Engine with Mobile Auto-Close
+        function navigateTo(targetId, category = 'all') {
+            // إضافة تأخير بسيط (50 مللي ثانية) عشان اللون الأحمر يلحق يظهر للمستخدم في الموبايل
+            setTimeout(() => {
+                document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+                const target = document.getElementById('page-' + targetId);
+                if (target) { target.classList.add('active'); window.scrollTo({top: 0, behavior: 'smooth'}); }
+                
+                closeAllDropdowns();
+                closeMobileMenu(); // قفل القائمة الجانبية والأكورديون فوراً
+                
+                if (targetId === 'products') {
+                    renderProducts(category);
+                }
+            }, 50);
         }
 
         function toggleMobileMenu() {
-            document.getElementById('mobile-menu').classList.toggle('open');
-            document.getElementById('overlay').classList.toggle('show');
+            const menu = document.getElementById('mobile-menu');
+            const overlay = document.getElementById('overlay');
+            menu.classList.toggle('open');
+            overlay.classList.toggle('show');
+            
+            // لو القائمة بتتقفل عن طريق زر الـ X، اقفل كل الأكورديون معاها
+            if (!menu.classList.contains('open')) {
+                setTimeout(() => {
+                    document.querySelectorAll('#m-who, #m-prods, #m-parts, #m-toners, #m-serv').forEach(acc => acc.classList.add('hidden'));
+                }, 300);
+            }
+        }
+
+        // دالة جديدة لقفل القائمة بالكامل عند الانتقال لصفحة جديدة
+        function closeMobileMenu() {
+            document.getElementById('mobile-menu').classList.remove('open');
+            document.getElementById('overlay').classList.remove('show');
+            setTimeout(() => {
+                document.querySelectorAll('#m-who, #m-prods, #m-parts, #m-toners, #m-serv').forEach(acc => acc.classList.add('hidden'));
+            }, 300);
         }
 
         function toggleAccordion(id) {
@@ -512,6 +538,7 @@
         function closeAllDropdowns() { document.querySelectorAll('.dropdown-menu').forEach(d => d.classList.remove('show')); }
         window.addEventListener('click', (e) => { if (!e.target.closest('.dropdown-container')) closeAllDropdowns(); });
 
+        // WhatsApp Forms
         function updateWA() {
             const n = document.getElementById('mName').value.trim();
             const p = document.getElementById('mPhone').value.trim();
@@ -545,6 +572,90 @@
             const text = `السلام عليكم شركة العدل،\nأريد الاستفسار عن منتج: ${product}`;
             window.open(`https://wa.me/${MAIN_NUM}?text=${encodeURIComponent(text)}`, '_blank');
         }
+
+        // ==============================================
+        // نظام المنتجات الأوتوماتيكي
+        // ==============================================
+        const productsDB = [
+            {
+                name: 'ريكو Aficio MP 5002',
+                image: 'images/MP 5002.png',
+                condition: 'استيراد كسر زيرو',
+                speed: '50 ورقة / دقيقة',
+                resolution: '1200 * 1200',
+                functions: 'طباعة – تصوير – سكانر – فاكس',
+                paperSize: 'A3, A4, A5 والعديد من المقاسات',
+                price: '28,000 جنيه',
+                category: 'bw-copiers' 
+            }
+        ];
+
+        function renderProducts(categoryFilter = 'all') {
+            const homeGrid = document.getElementById('recentProductsGrid');
+            const catalogGrid = document.getElementById('catalogGrid');
+            
+            if (!homeGrid || !catalogGrid) return;
+            
+            if (categoryFilter === 'all') {
+                homeGrid.innerHTML = '';
+                const recentProducts = [...productsDB].reverse().slice(0, 6);
+                recentProducts.forEach(prod => {
+                    const homeCardHTML = `
+                        <div class="product-card bg-white border border-gray-100 p-4 rounded-3xl shadow-sm group flex flex-col relative">
+                            ${prod.condition ? `<div class="absolute top-3 left-3 bg-rose-700 text-white text-[9px] font-black px-2 py-1 rounded shadow-sm z-10">${prod.condition}</div>` : ''}
+                            <div class="h-32 md:h-48 bg-gray-50 rounded-[1.5rem] mb-4 flex items-center justify-center p-2 relative overflow-hidden">
+                                <img src="${prod.image}" alt="${prod.name}" class="h-full object-contain group-hover:scale-110 transition duration-500">
+                            </div>
+                            <h3 class="text-xs md:text-base font-black text-rose-950 mb-1 leading-tight">${prod.name}</h3>
+                            <p class="text-[9px] md:text-xs text-gray-500 font-bold mb-3 flex-1">${prod.speed} | ${prod.functions.split('–')[0].trim()}</p>
+                            <div class="mt-auto flex items-center justify-between border-t border-gray-50 pt-2">
+                                <span class="text-rose-900 font-black text-xs md:text-sm">${prod.price}</span>
+                                <button onclick="orderNowWA('${prod.name}')" class="bg-rose-700 text-white py-1.5 px-3 rounded-lg font-bold text-[10px] shadow hover:bg-rose-800 transition">اطلب</button>
+                            </div>
+                        </div>
+                    `;
+                    homeGrid.insertAdjacentHTML('beforeend', homeCardHTML);
+                });
+            }
+
+            catalogGrid.innerHTML = '';
+            let filteredProducts = [...productsDB].reverse();
+            
+            if (categoryFilter !== 'all') {
+                filteredProducts = filteredProducts.filter(p => p.category === categoryFilter);
+            }
+
+            if (filteredProducts.length === 0) {
+                catalogGrid.innerHTML = '<div class="col-span-full text-center py-20 text-gray-400 font-bold text-lg"><i class="fa fa-box-open text-4xl mb-4 block"></i>لا توجد منتجات في هذا القسم حالياً، سيتم إضافتها قريباً...</div>';
+            } else {
+                filteredProducts.forEach(prod => {
+                    const catalogCardHTML = `
+                        <div class="bg-white rounded-[2rem] shadow-xl border border-gray-100 overflow-hidden group flex flex-col">
+                            <div class="h-64 bg-gray-50 flex items-center justify-center p-6 relative">
+                                <img src="${prod.image}" alt="${prod.name}" class="h-full object-contain group-hover:scale-110 transition duration-500">
+                                ${prod.condition ? `<div class="absolute top-4 left-4 bg-rose-700 text-white text-xs font-black px-3 py-1 rounded-full shadow-md">${prod.condition}</div>` : ''}
+                            </div>
+                            <div class="p-6 text-right flex-1 flex flex-col">
+                                <h3 class="text-xl font-black text-rose-950 mb-4">${prod.name}</h3>
+                                <ul class="space-y-2 mb-6 text-xs font-bold text-gray-600 flex-1">
+                                    <li class="flex items-start gap-2"><i class="fa fa-print text-rose-600 mt-1"></i> <span><strong>الوظائف:</strong> ${prod.functions}</span></li>
+                                    <li class="flex items-start gap-2"><i class="fa fa-bolt text-rose-600 mt-1"></i> <span><strong>السرعة:</strong> ${prod.speed}</span></li>
+                                    <li class="flex items-start gap-2"><i class="fa fa-expand text-rose-600 mt-1"></i> <span><strong>الدقة:</strong> ${prod.resolution}</span></li>
+                                    <li class="flex items-start gap-2"><i class="fa fa-file-alt text-rose-600 mt-1"></i> <span><strong>الورق:</strong> ${prod.paperSize}</span></li>
+                                </ul>
+                                <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
+                                    <span class="text-xl font-black text-rose-900">${prod.price}</span>
+                                    <button onclick="orderNowWA('${prod.name}')" class="bg-rose-700 text-white px-5 py-2.5 rounded-xl font-black text-sm shadow-lg hover:bg-rose-800 transition">طلب شراء</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    catalogGrid.insertAdjacentHTML('beforeend', catalogCardHTML);
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => renderProducts('all'));
     </script>
 </body>
 </html>
