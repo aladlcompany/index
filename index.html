@@ -147,7 +147,7 @@
                     <a onclick="navigateTo('about')" class="nested-link">من نحن</a>
                     <a onclick="navigateTo('products', 'all')" class="nested-link">مقالات و عروض</a>
                     <a onclick="navigateTo('products', 'all')" class="nested-link">أخبارنا</a>
-                    <a onclick="navigateTo('products', 'all')" class="nested-link">أسئلة و أجوبة</a>
+                    <a onclick="navigateTo('faq')" class="nested-link">أسئلة و أجوبة</a>
                     <a onclick="navigateTo('products', 'all')" class="nested-link">عملاؤنا</a>
                 </div>
             </div>
@@ -265,7 +265,7 @@
                         <a onclick="navigateTo('about')" class="dropdown-card">من نحن</a>
                         <a onclick="navigateTo('products', 'all')" class="dropdown-card">مقالات و عروض</a>
                         <a onclick="navigateTo('products', 'all')" class="dropdown-card">أخبارنا</a>
-                        <a onclick="navigateTo('products', 'all')" class="dropdown-card">أسئلة و أجوبة</a>
+                        <a onclick="navigateTo('faq')" class="dropdown-card">أسئلة و أجوبة</a>
                         <a onclick="navigateTo('products', 'all')" class="dropdown-card">عملاؤنا</a>
                     </div>
                 </div>
@@ -716,6 +716,101 @@
         </section>
     </main>
 
+    <!-- PAGE: FAQ (أسئلة وأجوبة) -->
+    <main id="page-faq" class="page-section text-right">
+        <section class="pt-8 pb-24 container mx-auto px-6 lg:px-12 text-right">
+            
+            <!-- Header -->
+            <div class="mb-12">
+                <div class="flex items-center justify-center mb-6 w-full relative">
+                    <div class="absolute w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent top-1/2 transform -translate-y-1/2"></div>
+                    <div class="inline-flex items-center justify-center gap-2 md:gap-4 bg-white px-5 md:px-10 py-2 md:py-4 rounded-full relative z-10 border border-gray-100 shadow-sm max-w-full">
+                        <span class="relative flex h-3 w-3">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-3 w-3 bg-rose-600"></span>
+                        </span>
+                        <h2 class="text-2xl md:text-5xl font-black font-cairo shimmer-text text-center leading-relaxed pb-1 md:pb-2 mt-1">أسئلة وأجوبة متكررة</h2>
+                    </div>
+                </div>
+                <p class="text-xl md:text-2xl text-gray-600 font-bold text-center max-w-3xl mx-auto leading-relaxed relative z-10">
+                    أكثر الاستفسارات التي تصلنا والإجابة الشاملة عليها.
+                </p>
+            </div>
+
+            <!-- Accordion Container -->
+            <div class="max-w-4xl mx-auto space-y-5">
+                
+                <!-- FAQ 1 -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300">
+                    <button onclick="toggleFAQ('faq-1', 'icon-1')" class="w-full text-right px-6 py-5 flex justify-between items-center focus:outline-none hover:bg-rose-50 transition-colors group">
+                        <h3 class="font-cairo font-black text-rose-950 text-lg md:text-xl pl-4 group-hover:text-rose-700 transition-colors">ما هي الطباعة الثري دي وهل يمكن أن تطبع مواد بالأبعاد الثلاثية ؟</h3>
+                        <div class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center shrink-0 group-hover:bg-rose-100 transition-colors">
+                            <i id="icon-1" class="fa fa-chevron-down text-rose-700 transition-transform duration-300 transform"></i>
+                        </div>
+                    </button>
+                    <div id="faq-1" class="hidden px-6 pb-6">
+                        <div class="border-t border-gray-100 pt-5">
+                            <p class="text-gray-600 font-bold leading-loose text-sm md:text-base">
+                                الطباعة ثلاثية الأبعاد (3D) هي ببساطة عملية تحويل ملف رقمي لتصميم ثلاثي الأبعاد إلى جسم صلب ثلاثي الأبعاد في أرض الواقع. وتعمل الطابعة ثلاثية الأبعاد على مبدأ إضافة طبقات متعاقبة فوق بعضها من المواد المستخدمة حتى يتم تشكيل المجسم المطلوب.<br><br>
+                                ويمكن الحصول على النماذج ثلاثية الأبعاد التي سيتم طباعتها إما عبر تصميمها وتجهيزها عبر أحد برامج التصميم المعروفة في هذا المجال أو عبر الماسحة ثلاثية الأبعاد والتي ستشكل مع الطابعة في حال استخدامها ما يسمى بالناسخة ثلاثية الأبعاد حيث ستقوم الآلتان بنسخ أي نموذج.<br><br>
+                                لا تستخدم جميع الطابعات ثلاثية الأبعاد التكنولوجيا ذاتها في الطباعة فهناك أنواع كثيرة. هناك من يقوم بعمليات اذابة وتليين للمواد حيث يستخدم الليزر وتكنولوجيا الانصهار لهذه الغاية. بعض الطابعات تقوم بطباعة مواد بلاستيكية وبعضها الآخر معادن وآخر لدائن وغيرها من المواد وتختلف التكنولوجيا التي تستخدمها كل واحدة كما يختلف الحجم والسعر وكذلك المجالات التي يتم استخدام هذه الطباعة من أجلها.<br><br>
+                                وقد استخدمت هذه الطباعة في مجالات الصناعة والمحركات والفضاء والطب والصحة (تم تصميم أعضاء بشرية وضعت داخل البشر في استراليا) وحتى لصناعة الحلي والكثير من المجالات. هذه بعض الصور التي تعطيك نبذة بسيطة عن هذا العالم الرائع الذي يمثل المستقبل بحد ذاته.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 2 -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300">
+                    <button onclick="toggleFAQ('faq-2', 'icon-2')" class="w-full text-right px-6 py-5 flex justify-between items-center focus:outline-none hover:bg-rose-50 transition-colors group">
+                        <h3 class="font-cairo font-black text-rose-950 text-lg md:text-xl pl-4 group-hover:text-rose-700 transition-colors">هل عدم ثبات التيار الكهربائي يؤثر على ماكينات تصوير المستندات ؟ وكيفية تجنبه ؟</h3>
+                        <div class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center shrink-0 group-hover:bg-rose-100 transition-colors">
+                            <i id="icon-2" class="fa fa-chevron-down text-rose-700 transition-transform duration-300 transform"></i>
+                        </div>
+                    </button>
+                    <div id="faq-2" class="hidden px-6 pb-6">
+                        <div class="border-t border-gray-100 pt-5">
+                            <p class="text-gray-600 font-bold leading-loose text-sm md:text-base">
+                                في أماكن كثيرة في مصر خصوصًا في الأماكن الريفية والصحراوية، التيار الكهربي فيها غير ثابت. وبيتغير ارتفاعًا وانخفاضًا، وده ممكن يسبب تلف في أجزاء كتير في الماكينة زي: البوردة الكهربية والسخان والباور سبلاي.<br><br>
+                                ولتجنب المشكلة دي يجب توفير جهاز مثبت التيار الكهربي <span class="text-rose-700 font-black">"Stabilizer"</span>، والذي يعمل على تثبيت التيار الكهربي عند 220 فولت، وذلك هو المعدل الطبيعي للتيار الكهربي للحفاظ على ماكينة تصوير المستندات. ومهما تغير التيار الكهربي صعودًا أو هبوطًا سيحافظ الجهاز على استقراره.<br><br>
+                                وفي السياق ده، تأكد وانت بتشتري ماكينة تصوير مستندات، إنها تكون شغالة على 220 فولت وليس 110 فولت زي المكن اللي مستورد من بعض الدول زي "أمريكا".
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 3 -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300">
+                    <button onclick="toggleFAQ('faq-3', 'icon-3')" class="w-full text-right px-6 py-5 flex justify-between items-center focus:outline-none hover:bg-rose-50 transition-colors group">
+                        <h3 class="font-cairo font-black text-rose-950 text-lg md:text-xl pl-4 group-hover:text-rose-700 transition-colors">ما هو الفرق بين طباعة الإن دور والأوت دور، السلك سكرين، والأوفست؟</h3>
+                        <div class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center shrink-0 group-hover:bg-rose-100 transition-colors">
+                            <i id="icon-3" class="fa fa-chevron-down text-rose-700 transition-transform duration-300 transform"></i>
+                        </div>
+                    </button>
+                    <div id="faq-3" class="hidden px-6 pb-6">
+                        <div class="border-t border-gray-100 pt-5">
+                            <ul class="space-y-4 text-gray-600 font-bold text-sm md:text-base leading-loose">
+                                <li>
+                                    <strong class="text-rose-700 text-lg">الإن دور (Indoor):</strong> الطباعة الداخلية (أي التي لا تتعرض للحرارة وضوء الشمس).
+                                </li>
+                                <li>
+                                    <strong class="text-rose-700 text-lg">الأوت دور (Outdoor):</strong> طباعة خارجية كأعمال الدعاية، الأستاند أو الهاي مارك. وتتميز بتحمل الحرارة المرتفعة ولذلك يستخدم فيها الفينيل أو الفيلكس.
+                                </li>
+                                <li>
+                                    <strong class="text-rose-700 text-lg">الأوفست (Offset):</strong> وهي الطباعة الأشهر للأعمال التجارية (وهي الطباعة بالتنافر بين الحبر والماء) وتعتبر هي الأشهر لأنها أعلى دقة وأقل تكلفة اذا ما قل عدد الألوان كما انها متعددة الخامات فيمكن الطباعة على الخشب، الورق، قماش، جلد.
+                                </li>
+                                <li>
+                                    <strong class="text-rose-700 text-lg">السلك سكرين (Silkscreen):</strong> هي الأقل تكلفة ودقة من سابقتها إلا انها تتميز عنها في قدرتها على فرز الألوان رغم انخفاض دقتها ولكنها تنجز اعمال كثيرة بامكانيات بسيطة وفي وقت لابأس به كما انها يمكن ان تستخدم في اي نوع من الخامات وسميت باسم السلك رجوعا للحريرة التي تستخدم فيها في الطبع.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
     <!-- PAGE: ABOUT -->
     <main id="page-about" class="page-section text-right">
         <section class="pt-8 pb-24 container mx-auto px-6 lg:px-12 text-right">
@@ -945,7 +1040,6 @@
         // وظيفة تحريك سلايدر فريق العمل
         function scrollTeam(direction) {
             const container = document.getElementById('teamContainer');
-            // التمرير بعرض بطاقة واحدة تقريباً مع كل ضغطة
             const scrollAmount = direction * -340; 
             container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
         }
@@ -955,6 +1049,20 @@
             const container = document.getElementById('recentProductsSlider');
             const scrollAmount = direction * -300; 
             container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        }
+
+        // وظيفة فتح/إغلاق الأسئلة والأجوبة (Accordion)
+        function toggleFAQ(contentId, iconId) {
+            const content = document.getElementById(contentId);
+            const icon = document.getElementById(iconId);
+
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.classList.add('rotate-180');
+            } else {
+                content.classList.add('hidden');
+                icon.classList.remove('rotate-180');
+            }
         }
 
         function navigateTo(targetId, category = 'all') {
@@ -1050,7 +1158,7 @@
             {
                 name: 'ريكو Aficio MP 5002',
                 image: 'images/MP 5002.png',
-                condition: '', /* تم حذف الكلمة من هنا ليختفي البادج */
+                condition: '',
                 speed: '50 ورقة / دقيقة',
                 resolution: '1200 * 1200',
                 functions: 'طباعة – تصوير – سكانر – فاكس',
@@ -1112,7 +1220,7 @@
             
             if (categoryFilter === 'all') {
                 homeSlider.innerHTML = '';
-                const recentProducts = [...productsDB].reverse().slice(0, 5); // عرض آخر 5 منتجات
+                const recentProducts = [...productsDB].reverse().slice(0, 5);
                 recentProducts.forEach(prod => {
                     const homeCardHTML = `
                         <div class="w-[220px] md:w-[260px] max-w-full mx-auto snap-center shrink-0 product-card bg-white border border-gray-100 p-4 rounded-2xl shadow-sm group flex flex-col relative hover:-translate-y-2 transition-transform duration-300">
