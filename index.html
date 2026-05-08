@@ -625,7 +625,7 @@
             {
                 name: 'ريكو Aficio MP 5002',
                 image: 'images/MP 5002.png',
-                condition: 'استيراد كسر زيرو',
+                condition: '', /* تم حذف الكلمة من هنا ليختفي البادج */
                 speed: '50 ورقة / دقيقة',
                 resolution: '1200 * 1200',
                 functions: 'طباعة – تصوير – سكانر – فاكس',
@@ -648,8 +648,8 @@
                     const homeCardHTML = `
                         <div class="product-card bg-white border border-gray-100 p-4 rounded-3xl shadow-sm group flex flex-col relative">
                             ${prod.condition ? `<div class="absolute top-3 left-3 bg-rose-700 text-white text-[9px] font-black px-2 py-1 rounded shadow-sm z-10">${prod.condition}</div>` : ''}
-                            <div class="h-32 md:h-48 bg-gray-50 rounded-[1.5rem] mb-4 flex items-center justify-center p-2 relative overflow-hidden">
-                                <img src="${prod.image}" alt="${prod.name}" class="h-full object-contain group-hover:scale-110 transition duration-500">
+                            <div class="h-40 md:h-56 bg-gray-50 rounded-[1.5rem] mb-4 flex items-center justify-center p-1 relative overflow-hidden">
+                                <img src="${prod.image}" alt="${prod.name}" class="w-full h-full object-contain scale-105 group-hover:scale-110 transition duration-500">
                             </div>
                             <h3 class="text-xs md:text-base font-black text-rose-950 mb-1 leading-tight">${prod.name}</h3>
                             <p class="text-[9px] md:text-xs text-gray-500 font-bold mb-3 flex-1">${prod.speed} | ${prod.functions.split('–')[0].trim()}</p>
@@ -680,9 +680,9 @@
                 filteredProducts.forEach(prod => {
                     const catalogCardHTML = `
                         <div class="bg-white rounded-[2rem] shadow-xl border border-gray-100 overflow-hidden group flex flex-col">
-                            <div class="h-64 bg-gray-50 flex items-center justify-center p-6 relative">
-                                <img src="${prod.image}" alt="${prod.name}" class="h-full object-contain group-hover:scale-110 transition duration-500">
-                                ${prod.condition ? `<div class="absolute top-4 left-4 bg-rose-700 text-white text-xs font-black px-3 py-1 rounded-full shadow-md">${prod.condition}</div>` : ''}
+                            <div class="h-72 bg-gray-50 flex items-center justify-center p-2 relative overflow-hidden">
+                                <img src="${prod.image}" alt="${prod.name}" class="w-full h-full object-contain scale-105 group-hover:scale-110 transition duration-500">
+                                ${prod.condition ? `<div class="absolute top-4 left-4 bg-rose-700 text-white text-xs font-black px-3 py-1 rounded-full shadow-md z-10">${prod.condition}</div>` : ''}
                             </div>
                             <div class="p-6 text-right flex-1 flex flex-col">
                                 <h3 class="text-xl font-black text-rose-950 mb-4">${prod.name}</h3>
