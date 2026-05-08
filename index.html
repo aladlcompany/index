@@ -6,14 +6,11 @@
     <title>شركة العدل | الحلول المتكاملة لماكينات التصوير والطابعات</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- تم إضافة خط Cairo هنا للعناوين -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Tajawal:wght@300;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
         body { font-family: 'Tajawal', sans-serif; scroll-behavior: smooth; background-color: #f8fafc; overflow-x: hidden; }
-        
-        /* كلاس الخط الجديد للعناوين */
         .font-cairo { font-family: 'Cairo', sans-serif; }
         
         .page-section { display: none; }
@@ -69,9 +66,6 @@
         }
         .dropdown-card:hover { background-color: #be123c; color: #ffffff; transform: translateX(-5px); }
 
-        .sub-link-group { display: flex; gap: 6px; padding-right: 20px; flex-wrap: wrap; margin-top: 4px; }
-        .sub-link-item { font-size: 11px; background: #fef2f2; color: #be123c; padding: 3px 10px; border-radius: 6px; font-weight: 800; border: 1px solid #fee2e2; }
-
         /* Mobile Menu */
         #mobile-menu { position: fixed; top: 0; right: -100%; width: 85%; height: 100%; background: #f8fafc; z-index: 2000; transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: -10px 0 40px rgba(0,0,0,0.2); display: flex; flex-direction: column; }
         #mobile-menu.open { right: 0; }
@@ -96,20 +90,14 @@
             background-clip: text;
             animation: shine 3s linear infinite;
         }
-        @keyframes shine {
-            to {
-                background-position: 200% center;
-            }
-        }
+        @keyframes shine { to { background-position: 200% center; } }
 
         /* حركة النبض لزر الطلب */
         @keyframes heartbeat {
             0%, 100% { transform: scale(1); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
             50% { transform: scale(1.04); box-shadow: 0 10px 15px -3px rgba(190, 18, 60, 0.4); }
         }
-        .btn-heartbeat {
-            animation: heartbeat 1.8s infinite ease-in-out;
-        }
+        .btn-heartbeat { animation: heartbeat 1.8s infinite ease-in-out; }
 
         /* حركات إعلان الخصم الناري */
         @keyframes fireGradient {
@@ -126,9 +114,7 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
-        .animate-float {
-            animation: float 3s ease-in-out infinite;
-        }
+        .animate-float { animation: float 3s ease-in-out infinite; }
 
         /* إخفاء شريط التمرير للسلايدر */
         .hide-scrollbar::-webkit-scrollbar { display: none; }
@@ -139,6 +125,7 @@
 </head>
 <body class="text-gray-800 text-right" ontouchstart="">
 
+    <!-- Overlay للموبايل -->
     <div id="overlay" class="menu-overlay" onclick="toggleMobileMenu()"></div>
 
     <!-- Mobile Navigation Drawer -->
@@ -155,23 +142,17 @@
         </div>
         
         <div class="flex-1 overflow-y-auto p-4 text-right">
-            <div class="mobile-card">
-                <button onclick="navigateTo('home')" class="mobile-trigger"><span>الرئيسية</span><i class="fa fa-home text-rose-700"></i></button>
-            </div>
-
-            <!-- من نحن -->
+            <div class="mobile-card"><button onclick="navigateTo('home')" class="mobile-trigger"><span>الرئيسية</span><i class="fa fa-home text-rose-700"></i></button></div>
             <div class="mobile-card">
                 <button onclick="toggleAccordion('m-who')" class="mobile-trigger"><span>من نحن</span><i class="fa fa-chevron-down text-[10px] opacity-30"></i></button>
                 <div id="m-who" class="hidden bg-gray-50 pb-2 text-right">
                     <a onclick="navigateTo('about')" class="nested-link">من نحن</a>
-                    <a onclick="navigateTo('products', 'all')" class="nested-link">مقالات و عروض</a>
-                    <a onclick="navigateTo('products', 'all')" class="nested-link">أخبارنا</a>
+                    <a onclick="navigateTo('articles')" class="nested-link">مقالات و عروض</a>
+                    <a onclick="navigateTo('articles')" class="nested-link">أخبارنا</a>
                     <a onclick="navigateTo('faq')" class="nested-link">أسئلة و أجوبة</a>
                     <a onclick="navigateTo('products', 'all')" class="nested-link">عملاؤنا</a>
                 </div>
             </div>
-
-            <!-- المنتجات -->
             <div class="mobile-card">
                 <button onclick="toggleAccordion('m-prods')" class="mobile-trigger text-rose-700"><span>المنتجات</span><i class="fa fa-chevron-down text-[10px] opacity-30"></i></button>
                 <div id="m-prods" class="hidden bg-gray-50 pb-2 text-right">
@@ -188,8 +169,6 @@
                     <a onclick="navigateTo('products', 'appliances')" class="nested-link">أجهزة كهربائية - تكييفات</a>
                 </div>
             </div>
-
-            <!-- قطع غيار -->
             <div class="mobile-card">
                 <button onclick="toggleAccordion('m-parts')" class="mobile-trigger"><span>قطع غيار</span><i class="fa fa-chevron-down text-[10px] opacity-30"></i></button>
                 <div id="m-parts" class="hidden bg-gray-50 pb-2 text-right">
@@ -199,8 +178,6 @@
                     <a onclick="navigateTo('products', 'parts-digital')" class="nested-link">قطع غيار ماكينات طباعة ديجيتال</a>
                 </div>
             </div>
-
-            <!-- أحبار -->
             <div class="mobile-card">
                 <button onclick="toggleAccordion('m-toners')" class="mobile-trigger"><span>أحبار</span><i class="fa fa-chevron-down text-[10px] opacity-30"></i></button>
                 <div id="m-toners" class="hidden bg-gray-50 pb-2 text-right">
@@ -210,15 +187,8 @@
                     <a onclick="navigateTo('products', 'toner-plotter')" class="nested-link">احبار ماكينات لوحات هندسية</a>
                 </div>
             </div>
-
-            <div class="mobile-card">
-                <button onclick="navigateTo('sales')" class="mobile-trigger"><span>أنظمة البيع</span></button>
-            </div>
-            <div class="mobile-card">
-                <button onclick="navigateTo('products', 'all')" class="mobile-trigger"><span>المعرض</span></button>
-            </div>
-
-            <!-- خدمات ما بعد البيع -->
+            <div class="mobile-card"><button onclick="navigateTo('sales')" class="mobile-trigger"><span>أنظمة البيع</span></button></div>
+            <div class="mobile-card"><button onclick="navigateTo('products', 'all')" class="mobile-trigger"><span>المعرض</span></button></div>
             <div class="mobile-card">
                 <button onclick="toggleAccordion('m-serv')" class="mobile-trigger"><span>خدمات ما بعد البيع</span><i class="fa fa-chevron-down text-[10px] opacity-30"></i></button>
                 <div id="m-serv" class="hidden bg-gray-50 pb-2 text-right">
@@ -228,8 +198,6 @@
                     <a onclick="navigateTo('products', 'all')" class="nested-link">سيرفيس مانوال</a>
                 </div>
             </div>
-
-            <!-- زر بلاغات الأعطال المنفصل -->
             <div class="mobile-card border-rose-200">
                 <a onclick="navigateTo('home'); setTimeout(() => document.getElementById('booking').scrollIntoView({behavior: 'smooth'}), 100);" class="mobile-trigger text-rose-700 font-bold cursor-pointer"><span>بلاغات الأعطال</span><i class="fa fa-tools"></i></a>
             </div>
@@ -282,8 +250,8 @@
                     <button class="py-5 px-1 flex items-center gap-2 hover:text-rose-700 transition-all text-sm">من نحن <i class="fa fa-chevron-down text-[9px] opacity-40"></i></button>
                     <div id="d-who" class="dropdown-menu text-right">
                         <a onclick="navigateTo('about')" class="dropdown-card">من نحن</a>
-                        <a onclick="navigateTo('products', 'all')" class="dropdown-card">مقالات و عروض</a>
-                        <a onclick="navigateTo('products', 'all')" class="dropdown-card">أخبارنا</a>
+                        <a onclick="navigateTo('articles')" class="dropdown-card">مقالات و عروض</a>
+                        <a onclick="navigateTo('articles')" class="dropdown-card">أخبارنا</a>
                         <a onclick="navigateTo('faq')" class="dropdown-card">أسئلة و أجوبة</a>
                         <a onclick="navigateTo('products', 'all')" class="dropdown-card">عملاؤنا</a>
                     </div>
@@ -328,7 +296,7 @@
 
                 <a onclick="navigateTo('sales')" class="py-5 px-1 hover:text-rose-700 transition-all text-sm cursor-pointer">أنظمة البيع</a>
                 <a onclick="navigateTo('products', 'all')" class="py-5 px-1 hover:text-rose-700 transition-all text-sm cursor-pointer">المعرض</a>
-
+                
                 <div class="dropdown-container">
                     <button class="py-5 px-1 flex items-center gap-2 hover:text-rose-700 transition-all text-sm text-rose-700 font-black text-right">خدمات ما بعد البيع <i class="fa fa-chevron-down text-[9px] opacity-40"></i></button>
                     <div id="d-serv-after" class="dropdown-menu text-right" style="left: 0; right: auto;">
@@ -339,7 +307,6 @@
                     </div>
                 </div>
 
-                <!-- زر بلاغات الأعطال في القائمة العلوية -->
                 <a onclick="navigateTo('home'); setTimeout(() => document.getElementById('booking').scrollIntoView({behavior: 'smooth'}), 100);" class="py-5 px-1 text-rose-700 transition-all text-sm font-black underline decoration-2 underline-offset-8 cursor-pointer"><i class="fa fa-tools ml-1"></i> بلاغ صيانة</a>
             </div>
         </nav>
@@ -350,16 +317,14 @@
         <img src="header.jpeg" alt="بانر شركة العدل" onerror="this.src=''">
     </div>
 
-    <!-- PAGE: HOME -->
+    <!-- ==============================================
+         1. PAGE: HOME (الرئيسية)
+    =============================================== -->
     <main id="page-home" class="page-section active text-right">
         <section class="pt-6 pb-12 container mx-auto px-4 md:px-12 text-right">
             
-            <!-- تم إخراج العنوان هنا ليكون في منتصف الصفحة تماماً -->
             <div class="flex items-center justify-center mb-8 w-full relative">
-                <!-- خط ديكور احترافي في الخلفية -->
                 <div class="absolute w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent top-1/2 transform -translate-y-1/2"></div>
-                
-                <!-- العنوان في المنتصف بخط Cairo الفخم وتصغيره على الموبايل -->
                 <div class="inline-flex items-center justify-center gap-2 md:gap-4 bg-white px-5 md:px-10 py-2 md:py-4 rounded-full relative z-10 border border-gray-100 shadow-sm max-w-full">
                     <span class="relative flex h-3 w-3">
                       <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
@@ -377,34 +342,31 @@
                             <span>الأقسام الرئيسية</span><i class="fa fa-th-large opacity-30"></i>
                         </div>
                         <ul class="text-right font-extrabold text-gray-200">
-                            <li class="p-4 border-b border-white/5 cursor-pointer hover:bg-rose-700 transition" onclick="navigateTo('products', 'bw-copiers')">ماكينات تصوير ريكو</li>
+                            <li class="p-4 border-b border-white/5 cursor-pointer hover:bg-rose-700 transition" onclick="navigateTo('products', 'bw-copiers')">ماكينات تصوير أسود</li>
+                            <li class="p-4 border-b border-white/5 cursor-pointer hover:bg-rose-700 transition" onclick="navigateTo('products', 'color-copiers')">ماكينات تصوير ألوان</li>
                             <li class="p-4 border-b border-white/5 cursor-pointer hover:bg-rose-700 transition" onclick="navigateTo('products', 'toner-bw')">أحبار أصلية</li>
                             <li class="p-4 cursor-pointer hover:bg-rose-700 transition" onclick="navigateTo('products', 'parts-bw')">قطع غيار استيراد</li>
                         </ul>
                     </div>
                 </aside>
 
-                <!-- Products Grid -->
                 <div class="flex-1 w-full overflow-hidden">
-                    <!-- أزرار التحكم في سلايدر المنتجات -->
                     <div class="flex justify-end gap-2 mb-4 pr-2">
-                        <button onclick="scrollProducts(1)" class="w-10 h-10 bg-white border border-gray-100 rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-50 hover:border-rose-200 transition shadow-sm" aria-label="السابق"><i class="fa fa-chevron-right"></i></button>
-                        <button onclick="scrollProducts(-1)" class="w-10 h-10 bg-white border border-gray-100 rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-50 hover:border-rose-200 transition shadow-sm" aria-label="التالي"><i class="fa fa-chevron-left"></i></button>
+                        <button onclick="scrollProducts(1)" class="w-10 h-10 bg-white border border-gray-100 rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-50 hover:border-rose-200 transition shadow-sm"><i class="fa fa-chevron-right"></i></button>
+                        <button onclick="scrollProducts(-1)" class="w-10 h-10 bg-white border border-gray-100 rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-50 hover:border-rose-200 transition shadow-sm"><i class="fa fa-chevron-left"></i></button>
                     </div>
 
                     <div id="recentProductsSlider" class="flex overflow-x-auto gap-4 md:gap-6 pb-6 snap-x snap-mandatory hide-scrollbar scroll-smooth">
-                        <!-- يتم ملء المنتجات هنا عبر الجافاسكريبت -->
+                        <!-- Products from JS -->
                     </div>
 
                     <!-- إعلان الخصم المشتعل (يضرب نار) -->
                     <div class="mt-8 mb-4 fire-bg rounded-[2.5rem] p-8 md:p-12 shadow-[0_10px_40px_rgba(251,191,36,0.4)] relative overflow-hidden border-4 border-yellow-300 group">
-                        <!-- Sparks / Stars / Effects -->
                         <div class="absolute top-0 right-0 w-full h-full overflow-hidden pointer-events-none">
                             <i class="fa fa-star text-white absolute top-4 right-10 text-xl animate-ping" style="animation-duration: 1.5s;"></i>
                             <i class="fa fa-star text-yellow-200 absolute bottom-6 left-16 text-3xl animate-ping" style="animation-duration: 2s;"></i>
                             <i class="fa fa-fire text-yellow-300 absolute top-1/2 left-1/4 text-6xl opacity-30 animate-pulse"></i>
                             <i class="fa fa-bolt text-white absolute bottom-1/4 right-1/3 text-4xl opacity-40 animate-bounce"></i>
-                            <!-- Overlay gradient to make text pop -->
                             <div class="absolute inset-0 bg-gradient-to-t from-rose-900/50 to-transparent"></div>
                         </div>
                         
@@ -418,7 +380,6 @@
                                 </h3>
                                 <h4 class="text-2xl md:text-4xl font-black text-white drop-shadow-md tracking-wide mt-2">على عقود الصيانة السنوية</h4>
                             </div>
-                            
                             <div class="shrink-0 relative w-full lg:w-auto mt-4 lg:mt-0">
                                 <div class="absolute inset-0 bg-white blur-xl opacity-40 rounded-full animate-pulse"></div>
                                 <a href="https://wa.me/201094799247?text=السلام%20عليكم،%20أريد%20تفاصيل%20أكثر%20عن%20عرض%20خصم%20الـ%2050%25%20على%20عقود%20الصيانة" target="_blank" class="relative z-10 btn-heartbeat w-full bg-white text-rose-800 px-8 py-4 rounded-[2rem] font-black text-xl shadow-2xl flex items-center justify-center gap-3 hover:bg-yellow-50 transition transform hover:-translate-y-1">
@@ -428,13 +389,11 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
-
             </div>
         </section>
 
-        <!-- Trust & Features Strip (شريط مزايا وثقة) -->
+        <!-- Trust & Features Strip -->
         <div class="container mx-auto px-4 md:px-12 -mt-4 mb-10 relative z-20">
             <div class="bg-white rounded-[2rem] p-4 md:p-6 shadow-lg border border-rose-50 flex flex-wrap justify-center sm:justify-between items-center gap-4 text-center divide-x divide-x-reverse divide-gray-100">
                 <div class="flex-1 min-w-[120px] flex flex-col items-center justify-center gap-2 group cursor-default">
@@ -490,7 +449,6 @@
                             </div>
                             <div class="col-span-full pt-4 text-center">
                                 <a id="waFinalBtn" href="javascript:void(0)" onclick="checkForm(event)" target="_blank" class="w-full bg-gradient-to-l from-rose-600 via-rose-700 to-rose-900 text-white font-black py-5 rounded-[1.5rem] text-xl flex items-center justify-center gap-4 shadow-[0_10px_20px_rgba(190,18,60,0.3)] hover:shadow-[0_15px_30px_rgba(190,18,60,0.5)] transition-all duration-500 transform hover:-translate-y-1 no-underline opacity-50 cursor-not-allowed relative overflow-hidden group">
-                                    <!-- تأثير اللمعان الداخلي -->
                                     <div class="absolute inset-0 bg-white/20 translate-x-[100%] group-hover:translate-x-[-100%] transition-transform duration-1000 ease-in-out"></div>
                                     <span class="relative z-10 tracking-wide">إرسال البيانات</span> 
                                     <i class="fab fa-whatsapp text-3xl relative z-10 group-hover:scale-125 transition-transform duration-300"></i>
@@ -503,69 +461,63 @@
         </section>
     </main>
 
-    <!-- PAGE: PRODUCTS (CATALOG) -->
+    <!-- ==============================================
+         2. PAGE: PRODUCTS (كتالوج المنتجات)
+    =============================================== -->
     <main id="page-products" class="page-section text-right">
         <section class="pt-8 pb-12 container mx-auto px-4 md:px-12">
-            
-            <div class="flex items-center justify-center mb-8 w-full relative">
-                <!-- خط ديكور احترافي في الخلفية -->
-                <div class="absolute w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent top-1/2 transform -translate-y-1/2"></div>
-                
-                <!-- العنوان في المنتصف بخط Cairo الفخم وتوسيط وتصغير للموبايل -->
-                <div class="inline-flex items-center justify-center gap-2 md:gap-4 bg-white px-5 md:px-10 py-2 md:py-4 rounded-full relative z-10 border border-gray-100 shadow-sm max-w-full">
-                    <span class="relative flex h-3 w-3">
-                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                      <span class="relative inline-flex rounded-full h-3 w-3 bg-rose-600"></span>
-                    </span>
-                    <h2 class="text-xl md:text-4xl font-black font-cairo shimmer-text text-center leading-relaxed pb-1 md:pb-2 mt-1">كتالوج المنتجات</h2>
-                </div>
-            </div>
-            
-            <!-- الحاوية التي سيتم عرض المنتجات فيها بتفاصيل كاملة في صفحة الكتالوج مع التوسيط -->
             <div id="catalogGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 justify-items-center">
-                <!-- يتم ملء المنتجات هنا عبر الجافاسكريبت -->
+                <!-- Products JS -->
             </div>
         </section>
     </main>
 
-    <!-- PAGE: SALES SYSTEMS (أنظمة البيع) -->
+    <!-- ==============================================
+         3. PAGE: ARTICLES (المقالات والعروض)
+    =============================================== -->
+    <main id="page-articles" class="page-section text-right">
+        <section class="pt-8 pb-12 container mx-auto px-6 lg:px-12 text-right">
+            <div id="articlesGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Articles JS -->
+            </div>
+        </section>
+    </main>
+
+    <!-- ==============================================
+         4. PAGE: SINGLE ARTICLE (المقال الكامل)
+    =============================================== -->
+    <main id="page-single-article" class="page-section text-right">
+        <section class="pt-8 pb-16 container mx-auto px-4 md:px-12 max-w-4xl text-right">
+            <button onclick="navigateTo('articles')" class="flex items-center gap-2 text-rose-700 font-black hover:text-rose-900 transition-colors mb-8 bg-white px-5 py-2.5 rounded-full shadow-sm border border-gray-100 w-fit group">
+                <i class="fa fa-arrow-right group-hover:-translate-x-1 transition-transform"></i>
+                رجوع لقائمة المقالات
+            </button>
+            <div id="singleArticleContainer" class="bg-white rounded-[3rem] shadow-xl border border-gray-100 overflow-hidden">
+                <!-- Single Article JS -->
+            </div>
+        </section>
+    </main>
+
+    <!-- ==============================================
+         5. PAGE: SALES SYSTEMS (أنظمة البيع)
+    =============================================== -->
     <main id="page-sales" class="page-section text-right">
         <section class="pt-8 pb-12 container mx-auto px-6 lg:px-12 text-right">
-            
-            <!-- عنوان الصفحة الرئيسي -->
-            <div class="mb-12">
-                <div class="flex items-center justify-center mb-6 w-full relative">
-                    <div class="absolute w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent top-1/2 transform -translate-y-1/2"></div>
-                    <div class="inline-flex items-center justify-center gap-2 md:gap-4 bg-white px-5 md:px-10 py-2 md:py-4 rounded-full relative z-10 border border-gray-100 shadow-sm max-w-full">
-                        <span class="relative flex h-3 w-3">
-                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                          <span class="relative inline-flex rounded-full h-3 w-3 bg-rose-600"></span>
-                        </span>
-                        <h2 class="text-2xl md:text-5xl font-black font-cairo shimmer-text text-center leading-relaxed pb-1 md:pb-2 mt-1">أنظمة البيع</h2>
-                    </div>
-                </div>
-                <p class="text-xl md:text-2xl text-gray-600 font-bold text-center max-w-3xl mx-auto leading-relaxed relative z-10">
-                    اختر النظام الأنسب لاحتياجات عملك من بين أنظمتنا المرنة.
-                </p>
-            </div>
 
-            <!-- 1. الإيجار التمليكي -->
-            <div class="bg-white rounded-[3rem] p-8 md:p-14 shadow-xl border border-gray-100 mb-10 group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 relative overflow-hidden">
+            <div class="bg-white rounded-[3rem] p-8 md:p-14 shadow-xl border border-gray-100 mb-10 group relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-48 h-48 bg-rose-50 rounded-full -mr-16 -mt-16 blur-3xl transition-transform duration-700 group-hover:scale-150"></div>
                 <div class="relative z-10">
                     <div class="flex items-center gap-5 mb-8">
-                        <div class="w-16 h-16 md:w-20 md:h-20 bg-rose-50 text-rose-700 rounded-2xl flex items-center justify-center text-3xl md:text-4xl shadow-sm"><i class="fa fa-handshake"></i></div>
+                        <div class="w-16 h-16 bg-rose-50 text-rose-700 rounded-2xl flex items-center justify-center text-3xl shadow-sm"><i class="fa fa-handshake"></i></div>
                         <h3 class="text-3xl md:text-4xl font-black text-rose-950 font-cairo">الإيجار التمليكي</h3>
                     </div>
-                    
-                    <p class="text-xl text-rose-700 font-black mb-4 leading-relaxed">ليه تشتري ماكينة تصوير وطباعة مستندات اذا كان ممكن تاخدها بنظام الايجار التمليكي؟</p>
+                    <p class="text-xl text-rose-700 font-black mb-4">ليه تشتري ماكينة تصوير وطباعة مستندات اذا كان ممكن تاخدها بنظام الايجار التمليكي؟</p>
                     <p class="text-lg text-gray-600 font-bold mb-8">عروض الايجار التمليكي لالات تصوير المستندات تعطي لك العديد من المزايا:</p>
                     
                     <div class="grid md:grid-cols-2 gap-4 md:gap-6">
-                        <!-- Points -->
                         <div class="flex gap-4 items-start bg-gray-50 p-5 rounded-2xl hover:bg-rose-50 transition duration-300">
                             <span class="bg-rose-700 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-black shrink-0 mt-0.5 shadow-md">1</span>
-                            <p class="text-sm md:text-base font-bold text-gray-700 leading-relaxed">التزام الشركة بتوفير قطع الغيار والاحبار طوال فترة التعاقد (36 شهر) لعدد نسخ يبدأ من 3000 نسخة ويصل الي 100 الف نسخة شهريا مقابل قيمة ايجارية تختلف من موديل الي اخر وحسب نوع الماكينة (ابيض واسود او الوان).</p>
+                            <p class="text-sm md:text-base font-bold text-gray-700 leading-relaxed">التزام الشركة بتوفير قطع الغيار والاحبار طوال فترة التعاقد (36 شهر) لعدد نسخ يبدأ من 3000 نسخة ويصل الي 100 الف نسخة شهريا مقابل قيمة ايجارية تختلف من موديل الي اخر وحسب نوع الماكينة.</p>
                         </div>
                         <div class="flex gap-4 items-start bg-gray-50 p-5 rounded-2xl hover:bg-rose-50 transition duration-300">
                             <span class="bg-rose-700 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-black shrink-0 mt-0.5 shadow-md">2</span>
@@ -581,19 +533,19 @@
                         </div>
                         <div class="flex gap-4 items-start bg-gray-50 p-5 rounded-2xl hover:bg-rose-50 transition duration-300">
                             <span class="bg-rose-700 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-black shrink-0 mt-0.5 shadow-md">5</span>
-                            <p class="text-sm md:text-base font-bold text-gray-700 leading-relaxed">التزام الشركة باستبدال الماكينة باخري احدث في نهاية التعاقد (عند الرغبة في ذلك) وتقييمها بسعر افضل من الاسعار السوقية المتداولة وقتها وتخصم من سعر الماكينة الجديدة وبنفس نظام الدفع.</p>
+                            <p class="text-sm md:text-base font-bold text-gray-700 leading-relaxed">التزام الشركة باستبدال الماكينة باخري احدث في نهاية التعاقد وتقييمها بسعر افضل من الاسعار السوقية المتداولة وقتها وتخصم من سعر الماكينة الجديدة وبنفس نظام الدفع.</p>
                         </div>
                         <div class="flex gap-4 items-start bg-gray-50 p-5 rounded-2xl hover:bg-rose-50 transition duration-300">
                             <span class="bg-rose-700 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-black shrink-0 mt-0.5 shadow-md">6</span>
-                            <p class="text-sm md:text-base font-bold text-gray-700 leading-relaxed">ميزة عدم دفع قيمة الماكينة نقدا او دفع مقدم عالي والاكتفاء بدفع قيمة تأمين يتم تحديدة حسب كل موديل وذلك يعطي فرصة اختيار اي عدد من الماكينات ايا كان سعرها.</p>
+                            <p class="text-sm md:text-base font-bold text-gray-700 leading-relaxed">ميزة عدم دفع قيمة الماكينة نقدا او دفع مقدم عالي والاكتفاء بدفع قيمة تأمين يتم تحديدة حسب كل موديل وذلك يعطي فرصة اختيار اي عدد من الماكينات.</p>
                         </div>
                         <div class="flex gap-4 items-start bg-gray-50 p-5 rounded-2xl hover:bg-rose-50 transition duration-300">
                             <span class="bg-rose-700 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-black shrink-0 mt-0.5 shadow-md">7</span>
-                            <p class="text-sm md:text-base font-bold text-gray-700 leading-relaxed">يتم توفير احدث الاصدارات بكبري الماركات العالمية لماكينات الطباعة والتصوير (ابيض واسود والوان ليزر) بسرعات تصوير تبدأ من 16 نسخة/دقيقة وحتي 135 نسخة/دقيقة وامكانية تركيب كافة الكماليات لها.</p>
+                            <p class="text-sm md:text-base font-bold text-gray-700 leading-relaxed">يتم توفير احدث الاصدارات بكبري الماركات العالمية لماكينات الطباعة والتصوير بسرعات تصوير تبدأ من 16 نسخة/دقيقة وحتي 135 نسخة/دقيقة.</p>
                         </div>
                         <div class="flex gap-4 items-start bg-gray-50 p-5 rounded-2xl hover:bg-rose-50 transition duration-300">
                             <span class="bg-rose-700 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-black shrink-0 mt-0.5 shadow-md">8</span>
-                            <p class="text-sm md:text-base font-bold text-gray-700 leading-relaxed">الايجار التمليكي للمعدات عموما طريقة مثلي للحصول علي احدث المنتجات في ظل عدم وجود سيولة نقدية وبالتالي تضطر للجوء الي الحصول علي قروض وفوائد عالية من البنوك.</p>
+                            <p class="text-sm md:text-base font-bold text-gray-700 leading-relaxed">الايجار التمليكي للمعدات عموما طريقة مثلي للحصول علي احدث المنتجات في ظل عدم وجود سيولة نقدية وبالتالي تضطر للجوء الي الحصول علي قروض من البنوك.</p>
                         </div>
                         <div class="flex gap-4 items-start bg-gray-50 p-5 rounded-2xl hover:bg-rose-50 transition duration-300">
                             <span class="bg-rose-700 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-black shrink-0 mt-0.5 shadow-md">9</span>
@@ -604,17 +556,13 @@
                             <p class="text-sm md:text-base font-bold text-gray-700 leading-relaxed">التزام الشركة بتوفير ماكينة بديلة او اكثر في حالة تكرار الاعطال وذلك بدون اي فروق سعرية اضافية.</p>
                         </div>
                     </div>
-                    
                     <div class="mt-8 bg-rose-900 text-white p-6 rounded-2xl text-center font-bold text-lg md:text-xl shadow-inner">
                         وأخيراً هذا العرض يوفر على الشركات الكبرى والمتعددة الفروع آلاف الجنيهات للحصول على ماكينات ومعدات التصوير والطباعة.
                     </div>
                 </div>
             </div>
 
-            <!-- كروت النظامين الآخرين -->
             <div class="grid lg:grid-cols-2 gap-8 md:gap-10">
-                
-                <!-- 2. بيع بالضمان -->
                 <div class="bg-white rounded-[3rem] p-8 md:p-12 shadow-xl border border-gray-100 hover:border-green-200 transition-all duration-500 hover:-translate-y-2 relative overflow-hidden group">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-green-50 rounded-full -mr-10 -mt-10 blur-2xl transition-transform duration-700 group-hover:scale-150"></div>
                     <div class="relative z-10">
@@ -632,7 +580,6 @@
                     </div>
                 </div>
 
-                <!-- 3. بيع بدون ضمان (تجاري) -->
                 <div class="bg-white rounded-[3rem] p-8 md:p-12 shadow-xl border border-gray-100 hover:border-gray-300 transition-all duration-500 hover:-translate-y-2 relative overflow-hidden group flex flex-col">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-gray-100 rounded-full -mr-10 -mt-10 blur-2xl transition-transform duration-700 group-hover:scale-150"></div>
                     <div class="relative z-10 flex-1">
@@ -645,272 +592,126 @@
                             ويتم تلبية الأعطال وتوريد قطع الغيار فى مثل هذا النوع من التعاقد بنظام الزيارة الحرة أو بنظام عقود الصيانة.
                         </p>
                     </div>
-                    
-                    <!-- رسالة التحذير -->
                     <div class="relative z-10 mt-auto bg-red-50 text-red-600 border border-red-200 p-5 rounded-2xl flex items-center gap-4 font-black text-lg shadow-sm">
-                        <i class="fa fa-exclamation-triangle text-2xl animate-pulse"></i>
-                        <span>ونحن لا ننصح بهذا النوع من أنظمة البيع.</span>
+                        <i class="fa fa-exclamation-triangle text-2xl animate-pulse"></i><span>ونحن لا ننصح بهذا النوع من أنظمة البيع.</span>
                     </div>
                 </div>
-
             </div>
-            
         </section>
     </main>
 
-    <!-- PAGE: TECH SUPPORT & MAINTENANCE (الدعم الفني وعقود الصيانة) -->
+    <!-- ==============================================
+         6. PAGE: TECH SUPPORT (الدعم الفني وعقود الصيانة)
+    =============================================== -->
     <main id="page-tech-support" class="page-section text-right">
         <section class="pt-8 pb-12 container mx-auto px-6 lg:px-12 text-right">
-            
-            <!-- عنوان الصفحة الرئيسي -->
-            <div class="mb-12">
-                <div class="flex items-center justify-center mb-6 w-full relative">
-                    <div class="absolute w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent top-1/2 transform -translate-y-1/2"></div>
-                    <div class="inline-flex items-center justify-center gap-2 md:gap-4 bg-white px-5 md:px-10 py-2 md:py-4 rounded-full relative z-10 border border-gray-100 shadow-sm max-w-full">
-                        <span class="relative flex h-3 w-3">
-                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                          <span class="relative inline-flex rounded-full h-3 w-3 bg-rose-600"></span>
-                        </span>
-                        <h2 class="text-2xl md:text-5xl font-black font-cairo shimmer-text text-center leading-relaxed pb-1 md:pb-2 mt-1">الدعم الفني وعقود الصيانة</h2>
-                    </div>
-                </div>
-                <p class="text-xl md:text-2xl text-gray-600 font-bold text-center max-w-3xl mx-auto leading-relaxed relative z-10">
-                    إيه الفرق بين أنواع عقود الصيانة لماكينات تصوير المستندات؟
-                </p>
+
+            <!-- العنوان المتوسط -->
+            <div class="text-center mb-12">
+                <h2 class="text-2xl md:text-4xl font-black text-rose-950 font-cairo leading-relaxed">أيه الفرق بين أنواع عقود الصيانة لماكينات تصوير المستندات ؟</h2>
             </div>
 
-            <!-- كروت أنواع الصيانة -->
             <div class="grid lg:grid-cols-3 gap-6 md:gap-8 mb-16">
-                
-                <!-- 1. الزيارة الحرة -->
-                <div class="bg-white rounded-[2rem] p-8 shadow-md border border-gray-100 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group">
-                    <div class="w-16 h-16 bg-gray-100 text-gray-600 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-inner group-hover:bg-gray-200 transition-colors"><i class="fa fa-wrench"></i></div>
+                <!-- 1 -->
+                <div class="bg-white rounded-[2rem] p-8 shadow-md border border-gray-100 hover:shadow-2xl transition-all group">
+                    <div class="w-16 h-16 bg-gray-100 text-gray-600 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-inner"><i class="fa fa-wrench"></i></div>
                     <h3 class="text-2xl font-black text-rose-950 font-cairo mb-5 border-b border-gray-100 pb-4">أولاً: الزيارة الحرة</h3>
-                    <ul class="space-y-4 text-gray-600 font-bold text-sm md:text-base leading-relaxed">
-                        <li class="flex items-start gap-3">
-                            <i class="fa fa-check-circle text-rose-500 mt-1"></i>
-                            <span>الزيارة تشمل الاصلاح والصيانة <span class="text-rose-700 font-black">ولا تشمل</span> تكلفة تركيب أية قطع غيار تحتاجها الماكينة.</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa fa-clock text-rose-500 mt-1"></i>
-                            <span>يتم تلبية اتصالات أعطال العملاء في هذا النوع خلال <strong>48 إلى 72 ساعة</strong>.</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa fa-coins text-rose-500 mt-1"></i>
-                            <span>كل زيارة لها تكلفتها حسب حجم الأعطال ونوع الصيانة وماركة وموديل الماكينة.</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa fa-info-circle text-rose-500 mt-1"></i>
-                            <span>يتم دفع تكلفة زيارة الصيانة مرة واحدة فقط حتى لو اصلاح العطل استلزم زيارة صيانة أخرى.</span>
-                        </li>
+                    <ul class="space-y-4 text-gray-600 font-bold text-sm leading-relaxed">
+                        <li><i class="fa fa-check-circle text-rose-500 ml-1"></i> تشمل الاصلاح <span class="text-rose-700 font-black">ولا تشمل</span> قطع غيار.</li>
+                        <li><i class="fa fa-clock text-rose-500 ml-1"></i> تلبية الأعطال خلال 48 لـ 72 ساعة.</li>
+                        <li><i class="fa fa-coins text-rose-500 ml-1"></i> كل زيارة لها تكلفتها الخاصة.</li>
+                        <li><i class="fa fa-info-circle text-rose-500 ml-1"></i> يتم دفع التكلفة مرة واحدة لنفس العطل.</li>
                     </ul>
                 </div>
-
-                <!-- 2. عقود الصيانة العادية -->
-                <div class="bg-white rounded-[2rem] p-8 shadow-lg border border-blue-50 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group">
-                    <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-inner group-hover:bg-blue-100 transition-colors"><i class="fa fa-file-signature"></i></div>
-                    <h3 class="text-2xl font-black text-rose-950 font-cairo mb-5 border-b border-blue-50 pb-4">ثانياً: عقود الصيانة العادية</h3>
-                    <ul class="space-y-4 text-gray-600 font-bold text-sm md:text-base leading-relaxed">
-                        <li class="flex items-start gap-3">
-                            <i class="fa fa-check-circle text-blue-500 mt-1"></i>
-                            <span>عدد <strong>لا نهائي</strong> من زيارات الصيانة (غير شاملة قطع الغيار والأحبار).</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa fa-shield-alt text-blue-500 mt-1"></i>
-                            <span>يتم تركيب قطع الغيار والأحبار من خلال الشركة فقط مع التزام الشركة بالضمان.</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa fa-clock text-blue-500 mt-1"></i>
-                            <span>يتم تلبية اتصالات أعطال العملاء خلال <strong>24 إلى 48 ساعة</strong>.</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa fa-gift text-blue-500 mt-1"></i>
-                            <span>يتم عمل <span class="text-rose-700">عمرة صيانة مجانية</span> في بداية التعاقد للحفاظ علي استقرار الماكينة.</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa fa-info-circle text-blue-500 mt-1"></i>
-                            <span>قيمة العقد سنوية، ولا تشمل رسوم انتقالات المهندس لمكان العميل، وتختلف حسب الماركة.</span>
-                        </li>
+                <!-- 2 -->
+                <div class="bg-white rounded-[2rem] p-8 shadow-lg border border-blue-50 hover:shadow-2xl transition-all group">
+                    <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-inner"><i class="fa fa-file-signature"></i></div>
+                    <h3 class="text-2xl font-black text-rose-950 font-cairo mb-5 border-b border-blue-50 pb-4">ثانياً: عقود عادية</h3>
+                    <ul class="space-y-4 text-gray-600 font-bold text-sm leading-relaxed">
+                        <li><i class="fa fa-check-circle text-blue-500 ml-1"></i> عدد لا نهائي من الزيارات (غير شاملة قطع غيار).</li>
+                        <li><i class="fa fa-shield-alt text-blue-500 ml-1"></i> تركيب قطع أصلية بالضمان من الشركة فقط.</li>
+                        <li><i class="fa fa-clock text-blue-500 ml-1"></i> تلبية الأعطال خلال 24 لـ 48 ساعة.</li>
+                        <li><i class="fa fa-gift text-blue-500 ml-1"></i> عمرة صيانة مجانية في بداية التعاقد.</li>
                     </ul>
                 </div>
-
-                <!-- 3. عقود الصيانة الشاملة (الأفضل) -->
-                <div class="bg-gradient-to-br from-white to-rose-50 rounded-[2rem] p-8 shadow-xl border border-rose-200 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group relative overflow-hidden">
-                    <div class="absolute top-0 left-0 bg-rose-700 text-white font-black text-[10px] px-4 py-1.5 rounded-br-2xl uppercase tracking-widest z-10 shadow-sm">الأفضل والآمن</div>
-                    
-                    <div class="w-16 h-16 bg-rose-100 text-rose-700 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-inner group-hover:bg-rose-200 transition-colors relative z-10"><i class="fa fa-crown"></i></div>
-                    <h3 class="text-2xl font-black text-rose-950 font-cairo mb-5 border-b border-rose-100 pb-4 relative z-10">ثالثاً: عقود الصيانة الشاملة</h3>
-                    <ul class="space-y-4 text-gray-700 font-bold text-sm md:text-base leading-relaxed relative z-10">
-                        <li class="flex items-start gap-3">
-                            <i class="fa fa-check-circle text-rose-600 mt-1"></i>
-                            <span>عدد <strong>لا نهائي</strong> من زيارات الصيانة <span class="text-rose-800 font-black">(والتي تشمل قطع الغيار والأحبار)</span>.</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa fa-sync-alt text-rose-600 mt-1"></i>
-                            <span>ضمان قطع الغيار والأحبار واستبدال أي قطع غيار تالفة أو رديئة طوال مدة التعاقد.</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa fa-gift text-rose-600 mt-1"></i>
-                            <span>عمرة صيانة مجانية في بداية التعاقد للحفاظ علي استقرار الماكينة.</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa fa-file-contract text-rose-600 mt-1"></i>
-                            <span>يتم التعاقد حسب عدد النسخ المطلوب شهرياً (وتختلف القيمة حسب الموديل والنوع).</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa fa-rocket text-rose-600 mt-1"></i>
-                            <span>تلبية اتصالات أعطال العملاء في هذا النوع <strong>خلال 24 ساعة فقط</strong>.</span>
-                        </li>
+                <!-- 3 -->
+                <div class="bg-gradient-to-br from-white to-rose-50 rounded-[2rem] p-8 shadow-xl border border-rose-200 hover:shadow-2xl transition-all group relative overflow-hidden">
+                    <div class="absolute top-0 left-0 bg-rose-700 text-white font-black text-[10px] px-4 py-1.5 rounded-br-2xl uppercase shadow-sm">الأفضل والآمن</div>
+                    <div class="w-16 h-16 bg-rose-100 text-rose-700 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-inner"><i class="fa fa-crown"></i></div>
+                    <h3 class="text-2xl font-black text-rose-950 font-cairo mb-5 border-b border-rose-100 pb-4 relative z-10">ثالثاً: عقود شاملة</h3>
+                    <ul class="space-y-4 text-gray-700 font-bold text-sm leading-relaxed relative z-10">
+                        <li><i class="fa fa-check-circle text-rose-600 ml-1"></i> عدد لا نهائي زيارات <span class="text-rose-800 font-black">(شاملة قطع غيار وأحبار)</span>.</li>
+                        <li><i class="fa fa-sync-alt text-rose-600 ml-1"></i> ضمان القطع واستبدال التالف طوال التعاقد.</li>
+                        <li><i class="fa fa-file-contract text-rose-600 ml-1"></i> التعاقد حسب عدد النسخ المطلوبة.</li>
+                        <li><i class="fa fa-rocket text-rose-600 ml-1"></i> تلبية الأعطال <strong>خلال 24 ساعة فقط</strong>.</li>
                     </ul>
                 </div>
-
             </div>
-
-            <!-- عرض خاص (Special Offer Banner) -->
+            
             <div class="bg-gradient-to-r from-rose-900 to-rose-700 rounded-[3rem] p-8 md:p-12 shadow-2xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
-                <!-- دوائر ديكورية في الخلفية -->
                 <div class="absolute -top-20 -right-20 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl"></div>
-                <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-yellow-400 opacity-10 rounded-full blur-3xl"></div>
-                
                 <div class="relative z-10 flex-1 text-center md:text-right">
-                    <p class="text-rose-100 font-medium text-lg md:text-xl mb-4 leading-relaxed">
-                        نحن في شركة العدل نقدم لعملاء ماكينات التصوير جميع أنواع وخدمات الصيانة سواء بالزيارة الحرة أو بعقود الصيانة العادية أو الشاملة قطع الغيار والأحبار.
-                    </p>
+                    <p class="text-rose-100 font-medium text-lg md:text-xl mb-4 leading-relaxed">نحن في شركة العدل نقدم لعملاء ماكينات التصوير جميع أنواع وخدمات الصيانة.</p>
                     <h3 class="text-3xl md:text-4xl font-black text-white font-cairo leading-tight mb-4">
-                        خصم <span class="text-yellow-400 text-5xl md:text-6xl">50%</span> على عقود صيانة <br class="hidden md:block">جميع إصدارات ماركات ريكو!
+                        خصم <span class="text-yellow-400 text-5xl md:text-6xl">50%</span> على عقود صيانة <br class="hidden md:block">جميع إصدارات ريكو!
                     </h3>
-                    <p class="text-xl md:text-2xl text-rose-200 font-bold mb-6">
-                        أو احصل على <span class="text-white border-b-2 border-yellow-400 pb-1">ضعف مدة التعاقد</span> بنفس قيمة العقد السنوي.
-                    </p>
                 </div>
-
                 <div class="relative z-10 w-full md:w-auto shrink-0 flex flex-col items-center">
-                    <p class="text-sm font-bold text-rose-200 mb-3 text-center">للاستفادة من العرض ابعتلنا رقمك</p>
-                    <a href="https://wa.me/201094799247?text=السلام%20عليكم،%20أريد%20الاستفادة%20من%20عرض%20الـ%2050%25%20على%20عقود%20الصيانة" target="_blank" class="btn-heartbeat bg-white text-rose-900 px-8 py-4 rounded-2xl font-black text-lg md:text-xl shadow-xl flex items-center justify-center gap-3 hover:bg-gray-50 transition w-full md:w-auto">
-                        تواصل مع خدمة العملاء
-                        <i class="fab fa-whatsapp text-2xl text-green-500"></i>
+                    <a href="https://wa.me/201094799247?text=السلام%20عليكم،%20أريد%20الاستفادة%20من%20عرض%20الـ%2050%25%20على%20عقود%20الصيانة" target="_blank" class="btn-heartbeat bg-white text-rose-900 px-8 py-4 rounded-2xl font-black text-lg md:text-xl shadow-xl flex items-center justify-center gap-3">
+                        احجز العرض الآن <i class="fab fa-whatsapp text-3xl text-green-500"></i>
                     </a>
                 </div>
             </div>
-            
         </section>
     </main>
 
-    <!-- PAGE: FAQ (أسئلة وأجوبة) -->
+    <!-- ==============================================
+         7. PAGE: FAQ (أسئلة وأجوبة)
+    =============================================== -->
     <main id="page-faq" class="page-section text-right">
         <section class="pt-8 pb-12 container mx-auto px-6 lg:px-12 text-right">
-            
-            <!-- Header -->
-            <div class="mb-12">
-                <div class="flex items-center justify-center mb-6 w-full relative">
-                    <div class="absolute w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent top-1/2 transform -translate-y-1/2"></div>
-                    <div class="inline-flex items-center justify-center gap-2 md:gap-4 bg-white px-5 md:px-10 py-2 md:py-4 rounded-full relative z-10 border border-gray-100 shadow-sm max-w-full">
-                        <span class="relative flex h-3 w-3">
-                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                          <span class="relative inline-flex rounded-full h-3 w-3 bg-rose-600"></span>
-                        </span>
-                        <h2 class="text-2xl md:text-5xl font-black font-cairo shimmer-text text-center leading-relaxed pb-1 md:pb-2 mt-1">أسئلة وأجوبة متكررة</h2>
-                    </div>
-                </div>
-                <p class="text-xl md:text-2xl text-gray-600 font-bold text-center max-w-3xl mx-auto leading-relaxed relative z-10">
-                    أكثر الاستفسارات التي تصلنا والإجابة الشاملة عليها.
-                </p>
+
+            <!-- العنوان التوضيحي الجديد بخط Cairo وتوسيط -->
+            <div class="text-center mb-12">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-600 font-cairo leading-relaxed">أكثر الإستفسارات التي تصلنا والإجابة الشاملة عليها</h2>
             </div>
 
-            <!-- Accordion Container -->
             <div class="max-w-4xl mx-auto space-y-5">
-                
-                <!-- FAQ 1 -->
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300">
                     <button onclick="toggleFAQ('faq-1', 'icon-1')" class="w-full text-right px-6 py-5 flex justify-between items-center focus:outline-none hover:bg-rose-50 transition-colors group">
-                        <h3 class="font-cairo font-black text-rose-950 text-lg md:text-xl pl-4 group-hover:text-rose-700 transition-colors">ما هي الطباعة الثري دي وهل يمكن أن تطبع مواد بالأبعاد الثلاثية ؟</h3>
-                        <div class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center shrink-0 group-hover:bg-rose-100 transition-colors">
-                            <i id="icon-1" class="fa fa-chevron-down text-rose-700 transition-transform duration-300 transform"></i>
-                        </div>
+                        <h3 class="font-cairo font-black text-rose-950 text-lg md:text-xl pl-4 group-hover:text-rose-700">ما هي الطباعة الثري دي وهل يمكن أن تطبع مواد بالأبعاد الثلاثية ؟</h3>
+                        <div class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center shrink-0 group-hover:bg-rose-100"><i id="icon-1" class="fa fa-chevron-down text-rose-700 transition-transform duration-300"></i></div>
                     </button>
-                    <div id="faq-1" class="hidden px-6 pb-6">
-                        <div class="border-t border-gray-100 pt-5">
-                            <p class="text-gray-600 font-bold leading-loose text-sm md:text-base">
-                                الطباعة ثلاثية الأبعاد (3D) هي ببساطة عملية تحويل ملف رقمي لتصميم ثلاثي الأبعاد إلى جسم صلب ثلاثي الأبعاد في أرض الواقع. وتعمل الطابعة ثلاثية الأبعاد على مبدأ إضافة طبقات متعاقبة فوق بعضها من المواد المستخدمة حتى يتم تشكيل المجسم المطلوب.<br><br>
-                                ويمكن الحصول على النماذج ثلاثية الأبعاد التي سيتم طباعتها إما عبر تصميمها وتجهيزها عبر أحد برامج التصميم المعروفة في هذا المجال أو عبر الماسحة ثلاثية الأبعاد والتي ستشكل مع الطابعة في حال استخدامها ما يسمى بالناسخة ثلاثية الأبعاد حيث ستقوم الآلتان بنسخ أي نموذج.<br><br>
-                                لا تستخدم جميع الطابعات ثلاثية الأبعاد التكنولوجيا ذاتها في الطباعة فهناك أنواع كثيرة. هناك من يقوم بعمليات اذابة وتليين للمواد حيث يستخدم الليزر وتكنولوجيا الانصهار لهذه الغاية. بعض الطابعات تقوم بطباعة مواد بلاستيكية وبعضها الآخر معادن وآخر لدائن وغيرها من المواد وتختلف التكنولوجيا التي تستخدمها كل واحدة كما يختلف الحجم والسعر وكذلك المجالات التي يتم استخدام هذه الطباعة من أجلها.<br><br>
-                                وقد استخدمت هذه الطباعة في مجالات الصناعة والمحركات والفضاء والطب والصحة (تم تصميم أعضاء بشرية وضعت داخل البشر في استراليا) وحتى لصناعة الحلي والكثير من المجالات. هذه بعض الصور التي تعطيك نبذة بسيطة عن هذا العالم الرائع الذي يمثل المستقبل بحد ذاته.
-                            </p>
-                        </div>
-                    </div>
+                    <div id="faq-1" class="hidden px-6 pb-6"><div class="border-t border-gray-100 pt-5"><p class="text-gray-600 font-bold leading-loose">الطباعة ثلاثية الأبعاد (3D) هي ببساطة عملية تحويل ملف رقمي لتصميم ثلاثي الأبعاد إلى جسم صلب ثلاثي الأبعاد في أرض الواقع. وتعمل الطابعة ثلاثية الأبعاد على مبدأ إضافة طبقات متعاقبة فوق بعضها من المواد المستخدمة حتى يتم تشكيل المجسم المطلوب.</p></div></div>
                 </div>
 
-                <!-- FAQ 2 -->
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300">
                     <button onclick="toggleFAQ('faq-2', 'icon-2')" class="w-full text-right px-6 py-5 flex justify-between items-center focus:outline-none hover:bg-rose-50 transition-colors group">
-                        <h3 class="font-cairo font-black text-rose-950 text-lg md:text-xl pl-4 group-hover:text-rose-700 transition-colors">هل عدم ثبات التيار الكهربائي يؤثر على ماكينات تصوير المستندات ؟ وكيفية تجنبه ؟</h3>
-                        <div class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center shrink-0 group-hover:bg-rose-100 transition-colors">
-                            <i id="icon-2" class="fa fa-chevron-down text-rose-700 transition-transform duration-300 transform"></i>
-                        </div>
+                        <h3 class="font-cairo font-black text-rose-950 text-lg md:text-xl pl-4 group-hover:text-rose-700">هل عدم ثبات التيار الكهربائي يؤثر على الماكينات ؟ وكيف نتجنبه ؟</h3>
+                        <div class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center shrink-0 group-hover:bg-rose-100"><i id="icon-2" class="fa fa-chevron-down text-rose-700 transition-transform duration-300"></i></div>
                     </button>
-                    <div id="faq-2" class="hidden px-6 pb-6">
-                        <div class="border-t border-gray-100 pt-5">
-                            <p class="text-gray-600 font-bold leading-loose text-sm md:text-base">
-                                في أماكن كثيرة في مصر خصوصًا في الأماكن الريفية والصحراوية، التيار الكهربي فيها غير ثابت. وبيتغير ارتفاعًا وانخفاضًا، وده ممكن يسبب تلف في أجزاء كتير في الماكينة زي: البوردة الكهربية والسخان والباور سبلاي.<br><br>
-                                ولتجنب المشكلة دي يجب توفير جهاز مثبت التيار الكهربي <span class="text-rose-700 font-black">"Stabilizer"</span>، والذي يعمل على تثبيت التيار الكهربي عند 220 فولت، وذلك هو المعدل الطبيعي للتيار الكهربي للحفاظ على ماكينة تصوير المستندات. ومهما تغير التيار الكهربي صعودًا أو هبوطًا سيحافظ الجهاز على استقراره.<br><br>
-                                وفي السياق ده، تأكد وانت بتشتري ماكينة تصوير مستندات، إنها تكون شغالة على 220 فولت وليس 110 فولت زي المكن اللي مستورد من بعض الدول زي "أمريكا".
-                            </p>
-                        </div>
-                    </div>
+                    <div id="faq-2" class="hidden px-6 pb-6"><div class="border-t border-gray-100 pt-5"><p class="text-gray-600 font-bold leading-loose">في أماكن كثيرة التيار الكهربي غير ثابت، وده ممكن يسبب تلف في أجزاء كتير في الماكينة زي: البوردة الكهربية والسخان. ولتجنب المشكلة دي يجب توفير جهاز مثبت التيار الكهربي "Stabilizer" للحفاظ على استقرارها.</p></div></div>
                 </div>
 
-                <!-- FAQ 3 -->
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300">
                     <button onclick="toggleFAQ('faq-3', 'icon-3')" class="w-full text-right px-6 py-5 flex justify-between items-center focus:outline-none hover:bg-rose-50 transition-colors group">
-                        <h3 class="font-cairo font-black text-rose-950 text-lg md:text-xl pl-4 group-hover:text-rose-700 transition-colors">ما هو الفرق بين طباعة الإن دور والأوت دور، السلك سكرين، والأوفست؟</h3>
-                        <div class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center shrink-0 group-hover:bg-rose-100 transition-colors">
-                            <i id="icon-3" class="fa fa-chevron-down text-rose-700 transition-transform duration-300 transform"></i>
-                        </div>
+                        <h3 class="font-cairo font-black text-rose-950 text-lg md:text-xl pl-4 group-hover:text-rose-700">ما هو الفرق بين طباعة الإن دور والأوت دور، والسلك سكرين، والأوفست؟</h3>
+                        <div class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center shrink-0 group-hover:bg-rose-100"><i id="icon-3" class="fa fa-chevron-down text-rose-700 transition-transform duration-300"></i></div>
                     </button>
-                    <div id="faq-3" class="hidden px-6 pb-6">
-                        <div class="border-t border-gray-100 pt-5">
-                            <ul class="space-y-4 text-gray-600 font-bold text-sm md:text-base leading-loose">
-                                <li>
-                                    <strong class="text-rose-700 text-lg">الإن دور (Indoor):</strong> الطباعة الداخلية (أي التي لا تتعرض للحرارة وضوء الشمس).
-                                </li>
-                                <li>
-                                    <strong class="text-rose-700 text-lg">الأوت دور (Outdoor):</strong> طباعة خارجية كأعمال الدعاية، الأستاند أو الهاي مارك. وتتميز بتحمل الحرارة المرتفعة ولذلك يستخدم فيها الفينيل أو الفيلكس.
-                                </li>
-                                <li>
-                                    <strong class="text-rose-700 text-lg">الأوفست (Offset):</strong> وهي الطباعة الأشهر للأعمال التجارية (وهي الطباعة بالتنافر بين الحبر والماء) وتعتبر هي الأشهر لأنها أعلى دقة وأقل تكلفة اذا ما قل عدد الألوان كما انها متعددة الخامات فيمكن الطباعة على الخشب، الورق، قماش، جلد.
-                                </li>
-                                <li>
-                                    <strong class="text-rose-700 text-lg">السلك سكرين (Silkscreen):</strong> هي الأقل تكلفة ودقة من سابقتها إلا انها تتميز عنها في قدرتها على فرز الألوان رغم انخفاض دقتها ولكنها تنجز اعمال كثيرة بامكانيات بسيطة وفي وقت لابأس به كما انها يمكن ان تستخدم في اي نوع من الخامات وسميت باسم السلك رجوعا للحريرة التي تستخدم فيها في الطبع.
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                    <div id="faq-3" class="hidden px-6 pb-6"><div class="border-t border-gray-100 pt-5"><p class="text-gray-600 font-bold leading-loose"><strong class="text-rose-700">الإن دور:</strong> للطباعة الداخلية.<br><strong class="text-rose-700">الأوت دور:</strong> للأعمال الخارجية كالدعاية لكونها تتحمل الحرارة.<br><strong class="text-rose-700">الأوفست:</strong> الأشهر والأدق للأعمال التجارية.<br><strong class="text-rose-700">السلك سكرين:</strong> الأقل تكلفة وتستخدم خامات متعددة.</p></div></div>
                 </div>
-
             </div>
         </section>
     </main>
 
-    <!-- PAGE: ABOUT -->
+    <!-- ==============================================
+         8. PAGE: ABOUT (من نحن)
+    =============================================== -->
     <main id="page-about" class="page-section text-right">
-        <section class="pt-8 pb-12 container mx-auto px-6 lg:px-12 text-right">
+        <section class="pt-8 pb-24 container mx-auto px-6 lg:px-12 text-right">
             
-            <!-- عنوان الصفحة الرئيسي -->
-            <div class="mb-16">
-                <div class="flex items-center justify-center mb-6 w-full relative">
-                    <div class="absolute w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent top-1/2 transform -translate-y-1/2"></div>
-                    <div class="inline-flex items-center justify-center gap-2 md:gap-4 bg-white px-5 md:px-10 py-2 md:py-4 rounded-full relative z-10 border border-gray-100 shadow-sm max-w-full">
-                        <span class="relative flex h-3 w-3">
-                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                          <span class="relative inline-flex rounded-full h-3 w-3 bg-rose-600"></span>
-                        </span>
-                        <h2 class="text-2xl md:text-5xl font-black font-cairo shimmer-text text-center leading-relaxed pb-1 md:pb-2 mt-1">عن شركة العدل</h2>
-                    </div>
-                </div>
-                <!-- الجملة المنقولة هنا أسفل العنوان مباشرة -->
-                <p class="text-xl md:text-2xl text-gray-600 font-bold text-center max-w-3xl mx-auto leading-relaxed relative z-10">
-                    أهلاً بك فى شركة العدل لبيع وصيانة الطابعات وماكينات التصوير.
-                </p>
+            <div class="text-center mb-12">
+                <h2 class="text-2xl md:text-4xl font-black text-rose-950 font-cairo leading-relaxed">أهلاً بك في شركة العدل لبيع وصيانة الطابعات وماكينات التصوير</h2>
             </div>
 
             <!-- 1. الرؤية والرسالة -->
@@ -938,7 +739,7 @@
             </div>
 
             <!-- 3. عضويات المجتمع المدني -->
-            <div class="mb-24">
+            <div class="mb-24 text-right">
                 <div class="text-center mb-12">
                     <h3 class="text-3xl font-black text-rose-950 mb-4 font-cairo">الانضمام لمنظمات المجتمع المدنى</h3>
                     <p class="text-lg text-gray-500 max-w-3xl mx-auto">وخلال خمسة أعوام من التأسيس كانت لشركة العدل دافع كبير لتصبح عضو فعال فى المجتمع من خلال الأنضمام للعديد من منظمات المجتمع المدنى مثل:</p>
@@ -966,12 +767,6 @@
                         <p class="text-gray-700 font-bold mt-2 leading-relaxed">عضوية الغرفة الألمانية العربية للصناعة والتجارة</p>
                     </div>
                 </div>
-
-                <div class="bg-rose-50/50 p-6 md:p-8 rounded-3xl border border-rose-100 text-center">
-                    <p class="text-rose-900 font-bold text-lg md:text-xl leading-relaxed">
-                        ومن خلال هذه المنظمات والجمعيات الاهلية شاركت العدل فى العديد من الفعاليات والندوات والمؤتمرات والمعارض المتخصصة فى ماكينات الطباعة والتصوير للنهوض بالسوق المصرى والعربى ومواكبة التقدم التكنولوجى واستخدام احدث تقنيات الطباعة والتصوير.
-                    </p>
-                </div>
             </div>
 
             <!-- 4. فريق العمل (Slider) -->
@@ -979,75 +774,56 @@
                 <div class="flex items-center justify-between mb-10 border-r-[8px] border-rose-700 pr-4">
                     <h3 class="text-3xl font-black text-rose-950 font-cairo">فريق القيادة والعمل</h3>
                     
-                    <!-- أزرار التحكم في السلايدر -->
                     <div class="flex gap-3">
-                        <button onclick="scrollTeam(1)" class="w-12 h-12 bg-white border border-gray-200 rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-50 hover:border-rose-200 transition shadow-sm" aria-label="السابق"><i class="fa fa-chevron-right"></i></button>
-                        <button onclick="scrollTeam(-1)" class="w-12 h-12 bg-white border border-gray-200 rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-50 hover:border-rose-200 transition shadow-sm" aria-label="التالي"><i class="fa fa-chevron-left"></i></button>
+                        <button onclick="scrollTeam(1)" class="w-12 h-12 bg-white border border-gray-200 rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-50 hover:border-rose-200 transition shadow-sm"><i class="fa fa-chevron-right"></i></button>
+                        <button onclick="scrollTeam(-1)" class="w-12 h-12 bg-white border border-gray-200 rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-50 hover:border-rose-200 transition shadow-sm"><i class="fa fa-chevron-left"></i></button>
                     </div>
                 </div>
 
-                <!-- حاوية السلايدر -->
                 <div id="teamContainer" class="flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory hide-scrollbar scroll-smooth">
-                    
-                    <!-- بطاقة 1: مدير الشركة -->
                     <div class="min-w-[280px] md:min-w-[320px] bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 snap-center text-center group hover:-translate-y-2 transition-transform duration-300">
                         <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-50 mb-6 group-hover:border-rose-200 transition-colors duration-300">
-                            <!-- يمكنك تغيير مسار الصورة هنا بصورة المدير الحقيقية -->
                             <img src="https://ui-avatars.com/api/?name=مدير+الشركة&background=be123c&color=fff&size=150&font-size=0.3" alt="مدير الشركة" class="w-full h-full object-cover">
                         </div>
                         <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">مدير الشركة</h4>
                         <div class="inline-block px-4 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-black mb-5">المدير العام والمؤسس</div>
-                        <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">
-                            رؤية ثاقبة وخبرة عميقة في تطوير استراتيجيات السوق، يقود فريق العدل نحو القمة برؤية تواكب أحدث تكنولوجيات الطباعة في العالم.
-                        </p>
+                        <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">رؤية ثاقبة وخبرة عميقة في تطوير استراتيجيات السوق، يقود فريق العدل نحو القمة برؤية تواكب أحدث تكنولوجيات الطباعة.</p>
                     </div>
 
-                    <!-- بطاقة 2: مديرة المبيعات -->
                     <div class="min-w-[280px] md:min-w-[320px] bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 snap-center text-center group hover:-translate-y-2 transition-transform duration-300">
                         <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-50 mb-6 group-hover:border-rose-200 transition-colors duration-300">
                             <img src="https://ui-avatars.com/api/?name=مدير+المبيعات&background=be123c&color=fff&size=150&font-size=0.3" alt="مدير المبيعات" class="w-full h-full object-cover">
                         </div>
                         <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">مدير المبيعات</h4>
                         <div class="inline-block px-4 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-black mb-5">رئيس قطاع المبيعات</div>
-                        <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">
-                            متابعة مستمرة للسوق وتوفير أنسب الحلول وأنظمة التقسيط والسداد التي تضمن للعميل تحقيق أقصى استفادة بأفضل سعر ممكن.
-                        </p>
+                        <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">متابعة مستمرة للسوق وتوفير أنسب الحلول وأنظمة التقسيط والسداد التي تضمن للعميل تحقيق أقصى استفادة.</p>
                     </div>
 
-                    <!-- بطاقة 3: مدير الصيانة -->
                     <div class="min-w-[280px] md:min-w-[320px] bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 snap-center text-center group hover:-translate-y-2 transition-transform duration-300">
                         <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-50 mb-6 group-hover:border-rose-200 transition-colors duration-300">
                             <img src="https://ui-avatars.com/api/?name=مدير+الصيانة&background=be123c&color=fff&size=150&font-size=0.3" alt="مدير الصيانة" class="w-full h-full object-cover">
                         </div>
                         <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">مدير الصيانة</h4>
                         <div class="inline-block px-4 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-black mb-5">كبير المهندسين الفنيين</div>
-                        <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">
-                            يشرف على تدريب وتوجيه فريق الصيانة، لضمان حل أصعب الأعطال الفنية باحترافية وسرعة تعيد للماكينات كفاءتها الأصلية.
-                        </p>
+                        <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">يشرف على تدريب وتوجيه فريق الصيانة، لضمان حل أصعب الأعطال الفنية باحترافية وسرعة.</p>
                     </div>
 
-                    <!-- بطاقة 4: خدمة العملاء -->
                     <div class="min-w-[280px] md:min-w-[320px] bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 snap-center text-center group hover:-translate-y-2 transition-transform duration-300">
                         <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-50 mb-6 group-hover:border-rose-200 transition-colors duration-300">
                             <img src="https://ui-avatars.com/api/?name=خدمة+العملاء&background=be123c&color=fff&size=150&font-size=0.3" alt="خدمة العملاء" class="w-full h-full object-cover">
                         </div>
                         <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">خدمة العملاء</h4>
                         <div class="inline-block px-4 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-black mb-5">مسئول التواصل المباشر</div>
-                        <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">
-                            الوجه المبتسم للشركة، نضمن لك استجابة سريعة لبلاغات الأعطال واستفساراتك، ومتابعة ما بعد البيع لتحقيق كامل رضاك.
-                        </p>
+                        <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">الوجه المبتسم للشركة، نضمن لك استجابة سريعة لبلاغات الأعطال واستفساراتك.</p>
                     </div>
-
                 </div>
             </div>
-            
         </section>
     </main>
 
     <!-- Footer -->
     <footer class="bg-zinc-950 text-white pt-20 pb-12 px-6 border-t-8 border-rose-700 mt-0 text-right">
         <div class="container mx-auto grid md:grid-cols-2 lg:grid-cols-4 gap-16 border-b border-white/5 pb-20 text-right">
-            <!-- Col 1 -->
             <div>
                 <h4 class="text-3xl font-black mb-8 text-rose-50 uppercase tracking-tighter leading-none italic">شركة العدل</h4>
                 <p class="text-gray-400 text-sm leading-loose font-medium italic mb-10 text-right">المنصة الرسمية المعتمدة لبيع وصيانة الطابعات وماكينات التصوير. جودة تثق بها وخدمة تدوم لعقود.</p>
@@ -1057,7 +833,6 @@
                 </div>
             </div>
 
-            <!-- Col 2: Contacts -->
             <div class="text-right">
                 <h4 class="text-xl font-bold mb-10 text-white border-r-4 border-rose-700 pr-5 italic uppercase">بيانات التواصل</h4>
                 <ul class="space-y-8 text-sm">
@@ -1072,7 +847,6 @@
                 </ul>
             </div>
 
-            <!-- Col 3: Sales -->
             <div class="text-right">
                 <h4 class="text-xl font-bold mb-10 text-white border-r-4 border-rose-700 pr-5 invisible md:visible italic uppercase">المبيعات والبريد</h4>
                 <ul class="space-y-8 text-sm">
@@ -1087,7 +861,6 @@
                 </ul>
             </div>
 
-            <!-- Col 4 -->
             <div class="text-right">
                 <h4 class="text-xl font-bold mb-10 text-white border-r-4 border-rose-700 pr-5 italic uppercase">أوقات العمل</h4>
                 <div class="bg-white/5 p-8 rounded-[3rem] border border-white/10 text-right">
@@ -1095,10 +868,7 @@
                         <i class="fa fa-clock text-rose-500 text-xl"></i>
                         <span class="text-gray-200 font-bold text-sm tracking-tight">أوقات العمل الرسمية</span>
                     </div>
-                    <p class="text-gray-400 text-xs font-medium leading-loose italic">
-                        من 9 صباحاً إلى 6 مساءاً<br>
-                        من السبت إلى الخميس
-                    </p>
+                    <p class="text-gray-400 text-xs font-medium leading-loose italic">من 9 صباحاً إلى 6 مساءاً<br>من السبت إلى الخميس</p>
                 </div>
             </div>
         </div>
@@ -1114,28 +884,25 @@
         </div>
     </footer>
 
+    <!-- JavaScript Engine -->
     <script>
         const MAIN_NUM = "201094799247";
 
-        // وظيفة تحريك سلايدر فريق العمل
         function scrollTeam(direction) {
             const container = document.getElementById('teamContainer');
             const scrollAmount = direction * -340; 
             container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
         }
 
-        // وظيفة تحريك سلايدر المنتجات الحديثة
         function scrollProducts(direction) {
             const container = document.getElementById('recentProductsSlider');
             const scrollAmount = direction * -300; 
             container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
         }
 
-        // وظيفة فتح/إغلاق الأسئلة والأجوبة (Accordion)
         function toggleFAQ(contentId, iconId) {
             const content = document.getElementById(contentId);
             const icon = document.getElementById(iconId);
-
             if (content.classList.contains('hidden')) {
                 content.classList.remove('hidden');
                 icon.classList.add('rotate-180');
@@ -1145,7 +912,6 @@
             }
         }
 
-        // تعديل دالة التنقل لدعم زر الرجوع في المتصفح
         function navigateTo(targetId, category = 'all', addToHistory = true) {
             setTimeout(() => {
                 document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
@@ -1155,24 +921,17 @@
                 closeAllDropdowns();
                 closeMobileMenu();
                 
-                if (targetId === 'products') {
-                    renderProducts(category);
-                }
+                if (targetId === 'products') renderProducts(category);
+                else if (targetId === 'articles') renderArticlesGrid();
 
-                // تسجيل الحركة في سجل المتصفح (History)
-                if (addToHistory) {
-                    history.pushState({ pageId: targetId, cat: category }, '', '#' + targetId);
-                }
+                if (addToHistory) history.pushState({ pageId: targetId, cat: category }, '', '#' + targetId);
             }, 50);
         }
 
-        // الاستماع لزر الرجوع والتقدم في المتصفح / الموبايل
         window.addEventListener('popstate', (event) => {
             if (event.state && event.state.pageId) {
-                // تمرير false حتى لا يتم تسجيل الرجوع كحركة جديدة
                 navigateTo(event.state.pageId, event.state.cat || 'all', false);
             } else {
-                // إذا لم يكن هناك سجل، العودة للرئيسية
                 navigateTo('home', 'all', false);
             }
         });
@@ -1182,25 +941,19 @@
             const overlay = document.getElementById('overlay');
             menu.classList.toggle('open');
             overlay.classList.toggle('show');
-            
             if (!menu.classList.contains('open')) {
-                setTimeout(() => {
-                    document.querySelectorAll('#m-who, #m-prods, #m-parts, #m-toners, #m-serv').forEach(acc => acc.classList.add('hidden'));
-                }, 300);
+                setTimeout(() => { document.querySelectorAll('.mobile-card .hidden').forEach(acc => acc.classList.add('hidden')); }, 300);
             }
         }
 
         function closeMobileMenu() {
             document.getElementById('mobile-menu').classList.remove('open');
             document.getElementById('overlay').classList.remove('show');
-            setTimeout(() => {
-                document.querySelectorAll('#m-who, #m-prods, #m-parts, #m-toners, #m-serv').forEach(acc => acc.classList.add('hidden'));
-            }, 300);
+            setTimeout(() => { document.querySelectorAll('.mobile-card .hidden').forEach(acc => acc.classList.add('hidden')); }, 300);
         }
 
         function toggleAccordion(id) {
-            const el = document.getElementById(id);
-            el.classList.toggle('hidden');
+            document.getElementById(id).classList.toggle('hidden');
         }
 
         function toggleDropdown(id, event) {
@@ -1251,150 +1004,30 @@
             window.open(`https://wa.me/${MAIN_NUM}?text=${encodeURIComponent(text)}`, '_blank');
         }
 
-        // وظيفة البحث الذكي والحي
-        function handleSearch() {
-            const query = document.getElementById('searchInput').value.trim().toLowerCase();
-            
-            // الانتقال لصفحة المنتجات بمجرد بدء البحث
-            if (query !== "") {
-                const productsPage = document.getElementById('page-products');
-                if (!productsPage.classList.contains('active')) {
-                    document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
-                    productsPage.classList.add('active');
-                    window.scrollTo({top: 0, behavior: 'smooth'}); // التمرير لأعلى الصفحة برفق
-                }
-            }
-
-            const catalogGrid = document.getElementById('catalogGrid');
-            if (!catalogGrid) return;
-
-            catalogGrid.innerHTML = '';
-            
-            let filteredProducts = [...productsDB].reverse();
-            
-            // فلترة المنتجات بناءً على النص المدخل
-            if (query !== "") {
-                filteredProducts = filteredProducts.filter(p => {
-                    return p.name.toLowerCase().includes(query) || 
-                           p.functions.toLowerCase().includes(query) ||
-                           p.speed.toLowerCase().includes(query) ||
-                           p.price.toLowerCase().includes(query);
-                });
-            }
-
-            // عرض المنتجات أو رسالة عدم العثور
-            if (filteredProducts.length === 0) {
-                catalogGrid.innerHTML = '<div class="col-span-full text-center py-20 text-gray-400 font-bold text-lg"><i class="fa fa-search text-4xl mb-4 block text-rose-300 animate-pulse"></i>عذراً، لم نجد أي منتج يطابق بحثك. جرب كتابة موديل آخر.</div>';
-            } else {
-                filteredProducts.forEach(prod => {
-                    const safeId = 'prod-' + prod.name.replace(/\s+/g, '-');
-                    const catalogCardHTML = `
-                        <div id="${safeId}" class="bg-white rounded-[1.5rem] shadow-xl border border-gray-100 overflow-hidden group flex flex-col w-full max-w-[300px] mx-auto transition-all duration-500">
-                            <div class="h-48 md:h-56 flex items-center justify-center relative p-4 mt-2">
-                                <img src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain group-hover:scale-110 transition duration-500">
-                                ${prod.condition ? `<div class="absolute top-2 left-2 bg-rose-700 text-white text-xs font-black px-3 py-1 rounded-full shadow-md z-10">${prod.condition}</div>` : ''}
-                            </div>
-                            <div class="p-5 text-right flex-1 flex flex-col">
-                                <h3 class="text-xl font-black text-rose-950 mb-3">${prod.name}</h3>
-                                <ul class="space-y-2 mb-5 text-xs font-bold text-gray-600 flex-1">
-                                    <li class="flex items-start gap-2"><i class="fa fa-print text-rose-600 mt-1"></i> <span><strong>الوظائف:</strong> ${prod.functions}</span></li>
-                                    <li class="flex items-start gap-2"><i class="fa fa-bolt text-rose-600 mt-1"></i> <span><strong>السرعة:</strong> ${prod.speed}</span></li>
-                                    <li class="flex items-start gap-2"><i class="fa fa-expand text-rose-600 mt-1"></i> <span><strong>الدقة:</strong> ${prod.resolution}</span></li>
-                                    <li class="flex items-start gap-2"><i class="fa fa-file-alt text-rose-600 mt-1"></i> <span><strong>الورق:</strong> ${prod.paperSize}</span></li>
-                                </ul>
-                                <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
-                                    <span class="text-xl font-black text-rose-900">${prod.price}</span>
-                                    <button onclick="orderNowWA('${prod.name}')" class="btn-heartbeat bg-rose-700 text-white px-5 py-2.5 rounded-xl font-black text-sm shadow-md hover:bg-rose-800 transition">طلب شراء</button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    catalogGrid.insertAdjacentHTML('beforeend', catalogCardHTML);
-                });
-            }
-        }
-
         function viewProductDetails(productName, category) {
-            // الانتقال للكتالوج وتحديد الفئة
             navigateTo('products', category);
-            
-            // الانتظار لحظة حتى يتم تحميل الصفحة ثم التمرير للمنتج المطلوب
             setTimeout(() => {
                 const safeId = 'prod-' + productName.replace(/\s+/g, '-');
                 const element = document.getElementById(safeId);
                 if (element) {
                     element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    // إضافة توهج وحركة مؤقتة للمنتج لجذب العين
                     element.classList.add('ring-4', 'ring-rose-500', 'scale-105', 'z-10');
-                    setTimeout(() => {
-                        element.classList.remove('ring-4', 'ring-rose-500', 'scale-105', 'z-10');
-                    }, 2000);
+                    setTimeout(() => { element.classList.remove('ring-4', 'ring-rose-500', 'scale-105', 'z-10'); }, 2000);
                 }
             }, 150);
         }
 
         const productsDB = [
-            {
-                name: 'ريكو Aficio MP 5002',
-                image: 'images/MP 5002.png',
-                condition: '',
-                speed: '50 ورقة / دقيقة',
-                resolution: '1200 * 1200',
-                functions: 'طباعة – تصوير – سكانر – فاكس',
-                paperSize: 'A3, A4, A5 والعديد من المقاسات',
-                price: '28,000 جنيه',
-                category: 'bw-copiers' 
-            },
-            {
-                name: 'ريكو Aficio MP C305',
-                image: 'images/Mp C305.png',
-                condition: '',
-                speed: '30 ورقة / دقيقة',
-                resolution: '1200 * 1200',
-                functions: 'طباعة – تصوير – سكانر – فاكس',
-                paperSize: 'A4, A5, A6',
-                price: '6500 جنيه',
-                category: 'color-copiers' 
-            },
-            {
-                name: 'ريكو Aficio MP C307',
-                image: 'images/Mp C307.png',
-                condition: '',
-                speed: '30 ورقة / دقيقة',
-                resolution: '1200 * 1200',
-                functions: 'طباعة – تصوير – سكانر – فاكس',
-                paperSize: 'A4, A5, A6',
-                price: '8000 جنيه',
-                category: 'color-copiers' 
-            },
-            {
-                name: 'ريكو Aficio MP 201',
-                image: 'images/MP 201.png',
-                condition: '',
-                speed: '20 ورقة / دقيقة',
-                resolution: '1200 * 1200',
-                functions: 'طباعة – تصوير – سكانر – فاكس',
-                paperSize: 'A4, A5, A6',
-                price: '7500 جنيه',
-                category: 'bw-copiers' 
-            },
-            {
-                name: 'ريكو Aficio MP 301',
-                image: 'images/MP 301.png',
-                condition: '',
-                speed: '30 ورقة / دقيقة',
-                resolution: '1200 * 1200',
-                functions: 'طباعة – تصوير – سكانر – فاكس',
-                paperSize: 'A4, A5, A6',
-                price: '6500 جنيه',
-                category: 'bw-copiers' 
-            }
+            { name: 'ريكو Aficio MP 5002', image: 'images/MP 5002.png', condition: '', speed: '50 ورقة / دقيقة', resolution: '1200 * 1200', functions: 'طباعة – تصوير – سكانر – فاكس', paperSize: 'A3, A4, A5 والعديد من المقاسات', price: '28,000 جنيه', category: 'bw-copiers' },
+            { name: 'ريكو Aficio MP C305', image: 'images/Mp C305.png', condition: '', speed: '30 ورقة / دقيقة', resolution: '1200 * 1200', functions: 'طباعة – تصوير – سكانر – فاكس', paperSize: 'A4, A5, A6', price: '6500 جنيه', category: 'color-copiers' },
+            { name: 'ريكو Aficio MP C307', image: 'images/Mp C307.png', condition: '', speed: '30 ورقة / دقيقة', resolution: '1200 * 1200', functions: 'طباعة – تصوير – سكانر – فاكس', paperSize: 'A4, A5, A6', price: '8000 جنيه', category: 'color-copiers' },
+            { name: 'ريكو Aficio MP 201', image: 'images/MP 201.png', condition: '', speed: '20 ورقة / دقيقة', resolution: '1200 * 1200', functions: 'طباعة – تصوير – سكانر – فاكس', paperSize: 'A4, A5, A6', price: '7500 جنيه', category: 'bw-copiers' },
+            { name: 'ريكو Aficio MP 301', image: 'images/MP 301.png', condition: '', speed: '30 ورقة / دقيقة', resolution: '1200 * 1200', functions: 'طباعة – تصوير – سكانر – فاكس', paperSize: 'A4, A5, A6', price: '6500 جنيه', category: 'bw-copiers' }
         ];
 
         function renderProducts(categoryFilter = 'all') {
             const homeSlider = document.getElementById('recentProductsSlider');
             const catalogGrid = document.getElementById('catalogGrid');
-            
             if (!homeSlider || !catalogGrid) return;
             
             if (categoryFilter === 'all') {
@@ -1403,13 +1036,11 @@
                 recentProducts.forEach(prod => {
                     const homeCardHTML = `
                         <div class="w-[220px] md:w-[260px] max-w-full mx-auto snap-center shrink-0 product-card bg-white border border-gray-100 p-4 rounded-2xl shadow-sm group flex flex-col relative hover:-translate-y-2 transition-transform duration-300">
-                            ${prod.condition ? `<div class="absolute top-2 left-2 bg-rose-700 text-white text-[9px] font-black px-2 py-1 rounded shadow-sm z-10">${prod.condition}</div>` : ''}
                             <div class="h-36 md:h-44 mb-4 flex items-center justify-center relative p-1">
                                 <img src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain group-hover:scale-110 transition duration-500">
                             </div>
                             <h3 class="text-xs md:text-sm font-black text-rose-950 mb-2 leading-tight">${prod.name}</h3>
                             <p class="text-[10px] text-gray-500 font-bold mb-4 flex-1">${prod.speed} | ${prod.functions.split('–')[0].trim()}</p>
-                            
                             <div class="mt-auto border-t border-gray-50 pt-3 flex flex-col gap-2">
                                 <div class="flex items-center justify-between">
                                     <span class="text-rose-900 font-black text-xs">${prod.price}</span>
@@ -1425,13 +1056,10 @@
 
             catalogGrid.innerHTML = '';
             let filteredProducts = [...productsDB].reverse();
-            
-            if (categoryFilter !== 'all') {
-                filteredProducts = filteredProducts.filter(p => p.category === categoryFilter);
-            }
+            if (categoryFilter !== 'all') filteredProducts = filteredProducts.filter(p => p.category === categoryFilter);
 
             if (filteredProducts.length === 0) {
-                catalogGrid.innerHTML = '<div class="col-span-full text-center py-20 text-gray-400 font-bold text-lg"><i class="fa fa-box-open text-4xl mb-4 block"></i>لا توجد منتجات في هذا القسم حالياً، سيتم إضافتها قريباً...</div>';
+                catalogGrid.innerHTML = '<div class="col-span-full text-center py-20 text-gray-400 font-bold text-lg"><i class="fa fa-box-open text-4xl mb-4 block"></i>لا توجد منتجات...</div>';
             } else {
                 filteredProducts.forEach(prod => {
                     const safeId = 'prod-' + prod.name.replace(/\s+/g, '-');
@@ -1439,7 +1067,6 @@
                         <div id="${safeId}" class="bg-white rounded-[1.5rem] shadow-xl border border-gray-100 overflow-hidden group flex flex-col w-full max-w-[300px] mx-auto transition-all duration-500">
                             <div class="h-48 md:h-56 flex items-center justify-center relative p-4 mt-2">
                                 <img src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain group-hover:scale-110 transition duration-500">
-                                ${prod.condition ? `<div class="absolute top-2 left-2 bg-rose-700 text-white text-xs font-black px-3 py-1 rounded-full shadow-md z-10">${prod.condition}</div>` : ''}
                             </div>
                             <div class="p-5 text-right flex-1 flex flex-col">
                                 <h3 class="text-xl font-black text-rose-950 mb-3">${prod.name}</h3>
@@ -1461,17 +1088,101 @@
             }
         }
 
-        // إعداد حالة الموقع عند التحميل الأول
+        const articlesDB = [
+            {
+                id: 'article-2',
+                title: 'رول السخان السفلي Ricoh MP 201 / 171 / 161 – جودة تثبيت عالية وأداء ثابت لماكينات التصوير',
+                image: 'articles_images/Roll201.jpg',
+                date: 'أحدث المقالات',
+                content: `
+                    <p class="mb-4 text-lg">في عالم صيانة ماكينات التصوير، يعتبر رول السخان السفلي من أهم قطع الغيار المسؤولة عن جودة تثبيت الحبر على الورق والحفاظ على كفاءة وحدة التسخين داخل الماكينة.</p>
+                    <p class="mb-4 text-lg">لذلك توفر <strong class="text-rose-900">شركة العدل لبيع وصيانة الطابعات وماكينات التصوير</strong> رول السخان السفلي المتوافق مع ماكينات:</p>
+                    <ul class="list-disc list-inside pr-5 mb-6 space-y-3 text-rose-800 font-bold text-xl" dir="ltr" style="text-align: right;">
+                        <li>Ricoh MP 201</li><li>Ricoh MP 171</li><li>Ricoh MP 161</li>
+                    </ul>
+                    <h4 class="text-2xl font-black text-rose-950 mb-5 font-cairo border-b-2 border-rose-100 pb-2 inline-block">مميزات رول السخان السفلي:</h4>
+                    <ul class="space-y-4 mb-10 text-lg font-bold text-gray-700">
+                        <li class="flex items-center gap-3"><i class="fa fa-check-circle text-green-500 text-xl"></i> خامة عالية التحمل ومقاومة للحرارة</li>
+                        <li class="flex items-center gap-3"><i class="fa fa-check-circle text-green-500 text-xl"></i> يساعد على تثبيت الحبر بكفاءة عالية</li>
+                        <li class="flex items-center gap-3"><i class="fa fa-check-circle text-green-500 text-xl"></i> يقلل من مشاكل التجعيد والتلطخ</li>
+                    </ul>
+                    <div class="bg-rose-50 p-8 rounded-3xl border border-rose-100 mt-8 shadow-sm">
+                        <p class="text-xl md:text-2xl font-black text-rose-900 mb-6 text-center">أعد لماكينتك كفاءتها... واطلب رول السخان الأصلي الآن.</p>
+                        <div class="flex flex-col items-center gap-4 text-gray-700 font-bold text-base md:text-lg">
+                            <p class="flex items-center gap-2"><i class="fa fa-phone-alt text-rose-600"></i> للتواصل والاستفسار: <span class="font-black text-rose-950 text-xl md:text-2xl tracking-widest mr-2" dir="ltr">01094799247</span></p>
+                        </div>
+                        <div class="text-center mt-6">
+                            <a href="https://wa.me/201094799247?text=السلام%20عليكم،%20أريد%20الاستفسار%20عن%20رول%20السخان%20السفلي%20Ricoh" target="_blank" class="inline-flex items-center justify-center gap-3 bg-green-600 text-white px-8 py-3 rounded-2xl font-black text-lg shadow-lg hover:bg-green-700 transition hover:-translate-y-1">تواصل معنا واتساب <i class="fab fa-whatsapp text-2xl"></i></a>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 'article-1',
+                title: 'طابعتك غالية.. ميغلاش عليها مستلزمات التشغيل الأصلية: سر الأداء المستدام',
+                image: 'articles_images/85A Cart.jpg',
+                date: 'أحدث المقالات',
+                content: `<p class="mb-4">في عالم الطباعة، الحفاظ على كفاءة الماكينة مش بيبدأ من الصيانة بس… لكنه بيبدأ من جودة الحبر والكارتدج...</p>
+                <div class="text-center mt-6">
+                    <a href="https://wa.me/201094799247?text=السلام%20عليكم،%20أريد%20الاستفسار%20عن%20كارتدج%2085A" target="_blank" class="inline-flex items-center justify-center gap-3 bg-green-600 text-white px-8 py-3 rounded-2xl font-black text-lg shadow-lg">تواصل معنا واتساب <i class="fab fa-whatsapp text-2xl"></i></a>
+                </div>`
+            }
+        ];
+
+        function renderArticlesGrid() {
+            const grid = document.getElementById('articlesGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            articlesDB.forEach(article => {
+                const cardHTML = `<div onclick="openSingleArticle('${article.id}')" class="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden group cursor-pointer hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col">
+                    <div class="h-56 bg-gray-50 overflow-hidden relative">
+                        <img src="${article.image}" alt="${article.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="p-6 text-right flex-1 flex flex-col">
+                        <h3 class="text-lg md:text-xl font-black text-rose-950 mb-3 font-cairo leading-relaxed group-hover:text-rose-700 transition-colors">${article.title}</h3>
+                    </div>
+                </div>`;
+                grid.insertAdjacentHTML('beforeend', cardHTML);
+            });
+        }
+
+        function openSingleArticle(articleId) {
+            const article = articlesDB.find(a => a.id === articleId);
+            if (!article) return;
+            const container = document.getElementById('singleArticleContainer');
+            container.innerHTML = `<div class="h-64 md:h-96 w-full bg-gray-50 relative overflow-hidden">
+                <img src="${article.image}" alt="${article.title}" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                <div class="absolute bottom-6 right-6 left-6 text-white"><h1 class="text-2xl md:text-4xl font-black font-cairo leading-tight">${article.title}</h1></div>
+            </div><div class="p-8 md:p-12 text-gray-600 text-lg leading-loose">${article.content}</div>`;
+            navigateTo('single-article', 'all', true);
+        }
+
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            if (query !== "") navigateTo('products', 'all', false);
+            const catalogGrid = document.getElementById('catalogGrid');
+            if (!catalogGrid) return;
+            catalogGrid.innerHTML = '';
+            let filteredProducts = [...productsDB].reverse();
+            if (query !== "") filteredProducts = filteredProducts.filter(p => p.name.toLowerCase().includes(query) || p.price.toLowerCase().includes(query));
+            if (filteredProducts.length === 0) {
+                catalogGrid.innerHTML = '<div class="col-span-full text-center py-20 text-gray-400 font-bold text-lg">لم نجد أي منتج يطابق بحثك.</div>';
+            } else {
+                filteredProducts.forEach(prod => {
+                    const safeId = 'prod-' + prod.name.replace(/\s+/g, '-');
+                    catalogGrid.insertAdjacentHTML('beforeend', `<div id="${safeId}" class="bg-white rounded-[1.5rem] shadow-xl border border-gray-100 overflow-hidden group flex flex-col w-full max-w-[300px] mx-auto transition-all duration-500"><div class="h-48 md:h-56 flex items-center justify-center relative p-4 mt-2"><img src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain group-hover:scale-110 transition duration-500"></div><div class="p-5 text-right flex-1 flex flex-col"><h3 class="text-xl font-black text-rose-950 mb-3">${prod.name}</h3><ul class="space-y-2 mb-5 text-xs font-bold text-gray-600 flex-1"><li><strong>السرعة:</strong> ${prod.speed}</li></ul><div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-100"><span class="text-xl font-black text-rose-900">${prod.price}</span><button onclick="orderNowWA('${prod.name}')" class="btn-heartbeat bg-rose-700 text-white px-5 py-2.5 rounded-xl font-black text-sm shadow-md hover:bg-rose-800 transition">طلب شراء</button></div></div></div>`);
+                });
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             renderProducts('all');
-            
-            // قراءة الرابط إذا كان المستخدم يدخل على صفحة محددة مباشرة
             const currentHash = window.location.hash.substring(1);
             if (currentHash && document.getElementById('page-' + currentHash)) {
                 navigateTo(currentHash, 'all', false);
                 history.replaceState({ pageId: currentHash, cat: 'all' }, '', '#' + currentHash);
             } else {
-                // تسجيل الصفحة الرئيسية كأول نقطة
                 history.replaceState({ pageId: 'home', cat: 'all' }, '', '#home');
             }
         });
