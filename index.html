@@ -366,8 +366,14 @@
                 </aside>
 
                 <!-- Products Grid -->
-                <div class="flex-1">
-                    <div id="recentProductsGrid" class="grid grid-cols-2 xl:grid-cols-3 gap-4 md:gap-8">
+                <div class="flex-1 w-full overflow-hidden">
+                    <!-- أزرار التحكم في سلايدر المنتجات -->
+                    <div class="flex justify-end gap-2 mb-4 pr-2">
+                        <button onclick="scrollProducts(1)" class="w-10 h-10 bg-white border border-gray-100 rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-50 hover:border-rose-200 transition shadow-sm" aria-label="السابق"><i class="fa fa-chevron-right"></i></button>
+                        <button onclick="scrollProducts(-1)" class="w-10 h-10 bg-white border border-gray-100 rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-50 hover:border-rose-200 transition shadow-sm" aria-label="التالي"><i class="fa fa-chevron-left"></i></button>
+                    </div>
+
+                    <div id="recentProductsSlider" class="flex overflow-x-auto gap-4 md:gap-6 pb-8 snap-x snap-mandatory hide-scrollbar scroll-smooth">
                         <!-- يتم ملء المنتجات هنا عبر الجافاسكريبت -->
                     </div>
                 </div>
@@ -447,15 +453,21 @@
         <section class="pt-8 pb-24 container mx-auto px-6 lg:px-12 text-right">
             
             <!-- عنوان الصفحة الرئيسي -->
-            <div class="flex items-center justify-center mb-16 w-full relative">
-                <div class="absolute w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent top-1/2 transform -translate-y-1/2"></div>
-                <div class="inline-flex items-center justify-center gap-2 md:gap-4 bg-white px-5 md:px-10 py-2 md:py-4 rounded-full relative z-10 border border-gray-100 shadow-sm max-w-full">
-                    <span class="relative flex h-3 w-3">
-                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                      <span class="relative inline-flex rounded-full h-3 w-3 bg-rose-600"></span>
-                    </span>
-                    <h2 class="text-2xl md:text-5xl font-black font-cairo shimmer-text text-center leading-relaxed pb-1 md:pb-2 mt-1">عن شركة العدل</h2>
+            <div class="mb-16">
+                <div class="flex items-center justify-center mb-6 w-full relative">
+                    <div class="absolute w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent top-1/2 transform -translate-y-1/2"></div>
+                    <div class="inline-flex items-center justify-center gap-2 md:gap-4 bg-white px-5 md:px-10 py-2 md:py-4 rounded-full relative z-10 border border-gray-100 shadow-sm max-w-full">
+                        <span class="relative flex h-3 w-3">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-3 w-3 bg-rose-600"></span>
+                        </span>
+                        <h2 class="text-2xl md:text-5xl font-black font-cairo shimmer-text text-center leading-relaxed pb-1 md:pb-2 mt-1">عن شركة العدل</h2>
+                    </div>
                 </div>
+                <!-- الجملة المنقولة هنا أسفل العنوان مباشرة -->
+                <p class="text-xl md:text-2xl text-gray-600 font-bold text-center max-w-3xl mx-auto leading-relaxed relative z-10">
+                    أهلاً بك فى شركة العدل لبيع وصيانة الطابعات وماكينات التصوير.
+                </p>
             </div>
 
             <!-- 1. الرؤية والرسالة -->
@@ -465,7 +477,6 @@
                 <div class="relative z-10">
                     <h3 class="text-2xl md:text-3xl font-black text-rose-900 mb-6 font-cairo">رؤية ورسالة واضحة</h3>
                     <p class="text-lg md:text-2xl text-gray-600 leading-loose md:leading-loose italic font-medium">
-                        أهلاً بك فى شركة العدل لبيع وصيانة الطابعات وماكينات التصوير.<br>
                         منذ بداية الالفية الجديدة وكانت لشركة العدل رؤية ورسالة لتقديم كل ما هو جديد فى عالم تكنولوجيا الطباعة الحديثة لجميع شرائح العملاء سواء القطاع العام أو الخاص، والشركات والمكتبات ومراكز التصوير وحتى الاستخدام الشخصى فى المنازل والمكاتب وعدم الاقتصار على شريحة واحدة من العملاء مثلما تفعل الكثير من الشركات.
                     </p>
                 </div>
@@ -671,6 +682,13 @@
             container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
         }
 
+        // وظيفة تحريك سلايدر المنتجات الحديثة
+        function scrollProducts(direction) {
+            const container = document.getElementById('recentProductsSlider');
+            const scrollAmount = direction * -300; 
+            container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        }
+
         function navigateTo(targetId, category = 'all') {
             setTimeout(() => {
                 document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
@@ -775,17 +793,17 @@
         ];
 
         function renderProducts(categoryFilter = 'all') {
-            const homeGrid = document.getElementById('recentProductsGrid');
+            const homeSlider = document.getElementById('recentProductsSlider');
             const catalogGrid = document.getElementById('catalogGrid');
             
-            if (!homeGrid || !catalogGrid) return;
+            if (!homeSlider || !catalogGrid) return;
             
             if (categoryFilter === 'all') {
-                homeGrid.innerHTML = '';
-                const recentProducts = [...productsDB].reverse().slice(0, 6);
+                homeSlider.innerHTML = '';
+                const recentProducts = [...productsDB].reverse().slice(0, 5); // عرض آخر 5 منتجات
                 recentProducts.forEach(prod => {
                     const homeCardHTML = `
-                        <div class="product-card bg-white border border-gray-100 p-4 rounded-3xl shadow-sm group flex flex-col relative">
+                        <div class="min-w-[260px] md:min-w-[280px] snap-center shrink-0 product-card bg-white border border-gray-100 p-4 rounded-3xl shadow-sm group flex flex-col relative hover:-translate-y-2 transition-transform duration-300">
                             ${prod.condition ? `<div class="absolute top-3 left-3 bg-rose-700 text-white text-[9px] font-black px-2 py-1 rounded shadow-sm z-10">${prod.condition}</div>` : ''}
                             <div class="h-40 md:h-56 bg-gray-50 rounded-[1.5rem] mb-4 flex items-center justify-center p-1 relative overflow-hidden">
                                 <img src="${prod.image}" alt="${prod.name}" class="w-full h-full object-contain scale-105 group-hover:scale-110 transition duration-500">
@@ -802,7 +820,7 @@
                             </div>
                         </div>
                     `;
-                    homeGrid.insertAdjacentHTML('beforeend', homeCardHTML);
+                    homeSlider.insertAdjacentHTML('beforeend', homeCardHTML);
                 });
             }
 
