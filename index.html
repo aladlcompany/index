@@ -260,7 +260,7 @@
 
             <!-- Search Bar -->
             <div class="w-full lg:flex-1 lg:max-w-xl relative lg:mx-12 mt-3 lg:mt-0 order-last lg:order-none">
-                <input type="text" placeholder="ابحث عن (ريكو 5002، حبر HP، قطع غيار)..." class="w-full bg-gray-50 border border-gray-200 lg:border-transparent focus:border-rose-700 focus:bg-white rounded-xl py-3 px-6 pr-12 outline-none transition-all text-sm shadow-inner font-bold">
+                <input type="text" id="searchInput" oninput="handleSearch()" placeholder="ابحث عن (ريكو 5002، حبر HP، قطع غيار)..." class="w-full bg-gray-50 border border-gray-200 lg:border-transparent focus:border-rose-700 focus:bg-white rounded-xl py-3 px-6 pr-12 outline-none transition-all text-sm shadow-inner font-bold">
                 <i class="fa fa-search absolute right-4 top-3.5 text-gray-300 text-lg"></i>
             </div>
 
@@ -421,9 +421,9 @@
                             
                             <div class="shrink-0 relative w-full lg:w-auto mt-4 lg:mt-0">
                                 <div class="absolute inset-0 bg-white blur-xl opacity-40 rounded-full animate-pulse"></div>
-                                <a href="javascript:void(0)" onclick="navigateTo('tech-support')" class="relative z-10 btn-heartbeat w-full bg-white text-rose-800 px-8 py-4 rounded-[2rem] font-black text-xl shadow-2xl flex items-center justify-center gap-3 hover:bg-yellow-50 transition transform hover:-translate-y-1">
+                                <a href="https://wa.me/201094799247?text=السلام%20عليكم،%20أريد%20تفاصيل%20أكثر%20عن%20عرض%20خصم%20الـ%2050%25%20على%20عقود%20الصيانة" target="_blank" class="relative z-10 btn-heartbeat w-full bg-white text-rose-800 px-8 py-4 rounded-[2rem] font-black text-xl shadow-2xl flex items-center justify-center gap-3 hover:bg-yellow-50 transition transform hover:-translate-y-1">
                                     احجز العرض الآن
-                                    <i class="fa fa-arrow-left animate-pulse"></i>
+                                    <i class="fab fa-whatsapp text-3xl text-green-500 animate-pulse"></i>
                                 </a>
                             </div>
                         </div>
@@ -434,8 +434,30 @@
             </div>
         </section>
 
+        <!-- Trust & Features Strip (شريط مزايا وثقة) -->
+        <div class="container mx-auto px-4 md:px-12 -mt-4 mb-10 relative z-20">
+            <div class="bg-white rounded-[2rem] p-4 md:p-6 shadow-lg border border-rose-50 flex flex-wrap justify-center sm:justify-between items-center gap-4 text-center divide-x divide-x-reverse divide-gray-100">
+                <div class="flex-1 min-w-[120px] flex flex-col items-center justify-center gap-2 group cursor-default">
+                    <div class="w-12 h-12 bg-rose-50 text-rose-700 rounded-full flex items-center justify-center text-xl group-hover:scale-110 group-hover:bg-rose-700 group-hover:text-white transition-all duration-300 shadow-sm"><i class="fa fa-shield-alt"></i></div>
+                    <span class="text-xs md:text-sm font-black text-rose-950">ضمان معتمد</span>
+                </div>
+                <div class="flex-1 min-w-[120px] flex flex-col items-center justify-center gap-2 group cursor-default">
+                    <div class="w-12 h-12 bg-rose-50 text-rose-700 rounded-full flex items-center justify-center text-xl group-hover:scale-110 group-hover:bg-rose-700 group-hover:text-white transition-all duration-300 shadow-sm"><i class="fa fa-tools"></i></div>
+                    <span class="text-xs md:text-sm font-black text-rose-950">صيانة فورية</span>
+                </div>
+                <div class="flex-1 min-w-[120px] flex flex-col items-center justify-center gap-2 group cursor-default">
+                    <div class="w-12 h-12 bg-rose-50 text-rose-700 rounded-full flex items-center justify-center text-xl group-hover:scale-110 group-hover:bg-rose-700 group-hover:text-white transition-all duration-300 shadow-sm"><i class="fa fa-cogs"></i></div>
+                    <span class="text-xs md:text-sm font-black text-rose-950">قطع أصلية</span>
+                </div>
+                <div class="flex-1 min-w-[120px] flex flex-col items-center justify-center gap-2 group cursor-default">
+                    <div class="w-12 h-12 bg-rose-50 text-rose-700 rounded-full flex items-center justify-center text-xl group-hover:scale-110 group-hover:bg-rose-700 group-hover:text-white transition-all duration-300 shadow-sm"><i class="fa fa-headset"></i></div>
+                    <span class="text-xs md:text-sm font-black text-rose-950">دعم 24/7</span>
+                </div>
+            </div>
+        </div>
+
         <!-- Booking Section -->
-        <section id="booking" class="pt-20 pb-12 bg-white text-right">
+        <section id="booking" class="pt-4 pb-12 bg-white text-right">
             <div class="container mx-auto px-4 md:px-6 max-w-5xl">
                 <div class="bg-rose-950 rounded-[3rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row border-b-8 border-rose-700 text-right">
                     <div class="lg:w-2/5 p-8 md:p-14 text-white text-right flex flex-col justify-center bg-rose-900/40">
@@ -467,7 +489,12 @@
                                 <textarea id="mDesc" oninput="updateWA()" placeholder="ما هي المشكلة التي تظهر في الجهاز؟" class="w-full p-4 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-rose-700 transition font-bold text-sm text-right min-h-[120px]"></textarea>
                             </div>
                             <div class="col-span-full pt-4 text-center">
-                                <a id="waFinalBtn" href="javascript:void(0)" onclick="checkForm(event)" target="_blank" class="w-full bg-rose-700 text-white font-black py-5 rounded-[1.5rem] text-lg flex items-center justify-center gap-4 shadow-xl hover:bg-rose-800 transition-all no-underline opacity-50 cursor-not-allowed">إرسال البلاغ لغرفة الصيانة <i class="fab fa-whatsapp text-2xl"></i></a>
+                                <a id="waFinalBtn" href="javascript:void(0)" onclick="checkForm(event)" target="_blank" class="w-full bg-gradient-to-l from-rose-600 via-rose-700 to-rose-900 text-white font-black py-5 rounded-[1.5rem] text-xl flex items-center justify-center gap-4 shadow-[0_10px_20px_rgba(190,18,60,0.3)] hover:shadow-[0_15px_30px_rgba(190,18,60,0.5)] transition-all duration-500 transform hover:-translate-y-1 no-underline opacity-50 cursor-not-allowed relative overflow-hidden group">
+                                    <!-- تأثير اللمعان الداخلي -->
+                                    <div class="absolute inset-0 bg-white/20 translate-x-[100%] group-hover:translate-x-[-100%] transition-transform duration-1000 ease-in-out"></div>
+                                    <span class="relative z-10 tracking-wide">إرسال البيانات</span> 
+                                    <i class="fab fa-whatsapp text-3xl relative z-10 group-hover:scale-125 transition-transform duration-300"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -1118,7 +1145,8 @@
             }
         }
 
-        function navigateTo(targetId, category = 'all') {
+        // تعديل دالة التنقل لدعم زر الرجوع في المتصفح
+        function navigateTo(targetId, category = 'all', addToHistory = true) {
             setTimeout(() => {
                 document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
                 const target = document.getElementById('page-' + targetId);
@@ -1130,8 +1158,24 @@
                 if (targetId === 'products') {
                     renderProducts(category);
                 }
+
+                // تسجيل الحركة في سجل المتصفح (History)
+                if (addToHistory) {
+                    history.pushState({ pageId: targetId, cat: category }, '', '#' + targetId);
+                }
             }, 50);
         }
+
+        // الاستماع لزر الرجوع والتقدم في المتصفح / الموبايل
+        window.addEventListener('popstate', (event) => {
+            if (event.state && event.state.pageId) {
+                // تمرير false حتى لا يتم تسجيل الرجوع كحركة جديدة
+                navigateTo(event.state.pageId, event.state.cat || 'all', false);
+            } else {
+                // إذا لم يكن هناك سجل، العودة للرئيسية
+                navigateTo('home', 'all', false);
+            }
+        });
 
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
@@ -1205,6 +1249,69 @@
         function orderNowWA(product) {
             const text = `السلام عليكم شركة العدل،\nأريد الاستفسار عن منتج: ${product}`;
             window.open(`https://wa.me/${MAIN_NUM}?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        // وظيفة البحث الذكي والحي
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            
+            // الانتقال لصفحة المنتجات بمجرد بدء البحث
+            if (query !== "") {
+                const productsPage = document.getElementById('page-products');
+                if (!productsPage.classList.contains('active')) {
+                    document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+                    productsPage.classList.add('active');
+                    window.scrollTo({top: 0, behavior: 'smooth'}); // التمرير لأعلى الصفحة برفق
+                }
+            }
+
+            const catalogGrid = document.getElementById('catalogGrid');
+            if (!catalogGrid) return;
+
+            catalogGrid.innerHTML = '';
+            
+            let filteredProducts = [...productsDB].reverse();
+            
+            // فلترة المنتجات بناءً على النص المدخل
+            if (query !== "") {
+                filteredProducts = filteredProducts.filter(p => {
+                    return p.name.toLowerCase().includes(query) || 
+                           p.functions.toLowerCase().includes(query) ||
+                           p.speed.toLowerCase().includes(query) ||
+                           p.price.toLowerCase().includes(query);
+                });
+            }
+
+            // عرض المنتجات أو رسالة عدم العثور
+            if (filteredProducts.length === 0) {
+                catalogGrid.innerHTML = '<div class="col-span-full text-center py-20 text-gray-400 font-bold text-lg"><i class="fa fa-search text-4xl mb-4 block text-rose-300 animate-pulse"></i>عذراً، لم نجد أي منتج يطابق بحثك. جرب كتابة موديل آخر.</div>';
+            } else {
+                filteredProducts.forEach(prod => {
+                    const safeId = 'prod-' + prod.name.replace(/\s+/g, '-');
+                    const catalogCardHTML = `
+                        <div id="${safeId}" class="bg-white rounded-[1.5rem] shadow-xl border border-gray-100 overflow-hidden group flex flex-col w-full max-w-[300px] mx-auto transition-all duration-500">
+                            <div class="h-48 md:h-56 flex items-center justify-center relative p-4 mt-2">
+                                <img src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain group-hover:scale-110 transition duration-500">
+                                ${prod.condition ? `<div class="absolute top-2 left-2 bg-rose-700 text-white text-xs font-black px-3 py-1 rounded-full shadow-md z-10">${prod.condition}</div>` : ''}
+                            </div>
+                            <div class="p-5 text-right flex-1 flex flex-col">
+                                <h3 class="text-xl font-black text-rose-950 mb-3">${prod.name}</h3>
+                                <ul class="space-y-2 mb-5 text-xs font-bold text-gray-600 flex-1">
+                                    <li class="flex items-start gap-2"><i class="fa fa-print text-rose-600 mt-1"></i> <span><strong>الوظائف:</strong> ${prod.functions}</span></li>
+                                    <li class="flex items-start gap-2"><i class="fa fa-bolt text-rose-600 mt-1"></i> <span><strong>السرعة:</strong> ${prod.speed}</span></li>
+                                    <li class="flex items-start gap-2"><i class="fa fa-expand text-rose-600 mt-1"></i> <span><strong>الدقة:</strong> ${prod.resolution}</span></li>
+                                    <li class="flex items-start gap-2"><i class="fa fa-file-alt text-rose-600 mt-1"></i> <span><strong>الورق:</strong> ${prod.paperSize}</span></li>
+                                </ul>
+                                <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
+                                    <span class="text-xl font-black text-rose-900">${prod.price}</span>
+                                    <button onclick="orderNowWA('${prod.name}')" class="btn-heartbeat bg-rose-700 text-white px-5 py-2.5 rounded-xl font-black text-sm shadow-md hover:bg-rose-800 transition">طلب شراء</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    catalogGrid.insertAdjacentHTML('beforeend', catalogCardHTML);
+                });
+            }
         }
 
         function viewProductDetails(productName, category) {
@@ -1354,7 +1461,20 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', () => renderProducts('all'));
+        // إعداد حالة الموقع عند التحميل الأول
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts('all');
+            
+            // قراءة الرابط إذا كان المستخدم يدخل على صفحة محددة مباشرة
+            const currentHash = window.location.hash.substring(1);
+            if (currentHash && document.getElementById('page-' + currentHash)) {
+                navigateTo(currentHash, 'all', false);
+                history.replaceState({ pageId: currentHash, cat: 'all' }, '', '#' + currentHash);
+            } else {
+                // تسجيل الصفحة الرئيسية كأول نقطة
+                history.replaceState({ pageId: 'home', cat: 'all' }, '', '#home');
+            }
+        });
     </script>
 </body>
 </html>
