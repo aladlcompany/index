@@ -111,6 +111,10 @@
             animation: heartbeat 1.8s infinite ease-in-out;
         }
 
+        /* إخفاء شريط التمرير للسلايدر */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
         @media (max-width: 1024px) { .hero-banner-box { max-height: 250px; } }
     </style>
 </head>
@@ -440,22 +444,149 @@
 
     <!-- PAGE: ABOUT -->
     <main id="page-about" class="page-section text-right">
-        <section class="pt-8 pb-24 container mx-auto px-6 text-right">
-            <div class="max-w-4xl mx-auto text-right">
-                
-                <div class="flex items-center justify-center mb-12 w-full relative">
-                    <div class="absolute w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent top-1/2 transform -translate-y-1/2"></div>
-                    <div class="inline-flex items-center justify-center gap-2 md:gap-4 bg-white px-5 md:px-10 py-2 md:py-4 rounded-full relative z-10 border border-gray-100 shadow-sm max-w-full">
-                        <span class="relative flex h-3 w-3">
-                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                          <span class="relative inline-flex rounded-full h-3 w-3 bg-rose-600"></span>
-                        </span>
-                        <h2 class="text-xl md:text-5xl font-black font-cairo shimmer-text text-center leading-relaxed pb-1 md:pb-2 mt-1">عن شركة العدل</h2>
-                    </div>
+        <section class="pt-8 pb-24 container mx-auto px-6 lg:px-12 text-right">
+            
+            <!-- عنوان الصفحة الرئيسي -->
+            <div class="flex items-center justify-center mb-16 w-full relative">
+                <div class="absolute w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent top-1/2 transform -translate-y-1/2"></div>
+                <div class="inline-flex items-center justify-center gap-2 md:gap-4 bg-white px-5 md:px-10 py-2 md:py-4 rounded-full relative z-10 border border-gray-100 shadow-sm max-w-full">
+                    <span class="relative flex h-3 w-3">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-3 w-3 bg-rose-600"></span>
+                    </span>
+                    <h2 class="text-2xl md:text-5xl font-black font-cairo shimmer-text text-center leading-relaxed pb-1 md:pb-2 mt-1">عن شركة العدل</h2>
+                </div>
+            </div>
+
+            <!-- 1. الرؤية والرسالة -->
+            <div class="bg-white rounded-[3rem] p-8 md:p-14 shadow-xl border border-gray-100 mb-12 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-48 h-48 bg-rose-50 rounded-full -mr-16 -mt-16 blur-3xl transition-transform duration-700 group-hover:scale-150"></div>
+                <i class="fa fa-quote-right text-6xl md:text-8xl text-rose-50 absolute top-6 right-8 md:right-12 z-0"></i>
+                <div class="relative z-10">
+                    <h3 class="text-2xl md:text-3xl font-black text-rose-900 mb-6 font-cairo">رؤية ورسالة واضحة</h3>
+                    <p class="text-lg md:text-2xl text-gray-600 leading-loose md:leading-loose italic font-medium">
+                        أهلاً بك فى شركة العدل لبيع وصيانة الطابعات وماكينات التصوير.<br>
+                        منذ بداية الالفية الجديدة وكانت لشركة العدل رؤية ورسالة لتقديم كل ما هو جديد فى عالم تكنولوجيا الطباعة الحديثة لجميع شرائح العملاء سواء القطاع العام أو الخاص، والشركات والمكتبات ومراكز التصوير وحتى الاستخدام الشخصى فى المنازل والمكاتب وعدم الاقتصار على شريحة واحدة من العملاء مثلما تفعل الكثير من الشركات.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 2. التأسيس والإنطلاق -->
+            <div class="bg-zinc-900 rounded-[3rem] p-8 md:p-14 shadow-2xl mb-16 relative overflow-hidden text-white">
+                <div class="absolute bottom-0 left-0 w-64 h-64 bg-rose-900/40 rounded-full -ml-20 -mb-20 blur-3xl"></div>
+                <div class="flex items-center gap-5 mb-8 relative z-10">
+                    <div class="w-16 h-16 md:w-20 md:h-20 bg-rose-700 rounded-2xl flex items-center justify-center text-3xl md:text-4xl shadow-lg"><i class="fa fa-rocket text-rose-50"></i></div>
+                    <h3 class="text-3xl md:text-4xl font-black text-rose-50 font-cairo">التأسيس والإنطلاق</h3>
+                </div>
+                <p class="text-gray-300 leading-relaxed md:leading-loose text-lg md:text-xl relative z-10 font-medium">
+                    وبعد الانطلاق والتأسيس عام 2020 سعت الشركة لتلبية احتياجات ومتطلبات العملاء فى جميع انحاء مصر من خلال توفير العديد من الماركات العالمية الاكثر انتشارا والأصدارات الحديثة من ماكينات الطباعة والتصوير مع تنوع الماركات وعدم العمل فى ماركة واحدة لاختلاف رغبات وثقافات وأنشطة العملاء لتصبح شركة العدل رائدة بيع وصيانة وتأجير ماكينات تصوير وطباعة المستندات لكبرى المركات العالمية الجديدة او المجددة فى مصر والوطن العربى خصوصا مع انتشار الفروع داخل جمهورية مصر العربية وتحقيق طفرة كبيرة فى السوق المصرى من خلال الانفراد بتقديم انظمة سداد وتقسيط يناسب جميع العملاء وتوفير اكبر فريق من المهندسين وفنيين الصيانة على اعلى مستوى من التدريب والخبرة.
+                </p>
+            </div>
+
+            <!-- 3. عضويات المجتمع المدني -->
+            <div class="mb-24">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-black text-rose-950 mb-4 font-cairo">الانضمام لمنظمات المجتمع المدنى</h3>
+                    <p class="text-lg text-gray-500 max-w-3xl mx-auto">وخلال خمسة أعوام من التأسيس كانت لشركة العدل دافع كبير لتصبح عضو فعال فى المجتمع من خلال الأنضمام للعديد من منظمات المجتمع المدنى مثل:</p>
                 </div>
                 
-                <p class="text-2xl text-gray-600 leading-relaxed italic border-r-8 border-rose-700 pr-8">نحن متخصصون في تجارة وصيانة ماكينات التصوير والطابعات منذ أكثر من عشرين عاماً. نلتزم بالأمانة والعدل في تقديم خدماتنا لكافة عملائنا في الدقهلية وكافة المحافظات.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-rose-50 hover:border-rose-200 flex items-start gap-4 hover:-translate-y-1 transition duration-300">
+                        <div class="w-12 h-12 bg-rose-50 text-rose-700 rounded-xl flex items-center justify-center shrink-0 text-xl"><i class="fa fa-certificate"></i></div>
+                        <p class="text-gray-700 font-bold mt-2 leading-relaxed">عضوية جمعية رجال اعمال الأجهزة المكتبية</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-rose-50 hover:border-rose-200 flex items-start gap-4 hover:-translate-y-1 transition duration-300">
+                        <div class="w-12 h-12 bg-rose-50 text-rose-700 rounded-xl flex items-center justify-center shrink-0 text-xl"><i class="fa fa-certificate"></i></div>
+                        <p class="text-gray-700 font-bold mt-2 leading-relaxed">عضوية غرفة الطباعة والتغليف التابع لاتحاد الصناعات</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-rose-50 hover:border-rose-200 flex items-start gap-4 hover:-translate-y-1 transition duration-300">
+                        <div class="w-12 h-12 bg-rose-50 text-rose-700 rounded-xl flex items-center justify-center shrink-0 text-xl"><i class="fa fa-certificate"></i></div>
+                        <p class="text-gray-700 font-bold mt-2 leading-relaxed">عضوية جمعية تنمية الطباعة "بيدا"</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-rose-50 hover:border-rose-200 flex items-start gap-4 hover:-translate-y-1 transition duration-300">
+                        <div class="w-12 h-12 bg-rose-50 text-rose-700 rounded-xl flex items-center justify-center shrink-0 text-xl"><i class="fa fa-certificate"></i></div>
+                        <p class="text-gray-700 font-bold mt-2 leading-relaxed">عضوية جمعية المهندسين الميكانيكيين</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-rose-50 hover:border-rose-200 flex items-start gap-4 hover:-translate-y-1 transition duration-300 md:col-span-2 lg:col-span-1">
+                        <div class="w-12 h-12 bg-rose-50 text-rose-700 rounded-xl flex items-center justify-center shrink-0 text-xl"><i class="fa fa-certificate"></i></div>
+                        <p class="text-gray-700 font-bold mt-2 leading-relaxed">عضوية الغرفة الألمانية العربية للصناعة والتجارة</p>
+                    </div>
+                </div>
+
+                <div class="bg-rose-50/50 p-6 md:p-8 rounded-3xl border border-rose-100 text-center">
+                    <p class="text-rose-900 font-bold text-lg md:text-xl leading-relaxed">
+                        ومن خلال هذه المنظمات والجمعيات الاهلية شاركت العدل فى العديد من الفعاليات والندوات والمؤتمرات والمعارض المتخصصة فى ماكينات الطباعة والتصوير للنهوض بالسوق المصرى والعربى ومواكبة التقدم التكنولوجى واستخدام احدث تقنيات الطباعة والتصوير.
+                    </p>
+                </div>
             </div>
+
+            <!-- 4. فريق العمل (Slider) -->
+            <div>
+                <div class="flex items-center justify-between mb-10 border-r-[8px] border-rose-700 pr-4">
+                    <h3 class="text-3xl font-black text-rose-950 font-cairo">فريق القيادة والعمل</h3>
+                    
+                    <!-- أزرار التحكم في السلايدر -->
+                    <div class="flex gap-3">
+                        <button onclick="scrollTeam(1)" class="w-12 h-12 bg-white border border-gray-200 rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-50 hover:border-rose-200 transition shadow-sm" aria-label="السابق"><i class="fa fa-chevron-right"></i></button>
+                        <button onclick="scrollTeam(-1)" class="w-12 h-12 bg-white border border-gray-200 rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-50 hover:border-rose-200 transition shadow-sm" aria-label="التالي"><i class="fa fa-chevron-left"></i></button>
+                    </div>
+                </div>
+
+                <!-- حاوية السلايدر -->
+                <div id="teamContainer" class="flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory hide-scrollbar scroll-smooth">
+                    
+                    <!-- بطاقة 1: مدير الشركة -->
+                    <div class="min-w-[280px] md:min-w-[320px] bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 snap-center text-center group hover:-translate-y-2 transition-transform duration-300">
+                        <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-50 mb-6 group-hover:border-rose-200 transition-colors duration-300">
+                            <!-- يمكنك تغيير مسار الصورة هنا بصورة المدير الحقيقية -->
+                            <img src="https://ui-avatars.com/api/?name=مدير+الشركة&background=be123c&color=fff&size=150&font-size=0.3" alt="مدير الشركة" class="w-full h-full object-cover">
+                        </div>
+                        <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">مدير الشركة</h4>
+                        <div class="inline-block px-4 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-black mb-5">المدير العام والمؤسس</div>
+                        <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">
+                            رؤية ثاقبة وخبرة عميقة في تطوير استراتيجيات السوق، يقود فريق العدل نحو القمة برؤية تواكب أحدث تكنولوجيات الطباعة في العالم.
+                        </p>
+                    </div>
+
+                    <!-- بطاقة 2: مديرة المبيعات -->
+                    <div class="min-w-[280px] md:min-w-[320px] bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 snap-center text-center group hover:-translate-y-2 transition-transform duration-300">
+                        <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-50 mb-6 group-hover:border-rose-200 transition-colors duration-300">
+                            <img src="https://ui-avatars.com/api/?name=مدير+المبيعات&background=be123c&color=fff&size=150&font-size=0.3" alt="مدير المبيعات" class="w-full h-full object-cover">
+                        </div>
+                        <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">مدير المبيعات</h4>
+                        <div class="inline-block px-4 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-black mb-5">رئيس قطاع المبيعات</div>
+                        <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">
+                            متابعة مستمرة للسوق وتوفير أنسب الحلول وأنظمة التقسيط والسداد التي تضمن للعميل تحقيق أقصى استفادة بأفضل سعر ممكن.
+                        </p>
+                    </div>
+
+                    <!-- بطاقة 3: مدير الصيانة -->
+                    <div class="min-w-[280px] md:min-w-[320px] bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 snap-center text-center group hover:-translate-y-2 transition-transform duration-300">
+                        <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-50 mb-6 group-hover:border-rose-200 transition-colors duration-300">
+                            <img src="https://ui-avatars.com/api/?name=مدير+الصيانة&background=be123c&color=fff&size=150&font-size=0.3" alt="مدير الصيانة" class="w-full h-full object-cover">
+                        </div>
+                        <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">مدير الصيانة</h4>
+                        <div class="inline-block px-4 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-black mb-5">كبير المهندسين الفنيين</div>
+                        <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">
+                            يشرف على تدريب وتوجيه فريق الصيانة، لضمان حل أصعب الأعطال الفنية باحترافية وسرعة تعيد للماكينات كفاءتها الأصلية.
+                        </p>
+                    </div>
+
+                    <!-- بطاقة 4: خدمة العملاء -->
+                    <div class="min-w-[280px] md:min-w-[320px] bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 snap-center text-center group hover:-translate-y-2 transition-transform duration-300">
+                        <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-50 mb-6 group-hover:border-rose-200 transition-colors duration-300">
+                            <img src="https://ui-avatars.com/api/?name=خدمة+العملاء&background=be123c&color=fff&size=150&font-size=0.3" alt="خدمة العملاء" class="w-full h-full object-cover">
+                        </div>
+                        <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">خدمة العملاء</h4>
+                        <div class="inline-block px-4 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-black mb-5">مسئول التواصل المباشر</div>
+                        <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">
+                            الوجه المبتسم للشركة، نضمن لك استجابة سريعة لبلاغات الأعطال واستفساراتك، ومتابعة ما بعد البيع لتحقيق كامل رضاك.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+            
         </section>
     </main>
 
@@ -531,6 +662,14 @@
 
     <script>
         const MAIN_NUM = "201094799247";
+
+        // وظيفة تحريك سلايدر فريق العمل
+        function scrollTeam(direction) {
+            const container = document.getElementById('teamContainer');
+            // التمرير بعرض بطاقة واحدة تقريباً مع كل ضغطة
+            const scrollAmount = direction * -340; 
+            container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        }
 
         function navigateTo(targetId, category = 'all') {
             setTimeout(() => {
