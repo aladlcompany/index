@@ -1037,18 +1037,22 @@
                 const recentProducts = [...productsDB].reverse().slice(0, 5);
                 recentProducts.forEach(prod => {
                     const homeCardHTML = `
-                        <div class="w-[220px] md:w-[260px] max-w-full mx-auto snap-center shrink-0 product-card bg-white border border-gray-100 p-4 rounded-2xl shadow-sm group flex flex-col relative hover:-translate-y-2 transition-transform duration-300">
-                            <div class="h-36 md:h-44 mb-4 flex items-center justify-center relative p-1">
-                                <img src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain group-hover:scale-110 transition duration-500">
+                        <div class="w-[220px] md:w-[260px] max-w-full mx-auto snap-center shrink-0 group flex flex-col relative transition-all duration-500">
+                            <!-- صورة كبيرة وFit بدون مربع -->
+                            <div class="h-56 md:h-72 mb-6 flex items-center justify-center relative p-1 group-hover:scale-105 transition-transform duration-500">
+                                <img src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain">
+                                ${prod.condition ? `<div class="absolute top-2 left-2 bg-rose-700 text-white text-[9px] font-black px-2 py-1 rounded shadow-sm z-10">${prod.condition}</div>` : ''}
                             </div>
-                            <h3 class="text-xs md:text-sm font-black text-rose-950 mb-2 leading-tight">${prod.name}</h3>
-                            <p class="text-[10px] text-gray-500 font-bold mb-4 flex-1">${prod.speed} | ${prod.functions.split('–')[0].trim()}</p>
-                            <div class="mt-auto border-t border-gray-50 pt-3 flex flex-col gap-2">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-rose-900 font-black text-xs">${prod.price}</span>
-                                    <button onclick="viewProductDetails('${prod.name}', '${prod.category}')" class="bg-gray-100 text-gray-700 py-1.5 px-3 rounded-lg font-bold text-[10px] shadow-sm hover:bg-gray-200 transition">تفاصيل</button>
+                            <!-- نصوص حرة بدون خلفية -->
+                            <h3 class="text-sm md:text-base font-black text-rose-950 mb-2 leading-tight text-center">${prod.name}</h3>
+                            <p class="text-[10px] md:text-xs text-gray-500 font-bold mb-4 text-center">${prod.speed} | ${prod.functions.split('–')[0].trim()}</p>
+                            
+                            <div class="mt-auto pt-3 flex flex-col gap-2">
+                                <div class="flex items-center justify-between px-2">
+                                    <span class="text-rose-900 font-black text-xs md:text-sm">${prod.price}</span>
+                                    <button onclick="viewProductDetails('${prod.name}', '${prod.category}')" class="text-gray-400 hover:text-rose-700 font-bold text-[10px] md:text-xs transition underline underline-offset-4">التفاصيل</button>
                                 </div>
-                                <button onclick="orderNowWA('${prod.name}')" class="btn-heartbeat w-full bg-rose-700 text-white py-2 rounded-lg font-bold text-xs shadow-md hover:bg-rose-800 transition">اطلب الآن</button>
+                                <button onclick="orderNowWA('${prod.name}')" class="btn-heartbeat w-full bg-rose-700 text-white py-2.5 rounded-xl font-black text-xs shadow-md hover:bg-rose-800 transition mt-2">اطلب الآن</button>
                             </div>
                         </div>
                     `;
@@ -1066,21 +1070,22 @@
                 filteredProducts.forEach(prod => {
                     const safeId = 'prod-' + prod.name.replace(/\s+/g, '-');
                     const catalogCardHTML = `
-                        <div id="${safeId}" class="bg-white rounded-[1.5rem] shadow-xl border border-gray-100 overflow-hidden group flex flex-col w-full max-w-[300px] mx-auto transition-all duration-500">
-                            <div class="h-48 md:h-56 flex items-center justify-center relative p-4 mt-2">
-                                <img src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain group-hover:scale-110 transition duration-500">
+                        <div id="${safeId}" class="group flex flex-col w-full max-w-[320px] mx-auto transition-all duration-500 py-6">
+                            <!-- صورة كبيرة وFit في الكتالوج -->
+                            <div class="h-64 md:h-80 flex items-center justify-center relative mb-6 group-hover:scale-105 transition-transform duration-500">
+                                <img src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain">
+                                ${prod.condition ? `<div class="absolute top-2 left-2 bg-rose-700 text-white text-xs font-black px-3 py-1 rounded-full shadow-md z-10">${prod.condition}</div>` : ''}
                             </div>
-                            <div class="p-5 text-right flex-1 flex flex-col">
-                                <h3 class="text-xl font-black text-rose-950 mb-3">${prod.name}</h3>
-                                <ul class="space-y-2 mb-5 text-xs font-bold text-gray-600 flex-1">
+                            <div class="p-2 text-right flex-1 flex flex-col">
+                                <h3 class="text-xl md:text-2xl font-black text-rose-950 mb-3 font-cairo">${prod.name}</h3>
+                                <ul class="space-y-2 mb-6 text-sm font-bold text-gray-600 flex-1">
                                     <li class="flex items-start gap-2"><i class="fa fa-print text-rose-600 mt-1"></i> <span><strong>الوظائف:</strong> ${prod.functions}</span></li>
                                     <li class="flex items-start gap-2"><i class="fa fa-bolt text-rose-600 mt-1"></i> <span><strong>السرعة:</strong> ${prod.speed}</span></li>
-                                    <li class="flex items-start gap-2"><i class="fa fa-expand text-rose-600 mt-1"></i> <span><strong>الدقة:</strong> ${prod.resolution}</span></li>
                                     <li class="flex items-start gap-2"><i class="fa fa-file-alt text-rose-600 mt-1"></i> <span><strong>الورق:</strong> ${prod.paperSize}</span></li>
                                 </ul>
-                                <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
-                                    <span class="text-xl font-black text-rose-900">${prod.price}</span>
-                                    <button onclick="orderNowWA('${prod.name}')" class="btn-heartbeat bg-rose-700 text-white px-5 py-2.5 rounded-xl font-black text-sm shadow-md hover:bg-rose-800 transition">طلب شراء</button>
+                                <div class="flex items-center justify-between mt-auto pt-4 border-t border-rose-50">
+                                    <span class="text-xl md:text-2xl font-black text-rose-900">${prod.price}</span>
+                                    <button onclick="orderNowWA('${prod.name}')" class="btn-heartbeat bg-rose-700 text-white px-6 py-3 rounded-2xl font-black text-sm shadow-xl hover:bg-rose-800 transition">طلب شراء</button>
                                 </div>
                             </div>
                         </div>
@@ -1138,11 +1143,9 @@
             articlesDB.forEach(article => {
                 const cardHTML = `
                 <div class="flex flex-col md:flex-row items-center gap-8 group cursor-pointer" onclick="openSingleArticle('${article.id}')">
-                    <!-- صورة Fit وحجم محكم بدون خلفية أو حدود -->
                     <div class="w-full md:w-64 h-48 overflow-hidden flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
                         <img src="${article.image}" alt="${article.title}" class="max-w-full max-h-full object-contain">
                     </div>
-                    <!-- محتوى نصي حر بدون مربع -->
                     <div class="flex-1 text-right">
                         <span class="text-rose-700 text-xs font-black mb-2 block tracking-widest">${article.date}</span>
                         <h3 class="text-xl md:text-3xl font-black text-rose-950 font-cairo leading-relaxed group-hover:text-rose-700 transition-colors">${article.title}</h3>
@@ -1165,9 +1168,7 @@
             const container = document.getElementById('singleArticleContainer');
             container.innerHTML = `
                 <div class="mb-10 flex flex-col items-center">
-                    <!-- صورة Fit بدون أي مربع أو خلفية -->
                     <img src="${article.image}" alt="${article.title}" class="max-w-full h-auto max-h-[400px] object-contain mb-8">
-                    
                     <span class="bg-rose-100 text-rose-800 text-xs font-black px-4 py-1.5 rounded-full mb-4 inline-block">${article.date}</span>
                     <h1 class="text-2xl md:text-4xl font-black font-cairo leading-tight text-center text-rose-950">${article.title}</h1>
                 </div>
@@ -1195,30 +1196,27 @@
                 filteredProducts = filteredProducts.filter(p => p.name.toLowerCase().includes(query) || p.price.toLowerCase().includes(query));
             }
             if (filteredProducts.length === 0) {
-                catalogGrid.innerHTML = '<div class="col-span-full text-center py-20 text-gray-400 font-bold text-lg"><i class="fa fa-search text-4xl mb-4 block text-rose-300 animate-pulse"></i>عذراً، لم نجد أي منتج يطابق بحثك.</div>';
+                catalogGrid.innerHTML = '<div class="col-span-full text-center py-20 text-gray-400 font-bold text-lg">عذراً، لم نجد أي منتج يطابق بحثك.</div>';
             } else {
                 filteredProducts.forEach(prod => {
                     const safeId = 'prod-' + prod.name.replace(/\s+/g, '-');
                     const catalogCardHTML = `
-                        <div id="${safeId}" class="bg-white rounded-[1.5rem] shadow-xl border border-gray-100 overflow-hidden group flex flex-col w-full max-w-[300px] mx-auto transition-all duration-500">
-                            <div class="h-48 md:h-56 flex items-center justify-center relative p-4 mt-2">
-                                <img src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain group-hover:scale-110 transition duration-500">
+                        <div id="${safeId}" class="group flex flex-col w-full max-w-[320px] mx-auto transition-all duration-500 py-6">
+                            <div class="h-64 md:h-80 flex items-center justify-center relative mb-6 group-hover:scale-105 transition-transform duration-500">
+                                <img src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain">
                             </div>
-                            <div class="p-5 text-right flex-1 flex flex-col">
-                                <h3 class="text-xl font-black text-rose-950 mb-3">${prod.name}</h3>
-                                <ul class="space-y-2 mb-5 text-xs font-bold text-gray-600 flex-1">
+                            <div class="p-2 text-right flex-1 flex flex-col">
+                                <h3 class="text-xl md:text-2xl font-black text-rose-950 mb-3 font-cairo">${prod.name}</h3>
+                                <ul class="space-y-2 mb-6 text-sm font-bold text-gray-600 flex-1">
                                     <li class="flex items-start gap-2"><i class="fa fa-print text-rose-600 mt-1"></i> <span><strong>الوظائف:</strong> ${prod.functions}</span></li>
                                     <li class="flex items-start gap-2"><i class="fa fa-bolt text-rose-600 mt-1"></i> <span><strong>السرعة:</strong> ${prod.speed}</span></li>
-                                    <li class="flex items-start gap-2"><i class="fa fa-expand text-rose-600 mt-1"></i> <span><strong>الدقة:</strong> ${prod.resolution}</span></li>
-                                    <li class="flex items-start gap-2"><i class="fa fa-file-alt text-rose-600 mt-1"></i> <span><strong>الورق:</strong> ${prod.paperSize}</span></li>
                                 </ul>
-                                <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
-                                    <span class="text-xl font-black text-rose-900">${prod.price}</span>
-                                    <button onclick="orderNowWA('${prod.name}')" class="btn-heartbeat bg-rose-700 text-white px-5 py-2.5 rounded-xl font-black text-sm shadow-md hover:bg-rose-800 transition">طلب شراء</button>
+                                <div class="flex items-center justify-between mt-auto pt-4 border-t border-rose-50">
+                                    <span class="text-xl md:text-2xl font-black text-rose-900">${prod.price}</span>
+                                    <button onclick="orderNowWA('${prod.name}')" class="btn-heartbeat bg-rose-700 text-white px-6 py-3 rounded-2xl font-black text-sm shadow-xl hover:bg-rose-800 transition">طلب شراء</button>
                                 </div>
                             </div>
-                        </div>
-                    `;
+                        </div>`;
                     catalogGrid.insertAdjacentHTML('beforeend', catalogCardHTML);
                 });
             }
