@@ -193,7 +193,7 @@
             </div>
 
             <div class="mobile-card">
-                <button onclick="navigateTo('products', 'all')" class="mobile-trigger"><span>أنظمة البيع</span></button>
+                <button onclick="navigateTo('sales')" class="mobile-trigger"><span>أنظمة البيع</span></button>
             </div>
             <div class="mobile-card">
                 <button onclick="navigateTo('products', 'all')" class="mobile-trigger"><span>المعرض</span></button>
@@ -203,7 +203,7 @@
             <div class="mobile-card">
                 <button onclick="toggleAccordion('m-serv')" class="mobile-trigger"><span>خدمات ما بعد البيع</span><i class="fa fa-chevron-down text-[10px] opacity-30"></i></button>
                 <div id="m-serv" class="hidden bg-gray-50 pb-2 text-right">
-                    <a onclick="navigateTo('products', 'all')" class="nested-link">الدعم الفنى</a>
+                    <a onclick="navigateTo('tech-support')" class="nested-link">الدعم الفنى</a>
                     <a onclick="navigateTo('home'); setTimeout(() => document.getElementById('booking').scrollIntoView({behavior: 'smooth'}), 100);" class="nested-link">بلاغات الأعطال</a>
                     <a onclick="navigateTo('products', 'all')" class="nested-link">الشكاوى و الأقتراحات</a>
                     <a onclick="navigateTo('products', 'all')" class="nested-link">سيرفيس مانوال</a>
@@ -307,13 +307,13 @@
                     </div>
                 </div>
 
-                <a onclick="navigateTo('products', 'all')" class="py-5 px-1 hover:text-rose-700 transition-all text-sm cursor-pointer">أنظمة البيع</a>
+                <a onclick="navigateTo('sales')" class="py-5 px-1 hover:text-rose-700 transition-all text-sm cursor-pointer">أنظمة البيع</a>
                 <a onclick="navigateTo('products', 'all')" class="py-5 px-1 hover:text-rose-700 transition-all text-sm cursor-pointer">المعرض</a>
 
                 <div class="dropdown-container">
                     <button class="py-5 px-1 flex items-center gap-2 hover:text-rose-700 transition-all text-sm text-rose-700 font-black text-right">خدمات ما بعد البيع <i class="fa fa-chevron-down text-[9px] opacity-40"></i></button>
                     <div id="d-serv-after" class="dropdown-menu text-right" style="left: 0; right: auto;">
-                        <a onclick="navigateTo('products', 'all')" class="dropdown-card">الدعم الفنى</a>
+                        <a onclick="navigateTo('tech-support')" class="dropdown-card">الدعم الفنى</a>
                         <a onclick="navigateTo('home'); setTimeout(() => document.getElementById('booking').scrollIntoView({behavior: 'smooth'}), 100);" class="dropdown-card">بلاغات الأعطال</a>
                         <a onclick="navigateTo('products', 'all')" class="dropdown-card">الشكاوى و الأقتراحات</a>
                         <a onclick="navigateTo('products', 'all')" class="dropdown-card">سيرفيس مانوال</a>
@@ -441,10 +441,278 @@
                 </div>
             </div>
             
-            <!-- الحاوية التي سيتم عرض المنتجات فيها بتفاصيل كاملة في صفحة الكتالوج -->
-            <div id="catalogGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- الحاوية التي سيتم عرض المنتجات فيها بتفاصيل كاملة في صفحة الكتالوج مع التوسيط -->
+            <div id="catalogGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 justify-items-center">
                 <!-- يتم ملء المنتجات هنا عبر الجافاسكريبت -->
             </div>
+        </section>
+    </main>
+
+    <!-- PAGE: SALES SYSTEMS (أنظمة البيع) -->
+    <main id="page-sales" class="page-section text-right">
+        <section class="pt-8 pb-24 container mx-auto px-6 lg:px-12 text-right">
+            
+            <!-- عنوان الصفحة الرئيسي -->
+            <div class="mb-12">
+                <div class="flex items-center justify-center mb-6 w-full relative">
+                    <div class="absolute w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent top-1/2 transform -translate-y-1/2"></div>
+                    <div class="inline-flex items-center justify-center gap-2 md:gap-4 bg-white px-5 md:px-10 py-2 md:py-4 rounded-full relative z-10 border border-gray-100 shadow-sm max-w-full">
+                        <span class="relative flex h-3 w-3">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-3 w-3 bg-rose-600"></span>
+                        </span>
+                        <h2 class="text-2xl md:text-5xl font-black font-cairo shimmer-text text-center leading-relaxed pb-1 md:pb-2 mt-1">أنظمة البيع</h2>
+                    </div>
+                </div>
+                <p class="text-xl md:text-2xl text-gray-600 font-bold text-center max-w-3xl mx-auto leading-relaxed relative z-10">
+                    اختر النظام الأنسب لاحتياجات عملك من بين أنظمتنا المرنة.
+                </p>
+            </div>
+
+            <!-- 1. الإيجار التمليكي -->
+            <div class="bg-white rounded-[3rem] p-8 md:p-14 shadow-xl border border-gray-100 mb-10 group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-48 h-48 bg-rose-50 rounded-full -mr-16 -mt-16 blur-3xl transition-transform duration-700 group-hover:scale-150"></div>
+                <div class="relative z-10">
+                    <div class="flex items-center gap-5 mb-8">
+                        <div class="w-16 h-16 md:w-20 md:h-20 bg-rose-50 text-rose-700 rounded-2xl flex items-center justify-center text-3xl md:text-4xl shadow-sm"><i class="fa fa-handshake"></i></div>
+                        <h3 class="text-3xl md:text-4xl font-black text-rose-950 font-cairo">الإيجار التمليكي</h3>
+                    </div>
+                    
+                    <p class="text-xl text-rose-700 font-black mb-4 leading-relaxed">ليه تشتري ماكينة تصوير وطباعة مستندات اذا كان ممكن تاخدها بنظام الايجار التمليكي؟</p>
+                    <p class="text-lg text-gray-600 font-bold mb-8">عروض الايجار التمليكي لالات تصوير المستندات تعطي لك العديد من المزايا:</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-4 md:gap-6">
+                        <!-- Points -->
+                        <div class="flex gap-4 items-start bg-gray-50 p-5 rounded-2xl hover:bg-rose-50 transition duration-300">
+                            <span class="bg-rose-700 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-black shrink-0 mt-0.5 shadow-md">1</span>
+                            <p class="text-sm md:text-base font-bold text-gray-700 leading-relaxed">التزام الشركة بتوفير قطع الغيار والاحبار طوال فترة التعاقد (36 شهر) لعدد نسخ يبدأ من 3000 نسخة ويصل الي 100 الف نسخة شهريا مقابل قيمة ايجارية تختلف من موديل الي اخر وحسب نوع الماكينة (ابيض واسود او الوان).</p>
+                        </div>
+                        <div class="flex gap-4 items-start bg-gray-50 p-5 rounded-2xl hover:bg-rose-50 transition duration-300">
+                            <span class="bg-rose-700 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-black shrink-0 mt-0.5 shadow-md">2</span>
+                            <p class="text-sm md:text-base font-bold text-gray-700 leading-relaxed">نظام الايجار التمليكي يوفر عليك مشقة البحث عن قطع الغيار والاحبار او احتمالية شراء قطع غيار او احبار رديئة او من مصادر غير موثوق فيها.</p>
+                        </div>
+                        <div class="flex gap-4 items-start bg-gray-50 p-5 rounded-2xl hover:bg-rose-50 transition duration-300">
+                            <span class="bg-rose-700 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-black shrink-0 mt-0.5 shadow-md">3</span>
+                            <p class="text-sm md:text-base font-bold text-gray-700 leading-relaxed">التزام الشركة بعمل الصيانة اللازمة للماكينة طوال فترة التعاقد (36 شهر) بدون اضافة اي مصروفات اخري ومعني ذلك ان هذا العرض يوفر علي سيادتكم قيمة ثلاثة عقود صيانة.</p>
+                        </div>
+                        <div class="flex gap-4 items-start bg-gray-50 p-5 rounded-2xl hover:bg-rose-50 transition duration-300">
+                            <span class="bg-rose-700 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-black shrink-0 mt-0.5 shadow-md">4</span>
+                            <p class="text-sm md:text-base font-bold text-gray-700 leading-relaxed">التزام الشركة باصلاح وصيانة واستبدال اي اجزاء كهربية او ميكانيكية للماكينة.</p>
+                        </div>
+                        <div class="flex gap-4 items-start bg-gray-50 p-5 rounded-2xl hover:bg-rose-50 transition duration-300">
+                            <span class="bg-rose-700 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-black shrink-0 mt-0.5 shadow-md">5</span>
+                            <p class="text-sm md:text-base font-bold text-gray-700 leading-relaxed">التزام الشركة باستبدال الماكينة باخري احدث في نهاية التعاقد (عند الرغبة في ذلك) وتقييمها بسعر افضل من الاسعار السوقية المتداولة وقتها وتخصم من سعر الماكينة الجديدة وبنفس نظام الدفع.</p>
+                        </div>
+                        <div class="flex gap-4 items-start bg-gray-50 p-5 rounded-2xl hover:bg-rose-50 transition duration-300">
+                            <span class="bg-rose-700 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-black shrink-0 mt-0.5 shadow-md">6</span>
+                            <p class="text-sm md:text-base font-bold text-gray-700 leading-relaxed">ميزة عدم دفع قيمة الماكينة نقدا او دفع مقدم عالي والاكتفاء بدفع قيمة تأمين يتم تحديدة حسب كل موديل وذلك يعطي فرصة اختيار اي عدد من الماكينات ايا كان سعرها.</p>
+                        </div>
+                        <div class="flex gap-4 items-start bg-gray-50 p-5 rounded-2xl hover:bg-rose-50 transition duration-300">
+                            <span class="bg-rose-700 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-black shrink-0 mt-0.5 shadow-md">7</span>
+                            <p class="text-sm md:text-base font-bold text-gray-700 leading-relaxed">يتم توفير احدث الاصدارات بكبري الماركات العالمية لماكينات الطباعة والتصوير (ابيض واسود والوان ليزر) بسرعات تصوير تبدأ من 16 نسخة/دقيقة وحتي 135 نسخة/دقيقة وامكانية تركيب كافة الكماليات لها.</p>
+                        </div>
+                        <div class="flex gap-4 items-start bg-gray-50 p-5 rounded-2xl hover:bg-rose-50 transition duration-300">
+                            <span class="bg-rose-700 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-black shrink-0 mt-0.5 shadow-md">8</span>
+                            <p class="text-sm md:text-base font-bold text-gray-700 leading-relaxed">الايجار التمليكي للمعدات عموما طريقة مثلي للحصول علي احدث المنتجات في ظل عدم وجود سيولة نقدية وبالتالي تضطر للجوء الي الحصول علي قروض وفوائد عالية من البنوك.</p>
+                        </div>
+                        <div class="flex gap-4 items-start bg-gray-50 p-5 rounded-2xl hover:bg-rose-50 transition duration-300">
+                            <span class="bg-rose-700 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-black shrink-0 mt-0.5 shadow-md">9</span>
+                            <p class="text-sm md:text-base font-bold text-gray-700 leading-relaxed">ميزة احتساب القيمة الايجارية من ضمن مصروفات منشئاتكم وبالتالي يمكن خصمها من الضرائب.</p>
+                        </div>
+                        <div class="flex gap-4 items-start bg-gray-50 p-5 rounded-2xl hover:bg-rose-50 transition duration-300">
+                            <span class="bg-rose-700 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-black shrink-0 mt-0.5 shadow-md">10</span>
+                            <p class="text-sm md:text-base font-bold text-gray-700 leading-relaxed">التزام الشركة بتوفير ماكينة بديلة او اكثر في حالة تكرار الاعطال وذلك بدون اي فروق سعرية اضافية.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 bg-rose-900 text-white p-6 rounded-2xl text-center font-bold text-lg md:text-xl shadow-inner">
+                        وأخيراً هذا العرض يوفر على الشركات الكبرى والمتعددة الفروع آلاف الجنيهات للحصول على ماكينات ومعدات التصوير والطباعة.
+                    </div>
+                </div>
+            </div>
+
+            <!-- كروت النظامين الآخرين -->
+            <div class="grid lg:grid-cols-2 gap-8 md:gap-10">
+                
+                <!-- 2. بيع بالضمان -->
+                <div class="bg-white rounded-[3rem] p-8 md:p-12 shadow-xl border border-gray-100 hover:border-green-200 transition-all duration-500 hover:-translate-y-2 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-green-50 rounded-full -mr-10 -mt-10 blur-2xl transition-transform duration-700 group-hover:scale-150"></div>
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-sm"><i class="fa fa-shield-alt"></i></div>
+                        <h3 class="text-2xl md:text-3xl font-black text-rose-950 font-cairo mb-6">بيع بالضمان</h3>
+                        <p class="text-gray-600 text-base md:text-lg font-bold leading-relaxed mb-4">
+                            وفيه تضمن الشركة أي ماكينة ضد عيوب الصناعة لمدة محددة أو عدد نسخ حسب نوع الماكينة المباعة (أيهما أقرب).
+                        </p>
+                        <p class="text-gray-500 text-sm md:text-base font-medium leading-relaxed mb-6 bg-gray-50 p-4 rounded-xl border border-gray-100">
+                            <strong class="text-rose-700">بمعنى:</strong> أن العميل اذا اشترى ماكينة معينة بضمان 6 شهور أو 25 ألف نسخة - أيهما أقرب فى الحدوث - اذا قام العميل بعمل 25 الف نسخة خلال شهر أو شهرين أو أكثر ينتهى الضمان وقتها أو ينتظر انتهاء المدة طالما لم يتم طباعة 25 الف نسخة قبل انتهاء المدة.
+                        </p>
+                        <p class="text-gray-600 text-base md:text-lg font-bold leading-relaxed">
+                            والشركة فى هذا النظام توفر الصيانة المجانية وجميع قطع الغيار ومستلزمات التشغيل مجانا ماعدا الأحبار للمدة المحددة فى العقد، ثم ننفرد بعمل ضمان جديد مدته 5 سنوات ضد عيوب الصناعة غير شامل مستلزمات التشغيل والأحبار لمدة 5 سنوات بشرط أن يقوم العميل بعمل عقد صيانة عن كل سنة.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 3. بيع بدون ضمان (تجاري) -->
+                <div class="bg-white rounded-[3rem] p-8 md:p-12 shadow-xl border border-gray-100 hover:border-gray-300 transition-all duration-500 hover:-translate-y-2 relative overflow-hidden group flex flex-col">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-gray-100 rounded-full -mr-10 -mt-10 blur-2xl transition-transform duration-700 group-hover:scale-150"></div>
+                    <div class="relative z-10 flex-1">
+                        <div class="w-16 h-16 bg-gray-100 text-gray-600 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-sm"><i class="fa fa-box-open"></i></div>
+                        <h3 class="text-2xl md:text-3xl font-black text-rose-950 font-cairo mb-6">بيع بدون ضمان (تجارى)</h3>
+                        <p class="text-gray-600 text-base md:text-lg font-bold leading-relaxed mb-6">
+                            وفى هذا النظام يأتى العميل الى الشركة ليقوم بتجربة الماكينة التى يرغب فى شرائها على أن ينتقل الضمان والصيانة على مسئوليته الشخصية.
+                        </p>
+                        <p class="text-gray-600 text-base md:text-lg font-bold leading-relaxed mb-8">
+                            ويتم تلبية الأعطال وتوريد قطع الغيار فى مثل هذا النوع من التعاقد بنظام الزيارة الحرة أو بنظام عقود الصيانة.
+                        </p>
+                    </div>
+                    
+                    <!-- رسالة التحذير -->
+                    <div class="relative z-10 mt-auto bg-red-50 text-red-600 border border-red-200 p-5 rounded-2xl flex items-center gap-4 font-black text-lg shadow-sm">
+                        <i class="fa fa-exclamation-triangle text-2xl animate-pulse"></i>
+                        <span>ونحن لا ننصح بهذا النوع من أنظمة البيع.</span>
+                    </div>
+                </div>
+
+            </div>
+            
+        </section>
+    </main>
+
+    <!-- PAGE: TECH SUPPORT & MAINTENANCE (الدعم الفني وعقود الصيانة) -->
+    <main id="page-tech-support" class="page-section text-right">
+        <section class="pt-8 pb-24 container mx-auto px-6 lg:px-12 text-right">
+            
+            <!-- عنوان الصفحة الرئيسي -->
+            <div class="mb-12">
+                <div class="flex items-center justify-center mb-6 w-full relative">
+                    <div class="absolute w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent top-1/2 transform -translate-y-1/2"></div>
+                    <div class="inline-flex items-center justify-center gap-2 md:gap-4 bg-white px-5 md:px-10 py-2 md:py-4 rounded-full relative z-10 border border-gray-100 shadow-sm max-w-full">
+                        <span class="relative flex h-3 w-3">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-3 w-3 bg-rose-600"></span>
+                        </span>
+                        <h2 class="text-2xl md:text-5xl font-black font-cairo shimmer-text text-center leading-relaxed pb-1 md:pb-2 mt-1">الدعم الفني وعقود الصيانة</h2>
+                    </div>
+                </div>
+                <p class="text-xl md:text-2xl text-gray-600 font-bold text-center max-w-3xl mx-auto leading-relaxed relative z-10">
+                    إيه الفرق بين أنواع عقود الصيانة لماكينات تصوير المستندات؟
+                </p>
+            </div>
+
+            <!-- كروت أنواع الصيانة -->
+            <div class="grid lg:grid-cols-3 gap-6 md:gap-8 mb-16">
+                
+                <!-- 1. الزيارة الحرة -->
+                <div class="bg-white rounded-[2rem] p-8 shadow-md border border-gray-100 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group">
+                    <div class="w-16 h-16 bg-gray-100 text-gray-600 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-inner group-hover:bg-gray-200 transition-colors"><i class="fa fa-wrench"></i></div>
+                    <h3 class="text-2xl font-black text-rose-950 font-cairo mb-5 border-b border-gray-100 pb-4">أولاً: الزيارة الحرة</h3>
+                    <ul class="space-y-4 text-gray-600 font-bold text-sm md:text-base leading-relaxed">
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-check-circle text-rose-500 mt-1"></i>
+                            <span>الزيارة تشمل الاصلاح والصيانة <span class="text-rose-700 font-black">ولا تشمل</span> تكلفة تركيب أية قطع غيار تحتاجها الماكينة.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-clock text-rose-500 mt-1"></i>
+                            <span>يتم تلبية اتصالات أعطال العملاء في هذا النوع خلال <strong>48 إلى 72 ساعة</strong>.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-coins text-rose-500 mt-1"></i>
+                            <span>كل زيارة لها تكلفتها حسب حجم الأعطال ونوع الصيانة وماركة وموديل الماكينة.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-info-circle text-rose-500 mt-1"></i>
+                            <span>يتم دفع تكلفة زيارة الصيانة مرة واحدة فقط حتى لو اصلاح العطل استلزم زيارة صيانة أخرى.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 2. عقود الصيانة العادية -->
+                <div class="bg-white rounded-[2rem] p-8 shadow-lg border border-blue-50 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group">
+                    <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-inner group-hover:bg-blue-100 transition-colors"><i class="fa fa-file-signature"></i></div>
+                    <h3 class="text-2xl font-black text-rose-950 font-cairo mb-5 border-b border-blue-50 pb-4">ثانياً: عقود الصيانة العادية</h3>
+                    <ul class="space-y-4 text-gray-600 font-bold text-sm md:text-base leading-relaxed">
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-check-circle text-blue-500 mt-1"></i>
+                            <span>عدد <strong>لا نهائي</strong> من زيارات الصيانة (غير شاملة قطع الغيار والأحبار).</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-shield-alt text-blue-500 mt-1"></i>
+                            <span>يتم تركيب قطع الغيار والأحبار من خلال الشركة فقط مع التزام الشركة بالضمان.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-clock text-blue-500 mt-1"></i>
+                            <span>يتم تلبية اتصالات أعطال العملاء خلال <strong>24 إلى 48 ساعة</strong>.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-gift text-blue-500 mt-1"></i>
+                            <span>يتم عمل <span class="text-rose-700">عمرة صيانة مجانية</span> في بداية التعاقد للحفاظ علي استقرار الماكينة.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-info-circle text-blue-500 mt-1"></i>
+                            <span>قيمة العقد سنوية، ولا تشمل رسوم انتقالات المهندس لمكان العميل، وتختلف حسب الماركة.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 3. عقود الصيانة الشاملة (الأفضل) -->
+                <div class="bg-gradient-to-br from-white to-rose-50 rounded-[2rem] p-8 shadow-xl border border-rose-200 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group relative overflow-hidden">
+                    <div class="absolute top-0 left-0 bg-rose-700 text-white font-black text-[10px] px-4 py-1.5 rounded-br-2xl uppercase tracking-widest z-10 shadow-sm">الأفضل والآمن</div>
+                    
+                    <div class="w-16 h-16 bg-rose-100 text-rose-700 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-inner group-hover:bg-rose-200 transition-colors relative z-10"><i class="fa fa-crown"></i></div>
+                    <h3 class="text-2xl font-black text-rose-950 font-cairo mb-5 border-b border-rose-100 pb-4 relative z-10">ثالثاً: عقود الصيانة الشاملة</h3>
+                    <ul class="space-y-4 text-gray-700 font-bold text-sm md:text-base leading-relaxed relative z-10">
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-check-circle text-rose-600 mt-1"></i>
+                            <span>عدد <strong>لا نهائي</strong> من زيارات الصيانة <span class="text-rose-800 font-black">(والتي تشمل قطع الغيار والأحبار)</span>.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-sync-alt text-rose-600 mt-1"></i>
+                            <span>ضمان قطع الغيار والأحبار واستبدال أي قطع غيار تالفة أو رديئة طوال مدة التعاقد.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-gift text-rose-600 mt-1"></i>
+                            <span>عمرة صيانة مجانية في بداية التعاقد للحفاظ علي استقرار الماكينة.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-file-contract text-rose-600 mt-1"></i>
+                            <span>يتم التعاقد حسب عدد النسخ المطلوب شهرياً (وتختلف القيمة حسب الموديل والنوع).</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-rocket text-rose-600 mt-1"></i>
+                            <span>تلبية اتصالات أعطال العملاء في هذا النوع <strong>خلال 24 ساعة فقط</strong>.</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- عرض خاص (Special Offer Banner) -->
+            <div class="bg-gradient-to-r from-rose-900 to-rose-700 rounded-[3rem] p-8 md:p-12 shadow-2xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
+                <!-- دوائر ديكورية في الخلفية -->
+                <div class="absolute -top-20 -right-20 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl"></div>
+                <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-yellow-400 opacity-10 rounded-full blur-3xl"></div>
+                
+                <div class="relative z-10 flex-1 text-center md:text-right">
+                    <p class="text-rose-100 font-medium text-lg md:text-xl mb-4 leading-relaxed">
+                        نحن في شركة العدل نقدم لعملاء ماكينات التصوير جميع أنواع وخدمات الصيانة سواء بالزيارة الحرة أو بعقود الصيانة العادية أو الشاملة قطع الغيار والأحبار.
+                    </p>
+                    <h3 class="text-3xl md:text-4xl font-black text-white font-cairo leading-tight mb-4">
+                        خصم <span class="text-yellow-400 text-5xl md:text-6xl">50%</span> على عقود صيانة <br class="hidden md:block">جميع إصدارات ماركات ريكو!
+                    </h3>
+                    <p class="text-xl md:text-2xl text-rose-200 font-bold mb-6">
+                        أو احصل على <span class="text-white border-b-2 border-yellow-400 pb-1">ضعف مدة التعاقد</span> بنفس قيمة العقد السنوي.
+                    </p>
+                </div>
+
+                <div class="relative z-10 w-full md:w-auto shrink-0 flex flex-col items-center">
+                    <p class="text-sm font-bold text-rose-200 mb-3 text-center">للاستفادة من العرض ابعتلنا رقمك</p>
+                    <a href="https://wa.me/201094799247?text=السلام%20عليكم،%20أريد%20الاستفادة%20من%20عرض%20الـ%2050%25%20على%20عقود%20الصيانة" target="_blank" class="btn-heartbeat bg-white text-rose-900 px-8 py-4 rounded-2xl font-black text-lg md:text-xl shadow-xl flex items-center justify-center gap-3 hover:bg-gray-50 transition w-full md:w-auto">
+                        تواصل مع خدمة العملاء
+                        <i class="fab fa-whatsapp text-2xl text-green-500"></i>
+                    </a>
+                </div>
+            </div>
+            
         </section>
     </main>
 
@@ -789,6 +1057,50 @@
                 paperSize: 'A3, A4, A5 والعديد من المقاسات',
                 price: '28,000 جنيه',
                 category: 'bw-copiers' 
+            },
+            {
+                name: 'ريكو Aficio MP C305',
+                image: 'images/Mp C305.png',
+                condition: 'استيراد',
+                speed: '30 ورقة / دقيقة',
+                resolution: '1200 * 1200',
+                functions: 'طباعة – تصوير – سكانر – فاكس',
+                paperSize: 'A4, A5, A6',
+                price: '6500 جنيه',
+                category: 'color-copiers' 
+            },
+            {
+                name: 'ريكو Aficio MP C307',
+                image: 'images/Mp C307.png',
+                condition: 'استيراد',
+                speed: '30 ورقة / دقيقة',
+                resolution: '1200 * 1200',
+                functions: 'طباعة – تصوير – سكانر – فاكس',
+                paperSize: 'A4, A5, A6',
+                price: '8000 جنيه',
+                category: 'color-copiers' 
+            },
+            {
+                name: 'ريكو Aficio MP 201',
+                image: 'images/MP 201.png',
+                condition: 'استيراد',
+                speed: '20 ورقة / دقيقة',
+                resolution: '1200 * 1200',
+                functions: 'طباعة – تصوير – سكانر – فاكس',
+                paperSize: 'A4, A5, A6',
+                price: '7500 جنيه',
+                category: 'bw-copiers' 
+            },
+            {
+                name: 'ريكو Aficio MP 301',
+                image: 'images/MP 301.png',
+                condition: 'استيراد',
+                speed: '30 ورقة / دقيقة',
+                resolution: '1200 * 1200',
+                functions: 'طباعة – تصوير – سكانر – فاكس',
+                paperSize: 'A4, A5, A6',
+                price: '6500 جنيه',
+                category: 'bw-copiers' 
             }
         ];
 
@@ -803,20 +1115,20 @@
                 const recentProducts = [...productsDB].reverse().slice(0, 5); // عرض آخر 5 منتجات
                 recentProducts.forEach(prod => {
                     const homeCardHTML = `
-                        <div class="min-w-[260px] md:min-w-[280px] snap-center shrink-0 product-card bg-white border border-gray-100 p-4 rounded-3xl shadow-sm group flex flex-col relative hover:-translate-y-2 transition-transform duration-300">
-                            ${prod.condition ? `<div class="absolute top-3 left-3 bg-rose-700 text-white text-[9px] font-black px-2 py-1 rounded shadow-sm z-10">${prod.condition}</div>` : ''}
-                            <div class="h-40 md:h-56 bg-gray-50 rounded-[1.5rem] mb-4 flex items-center justify-center p-1 relative overflow-hidden">
-                                <img src="${prod.image}" alt="${prod.name}" class="w-full h-full object-contain scale-105 group-hover:scale-110 transition duration-500">
+                        <div class="w-[220px] md:w-[260px] max-w-full mx-auto snap-center shrink-0 product-card bg-white border border-gray-100 p-4 rounded-2xl shadow-sm group flex flex-col relative hover:-translate-y-2 transition-transform duration-300">
+                            ${prod.condition ? `<div class="absolute top-2 left-2 bg-rose-700 text-white text-[9px] font-black px-2 py-1 rounded shadow-sm z-10">${prod.condition}</div>` : ''}
+                            <div class="h-36 md:h-44 mb-4 flex items-center justify-center relative p-1">
+                                <img src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain group-hover:scale-110 transition duration-500">
                             </div>
-                            <h3 class="text-xs md:text-base font-black text-rose-950 mb-1 leading-tight">${prod.name}</h3>
-                            <p class="text-[9px] md:text-xs text-gray-500 font-bold mb-3 flex-1">${prod.speed} | ${prod.functions.split('–')[0].trim()}</p>
+                            <h3 class="text-xs md:text-sm font-black text-rose-950 mb-2 leading-tight">${prod.name}</h3>
+                            <p class="text-[10px] text-gray-500 font-bold mb-4 flex-1">${prod.speed} | ${prod.functions.split('–')[0].trim()}</p>
                             
                             <div class="mt-auto border-t border-gray-50 pt-3 flex flex-col gap-2">
                                 <div class="flex items-center justify-between">
-                                    <span class="text-rose-900 font-black text-xs md:text-sm">${prod.price}</span>
-                                    <button onclick="navigateTo('products', '${prod.category}')" class="bg-gray-100 text-gray-700 py-1.5 px-4 rounded-lg font-bold text-[10px] shadow-sm hover:bg-gray-200 transition">تفاصيل</button>
+                                    <span class="text-rose-900 font-black text-xs">${prod.price}</span>
+                                    <button onclick="navigateTo('products', '${prod.category}')" class="bg-gray-100 text-gray-700 py-1.5 px-3 rounded-lg font-bold text-[10px] shadow-sm hover:bg-gray-200 transition">تفاصيل</button>
                                 </div>
-                                <button onclick="orderNowWA('${prod.name}')" class="btn-heartbeat w-full bg-rose-700 text-white py-2 rounded-xl font-bold text-xs shadow-md hover:bg-rose-800 transition">اطلب الآن</button>
+                                <button onclick="orderNowWA('${prod.name}')" class="btn-heartbeat w-full bg-rose-700 text-white py-2 rounded-lg font-bold text-xs shadow-md hover:bg-rose-800 transition">اطلب الآن</button>
                             </div>
                         </div>
                     `;
@@ -836,14 +1148,14 @@
             } else {
                 filteredProducts.forEach(prod => {
                     const catalogCardHTML = `
-                        <div class="bg-white rounded-[2rem] shadow-xl border border-gray-100 overflow-hidden group flex flex-col">
-                            <div class="h-72 bg-gray-50 flex items-center justify-center p-2 relative overflow-hidden">
-                                <img src="${prod.image}" alt="${prod.name}" class="w-full h-full object-contain scale-105 group-hover:scale-110 transition duration-500">
-                                ${prod.condition ? `<div class="absolute top-4 left-4 bg-rose-700 text-white text-xs font-black px-3 py-1 rounded-full shadow-md z-10">${prod.condition}</div>` : ''}
+                        <div class="bg-white rounded-[1.5rem] shadow-xl border border-gray-100 overflow-hidden group flex flex-col w-full max-w-[300px] mx-auto">
+                            <div class="h-48 md:h-56 flex items-center justify-center relative p-4 mt-2">
+                                <img src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain group-hover:scale-110 transition duration-500">
+                                ${prod.condition ? `<div class="absolute top-2 left-2 bg-rose-700 text-white text-xs font-black px-3 py-1 rounded-full shadow-md z-10">${prod.condition}</div>` : ''}
                             </div>
-                            <div class="p-6 text-right flex-1 flex flex-col">
-                                <h3 class="text-xl font-black text-rose-950 mb-4">${prod.name}</h3>
-                                <ul class="space-y-2 mb-6 text-xs font-bold text-gray-600 flex-1">
+                            <div class="p-5 text-right flex-1 flex flex-col">
+                                <h3 class="text-xl font-black text-rose-950 mb-3">${prod.name}</h3>
+                                <ul class="space-y-2 mb-5 text-xs font-bold text-gray-600 flex-1">
                                     <li class="flex items-start gap-2"><i class="fa fa-print text-rose-600 mt-1"></i> <span><strong>الوظائف:</strong> ${prod.functions}</span></li>
                                     <li class="flex items-start gap-2"><i class="fa fa-bolt text-rose-600 mt-1"></i> <span><strong>السرعة:</strong> ${prod.speed}</span></li>
                                     <li class="flex items-start gap-2"><i class="fa fa-expand text-rose-600 mt-1"></i> <span><strong>الدقة:</strong> ${prod.resolution}</span></li>
@@ -851,7 +1163,7 @@
                                 </ul>
                                 <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
                                     <span class="text-xl font-black text-rose-900">${prod.price}</span>
-                                    <button onclick="orderNowWA('${prod.name}')" class="btn-heartbeat bg-rose-700 text-white px-5 py-2.5 rounded-xl font-black text-sm shadow-lg hover:bg-rose-800 transition">طلب شراء</button>
+                                    <button onclick="orderNowWA('${prod.name}')" class="btn-heartbeat bg-rose-700 text-white px-5 py-2.5 rounded-xl font-black text-sm shadow-md hover:bg-rose-800 transition">طلب شراء</button>
                                 </div>
                             </div>
                         </div>
