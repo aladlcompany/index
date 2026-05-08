@@ -123,9 +123,8 @@
             <div class="mobile-card">
                 <button onclick="toggleAccordion('m-prods')" class="mobile-trigger text-rose-700"><span>المنتجات</span><i class="fa fa-chevron-down text-[10px] opacity-30"></i></button>
                 <div id="m-prods" class="hidden bg-gray-50 pb-2 text-right">
-                    <div class="p-3 bg-gray-100 font-bold text-xs text-rose-900">ماكينات تصوير مستندات</div>
-                    <a onclick="navigateTo('products', 'bw-copiers')" class="nested-link pr-8 italic">● ابيض واسود (جديد/استيراد)</a>
-                    <a onclick="navigateTo('products', 'color-copiers')" class="nested-link pr-8 italic">● الوان (جديد/استيراد)</a>
+                    <a onclick="navigateTo('products', 'bw-copiers')" class="nested-link">ماكينات تصوير أسود</a>
+                    <a onclick="navigateTo('products', 'color-copiers')" class="nested-link">ماكينات تصوير ألوان</a>
                     <a onclick="navigateTo('products', 'digital-color')" class="nested-link">ماكينات طباعة ديجيتال الوان</a>
                     <a onclick="navigateTo('products', 'digital-bw')" class="nested-link">ماكينات طباعة ديجيتال ابيض واسود</a>
                     <a onclick="navigateTo('products', 'plotters')" class="nested-link">ماكينات لوحات هندسية</a>
@@ -241,20 +240,8 @@
                 <div class="dropdown-container">
                     <button class="py-5 px-1 flex items-center gap-2 hover:text-rose-700 transition-all text-sm text-rose-700 font-black">المنتجات <i class="fa fa-chevron-down text-[9px] opacity-40"></i></button>
                     <div id="d-prods" class="dropdown-menu">
-                        <div class="dropdown-card !bg-white !cursor-default flex flex-col items-start gap-1 text-right">
-                            <span>ماكينات تصوير مستندات ابيض واسود</span>
-                            <div class="sub-link-group">
-                                <a onclick="navigateTo('products', 'bw-copiers')" class="sub-link-item">جديدة</a>
-                                <a onclick="navigateTo('products', 'bw-copiers')" class="sub-link-item">استيراد الخارج</a>
-                            </div>
-                        </div>
-                        <div class="dropdown-card !bg-white !cursor-default flex flex-col items-start gap-1 text-right">
-                            <span>ماكينات تصوير مستندات الوان</span>
-                            <div class="sub-link-group">
-                                <a onclick="navigateTo('products', 'color-copiers')" class="sub-link-item">جديدة</a>
-                                <a onclick="navigateTo('products', 'color-copiers')" class="sub-link-item">استيراد الخارج</a>
-                            </div>
-                        </div>
+                        <a onclick="navigateTo('products', 'bw-copiers')" class="dropdown-card">ماكينات تصوير أسود</a>
+                        <a onclick="navigateTo('products', 'color-copiers')" class="dropdown-card">ماكينات تصوير ألوان</a>
                         <a onclick="navigateTo('products', 'digital-color')" class="dropdown-card">ماكينات طباعة ديجيتال الوان</a>
                         <a onclick="navigateTo('products', 'digital-bw')" class="dropdown-card">ماكينات طباعة ديجيتال ابيض واسود</a>
                         <a onclick="navigateTo('products', 'plotters')" class="dropdown-card">ماكينات لوحات هندسية</a>
@@ -482,16 +469,14 @@
     <script>
         const MAIN_NUM = "201094799247";
 
-        // Navigation Engine with Mobile Auto-Close
         function navigateTo(targetId, category = 'all') {
-            // إضافة تأخير بسيط (50 مللي ثانية) عشان اللون الأحمر يلحق يظهر للمستخدم في الموبايل
             setTimeout(() => {
                 document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
                 const target = document.getElementById('page-' + targetId);
                 if (target) { target.classList.add('active'); window.scrollTo({top: 0, behavior: 'smooth'}); }
                 
                 closeAllDropdowns();
-                closeMobileMenu(); // قفل القائمة الجانبية والأكورديون فوراً
+                closeMobileMenu();
                 
                 if (targetId === 'products') {
                     renderProducts(category);
@@ -505,7 +490,6 @@
             menu.classList.toggle('open');
             overlay.classList.toggle('show');
             
-            // لو القائمة بتتقفل عن طريق زر الـ X، اقفل كل الأكورديون معاها
             if (!menu.classList.contains('open')) {
                 setTimeout(() => {
                     document.querySelectorAll('#m-who, #m-prods, #m-parts, #m-toners, #m-serv').forEach(acc => acc.classList.add('hidden'));
@@ -513,7 +497,6 @@
             }
         }
 
-        // دالة جديدة لقفل القائمة بالكامل عند الانتقال لصفحة جديدة
         function closeMobileMenu() {
             document.getElementById('mobile-menu').classList.remove('open');
             document.getElementById('overlay').classList.remove('show');
@@ -538,7 +521,6 @@
         function closeAllDropdowns() { document.querySelectorAll('.dropdown-menu').forEach(d => d.classList.remove('show')); }
         window.addEventListener('click', (e) => { if (!e.target.closest('.dropdown-container')) closeAllDropdowns(); });
 
-        // WhatsApp Forms
         function updateWA() {
             const n = document.getElementById('mName').value.trim();
             const p = document.getElementById('mPhone').value.trim();
@@ -553,7 +535,10 @@
                 btn.classList.remove('opacity-50', 'cursor-not-allowed');
                 let text = `السلام عليكم شركة العدل،\nأود طلب صيانة فنية:\n👤 الاسم: ${n}\n📞 الهاتف: ${p}\n📞 هاتف 2: ${p2 || '-'}\n📍 العنوان: ${addr || '-'}\n🛠️ وصف العطل: ${desc}`;
                 btn.href = `https://wa.me/${MAIN_NUM}?text=${encodeURIComponent(text)}`;
-            } else { btn.classList.add('opacity-50', 'cursor-not-allowed'); btn.href = "javascript:void(0)"; }
+            } else { 
+                btn.classList.add('opacity-50', 'cursor-not-allowed'); 
+                btn.href = "javascript:void(0)"; 
+            }
         }
 
         function checkForm(e) {
@@ -573,9 +558,6 @@
             window.open(`https://wa.me/${MAIN_NUM}?text=${encodeURIComponent(text)}`, '_blank');
         }
 
-        // ==============================================
-        // نظام المنتجات الأوتوماتيكي
-        // ==============================================
         const productsDB = [
             {
                 name: 'ريكو Aficio MP 5002',
