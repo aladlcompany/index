@@ -477,7 +477,7 @@
     =============================================== -->
     <main id="page-articles" class="page-section text-right">
         <section class="pt-8 pb-12 container mx-auto px-6 lg:px-12 text-right">
-            <div id="articlesGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div id="articlesGrid" class="space-y-16">
                 <!-- Articles JS -->
             </div>
         </section>
@@ -492,7 +492,7 @@
                 <i class="fa fa-arrow-right group-hover:-translate-x-1 transition-transform"></i>
                 رجوع لقائمة المقالات
             </button>
-            <div id="singleArticleContainer" class="bg-white rounded-[3rem] shadow-xl border border-gray-100 overflow-hidden">
+            <div id="singleArticleContainer">
                 <!-- Single Article JS -->
             </div>
         </section>
@@ -575,7 +575,7 @@
                             <strong class="text-rose-700">بمعنى:</strong> أن العميل اذا اشترى ماكينة معينة بضمان 6 شهور أو 25 ألف نسخة - أيهما أقرب فى الحدوث - اذا قام العميل بعمل 25 الف نسخة خلال شهر أو شهرين أو أكثر ينتهى الضمان وقتها أو ينتظر انتهاء المدة طالما لم يتم طباعة 25 الف نسخة قبل انتهاء المدة.
                         </p>
                         <p class="text-gray-600 text-base md:text-lg font-bold leading-relaxed">
-                            والشركة فى هذا النظام توفر الصيانة المجانية وجميع قطع الغيار ومستلزمات التشغيل مجانا ماعدا الأحبار للمدة المحددة فى العقد، ثم ننفرد بعمل ضمان جديد مدته 5 سنوات ضد عيوب الصناعة غير شامل مستلزمات التشغيل والأحبار لمدة 5 سنوات بشرط أن يقوم العميل بعمل عقد صيانة عن كل سنة.
+                            والشركة فى هذا نظام توفر الصيانة المجانية وجميع قطع الغيار ومستلزمات التشغيل مجانا ماعدا الأحبار للمدة المحددة فى العقد، ثم ننفرد بعمل ضمان جديد مدته 5 سنوات ضد عيوب الصناعة غير شامل مستلزمات التشغيل والأحبار لمدة 5 سنوات بشرط أن يقوم العميل بعمل عقد صيانة عن كل سنة.
                         </p>
                     </div>
                 </div>
@@ -639,7 +639,7 @@
                     <div class="absolute top-0 left-0 bg-rose-700 text-white font-black text-[10px] px-4 py-1.5 rounded-br-2xl uppercase shadow-sm">الأفضل والآمن</div>
                     <div class="w-16 h-16 bg-rose-100 text-rose-700 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-inner"><i class="fa fa-crown"></i></div>
                     <h3 class="text-2xl font-black text-rose-950 font-cairo mb-5 border-b border-rose-100 pb-4 relative z-10">ثالثاً: عقود شاملة</h3>
-                    <ul class="space-y-4 text-gray-700 font-bold text-sm leading-relaxed relative z-10">
+                    <ul class="space-y-4 text-gray-700 font-bold text-sm md:text-base leading-relaxed relative z-10">
                         <li><i class="fa fa-check-circle text-rose-600 ml-1"></i> عدد لا نهائي زيارات <span class="text-rose-800 font-black">(شاملة قطع غيار وأحبار)</span>.</li>
                         <li><i class="fa fa-sync-alt text-rose-600 ml-1"></i> ضمان القطع واستبدال التالف طوال التعاقد.</li>
                         <li><i class="fa fa-file-contract text-rose-600 ml-1"></i> التعاقد حسب عدد النسخ المطلوبة.</li>
@@ -781,11 +781,13 @@
                 </div>
 
                 <div id="teamContainer" class="flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory hide-scrollbar scroll-smooth">
+                    <!-- كارت المدير العام الجديد -->
                     <div class="min-w-[280px] md:min-w-[320px] bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 snap-center text-center group hover:-translate-y-2 transition-transform duration-300">
-                        <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-50 mb-6 group-hover:border-rose-200 transition-colors duration-300">
-                            <img src="https://ui-avatars.com/api/?name=مدير+الشركة&background=be123c&color=fff&size=150&font-size=0.3" alt="مدير الشركة" class="w-full h-full object-cover">
+                        <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-600 mb-6 group-hover:border-rose-400 transition-colors duration-300 shadow-[0_0_15px_rgba(190,18,60,0.2)] flex items-center justify-center bg-gray-50">
+                            <!-- استبدل manager.jpg بصورة المهندس عمرو -->
+                            <img src="manager.jpg" alt="م / عمرو عبدالستار العدل" class="max-w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=عمرو+العدل&background=be123c&color=fff&size=150&font-size=0.3'">
                         </div>
-                        <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">مدير الشركة</h4>
+                        <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">م / عمرو عبدالستار العدل</h4>
                         <div class="inline-block px-4 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-black mb-5">المدير العام والمؤسس</div>
                         <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">رؤية ثاقبة وخبرة عميقة في تطوير استراتيجيات السوق، يقود فريق العدل نحو القمة برؤية تواكب أحدث تكنولوجيات الطباعة.</p>
                     </div>
@@ -1134,14 +1136,25 @@
             if (!grid) return;
             grid.innerHTML = '';
             articlesDB.forEach(article => {
-                const cardHTML = `<div onclick="openSingleArticle('${article.id}')" class="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden group cursor-pointer hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col">
-                    <div class="h-56 bg-gray-50 overflow-hidden relative">
-                        <img src="${article.image}" alt="${article.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                const cardHTML = `
+                <div class="flex flex-col md:flex-row items-center gap-8 group cursor-pointer" onclick="openSingleArticle('${article.id}')">
+                    <!-- صورة Fit وحجم محكم بدون خلفية أو حدود -->
+                    <div class="w-full md:w-64 h-48 overflow-hidden flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
+                        <img src="${article.image}" alt="${article.title}" class="max-w-full max-h-full object-contain">
                     </div>
-                    <div class="p-6 text-right flex-1 flex flex-col">
-                        <h3 class="text-lg md:text-xl font-black text-rose-950 mb-3 font-cairo leading-relaxed group-hover:text-rose-700 transition-colors">${article.title}</h3>
+                    <!-- محتوى نصي حر بدون مربع -->
+                    <div class="flex-1 text-right">
+                        <span class="text-rose-700 text-xs font-black mb-2 block tracking-widest">${article.date}</span>
+                        <h3 class="text-xl md:text-3xl font-black text-rose-950 font-cairo leading-relaxed group-hover:text-rose-700 transition-colors">${article.title}</h3>
+                        <p class="text-gray-500 mt-4 text-base md:text-lg font-medium leading-relaxed max-w-2xl">اضغط لقراءة التفاصيل الكاملة لهذا العرض أو المقال المتميز من شركة العدل...</p>
+                        <div class="mt-4 flex items-center gap-2 text-rose-900 font-bold">
+                            <span>اقرأ المزيد</span>
+                            <i class="fa fa-arrow-left text-xs animate-pulse"></i>
+                        </div>
                     </div>
-                </div>`;
+                </div>
+                <div class="h-px w-full bg-gradient-to-r from-transparent via-gray-200 to-transparent"></div>
+                `;
                 grid.insertAdjacentHTML('beforeend', cardHTML);
             });
         }
@@ -1150,28 +1163,63 @@
             const article = articlesDB.find(a => a.id === articleId);
             if (!article) return;
             const container = document.getElementById('singleArticleContainer');
-            container.innerHTML = `<div class="h-64 md:h-96 w-full bg-gray-50 relative overflow-hidden">
-                <img src="${article.image}" alt="${article.title}" class="w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                <div class="absolute bottom-6 right-6 left-6 text-white"><h1 class="text-2xl md:text-4xl font-black font-cairo leading-tight">${article.title}</h1></div>
-            </div><div class="p-8 md:p-12 text-gray-600 text-lg leading-loose">${article.content}</div>`;
+            container.innerHTML = `
+                <div class="mb-10 flex flex-col items-center">
+                    <!-- صورة Fit بدون أي مربع أو خلفية -->
+                    <img src="${article.image}" alt="${article.title}" class="max-w-full h-auto max-h-[400px] object-contain mb-8">
+                    
+                    <span class="bg-rose-100 text-rose-800 text-xs font-black px-4 py-1.5 rounded-full mb-4 inline-block">${article.date}</span>
+                    <h1 class="text-2xl md:text-4xl font-black font-cairo leading-tight text-center text-rose-950">${article.title}</h1>
+                </div>
+                <div class="text-gray-600 text-lg md:text-xl leading-loose max-w-3xl mx-auto px-4">
+                    ${article.content}
+                </div>`;
             navigateTo('single-article', 'all', true);
         }
 
         function handleSearch() {
             const query = document.getElementById('searchInput').value.trim().toLowerCase();
-            if (query !== "") navigateTo('products', 'all', false);
+            if (query !== "") {
+                const productsPage = document.getElementById('page-products');
+                if (!productsPage.classList.contains('active')) {
+                    document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+                    productsPage.classList.add('active');
+                    window.scrollTo({top: 0, behavior: 'smooth'});
+                }
+            }
             const catalogGrid = document.getElementById('catalogGrid');
             if (!catalogGrid) return;
             catalogGrid.innerHTML = '';
             let filteredProducts = [...productsDB].reverse();
-            if (query !== "") filteredProducts = filteredProducts.filter(p => p.name.toLowerCase().includes(query) || p.price.toLowerCase().includes(query));
+            if (query !== "") {
+                filteredProducts = filteredProducts.filter(p => p.name.toLowerCase().includes(query) || p.price.toLowerCase().includes(query));
+            }
             if (filteredProducts.length === 0) {
-                catalogGrid.innerHTML = '<div class="col-span-full text-center py-20 text-gray-400 font-bold text-lg">لم نجد أي منتج يطابق بحثك.</div>';
+                catalogGrid.innerHTML = '<div class="col-span-full text-center py-20 text-gray-400 font-bold text-lg"><i class="fa fa-search text-4xl mb-4 block text-rose-300 animate-pulse"></i>عذراً، لم نجد أي منتج يطابق بحثك.</div>';
             } else {
                 filteredProducts.forEach(prod => {
                     const safeId = 'prod-' + prod.name.replace(/\s+/g, '-');
-                    catalogGrid.insertAdjacentHTML('beforeend', `<div id="${safeId}" class="bg-white rounded-[1.5rem] shadow-xl border border-gray-100 overflow-hidden group flex flex-col w-full max-w-[300px] mx-auto transition-all duration-500"><div class="h-48 md:h-56 flex items-center justify-center relative p-4 mt-2"><img src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain group-hover:scale-110 transition duration-500"></div><div class="p-5 text-right flex-1 flex flex-col"><h3 class="text-xl font-black text-rose-950 mb-3">${prod.name}</h3><ul class="space-y-2 mb-5 text-xs font-bold text-gray-600 flex-1"><li><strong>السرعة:</strong> ${prod.speed}</li></ul><div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-100"><span class="text-xl font-black text-rose-900">${prod.price}</span><button onclick="orderNowWA('${prod.name}')" class="btn-heartbeat bg-rose-700 text-white px-5 py-2.5 rounded-xl font-black text-sm shadow-md hover:bg-rose-800 transition">طلب شراء</button></div></div></div>`);
+                    const catalogCardHTML = `
+                        <div id="${safeId}" class="bg-white rounded-[1.5rem] shadow-xl border border-gray-100 overflow-hidden group flex flex-col w-full max-w-[300px] mx-auto transition-all duration-500">
+                            <div class="h-48 md:h-56 flex items-center justify-center relative p-4 mt-2">
+                                <img src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain group-hover:scale-110 transition duration-500">
+                            </div>
+                            <div class="p-5 text-right flex-1 flex flex-col">
+                                <h3 class="text-xl font-black text-rose-950 mb-3">${prod.name}</h3>
+                                <ul class="space-y-2 mb-5 text-xs font-bold text-gray-600 flex-1">
+                                    <li class="flex items-start gap-2"><i class="fa fa-print text-rose-600 mt-1"></i> <span><strong>الوظائف:</strong> ${prod.functions}</span></li>
+                                    <li class="flex items-start gap-2"><i class="fa fa-bolt text-rose-600 mt-1"></i> <span><strong>السرعة:</strong> ${prod.speed}</span></li>
+                                    <li class="flex items-start gap-2"><i class="fa fa-expand text-rose-600 mt-1"></i> <span><strong>الدقة:</strong> ${prod.resolution}</span></li>
+                                    <li class="flex items-start gap-2"><i class="fa fa-file-alt text-rose-600 mt-1"></i> <span><strong>الورق:</strong> ${prod.paperSize}</span></li>
+                                </ul>
+                                <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
+                                    <span class="text-xl font-black text-rose-900">${prod.price}</span>
+                                    <button onclick="orderNowWA('${prod.name}')" class="btn-heartbeat bg-rose-700 text-white px-5 py-2.5 rounded-xl font-black text-sm shadow-md hover:bg-rose-800 transition">طلب شراء</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    catalogGrid.insertAdjacentHTML('beforeend', catalogCardHTML);
                 });
             }
         }
