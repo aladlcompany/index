@@ -6,11 +6,16 @@
     <title>شركة العدل | الحلول المتكاملة لماكينات التصوير والطابعات</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <!-- تم إضافة خط Cairo هنا للعناوين -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Tajawal:wght@300;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
         body { font-family: 'Tajawal', sans-serif; scroll-behavior: smooth; background-color: #f8fafc; overflow-x: hidden; }
+        
+        /* كلاس الخط الجديد للعناوين */
+        .font-cairo { font-family: 'Cairo', sans-serif; }
+        
         .page-section { display: none; }
         .page-section.active { display: block; animation: premiumFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes premiumFade { 
@@ -81,6 +86,21 @@
         /* Banner */
         .hero-banner-box { width: 100%; overflow: hidden; background: #fff; max-height: 450px; border-bottom: 4px solid #be123c; }
         .hero-banner-box img { width: 100%; height: auto; object-fit: contain; }
+
+        /* Shimmer Animation for the titles */
+        .shimmer-text {
+            background: linear-gradient(90deg, #4c0519 0%, #f43f5e 50%, #4c0519 100%);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shine 3s linear infinite;
+        }
+        @keyframes shine {
+            to {
+                background-position: 200% center;
+            }
+        }
 
         @media (max-width: 1024px) { .hero-banner-box { max-height: 250px; } }
     </style>
@@ -319,8 +339,18 @@
 
                 <!-- Products Grid -->
                 <div class="flex-1">
-                    <div class="flex items-center justify-between mb-8 border-r-4 border-rose-700 pr-4">
-                        <h2 class="text-2xl font-black text-rose-950 tracking-tighter">المنتجات المضافة حديثاً</h2>
+                    <div class="flex items-center justify-center mb-12 w-full relative">
+                        <!-- خط ديكور احترافي في الخلفية -->
+                        <div class="absolute w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent top-1/2 transform -translate-y-1/2"></div>
+                        
+                        <!-- العنوان في المنتصف بخط Cairo الفخم وتوسيط كامل -->
+                        <div class="flex items-center justify-center gap-4 bg-white px-10 py-4 rounded-full relative z-10 border border-gray-100 shadow-sm mx-auto w-max max-w-full">
+                            <span class="relative flex h-3 w-3">
+                              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                              <span class="relative inline-flex rounded-full h-3 w-3 bg-rose-600"></span>
+                            </span>
+                            <h2 class="text-2xl md:text-3xl font-black font-cairo shimmer-text text-center leading-relaxed pb-2 mt-1">المنتجات المضافة حديثاً</h2>
+                        </div>
                     </div>
                     
                     <div id="recentProductsGrid" class="grid grid-cols-2 xl:grid-cols-3 gap-4 md:gap-8">
@@ -337,7 +367,7 @@
                 <div class="bg-rose-950 rounded-[3rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row border-b-8 border-rose-700 text-right">
                     <div class="lg:w-2/5 p-8 md:p-14 text-white text-right flex flex-col justify-center bg-rose-900/40">
                         <h2 class="text-3xl md:text-4xl font-black mb-6 italic leading-tight uppercase">مركز الصيانة</h2>
-                        <p class="text-rose-100 text-base md:text-lg mb-10 leading-relaxed border-r-4 border-rose-400 pr-6 text-right">سجل بياناتك بدقة وسيصلك المهندس المختص في أسرع وقت.</p>
+                        <p class="text-rose-100 text-base md:text-lg mb-10 leading-relaxed border-r-4 border-rose-400 pr-6 text-right">سجل بيانات بدقة وسيصلك المهندس المختص في أسرع وقت.</p>
                         <div class="bg-white/10 p-5 rounded-2xl flex items-center justify-between"><span class="text-xl md:text-2xl font-black text-yellow-400 tracking-tighter">01094799247</span><i class="fa fa-tools text-2xl text-rose-400"></i></div>
                     </div>
                     <div class="lg:w-3/5 bg-white p-8 md:p-14 text-right">
@@ -376,8 +406,18 @@
     <!-- PAGE: PRODUCTS (CATALOG) -->
     <main id="page-products" class="page-section text-right">
         <section class="py-16 container mx-auto px-4 md:px-12">
-            <div class="flex items-center justify-between mb-10 border-r-[8px] border-rose-700 pr-4">
-                <h2 class="text-3xl md:text-4xl font-black text-rose-950 tracking-tighter">كتالوج المنتجات</h2>
+            <div class="flex items-center justify-center mb-12 w-full relative">
+                <!-- خط ديكور احترافي في الخلفية -->
+                <div class="absolute w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent top-1/2 transform -translate-y-1/2"></div>
+                
+                <!-- العنوان في المنتصف بخط Cairo الفخم وتوسيط كامل -->
+                <div class="flex items-center justify-center gap-4 bg-white px-10 py-4 rounded-full relative z-10 border border-gray-100 shadow-sm mx-auto w-max max-w-full">
+                    <span class="relative flex h-3 w-3">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-3 w-3 bg-rose-600"></span>
+                    </span>
+                    <h2 class="text-3xl md:text-4xl font-black font-cairo shimmer-text text-center leading-relaxed pb-2 mt-1">كتالوج المنتجات</h2>
+                </div>
             </div>
             <!-- الحاوية التي سيتم عرض المنتجات فيها بتفاصيل كاملة في صفحة الكتالوج -->
             <div id="catalogGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -390,7 +430,17 @@
     <main id="page-about" class="page-section text-right">
         <section class="py-24 container mx-auto px-6 text-right">
             <div class="max-w-4xl mx-auto text-right">
-                <h2 class="text-5xl font-black text-rose-950 mb-8 leading-tight tracking-tighter">عن شركة العدل</h2>
+                <!-- تم تطبيق نفس التنسيق على عنوان "عن الشركة" هنا أيضاً -->
+                <div class="flex items-center justify-center mb-12 w-full relative">
+                    <div class="absolute w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent top-1/2 transform -translate-y-1/2"></div>
+                    <div class="flex items-center justify-center gap-4 bg-white px-10 py-4 rounded-full relative z-10 border border-gray-100 shadow-sm mx-auto w-max max-w-full">
+                        <span class="relative flex h-3 w-3">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-3 w-3 bg-rose-600"></span>
+                        </span>
+                        <h2 class="text-3xl md:text-5xl font-black font-cairo shimmer-text text-center leading-relaxed pb-2 mt-1">عن شركة العدل</h2>
+                    </div>
+                </div>
                 <p class="text-2xl text-gray-600 leading-relaxed italic border-r-8 border-rose-700 pr-8">نحن متخصصون في تجارة وصيانة ماكينات التصوير والطابعات منذ أكثر من عشرين عاماً. نلتزم بالأمانة والعدل في تقديم خدماتنا لكافة عملائنا في الدقهلية وكافة المحافظات.</p>
             </div>
         </section>
