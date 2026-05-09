@@ -774,49 +774,58 @@
         </section>
     </main>
 
-    <!-- Footer المحسن والاحترافي -->
-    <footer class="bg-zinc-950 text-white pt-12 pb-8 px-4 md:px-6 border-t-8 border-rose-700">
-        <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 border-b border-white/5 pb-12">
-            <div class="text-center">
-                <div class="flex flex-col items-center justify-center mb-6">
-                    <h4 class="text-3xl font-black text-rose-50 uppercase tracking-tighter mb-4">شركة العدل</h4>
-                    <img src="logo.png" alt="شركة العدل" class="w-16 h-16 object-contain bg-white/10 rounded-2xl p-2" onerror="this.style.display='none'">
+    <!-- Footer المحسن والاحترافي للموبايل والكمبيوتر -->
+    <footer class="bg-zinc-950 text-white pt-10 pb-6 px-4 md:px-6 border-t-8 border-rose-700">
+        <div class="container mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 border-b border-white/5 pb-8">
+            
+            <!-- تعريف الشركة -->
+            <div class="col-span-2 md:col-span-1 text-center">
+                <div class="flex justify-center mb-4">
+                    <h4 class="text-2xl md:text-3xl font-black text-rose-50 uppercase tracking-tighter">شركة العدل</h4>
                 </div>
-                <p class="text-gray-400 text-sm leading-loose font-medium mb-6 px-4">المنصة الرسمية المعتمدة لبيع وصيانة الطابعات وماكينات التصوير. جودة تثق بها وخدمة تدوم لعقود.</p>
+                <p class="text-gray-400 text-xs md:text-sm leading-relaxed font-medium mb-6 px-4 md:px-0">المنصة الرسمية المعتمدة لبيع وصيانة الطابعات وماكينات التصوير. جودة تثق بها وخدمة تدوم لعقود.</p>
                 <div class="flex gap-4 justify-center flex-row-reverse">
                     <a href="https://wa.me/201094799247" target="_blank" class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-green-600 transition shadow-lg text-green-100"><i class="fab fa-whatsapp text-lg"></i></a>
                     <a href="https://www.facebook.com/AlAdlCom" target="_blank" class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-blue-600 transition shadow-lg text-rose-100"><i class="fab fa-facebook-f text-lg"></i></a>
                 </div>
             </div>
-            <div class="text-center">
+
+            <!-- بيانات التواصل -->
+            <div class="col-span-2 md:col-span-1 text-center">
                 <div class="flex justify-center mb-6">
-                    <h4 class="text-lg font-bold text-white border-b-2 border-rose-700 pb-2 uppercase inline-block">بيانات التواصل</h4>
+                    <h4 class="text-base md:text-lg font-bold text-white border-b-2 border-rose-700 pb-2 uppercase inline-block">بيانات التواصل</h4>
                 </div>
-                <ul class="space-y-6 text-sm inline-block text-right w-fit">
-                    <li class="flex items-center gap-4 group">
+                <!-- العناصر جنب بعض في الموبايل -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="flex flex-col items-center justify-center gap-2 group">
                         <div class="w-10 h-10 bg-rose-900/30 rounded-xl flex items-center justify-center text-rose-500"><i class="fa fa-phone-alt"></i></div>
-                        <div><p class="text-gray-500 text-[10px] font-black uppercase mb-1">الرقم الأرضي</p><p class="text-gray-200 font-black tracking-widest font-mono text-sm">0502776746</p></div>
-                    </li>
-                    <li class="flex items-center gap-4 group">
+                        <div><p class="text-gray-500 text-[10px] font-black uppercase mb-1">الرقم الأرضي</p><p class="text-gray-200 font-black tracking-widest font-mono text-xs md:text-sm">0502776746</p></div>
+                    </div>
+                    <div class="flex flex-col items-center justify-center gap-2 group">
                         <div class="w-10 h-10 bg-rose-900/30 rounded-xl flex items-center justify-center text-rose-500"><i class="fa fa-tools"></i></div>
-                        <div><p class="text-gray-500 text-[10px] font-black uppercase mb-1">الصيانة</p><p class="text-gray-200 font-black tracking-widest font-mono text-sm text-rose-400">01094799247</p></div>
-                    </li>
-                </ul>
-            </div>
-            <div class="text-center">
-                <div class="flex justify-center mb-6">
-                    <h4 class="text-lg font-bold text-white border-b-2 border-rose-700 pb-2 uppercase inline-block">أوقات العمل</h4>
+                        <div><p class="text-gray-500 text-[10px] font-black uppercase mb-1">الصيانة</p><p class="text-gray-200 font-black tracking-widest font-mono text-xs md:text-sm text-rose-400">01094799247</p></div>
+                    </div>
                 </div>
-                <p class="text-gray-400 text-sm leading-loose font-bold"><i class="fa fa-clock text-rose-500 ml-2"></i> من 9 صباحاً إلى 6 مساءاً<br><i class="fa fa-calendar-alt text-rose-500 ml-2"></i> من السبت إلى الخميس</p>
             </div>
-            <div class="text-center">
+
+            <!-- أوقات العمل -->
+            <div class="col-span-1 text-center flex flex-col items-center">
                 <div class="flex justify-center mb-6">
-                    <h4 class="text-lg font-bold text-white border-b-2 border-rose-700 pb-2 uppercase inline-block">العنوان</h4>
+                    <h4 class="text-base md:text-lg font-bold text-white border-b-2 border-rose-700 pb-2 uppercase inline-block">أوقات العمل</h4>
                 </div>
-                <p class="text-gray-400 text-sm leading-loose font-bold"><i class="fa fa-map-marker-alt text-rose-500 ml-2"></i> الدقهلية – جمصة<br>شارع الشباب بجوار مسجد السلام</p>
+                <p class="text-gray-400 text-xs md:text-sm leading-loose font-bold"><i class="fa fa-clock text-rose-500 ml-1"></i> 9 ص - 6 م<br><i class="fa fa-calendar-alt text-rose-500 ml-1"></i> السبت - الخميس</p>
             </div>
+
+            <!-- العنوان -->
+            <div class="col-span-1 text-center flex flex-col items-center">
+                <div class="flex justify-center mb-6">
+                    <h4 class="text-base md:text-lg font-bold text-white border-b-2 border-rose-700 pb-2 uppercase inline-block">العنوان</h4>
+                </div>
+                <p class="text-gray-400 text-xs md:text-sm leading-loose font-bold"><i class="fa fa-map-marker-alt text-rose-500 ml-1"></i> الدقهلية – جمصة<br>بجوار مسجد السلام</p>
+            </div>
+
         </div>
-        <div class="container mx-auto mt-8 text-center text-gray-500 text-[10px] md:text-[11px] font-extrabold uppercase tracking-widest leading-relaxed">
+        <div class="container mx-auto mt-6 text-center text-gray-500 text-[10px] md:text-[11px] font-extrabold uppercase tracking-widest leading-relaxed">
             جميع الحقوق محفوظة لشركة العدل لبيع وصيانة الطابعات و ماكينات التصوير © 2024
         </div>
     </footer>
