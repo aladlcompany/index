@@ -85,8 +85,8 @@
         .flash-title { animation: colorFlash 4s infinite; }
 
         @keyframes heartbeat {
-            0%, 100% { transform: scale(1); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
-            50% { transform: scale(1.04); box-shadow: 0 10px 15px -3px rgba(190, 18, 60, 0.4); }
+            0%, 100% { transform: scale(1); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); }
+            50% { transform: scale(1.04); box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2); }
         }
         .btn-heartbeat { animation: heartbeat 1.8s infinite ease-in-out; }
 
@@ -190,6 +190,11 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Mobile Call Button -->
+            <a href="tel:01094799247" class="lg:hidden bg-rose-700 text-white px-4 py-2 rounded-full font-black text-xs shadow-md hover:bg-rose-800 transition flex items-center gap-1.5">
+                اتصل الآن <i class="fa fa-phone-alt"></i>
+            </a>
 
             <div class="w-full lg:flex-1 lg:max-w-xl relative lg:mx-12 mt-3 lg:mt-0 order-last lg:order-none">
                 <input type="text" id="searchInput" oninput="handleSearch()" placeholder="ابحث عن الموديل..." class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-6 pr-12 outline-none font-bold shadow-inner">
@@ -317,8 +322,8 @@
                         </div>
                     </div>
 
-                    <!-- إعلان الخصم المطور (فخم) -->
-                    <div class="mt-12 mb-4 bg-gradient-to-br from-rose-950 via-rose-900 to-rose-800 rounded-[2.5rem] p-8 md:p-12 shadow-2xl relative overflow-hidden group border border-rose-800">
+                    <!-- إعلان الخصم المطور (فخم) وتم تعديل الظل -->
+                    <div class="mt-12 mb-4 bg-gradient-to-br from-rose-950 via-rose-900 to-rose-800 rounded-[2.5rem] p-8 md:p-12 shadow-sm relative overflow-hidden group border border-rose-800/50">
                         <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
                             <div class="absolute -top-24 -right-24 w-64 h-64 bg-rose-500 opacity-20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000"></div>
                             <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-yellow-500 opacity-10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000"></div>
@@ -331,7 +336,7 @@
                                     <span class="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span>
                                     عرض لفترة محدودة
                                 </div>
-                                <h3 class="text-3xl md:text-5xl font-black text-white font-cairo leading-tight mb-4 drop-shadow-md">
+                                <h3 class="text-3xl md:text-5xl font-black text-white font-cairo leading-tight mb-4">
                                     خصم <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-500 text-5xl md:text-7xl px-2">50%</span> 
                                 </h3>
                                 <h4 class="text-xl md:text-3xl font-bold text-rose-100 tracking-wide">على عقود الصيانة السنوية</h4>
@@ -339,7 +344,7 @@
                             
                             <div class="shrink-0 relative w-full lg:w-auto mt-6 lg:mt-0 flex flex-col items-center">
                                 <div class="absolute inset-0 bg-yellow-400 blur-2xl opacity-20 rounded-full animate-pulse"></div>
-                                <a href="https://wa.me/201094799247?text=السلام%20عليكم،%20أريد%20تفاصيل%20أكثر%20عن%20عرض%20خصم%20الـ%2050%25%20على%20عقود%20الصيانة" target="_blank" class="relative z-10 btn-heartbeat w-full lg:w-auto bg-gradient-to-l from-yellow-400 to-yellow-500 text-rose-950 px-10 py-5 rounded-[2rem] font-black text-xl shadow-xl flex items-center justify-center gap-3 hover:shadow-2xl transition transform hover:-translate-y-1">
+                                <a href="https://wa.me/201094799247?text=السلام%20عليكم،%20أريد%20تفاصيل%20أكثر%20عن%20عرض%20خصم%20الـ%2050%25%20على%20عقود%20الصيانة" target="_blank" class="relative z-10 btn-heartbeat w-full lg:w-auto bg-gradient-to-l from-yellow-400 to-yellow-500 text-rose-950 px-10 py-5 rounded-[2rem] font-black text-xl flex items-center justify-center gap-3 transition transform hover:-translate-y-1">
                                     احجز العرض الآن
                                     <i class="fab fa-whatsapp text-3xl"></i>
                                 </a>
@@ -365,7 +370,7 @@
             <div class="container mx-auto px-4 md:px-6 max-w-5xl">
                 <div class="bg-rose-950 rounded-[3rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row border-b-8 border-rose-700">
                     <div class="lg:w-2/5 p-8 md:p-14 text-white text-right flex flex-col justify-center bg-rose-900/40">
-                        <h2 class="text-3xl md:text-4xl font-black mb-6 italic uppercase leading-tight">مركز الصيانة</h2>
+                        <h2 class="text-3xl md:text-4xl font-black mb-6 uppercase leading-tight text-center">مركز الصيانة</h2>
                         <p class="text-rose-100 text-base md:text-lg mb-10 leading-relaxed border-r-4 border-rose-400 pr-6">سجل بيانات بدقة وسيصلك المهندس المختص في أسرع وقت.</p>
                         <div class="bg-white/10 p-5 rounded-2xl flex items-center justify-between"><span class="text-xl md:text-2xl font-black text-yellow-400">01094799247</span><i class="fa fa-tools text-2xl text-rose-400"></i></div>
                     </div>
@@ -633,7 +638,7 @@
                         <h3 class="font-cairo font-black text-rose-950 text-lg md:text-xl pl-4 group-hover:text-rose-700">ما هي الطباعة الثري دي وهل يمكن أن تطبع مواد بالأبعاد الثلاثية ؟</h3>
                         <div class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center shrink-0 group-hover:bg-rose-100"><i id="icon-1" class="fa fa-chevron-down text-rose-700 transition-transform duration-300"></i></div>
                     </button>
-                    <div id="faq-1" class="hidden px-6 pb-6"><div class="border-t border-gray-100 pt-5"><p class="text-gray-600 font-bold leading-loose">الطباعة ثلاثية الأبعاد (3D) هي ببساطة عملية تحويل ملف رقمي لتصميم ثلاثي الأبعاد إلى جسم صلب ثلاثي الأبعاد في أرض الواقع. وتعمل الطابعة ثلاثية الأبعاد على مبدأ إضافة طبقات متعاقبة فوق بعضها من المواد المستخدمة حتى يتم تشكيل المجسم المطلوب.</p></div></div>
+                    <div id="faq-1" class="hidden px-6 pb-6"><div class="border-t border-gray-100 pt-5"><p class="text-gray-600 font-bold leading-loose">الطباعة ثلاثية الأبعاد (3D) هي ببساطة عملية تحويل ملف رقمي لتصميم ثلاثي الأبعاد إلى جسم صلب ثلاثي الأبعاد في أرض الواقع. وتعمل الطابعة ثلاثية الأبعاد على مبدأ إضافة طبقات متعاقبة فوق بعضها من المواد المستخدمة حتى يتم تشكيل المجسم المطلوب، نعم يمكنها ذلك وتستخدم في العديد من المجالات مثل الطب والهندسة والصناعات المختلفة لتصنيع النماذج وقطع الغيار المعقدة بدقة متناهية.</p></div></div>
                 </div>
 
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300">
@@ -641,7 +646,7 @@
                         <h3 class="font-cairo font-black text-rose-950 text-lg md:text-xl pl-4 group-hover:text-rose-700">هل عدم ثبات التيار الكهربائي يؤثر على الماكينات ؟ وكيف نتجنبه ؟</h3>
                         <div class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center shrink-0 group-hover:bg-rose-100"><i id="icon-2" class="fa fa-chevron-down text-rose-700 transition-transform duration-300"></i></div>
                     </button>
-                    <div id="faq-2" class="hidden px-6 pb-6"><div class="border-t border-gray-100 pt-5"><p class="text-gray-600 font-bold leading-loose">في أماكن كثيرة التيار الكهربي غير ثابت، وده ممكن يسبب تلف في أجزاء كتير في الماكينة زي: البوردة الكهربية والسخان. ولتجنب المشكلة دي يجب توفير جهاز مثبت التيار الكهربي "Stabilizer" للحفاظ على استقرارها.</p></div></div>
+                    <div id="faq-2" class="hidden px-6 pb-6"><div class="border-t border-gray-100 pt-5"><p class="text-gray-600 font-bold leading-loose">نعم بكل تأكيد، في أماكن كثيرة التيار الكهربي غير ثابت، وهذا التذبذب أو الانقطاع المفاجئ للتيار من شأنه أن يسبب تلف واحتراق في أجزاء كثيرة ومهمة في الماكينة مثل: البوردة الكهربية (اللوحة الأم) ووحدة التسخين (السخان). ولتجنب هذه المشكلة وتفادي الخسائر المادية الكبيرة، يجب توفير جهاز مثبت للتيار الكهربائي "Stabilizer" يتناسب مع قدرة الماكينة للحفاظ على استقرارها وضمان عملها بكفاءة.</p></div></div>
                 </div>
 
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300">
@@ -649,7 +654,7 @@
                         <h3 class="font-cairo font-black text-rose-950 text-lg md:text-xl pl-4 group-hover:text-rose-700">ما هو الفرق بين طباعة الإن دور والأوت دور، والسلك سكرين، والأوفست؟</h3>
                         <div class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center shrink-0 group-hover:bg-rose-100"><i id="icon-3" class="fa fa-chevron-down text-rose-700 transition-transform duration-300"></i></div>
                     </button>
-                    <div id="faq-3" class="hidden px-6 pb-6"><div class="border-t border-gray-100 pt-5"><p class="text-gray-600 font-bold leading-loose"><strong class="text-rose-700">الإن دور:</strong> للطباعة الداخلية.<br><strong class="text-rose-700">الأوت دور:</strong> للأعمال الخارجية كالدعاية لكونها تتحمل الحرارة.<br><strong class="text-rose-700">الأوفست:</strong> الأشهر والأدق للأعمال التجارية.<br><strong class="text-rose-700">السلك سكرين:</strong> الأقل تكلفة وتستخدم خامات متعددة.</p></div></div>
+                    <div id="faq-3" class="hidden px-6 pb-6"><div class="border-t border-gray-100 pt-5"><p class="text-gray-600 font-bold leading-loose"><strong class="text-rose-700">طباعة الإن دور (Indoor):</strong> مخصصة للطباعة الداخلية التي تُعرض عن قرب وتمتاز بالدقة العالية، وتستخدم أحبار مائية (Water-based) صديقة للبيئة، لكنها لا تتحمل أشعة الشمس المباشرة أو العوامل الجوية بقوة.<br><br><strong class="text-rose-700">طباعة الأوت دور (Outdoor):</strong> مخصصة للأعمال والإعلانات الخارجية كاللافتات الكبيرة، حيث تستخدم أحبار (Solvent) قوية تتحمل الحرارة العالية وأشعة الشمس والمطر لتدوم فترات طويلة.<br><br><strong class="text-rose-700">طباعة الأوفست (Offset):</strong> هي التقنية الأشهر والأدق للأعمال التجارية والمطبوعات الورقية بكميات كبيرة (مثل المجلات، الكتيبات، والفواتير)، وتعتمد على نقل الحبر من لوح معدني إلى أسطوانة مطاطية ثم إلى الورق، وتمتاز بانخفاض تكلفتها كلما زادت الكمية.<br><br><strong class="text-rose-700">طباعة السلك سكرين (Silk Screen):</strong> أو الطباعة بالشاشة الحريرية، هي الأقل تكلفة وتتيح الطباعة على خامات متنوعة ومتعددة مثل القماش، الخشب، البلاستيك، وحتى المعادن، وتعتمد على تمرير الحبر عبر شبكة حريرية.</p></div></div>
                 </div>
             </div>
         </section>
@@ -668,7 +673,7 @@
                 <i class="fa fa-quote-right text-6xl md:text-8xl text-rose-50 absolute top-6 right-8 md:right-12 z-0"></i>
                 <div class="relative z-10">
                     <h3 class="text-2xl md:text-3xl font-black text-rose-900 mb-6 font-cairo">رؤية ورسالة واضحة</h3>
-                    <p class="text-lg md:text-2xl text-gray-600 leading-loose md:leading-loose italic font-medium">
+                    <p class="text-lg md:text-2xl text-gray-600 leading-loose md:leading-loose font-medium">
                         منذ بداية الالفية الجديدة وكانت لشركة العدل رؤية ورسالة لتقديم كل ما هو جديد فى عالم تكنولوجيا الطباعة الحديثة لجميع شرائح العملاء سواء القطاع العام أو الخاص، والشركات والمكتبات ومراكز التصوير وحتى الاستخدام الشخصى فى المنازل والمكاتب وعدم الاقتصار على شريحة واحدة من العملاء مثلما تفعل الكثير من الشركات.
                     </p>
                 </div>
@@ -769,40 +774,46 @@
         </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-zinc-950 text-white pt-12 pb-8 px-4 md:px-6 border-t-8 border-rose-700 text-right">
+    <!-- Footer المحسن والاحترافي -->
+    <footer class="bg-zinc-950 text-white pt-12 pb-8 px-4 md:px-6 border-t-8 border-rose-700">
         <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 border-b border-white/5 pb-12">
-            <div>
-                <div class="flex items-center gap-3 mb-6">
-                    <img src="logo.png" alt="شركة العدل" class="w-12 h-12 object-contain bg-white rounded-xl p-1" onerror="this.src=''">
-                    <h4 class="text-2xl font-black text-rose-50 uppercase tracking-tighter italic">شركة العدل</h4>
+            <div class="text-center">
+                <div class="flex flex-col items-center justify-center mb-6">
+                    <h4 class="text-3xl font-black text-rose-50 uppercase tracking-tighter mb-4">شركة العدل</h4>
+                    <img src="logo.png" alt="شركة العدل" class="w-16 h-16 object-contain bg-white/10 rounded-2xl p-2" onerror="this.style.display='none'">
                 </div>
-                <p class="text-gray-400 text-sm leading-loose font-medium italic mb-6">المنصة الرسمية المعتمدة لبيع وصيانة الطابعات وماكينات التصوير. جودة تثق بها وخدمة تدوم لعقود.</p>
-                <div class="flex gap-4 justify-start md:justify-end lg:justify-start flex-row-reverse">
+                <p class="text-gray-400 text-sm leading-loose font-medium mb-6 px-4">المنصة الرسمية المعتمدة لبيع وصيانة الطابعات وماكينات التصوير. جودة تثق بها وخدمة تدوم لعقود.</p>
+                <div class="flex gap-4 justify-center flex-row-reverse">
                     <a href="https://wa.me/201094799247" target="_blank" class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-green-600 transition shadow-lg text-green-100"><i class="fab fa-whatsapp text-lg"></i></a>
                     <a href="https://www.facebook.com/AlAdlCom" target="_blank" class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-blue-600 transition shadow-lg text-rose-100"><i class="fab fa-facebook-f text-lg"></i></a>
                 </div>
             </div>
-            <div class="text-right">
-                <h4 class="text-lg font-bold mb-6 text-white border-r-4 border-rose-700 pr-4 italic uppercase">بيانات التواصل</h4>
-                <ul class="space-y-6 text-sm">
-                    <li class="flex items-center gap-4 group text-right">
+            <div class="text-center">
+                <div class="flex justify-center mb-6">
+                    <h4 class="text-lg font-bold text-white border-b-2 border-rose-700 pb-2 uppercase inline-block">بيانات التواصل</h4>
+                </div>
+                <ul class="space-y-6 text-sm inline-block text-right w-fit">
+                    <li class="flex items-center gap-4 group">
                         <div class="w-10 h-10 bg-rose-900/30 rounded-xl flex items-center justify-center text-rose-500"><i class="fa fa-phone-alt"></i></div>
                         <div><p class="text-gray-500 text-[10px] font-black uppercase mb-1">الرقم الأرضي</p><p class="text-gray-200 font-black tracking-widest font-mono text-sm">0502776746</p></div>
                     </li>
-                    <li class="flex items-center gap-4 group text-right">
+                    <li class="flex items-center gap-4 group">
                         <div class="w-10 h-10 bg-rose-900/30 rounded-xl flex items-center justify-center text-rose-500"><i class="fa fa-tools"></i></div>
                         <div><p class="text-gray-500 text-[10px] font-black uppercase mb-1">الصيانة</p><p class="text-gray-200 font-black tracking-widest font-mono text-sm text-rose-400">01094799247</p></div>
                     </li>
                 </ul>
             </div>
-            <div class="text-right">
-                <h4 class="text-lg font-bold mb-6 text-white border-r-4 border-rose-700 pr-4 italic uppercase">أوقات العمل</h4>
-                <p class="text-gray-400 text-sm leading-loose font-bold italic"><i class="fa fa-clock text-rose-500 ml-2"></i> من 9 صباحاً إلى 6 مساءاً<br><i class="fa fa-calendar-alt text-rose-500 ml-2"></i> من السبت إلى الخميس</p>
+            <div class="text-center">
+                <div class="flex justify-center mb-6">
+                    <h4 class="text-lg font-bold text-white border-b-2 border-rose-700 pb-2 uppercase inline-block">أوقات العمل</h4>
+                </div>
+                <p class="text-gray-400 text-sm leading-loose font-bold"><i class="fa fa-clock text-rose-500 ml-2"></i> من 9 صباحاً إلى 6 مساءاً<br><i class="fa fa-calendar-alt text-rose-500 ml-2"></i> من السبت إلى الخميس</p>
             </div>
-            <div class="text-right">
-                <h4 class="text-lg font-bold mb-6 text-white border-r-4 border-rose-700 pr-4 italic uppercase">العنوان</h4>
-                <p class="text-gray-400 text-sm leading-loose font-bold italic"><i class="fa fa-map-marker-alt text-rose-500 ml-2"></i> الدقهلية – جمصة – شارع الشباب بجوار مسجد السلام</p>
+            <div class="text-center">
+                <div class="flex justify-center mb-6">
+                    <h4 class="text-lg font-bold text-white border-b-2 border-rose-700 pb-2 uppercase inline-block">العنوان</h4>
+                </div>
+                <p class="text-gray-400 text-sm leading-loose font-bold"><i class="fa fa-map-marker-alt text-rose-500 ml-2"></i> الدقهلية – جمصة<br>شارع الشباب بجوار مسجد السلام</p>
             </div>
         </div>
         <div class="container mx-auto mt-8 text-center text-gray-500 text-[10px] md:text-[11px] font-extrabold uppercase tracking-widest leading-relaxed">
@@ -943,7 +954,7 @@
                     homeSlider.insertAdjacentHTML('beforeend', `
                         <div class="w-[240px] md:w-[280px] shrink-0 snap-center group flex flex-col bg-transparent transition-all duration-300 py-4">
                             <div class="h-48 md:h-64 mb-4 flex items-center justify-center relative group-hover:scale-105 transition-transform duration-500">
-                                <img src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain drop-shadow-lg">
+                                <img src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain drop-shadow-xl">
                                 ${prod.condition ? `<div class="absolute top-2 left-2 bg-rose-700 text-white text-[9px] font-black px-2 py-1 rounded shadow-sm z-10">${prod.condition}</div>` : ''}
                             </div>
                             <h3 class="text-sm md:text-base font-black text-rose-950 mb-1 text-center font-cairo leading-tight">${prod.name}</h3>
