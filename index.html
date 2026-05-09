@@ -196,9 +196,11 @@
                 <i class="fa fa-search absolute right-4 top-3.5 text-gray-300 text-lg"></i>
             </div>
 
-            <div class="hidden lg:flex items-center gap-3">
-                <a href="tel:01094799247" class="bg-rose-700 text-white p-3 rounded-full shadow-lg hover:bg-rose-800 transition"><i class="fa fa-phone-alt"></i></a>
-                <div class="text-right"><p class="text-[9px] font-bold text-gray-400">الدعم الفني</p><p class="text-xl font-black text-rose-900">01094799247</p></div>
+            <div class="hidden lg:flex items-center gap-4">
+                <a href="tel:01094799247" class="bg-rose-700 text-white px-5 py-2.5 rounded-full font-black text-sm shadow-lg hover:bg-rose-800 transition flex items-center gap-2">
+                    اتصل الآن <i class="fa fa-phone-alt"></i>
+                </a>
+                <div class="text-right"><p class="text-[9px] font-bold text-gray-400">الدعم الفني</p><p class="text-xl font-black text-rose-900 leading-none">01094799247</p></div>
             </div>
         </div>
 
@@ -369,9 +371,29 @@
                     </div>
                     <div class="lg:w-3/5 bg-white p-8 md:p-14 text-right">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-right">
-                            <div class="col-span-full"><label class="text-[11px] font-black text-gray-400 mb-1 block mr-2 italic uppercase">الاسم بالكامل</label><input type="text" id="mName" oninput="updateWA()" placeholder="اكتب اسمك هنا" class="w-full p-4 bg-gray-50 rounded-xl outline-none border-2 border-transparent focus:border-rose-700 transition font-bold text-sm text-right"></div>
-                            <div><label class="text-[11px] font-black text-gray-400 mb-1 block mr-2 italic uppercase">رقم الهاتف</label><input type="tel" id="mPhone" oninput="updateWA()" placeholder="01xxxxxxxxx" class="w-full p-4 bg-gray-50 rounded-xl outline-none border-2 border-transparent focus:border-rose-700 transition text-left font-mono font-bold text-sm" dir="ltr"></div>
-                            <div class="col-span-full pt-4 text-center"><a id="waFinalBtn" href="javascript:void(0)" onclick="checkForm(event)" target="_blank" class="w-full bg-gradient-to-l from-rose-600 via-rose-700 to-rose-900 text-white font-black py-5 rounded-[1.5rem] text-xl flex items-center justify-center gap-4 shadow-xl hover:bg-rose-800 transition transform hover:scale-[1.01] no-underline opacity-50 cursor-not-allowed">إرسال البيانات <i class="fab fa-whatsapp text-3xl"></i></a></div>
+                            <div class="col-span-full">
+                                <label class="text-[11px] font-black text-gray-400 mb-1 block mr-2 italic uppercase">الاسم بالكامل</label>
+                                <input type="text" id="mName" oninput="updateWA()" placeholder="اكتب اسمك هنا" class="w-full p-4 bg-gray-50 rounded-xl outline-none border-2 border-transparent focus:border-rose-700 transition font-bold text-sm text-right">
+                            </div>
+                            <div>
+                                <label class="text-[11px] font-black text-gray-400 mb-1 block mr-2 italic uppercase">رقم الهاتف الأساسي</label>
+                                <input type="tel" id="mPhone" oninput="updateWA()" placeholder="01xxxxxxxxx" class="w-full p-4 bg-gray-50 rounded-xl outline-none border-2 border-transparent focus:border-rose-700 transition text-left font-mono font-bold text-sm" dir="ltr">
+                            </div>
+                            <div>
+                                <label class="text-[11px] font-black text-gray-400 mb-1 block mr-2 italic uppercase">رقم هاتف آخر (اختياري)</label>
+                                <input type="tel" id="mPhone2" oninput="updateWA()" placeholder="رقم هاتف آخر" class="w-full p-4 bg-gray-50 rounded-xl outline-none border-2 border-transparent focus:border-rose-700 transition text-left font-mono font-bold text-sm" dir="ltr">
+                            </div>
+                            <div class="col-span-full">
+                                <label class="text-[11px] font-black text-gray-400 mb-1 block mr-2 italic uppercase">العنوان بالتفصيل</label>
+                                <input type="text" id="mAddress" oninput="updateWA()" placeholder="المحافظة - المركز - الشارع - المقر" class="w-full p-4 bg-gray-50 rounded-xl outline-none border-2 border-transparent focus:border-rose-700 transition font-bold text-sm text-right">
+                            </div>
+                            <div class="col-span-full">
+                                <label class="text-[11px] font-black text-gray-400 mb-1 block mr-2 italic uppercase">أوصف العطل بدقة</label>
+                                <textarea id="mDesc" oninput="updateWA()" placeholder="ما هي المشكلة التي تظهر في الجهاز؟" class="w-full p-4 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-rose-700 transition font-bold text-sm text-right min-h-[120px]"></textarea>
+                            </div>
+                            <div class="col-span-full pt-4 text-center">
+                                <a id="waFinalBtn" href="javascript:void(0)" onclick="checkForm(event)" target="_blank" class="w-full bg-gradient-to-l from-rose-600 via-rose-700 to-rose-900 text-white font-black py-5 rounded-[1.5rem] text-xl flex items-center justify-center gap-4 shadow-xl hover:bg-rose-800 transition transform hover:scale-[1.01] no-underline opacity-50 cursor-not-allowed">إرسال البيانات <i class="fab fa-whatsapp text-3xl"></i></a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -748,38 +770,42 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-zinc-950 text-white pt-20 pb-12 px-6 border-t-8 border-rose-700 text-right">
-        <div class="container mx-auto grid md:grid-cols-2 lg:grid-cols-4 gap-16 border-b border-white/5 pb-20">
+    <footer class="bg-zinc-950 text-white pt-12 pb-8 px-4 md:px-6 border-t-8 border-rose-700 text-right">
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 border-b border-white/5 pb-12">
             <div>
-                <h4 class="text-3xl font-black mb-8 text-rose-50 uppercase tracking-tighter italic">شركة العدل</h4>
-                <p class="text-gray-400 text-sm leading-loose font-medium italic mb-10">المنصة الرسمية المعتمدة لبيع وصيانة الطابعات وماكينات التصوير. جودة تثق بها وخدمة تدوم لعقود.</p>
-                <div class="flex gap-4 justify-end">
-                    <a href="https://wa.me/201094799247" target="_blank" class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-green-600 transition shadow-lg text-green-100"><i class="fab fa-whatsapp text-xl"></i></a>
+                <div class="flex items-center gap-3 mb-6">
+                    <img src="logo.png" alt="شركة العدل" class="w-12 h-12 object-contain bg-white rounded-xl p-1" onerror="this.src=''">
+                    <h4 class="text-2xl font-black text-rose-50 uppercase tracking-tighter italic">شركة العدل</h4>
+                </div>
+                <p class="text-gray-400 text-sm leading-loose font-medium italic mb-6">المنصة الرسمية المعتمدة لبيع وصيانة الطابعات وماكينات التصوير. جودة تثق بها وخدمة تدوم لعقود.</p>
+                <div class="flex gap-4 justify-start md:justify-end lg:justify-start flex-row-reverse">
+                    <a href="https://wa.me/201094799247" target="_blank" class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-green-600 transition shadow-lg text-green-100"><i class="fab fa-whatsapp text-lg"></i></a>
+                    <a href="https://www.facebook.com/AlAdlCom" target="_blank" class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-blue-600 transition shadow-lg text-rose-100"><i class="fab fa-facebook-f text-lg"></i></a>
                 </div>
             </div>
             <div class="text-right">
-                <h4 class="text-xl font-bold mb-10 text-white border-r-4 border-rose-700 pr-5 italic uppercase">بيانات التواصل</h4>
-                <ul class="space-y-8 text-sm">
-                    <li class="flex items-center gap-5 group text-right">
-                        <div class="w-12 h-12 bg-rose-900/30 rounded-2xl flex items-center justify-center text-rose-500"><i class="fa fa-phone-alt"></i></div>
-                        <div><p class="text-gray-500 text-[10px] font-black uppercase mb-1">الرقم الأرضي</p><p class="text-gray-200 font-black tracking-widest font-mono text-base">0502776746</p></div>
+                <h4 class="text-lg font-bold mb-6 text-white border-r-4 border-rose-700 pr-4 italic uppercase">بيانات التواصل</h4>
+                <ul class="space-y-6 text-sm">
+                    <li class="flex items-center gap-4 group text-right">
+                        <div class="w-10 h-10 bg-rose-900/30 rounded-xl flex items-center justify-center text-rose-500"><i class="fa fa-phone-alt"></i></div>
+                        <div><p class="text-gray-500 text-[10px] font-black uppercase mb-1">الرقم الأرضي</p><p class="text-gray-200 font-black tracking-widest font-mono text-sm">0502776746</p></div>
                     </li>
-                    <li class="flex items-center gap-5 group text-right">
-                        <div class="w-12 h-12 bg-rose-900/30 rounded-2xl flex items-center justify-center text-rose-500"><i class="fa fa-tools"></i></div>
-                        <div><p class="text-gray-500 text-[10px] font-black uppercase mb-1">الصيانة</p><p class="text-gray-200 font-black tracking-widest font-mono text-base text-rose-400">01094799247</p></div>
+                    <li class="flex items-center gap-4 group text-right">
+                        <div class="w-10 h-10 bg-rose-900/30 rounded-xl flex items-center justify-center text-rose-500"><i class="fa fa-tools"></i></div>
+                        <div><p class="text-gray-500 text-[10px] font-black uppercase mb-1">الصيانة</p><p class="text-gray-200 font-black tracking-widest font-mono text-sm text-rose-400">01094799247</p></div>
                     </li>
                 </ul>
             </div>
             <div class="text-right">
-                <h4 class="text-xl font-bold mb-10 text-white border-r-4 border-rose-700 pr-5 italic uppercase">أوقات العمل</h4>
-                <p class="text-gray-400 text-sm leading-loose font-bold italic">من 9 صباحاً إلى 6 مساءاً<br>من السبت إلى الخميس</p>
+                <h4 class="text-lg font-bold mb-6 text-white border-r-4 border-rose-700 pr-4 italic uppercase">أوقات العمل</h4>
+                <p class="text-gray-400 text-sm leading-loose font-bold italic"><i class="fa fa-clock text-rose-500 ml-2"></i> من 9 صباحاً إلى 6 مساءاً<br><i class="fa fa-calendar-alt text-rose-500 ml-2"></i> من السبت إلى الخميس</p>
             </div>
             <div class="text-right">
-                <h4 class="text-xl font-bold mb-10 text-white border-r-4 border-rose-700 pr-5 italic uppercase">العنوان</h4>
-                <p class="text-gray-400 text-sm leading-loose font-bold italic">الدقهلية – جمصة – شارع الشباب بجوار مسجد السلام</p>
+                <h4 class="text-lg font-bold mb-6 text-white border-r-4 border-rose-700 pr-4 italic uppercase">العنوان</h4>
+                <p class="text-gray-400 text-sm leading-loose font-bold italic"><i class="fa fa-map-marker-alt text-rose-500 ml-2"></i> الدقهلية – جمصة – شارع الشباب بجوار مسجد السلام</p>
             </div>
         </div>
-        <div class="container mx-auto mt-16 text-center text-gray-600 text-[11px] font-extrabold uppercase tracking-widest leading-relaxed">
+        <div class="container mx-auto mt-8 text-center text-gray-500 text-[10px] md:text-[11px] font-extrabold uppercase tracking-widest leading-relaxed">
             جميع الحقوق محفوظة لشركة العدل لبيع وصيانة الطابعات و ماكينات التصوير © 2024
         </div>
     </footer>
@@ -871,11 +897,13 @@
         function updateWA() {
             const n = document.getElementById('mName').value.trim();
             const p = document.getElementById('mPhone').value.trim();
-            const desc = document.getElementById('mDesc').value.trim();
+            const p2 = document.getElementById('mPhone2') ? document.getElementById('mPhone2').value.trim() : '';
+            const addr = document.getElementById('mAddress') ? document.getElementById('mAddress').value.trim() : '';
+            const desc = document.getElementById('mDesc') ? document.getElementById('mDesc').value.trim() : '';
             const btn = document.getElementById('waFinalBtn');
             if (n !== "" && p.length >= 10 && desc !== "") {
                 btn.classList.remove('opacity-50', 'cursor-not-allowed');
-                let text = `السلام عليكم شركة العدل،\n👤 الاسم: ${n}\n📞 الهاتف: ${p}\n🛠️ وصف العطل: ${desc}`;
+                let text = `السلام عليكم شركة العدل،\n👤 الاسم: ${n}\n📞 الهاتف: ${p}\n📞 هاتف آخر: ${p2 || '-'}\n📍 العنوان: ${addr || '-'}\n🛠️ وصف العطل: ${desc}`;
                 btn.href = `https://wa.me/${MAIN_NUM}?text=${encodeURIComponent(text)}`;
             } else { btn.classList.add('opacity-50', 'cursor-not-allowed'); btn.href = "javascript:void(0)"; }
         }
@@ -883,7 +911,8 @@
         function checkForm(e) {
             const n = document.getElementById('mName').value.trim();
             const p = document.getElementById('mPhone').value.trim();
-            if (n === "" || p === "") { e.preventDefault(); alert("يرجى إكمال البيانات"); }
+            const desc = document.getElementById('mDesc') ? document.getElementById('mDesc').value.trim() : '';
+            if (n === "" || p === "" || desc === "") { e.preventDefault(); alert("يرجى إكمال البيانات الأساسية (الاسم، الهاتف، ووصف العطل)"); }
         }
 
         function orderNowWA(product) {
