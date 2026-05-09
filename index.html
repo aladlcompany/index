@@ -98,7 +98,6 @@
 
     <div id="overlay" class="menu-overlay" onclick="toggleMobileMenu()"></div>
 
-    <!-- Mobile Navigation Drawer -->
     <div id="mobile-menu" class="overflow-y-auto">
         <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-white">
             <div class="flex items-center gap-3">
@@ -119,7 +118,7 @@
                 <div id="m-who" class="hidden bg-gray-50 pb-2">
                     <a onclick="navigateTo('about')" class="nested-link">من نحن</a>
                     <a onclick="navigateTo('articles')" class="nested-link">مقالات و عروض</a>
-                    <a onclick="navigateTo('articles')" class="nested-link">أخبارنا</a>
+                    <a onclick="navigateTo('news')" class="nested-link">أخبارنا</a>
                     <a onclick="navigateTo('faq')" class="nested-link">أسئلة و أجوبة</a>
                     <a onclick="navigateTo('products', 'all')" class="nested-link">عملاؤنا</a>
                 </div>
@@ -170,12 +169,11 @@
                 <div id="m-serv" class="hidden bg-gray-50 pb-2">
                     <a onclick="navigateTo('tech-support')" class="nested-link">الدعم الفنى</a>
                     <a onclick="navigateTo('home'); setTimeout(() => document.getElementById('booking').scrollIntoView({behavior: 'smooth'}), 100);" class="nested-link">بلاغات الأعطال</a>
-                    <a onclick="navigateTo('articles')" class="nested-link">الشكاوى و الأقتراحات</a>
-                    <a onclick="navigateTo('articles')" class="nested-link">سيرفيس مانوال</a>
+                    <a onclick="navigateTo('complaints')" class="nested-link">الشكاوى و الأقتراحات</a>
+                    <a onclick="navigateTo('service-manual')" class="nested-link">سيرفيس مانوال</a>
                 </div>
             </div>
 
-            <!-- Mobile Contact Info at Bottom -->
             <div class="mt-6 mb-2 bg-white rounded-2xl p-5 border border-gray-100 shadow-sm text-center relative overflow-hidden">
                 <p class="text-gray-400 text-xs font-cairo font-black mb-1 uppercase tracking-widest">للحجز والاستعلام</p>
                 <a href="tel:01094799247" class="font-cairo text-3xl font-black text-rose-900 tracking-widest flex items-center justify-center gap-3 relative z-10" dir="ltr">
@@ -185,7 +183,6 @@
         </div>
     </div>
 
-    <!-- Main Header -->
     <header class="sticky-header">
         <div class="bg-white container mx-auto px-4 md:px-12 py-3 md:py-4 flex flex-wrap justify-between items-center">
             <div class="flex items-center gap-3">
@@ -199,7 +196,6 @@
                 </div>
             </div>
 
-            <!-- Mobile Call Button -->
             <a href="tel:01094799247" class="lg:hidden bg-rose-700 text-white w-10 h-10 rounded-full font-black text-sm shadow-md hover:bg-rose-800 transition flex items-center justify-center">
                 <i class="fa fa-phone-alt"></i>
             </a>
@@ -217,7 +213,6 @@
             </div>
         </div>
 
-        <!-- Desktop Navigation -->
         <nav class="bg-white border-t border-gray-100 hidden lg:block shadow-sm">
             <div class="container mx-auto px-12 flex justify-start gap-x-8 font-black text-gray-600 text-sm">
                 <a onclick="navigateTo('home')" class="py-5 hover:text-rose-700 transition cursor-pointer">الرئيسية</a>
@@ -227,7 +222,7 @@
                     <div class="dropdown-menu text-right">
                         <a onclick="navigateTo('about')" class="dropdown-card">من نحن</a>
                         <a onclick="navigateTo('articles')" class="dropdown-card">مقالات و عروض</a>
-                        <a onclick="navigateTo('articles')" class="dropdown-card">أخبارنا</a>
+                        <a onclick="navigateTo('news')" class="dropdown-card">أخبارنا</a>
                         <a onclick="navigateTo('faq')" class="dropdown-card">أسئلة و أجوبة</a>
                         <a onclick="navigateTo('products', 'all')" class="dropdown-card">عملاؤنا</a>
                     </div>
@@ -278,32 +273,29 @@
                     <div class="dropdown-menu text-right" style="left: 0; right: auto;">
                         <a onclick="navigateTo('tech-support')" class="dropdown-card">الدعم الفنى</a>
                         <a onclick="navigateTo('home'); setTimeout(() => document.getElementById('booking').scrollIntoView({behavior: 'smooth'}), 100);" class="dropdown-card">بلاغات الأعطال</a>
-                        <a onclick="navigateTo('articles')" class="dropdown-card">الشكاوى و الأقتراحات</a>
-                        <a onclick="navigateTo('articles')" class="dropdown-card">سيرفيس مانوال</a>
+                        <a onclick="navigateTo('complaints')" class="dropdown-card">الشكاوى و الأقتراحات</a>
+                        <a onclick="navigateTo('service-manual')" class="dropdown-card">سيرفيس مانوال</a>
                     </div>
                 </div>
-            </div>
-
-            <!-- Luxurious Phone Display -->
-            <div class="hidden lg:flex items-center gap-3 mr-auto">
-                <span class="text-sm font-cairo font-black text-gray-400">للحجز والاستعلام:</span>
-                <a href="tel:01094799247" class="font-cairo text-2xl font-black text-rose-900 tracking-widest hover:text-rose-700 transition flex items-center gap-2" dir="ltr">
-                    01094799247 <i class="fa fa-headset text-rose-500"></i>
-                </a>
             </div>
         </nav>
     </header>
 
-    <!-- Main Banner Image -->
     <div class="hero-banner-box">
         <img src="header.jpeg" alt="بانر شركة العدل" onerror="this.src=''">
     </div>
 
-    <!-- ==============================================
-         1. PAGE: HOME 
-    =============================================== -->
     <main id="page-home" class="page-section active">
         <section class="pt-6 pb-12 container mx-auto px-4 md:px-12 text-right">
+            
+            <div class="w-full max-w-6xl mx-auto mb-10 relative group">
+                <span class="absolute top-2 right-2 bg-white/90 backdrop-blur text-gray-400 text-[10px] font-black px-2 py-1 rounded shadow-sm z-10 pointer-events-none">إعلان</span>
+                <a href="#" class="block rounded-[2rem] overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-all">
+                    <img src="ads_images/ad1-pc.png" onerror="this.onerror=null; this.src='https://placehold.co/1200x180/f8fafc/cbd5e1?font=Cairo&text=مساحة+إعلانية+(كمبيوتر)'" class="hidden md:block w-full h-[120px] md:h-[150px] object-cover" alt="إعلان">
+                    <img src="ads_images/ad1-mobile.png" onerror="this.onerror=null; this.src='https://placehold.co/600x200/f8fafc/cbd5e1?font=Cairo&text=مساحة+إعلانية+(موبايل)'" class="block md:hidden w-full h-[120px] object-cover" alt="إعلان">
+                </a>
+            </div>
+
             <div class="flex items-center justify-center mb-8 w-full relative">
                 <div class="absolute w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent top-1/2 transform -translate-y-1/2"></div>
                 <div class="inline-flex items-center justify-center gap-2 bg-white px-8 py-2 rounded-full relative z-10 border border-gray-100 shadow-sm">
@@ -329,16 +321,13 @@
 
                 <div class="flex-1 w-full overflow-hidden">
                     <div class="relative w-full group/slider">
-                        <!-- أزرار التحكم -->
                         <button onclick="scrollSlider('recentProductsSlider', 1)" class="absolute right-0 top-[40%] -translate-y-1/2 z-20 w-10 h-10 bg-white/90 border border-gray-200 shadow-md rounded-full flex items-center justify-center text-rose-900 pointer-events-auto hover:bg-rose-700 hover:text-white transition"><i class="fa fa-chevron-right"></i></button>
                         <button onclick="scrollSlider('recentProductsSlider', -1)" class="absolute left-0 top-[40%] -translate-y-1/2 z-20 w-10 h-10 bg-white/90 border border-gray-200 shadow-md rounded-full flex items-center justify-center text-rose-900 pointer-events-auto hover:bg-rose-700 hover:text-white transition"><i class="fa fa-chevron-left"></i></button>
 
                         <div id="recentProductsSlider" class="flex overflow-x-auto gap-4 md:gap-6 pb-6 snap-x snap-mandatory hide-scrollbar scroll-smooth px-4">
-                            <!-- Products JS -->
-                        </div>
+                            </div>
                     </div>
 
-                    <!-- إعلان الخصم المطور (فخم) وتم تعديل الظل -->
                     <div class="mt-12 mb-4 bg-gradient-to-br from-rose-950 via-rose-900 to-rose-800 rounded-[2.5rem] p-8 md:p-12 shadow-sm relative overflow-hidden group border border-rose-800/50">
                         <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
                             <div class="absolute -top-24 -right-24 w-64 h-64 bg-rose-500 opacity-20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000"></div>
@@ -371,7 +360,6 @@
             </div>
         </section>
         
-        <!-- Trust Strip -->
         <div class="container mx-auto px-4 md:px-12 -mt-4 mb-10 relative z-20">
             <div class="bg-white rounded-[2rem] p-4 md:p-6 shadow-lg border border-rose-50 flex flex-wrap justify-center sm:justify-between items-center gap-4 text-center divide-x divide-x-reverse divide-gray-100">
                 <div class="flex-1 min-w-[120px] flex flex-col items-center justify-center gap-2"><div class="w-12 h-12 bg-rose-50 text-rose-700 rounded-full flex items-center justify-center text-xl shadow-sm"><i class="fa fa-shield-alt"></i></div><span class="text-xs md:text-sm font-black text-rose-950">ضمان معتمد</span></div>
@@ -381,7 +369,16 @@
             </div>
         </div>
 
-        <!-- Booking Section -->
+        <div class="container mx-auto px-4 md:px-12 mb-10 text-center relative z-20">
+            <div class="w-full max-w-5xl mx-auto relative group">
+                <span class="absolute top-2 right-2 bg-white/90 backdrop-blur text-gray-400 text-[10px] font-black px-2 py-1 rounded shadow-sm z-10 pointer-events-none">إعلان</span>
+                <a href="#" class="block rounded-[2rem] overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-all">
+                    <img src="ads_images/ad2-pc.png" onerror="this.onerror=null; this.src='https://placehold.co/1200x150/f8fafc/cbd5e1?font=Cairo&text=مساحة+إعلانية+رقم+2+(كمبيوتر)'" class="hidden md:block w-full h-[100px] md:h-[130px] object-cover" alt="إعلان">
+                    <img src="ads_images/ad2-mobile.png" onerror="this.onerror=null; this.src='https://placehold.co/600x200/f8fafc/cbd5e1?font=Cairo&text=مساحة+إعلانية+رقم+2+(موبايل)'" class="block md:hidden w-full h-[100px] object-cover" alt="إعلان">
+                </a>
+            </div>
+        </div>
+
         <section id="booking" class="pt-4 pb-12 bg-white">
             <div class="container mx-auto px-4 md:px-6 max-w-5xl">
                 <div class="bg-rose-950 rounded-[3rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row border-b-8 border-rose-700">
@@ -422,26 +419,17 @@
         </section>
     </main>
 
-    <!-- ==============================================
-         2. PAGE: PRODUCTS (Catalog)
-    =============================================== -->
     <main id="page-products" class="page-section bg-white">
         <section class="pt-8 pb-12 container mx-auto px-4 md:px-12">
             <div id="catalogGrid" class="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 justify-items-center">
-                <!-- Products JS -->
-            </div>
+                </div>
         </section>
     </main>
 
-    <!-- ==============================================
-         3. PAGE: PRODUCT DETAILS 
-    =============================================== -->
     <main id="page-product-details" class="page-section bg-white">
         <section class="pt-8 pb-16 container mx-auto px-4 md:px-12 max-w-6xl">
-            <!-- Content via JS -->
             <div id="productDetailsContent" class="flex flex-col lg:flex-row items-center gap-12 mb-16"></div>
 
-            <!-- سلايدر منتجات متشابهة الجديد -->
             <div class="border-t border-gray-100 pt-16 mt-10">
                 <div class="flex items-center justify-center mb-10 w-full relative">
                     <div class="absolute w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent top-1/2"></div>
@@ -451,21 +439,16 @@
                 </div>
                 
                 <div class="relative w-full px-2 md:px-12">
-                    <!-- أزرار التحكم المحسنة -->
                     <button onclick="scrollSlider('similarProductsSlider', 1)" class="absolute right-0 md:right-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 md:w-12 md:h-12 bg-white border border-gray-200 shadow-xl rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-700 hover:text-white transition-all transform hover:scale-110 focus:outline-none"><i class="fa fa-chevron-right"></i></button>
                     <button onclick="scrollSlider('similarProductsSlider', -1)" class="absolute left-0 md:left-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 md:w-12 md:h-12 bg-white border border-gray-200 shadow-xl rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-700 hover:text-white transition-all transform hover:scale-110 focus:outline-none"><i class="fa fa-chevron-left"></i></button>
                     
                     <div id="similarProductsSlider" class="flex overflow-x-auto gap-4 md:gap-6 pb-8 pt-4 snap-x snap-mandatory hide-scrollbar scroll-smooth px-2">
-                        <!-- Similar Copiers via JS -->
-                    </div>
+                        </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- ==============================================
-         4. PAGE: ARTICLES & SINGLE ARTICLE
-    =============================================== -->
     <main id="page-articles" class="page-section text-right">
         <section class="pt-8 pb-12 container mx-auto px-6 max-w-5xl text-right">
             <div id="articlesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12"></div>
@@ -482,7 +465,25 @@
         </section>
     </main>
 
-    <!-- OTHER PAGES -->
+    <main id="page-news" class="page-section text-right">
+        <section class="pt-8 pb-12 container mx-auto px-6 max-w-5xl text-right">
+            <div class="text-center mb-12">
+                <h2 class="text-2xl md:text-4xl font-black text-rose-950 font-cairo leading-relaxed">أحدث الأخبار والفعاليات</h2>
+            </div>
+            <div id="newsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12"></div>
+        </section>
+    </main>
+
+    <main id="page-single-news" class="page-section text-right">
+        <section class="pt-8 pb-16 container mx-auto px-4 max-w-4xl text-right">
+            <button onclick="window.history.back()" class="flex items-center gap-2 text-rose-700 font-black hover:text-rose-900 transition-colors mb-8 bg-white px-5 py-2.5 rounded-full shadow-sm border border-gray-100 w-fit group">
+                <i class="fa fa-arrow-right group-hover:-translate-x-1 transition-transform"></i>
+                رجوع لقائمة الأخبار
+            </button>
+            <div id="singleNewsContainer"></div>
+        </section>
+    </main>
+
     <main id="page-sales" class="page-section text-right">
         <section class="pt-8 pb-12 container mx-auto px-6 lg:px-12 text-right">
 
@@ -589,7 +590,6 @@
             </div>
 
             <div class="grid lg:grid-cols-3 gap-6 md:gap-8 mb-16">
-                <!-- 1 -->
                 <div class="bg-white rounded-[2rem] p-8 shadow-md border border-gray-100 hover:shadow-2xl transition-all group">
                     <div class="w-16 h-16 bg-gray-100 text-gray-600 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-inner"><i class="fa fa-wrench"></i></div>
                     <h3 class="text-2xl font-black text-rose-950 font-cairo mb-5 border-b border-gray-100 pb-4">أولاً: الزيارة الحرة</h3>
@@ -600,7 +600,6 @@
                         <li><i class="fa fa-info-circle text-rose-500 ml-1"></i> يتم دفع التكلفة مرة واحدة لنفس العطل.</li>
                     </ul>
                 </div>
-                <!-- 2 -->
                 <div class="bg-white rounded-[2rem] p-8 shadow-lg border border-blue-50 hover:shadow-2xl transition-all group">
                     <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-inner"><i class="fa fa-file-signature"></i></div>
                     <h3 class="text-2xl font-black text-rose-950 font-cairo mb-5 border-b border-blue-50 pb-4">ثانياً: عقود عادية</h3>
@@ -611,7 +610,6 @@
                         <li><i class="fa fa-gift text-blue-500 ml-1"></i> عمرة صيانة مجانية في بداية التعاقد.</li>
                     </ul>
                 </div>
-                <!-- 3 -->
                 <div class="bg-gradient-to-br from-white to-rose-50 rounded-[2rem] p-8 shadow-xl border border-rose-200 hover:shadow-2xl transition-all group relative overflow-hidden">
                     <div class="absolute top-0 left-0 bg-rose-700 text-white font-black text-[10px] px-4 py-1.5 rounded-br-2xl uppercase shadow-sm">الأفضل والآمن</div>
                     <div class="w-16 h-16 bg-rose-100 text-rose-700 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-inner"><i class="fa fa-crown"></i></div>
@@ -637,6 +635,138 @@
                     <a href="https://wa.me/201094799247?text=السلام%20عليكم،%20أريد%20الاستفادة%20من%20عرض%20الـ%2050%25%20على%20عقود%20الصيانة" target="_blank" class="btn-heartbeat bg-white text-rose-900 px-8 py-4 rounded-2xl font-black text-lg md:text-xl shadow-xl flex items-center justify-center gap-3">
                         احجز العرض الآن <i class="fab fa-whatsapp text-3xl text-green-500"></i>
                     </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <main id="page-complaints" class="page-section text-right">
+        <section class="pt-8 pb-16 container mx-auto px-4 md:px-12 max-w-4xl text-right">
+            <div class="text-center mb-12">
+                <div class="inline-flex items-center justify-center mb-4">
+                    <div class="w-16 h-16 bg-rose-50 text-rose-700 rounded-2xl flex items-center justify-center text-3xl shadow-sm"><i class="fa fa-comments"></i></div>
+                </div>
+                <h2 class="text-3xl md:text-5xl font-black text-rose-950 font-cairo leading-tight mb-4">الشكاوى والاقتراحات</h2>
+                <p class="text-gray-500 text-lg md:text-xl font-bold max-w-2xl mx-auto leading-relaxed">نحن هنا لنستمع إليك بإنصات.. رأيك هو بوصلتنا لتطوير خدماتنا وتقديم الأفضل دائماً بما يليق بثقتك بنا.</p>
+            </div>
+
+            <div class="bg-white rounded-[3rem] shadow-xl border border-gray-100 p-8 md:p-14 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-rose-50 rounded-full -mr-20 -mt-20 blur-3xl pointer-events-none transition-transform duration-700 group-hover:scale-110"></div>
+                
+                <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="col-span-full md:col-span-1">
+                        <label class="text-[12px] font-black text-gray-400 mb-2 block mr-2 uppercase tracking-widest">الاسم الكريم</label>
+                        <input type="text" id="compName" oninput="updateComplaintWA()" placeholder="اكتب اسمك هنا" class="w-full p-4 bg-gray-50 rounded-2xl outline-none border-2 border-transparent focus:border-rose-700 focus:bg-white transition font-bold text-sm text-right shadow-inner">
+                    </div>
+                    <div class="col-span-full md:col-span-1">
+                        <label class="text-[12px] font-black text-gray-400 mb-2 block mr-2 uppercase tracking-widest">رقم الهاتف</label>
+                        <input type="tel" id="compPhone" oninput="updateComplaintWA()" placeholder="01xxxxxxxxx" class="w-full p-4 bg-gray-50 rounded-2xl outline-none border-2 border-transparent focus:border-rose-700 focus:bg-white transition text-left font-mono font-bold text-sm shadow-inner" dir="ltr">
+                    </div>
+                    
+                    <div class="col-span-full my-2">
+                        <label class="text-[12px] font-black text-gray-400 mb-3 block mr-2 uppercase tracking-widest">نوع الرسالة</label>
+                        <div class="flex gap-4">
+                            <label class="flex-1 cursor-pointer relative">
+                                <input type="radio" name="compType" value="شكوى" class="peer hidden" onchange="updateComplaintWA()" checked>
+                                <div class="bg-gray-50 peer-checked:bg-rose-50 border-2 border-gray-100 peer-checked:border-rose-700 p-4 rounded-2xl text-center font-bold text-gray-500 peer-checked:text-rose-900 transition flex flex-col items-center justify-center gap-2 shadow-sm">
+                                    <i class="fa fa-exclamation-circle text-2xl peer-checked:text-rose-700"></i>
+                                    <span>لدي شكوى</span>
+                                </div>
+                            </label>
+                            <label class="flex-1 cursor-pointer relative">
+                                <input type="radio" name="compType" value="اقتراح" class="peer hidden" onchange="updateComplaintWA()">
+                                <div class="bg-gray-50 peer-checked:bg-green-50 border-2 border-gray-100 peer-checked:border-green-600 p-4 rounded-2xl text-center font-bold text-gray-500 peer-checked:text-green-700 transition flex flex-col items-center justify-center gap-2 shadow-sm">
+                                    <i class="fa fa-lightbulb text-2xl peer-checked:text-green-600"></i>
+                                    <span>لدي اقتراح</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-span-full">
+                        <label class="text-[12px] font-black text-gray-400 mb-2 block mr-2 uppercase tracking-widest">تفاصيل الرسالة</label>
+                        <textarea id="compDesc" oninput="updateComplaintWA()" placeholder="اكتب تفاصيل الشكوى أو الاقتراح بوضوح هنا..." class="w-full p-5 bg-gray-50 rounded-2xl outline-none border-2 border-transparent focus:border-rose-700 focus:bg-white transition font-bold text-sm text-right min-h-[160px] shadow-inner"></textarea>
+                    </div>
+
+                    <div class="col-span-full pt-4">
+                        <a id="waComplaintBtn" href="javascript:void(0)" onclick="checkComplaintForm(event)" target="_blank" class="w-full bg-rose-700 text-white font-black py-5 rounded-2xl text-xl flex items-center justify-center gap-4 shadow-xl hover:bg-rose-800 transition transform hover:-translate-y-1 no-underline opacity-50 cursor-not-allowed">
+                            إرسال عبر واتساب <i class="fab fa-whatsapp text-3xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <main id="page-service-manual" class="page-section text-right">
+        <section class="pt-8 pb-16 container mx-auto px-4 md:px-12 max-w-4xl text-right">
+            <div class="text-center mb-10">
+                <div class="inline-flex items-center justify-center mb-4">
+                    <div class="w-16 h-16 bg-gray-900 text-yellow-500 rounded-2xl flex items-center justify-center text-3xl shadow-lg"><i class="fa fa-book-open"></i></div>
+                </div>
+                <h2 class="text-3xl md:text-5xl font-black text-rose-950 font-cairo leading-tight mb-4">طلب سيرفيس مانوال</h2>
+                <p class="text-gray-500 text-lg md:text-xl font-bold max-w-2xl mx-auto leading-relaxed">احصل على الدليل الفني الشامل (Service Manual) الخاص بماكينتك لمساعدتك في عمليات الصيانة الدقيقة.</p>
+            </div>
+
+            <div class="mb-8 bg-red-50 border-2 border-red-200 p-5 rounded-2xl flex items-start md:items-center gap-4 shadow-sm relative overflow-hidden">
+                <div class="absolute inset-0 bg-red-100 opacity-20 bg-[radial-gradient(circle_at_center,rgba(255,0,0,0.1)_1px,transparent_1px)]" style="background-size: 10px 10px;"></div>
+                <i class="fa fa-exclamation-triangle text-3xl text-red-600 animate-pulse relative z-10 shrink-0"></i>
+                <div class="relative z-10">
+                    <h4 class="font-black text-red-800 text-lg mb-1">تنبيه هام جداً</h4>
+                    <p class="text-red-700 font-bold text-sm md:text-base leading-relaxed">خدمة توفير الـ (سيرفيس مانوال) هي <strong class="text-red-900 underline underline-offset-4">خدمة مدفوعة وغير مجانية</strong>. يرجى ملء البيانات لتوضيح الموديل وسنقوم بالتواصل معك لإبلاغك بالتكلفة وطرق الدفع المتاحة.</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-[3rem] shadow-xl border border-gray-100 p-8 md:p-14 relative overflow-hidden group">
+                <div class="absolute top-0 left-0 w-64 h-64 bg-gray-100 rounded-full -ml-20 -mt-20 blur-3xl pointer-events-none transition-transform duration-700 group-hover:scale-110"></div>
+                
+                <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="col-span-full md:col-span-1">
+                        <label class="text-[12px] font-black text-gray-400 mb-2 block mr-2 uppercase tracking-widest">الاسم الكريم</label>
+                        <input type="text" id="smName" oninput="updateServiceManualWA()" placeholder="اسمك أو اسم مركز الصيانة" class="w-full p-4 bg-gray-50 rounded-2xl outline-none border-2 border-transparent focus:border-gray-900 focus:bg-white transition font-bold text-sm text-right shadow-inner">
+                    </div>
+                    <div class="col-span-full md:col-span-1">
+                        <label class="text-[12px] font-black text-gray-400 mb-2 block mr-2 uppercase tracking-widest">رقم الهاتف (واتساب)</label>
+                        <input type="tel" id="smPhone" oninput="updateServiceManualWA()" placeholder="01xxxxxxxxx" class="w-full p-4 bg-gray-50 rounded-2xl outline-none border-2 border-transparent focus:border-gray-900 focus:bg-white transition text-left font-mono font-bold text-sm shadow-inner" dir="ltr">
+                    </div>
+                    
+                    <div class="col-span-full mt-2">
+                        <label class="text-[12px] font-black text-gray-400 mb-2 block mr-2 uppercase tracking-widest">اختر موديل الماكينة</label>
+                        <div class="relative">
+                            <select id="smMachine" onchange="updateServiceManualWA()" class="w-full p-4 bg-gray-50 rounded-2xl outline-none border-2 border-transparent focus:border-gray-900 focus:bg-white transition font-bold text-base text-right shadow-inner appearance-none pr-10 cursor-pointer">
+                                <option value="" disabled selected>-- اضغط لاختيار عائلة أو موديل الماكينة --</option>
+                                <optgroup label="ماكينات ريكو (أبيض وأسود)" class="font-black text-gray-900 bg-gray-100">
+                                    <option value="Ricoh Aficio MP 161 / 171 / 201" class="font-bold text-gray-700 bg-white">Ricoh Aficio MP 161 / 171 / 201</option>
+                                    <option value="Ricoh Aficio MP 301" class="font-bold text-gray-700 bg-white">Ricoh Aficio MP 301</option>
+                                    <option value="Ricoh Aficio MP 2510 / 3010 / 3350 / 3351 / 3352" class="font-bold text-gray-700 bg-white">Ricoh MP 2510 / 3010 / 3350 / 3351 / 3352</option>
+                                    <option value="Ricoh Aficio MP 4000 / 5000 / 4001 / 5001" class="font-bold text-gray-700 bg-white">Ricoh MP 4000 / 5000 / 4001 / 5001</option>
+                                    <option value="Ricoh Aficio MP 4002 / 5002" class="font-bold text-gray-700 bg-white">Ricoh Aficio MP 4002 / 5002</option>
+                                    <option value="Ricoh MP 4054 / 5054 / 6054" class="font-bold text-gray-700 bg-white">Ricoh MP 4054 / 5054 / 6054</option>
+                                    <option value="Ricoh Aficio MP 6000 / 7000 / 8000" class="font-bold text-gray-700 bg-white">Ricoh MP 6000 / 7000 / 8000</option>
+                                    <option value="Ricoh Aficio MP 6001 / 7001 / 8001 / 9001" class="font-bold text-gray-700 bg-white">Ricoh MP 6001 / 7001 / 8001 / 9001</option>
+                                    <option value="Ricoh Aficio MP 6002 / 7502 / 9002" class="font-bold text-gray-700 bg-white">Ricoh Aficio MP 6002 / 7502 / 9002</option>
+                                </optgroup>
+                                <optgroup label="ماكينات ريكو (ألوان)" class="font-black text-rose-900 bg-rose-50">
+                                    <option value="Ricoh Aficio MP C305 / C306 / C307" class="font-bold text-gray-700 bg-white">Ricoh Aficio MP C305 / C306 / C307</option>
+                                    <option value="Ricoh Aficio MP C400 / C401" class="font-bold text-gray-700 bg-white">Ricoh Aficio MP C400 / C401</option>
+                                    <option value="Ricoh Aficio MP C2003 / C2503" class="font-bold text-gray-700 bg-white">Ricoh Aficio MP C2003 / C2503</option>
+                                    <option value="Ricoh Aficio MP C3003 / C3503 / C4503 / C5503 / C6003" class="font-bold text-gray-700 bg-white">Ricoh MP C3003/C3503/C4503/C5503/C6003</option>
+                                    <option value="Ricoh Aficio MP C3004 / C3504 / C4504 / C6004" class="font-bold text-gray-700 bg-white">Ricoh MP C3004 / C3504 / C4504 / C6004</option>
+                                    <option value="Ricoh Pro C5100s / C5110s (Digital)" class="font-bold text-gray-700 bg-white">Ricoh Pro C5100s / C5110s (Digital)</option>
+                                </optgroup>
+                                <optgroup label="أخرى" class="font-black text-gray-900 bg-gray-100">
+                                    <option value="موديل آخر (سأقوم بكتابته في الرسالة)" class="font-bold text-gray-700 bg-white">موديل آخر غير موجود بالقائمة</option>
+                                </optgroup>
+                            </select>
+                            <i class="fa fa-chevron-down absolute left-4 top-[18px] text-gray-400 pointer-events-none"></i>
+                        </div>
+                    </div>
+
+                    <div class="col-span-full pt-6">
+                        <a id="waServiceManualBtn" href="javascript:void(0)" onclick="checkServiceManualForm(event)" target="_blank" class="w-full bg-gray-900 text-yellow-500 font-black py-5 rounded-2xl text-xl flex items-center justify-center gap-4 shadow-xl hover:bg-black transition transform hover:-translate-y-1 no-underline opacity-50 cursor-not-allowed border border-gray-800">
+                            طلب السيرفيس مانوال عبر واتساب <i class="fab fa-whatsapp text-3xl text-green-500"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>
@@ -683,7 +813,6 @@
                 <h2 class="text-2xl md:text-4xl font-black text-rose-950 font-cairo leading-relaxed">أهلاً بك في شركة العدل لبيع وصيانة الطابعات وماكينات التصوير</h2>
             </div>
 
-            <!-- 1. الرؤية والرسالة -->
             <div class="bg-white rounded-[3rem] p-8 md:p-14 shadow-xl border border-gray-100 mb-12 relative overflow-hidden group">
                 <div class="absolute top-0 right-0 w-48 h-48 bg-rose-50 rounded-full -mr-16 -mt-16 blur-3xl transition-transform duration-700 group-hover:scale-150"></div>
                 <i class="fa fa-quote-right text-6xl md:text-8xl text-rose-50 absolute top-6 right-8 md:right-12 z-0"></i>
@@ -695,7 +824,6 @@
                 </div>
             </div>
 
-            <!-- 2. التأسيس والإنطلاق -->
             <div class="bg-zinc-900 rounded-[3rem] p-8 md:p-14 shadow-2xl mb-16 relative overflow-hidden text-white">
                 <div class="absolute bottom-0 left-0 w-64 h-64 bg-rose-900/40 rounded-full -ml-20 -mb-20 blur-3xl"></div>
                 <div class="flex items-center gap-5 mb-8 relative z-10">
@@ -707,7 +835,6 @@
                 </p>
             </div>
 
-            <!-- 3. عضويات المجتمع المدني -->
             <div class="mb-24 text-right">
                 <div class="text-center mb-12">
                     <h3 class="text-3xl font-black text-rose-950 mb-4 font-cairo">الانضمام لمنظمات المجتمع المدنى</h3>
@@ -738,7 +865,6 @@
                 </div>
             </div>
 
-            <!-- 4. فريق العمل (Slider) -->
             <div>
                 <div class="flex items-center justify-between mb-10 border-r-[8px] border-rose-700 pr-4">
                     <h3 class="text-3xl font-black text-rose-950 font-cairo">فريق القيادة والعمل</h3>
@@ -790,11 +916,9 @@
         </section>
     </main>
 
-    <!-- Footer المحسن والاحترافي للموبايل والكمبيوتر -->
     <footer class="bg-zinc-950 text-white pt-10 pb-6 px-4 md:px-6 border-t-8 border-rose-700">
         <div class="container mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 border-b border-white/5 pb-8">
             
-            <!-- تعريف الشركة -->
             <div class="col-span-2 md:col-span-1 text-center">
                 <div class="flex justify-center mb-4">
                     <h4 class="text-2xl md:text-3xl font-black text-rose-50 uppercase tracking-tighter">شركة العدل</h4>
@@ -806,12 +930,10 @@
                 </div>
             </div>
 
-            <!-- بيانات التواصل -->
             <div class="col-span-2 md:col-span-1 text-center">
                 <div class="flex justify-center mb-6">
                     <h4 class="text-base md:text-lg font-bold text-white border-b-2 border-rose-700 pb-2 uppercase inline-block">بيانات التواصل</h4>
                 </div>
-                <!-- العناصر جنب بعض في الموبايل -->
                 <div class="grid grid-cols-2 gap-4">
                     <div class="flex flex-col items-center justify-center gap-2 group">
                         <div class="w-10 h-10 bg-rose-900/30 rounded-xl flex items-center justify-center text-rose-500"><i class="fa fa-phone-alt"></i></div>
@@ -824,7 +946,6 @@
                 </div>
             </div>
 
-            <!-- أوقات العمل -->
             <div class="col-span-1 text-center flex flex-col items-center">
                 <div class="flex justify-center mb-6">
                     <h4 class="text-base md:text-lg font-bold text-white border-b-2 border-rose-700 pb-2 uppercase inline-block">أوقات العمل</h4>
@@ -832,7 +953,6 @@
                 <p class="text-gray-400 text-xs md:text-sm leading-loose font-bold"><i class="fa fa-clock text-rose-500 ml-1"></i> 9 ص - 6 م<br><i class="fa fa-calendar-alt text-rose-500 ml-1"></i> السبت - الخميس</p>
             </div>
 
-            <!-- العنوان -->
             <div class="col-span-1 text-center flex flex-col items-center">
                 <div class="flex justify-center mb-6">
                     <h4 class="text-base md:text-lg font-bold text-white border-b-2 border-rose-700 pb-2 uppercase inline-block">العنوان</h4>
@@ -846,7 +966,6 @@
         </div>
     </footer>
 
-    <!-- JavaScript Engine -->
     <script>
         const MAIN_NUM = "201094799247";
 
@@ -881,6 +1000,8 @@
                     targetId = 'products';
                 } else if (targetId === 'single-article' && !itemId && (!history.state || !history.state.itemId)) {
                     targetId = 'articles';
+                } else if (targetId === 'single-news' && !itemId && (!history.state || !history.state.itemId)) {
+                    targetId = 'news';
                 }
 
                 const target = document.getElementById('page-' + targetId);
@@ -893,6 +1014,7 @@
                 
                 if (targetId === 'products') renderProducts(category);
                 else if (targetId === 'articles') renderArticlesGrid();
+                else if (targetId === 'news') renderNewsGrid();
 
                 if (addToHistory) { 
                     history.pushState({ pageId: targetId, cat: category, scrollY: 0, itemId: itemId }, '', '#' + targetId); 
@@ -911,6 +1033,8 @@
                     openProductDetails(itemId, false, scrollY);
                 } else if (pageId === 'single-article' && itemId) {
                     openSingleArticle(itemId, false, scrollY);
+                } else if (pageId === 'single-news' && itemId) {
+                    openSingleNews(itemId, false, scrollY);
                 } else {
                     navigateTo(pageId, event.state.cat || 'all', false, scrollY); 
                 }
@@ -949,6 +1073,59 @@
             const p = document.getElementById('mPhone').value.trim();
             const desc = document.getElementById('mDesc') ? document.getElementById('mDesc').value.trim() : '';
             if (n === "" || p === "" || desc === "") { e.preventDefault(); alert("يرجى إكمال البيانات الأساسية (الاسم، الهاتف، ووصف العطل)"); }
+        }
+
+        function updateComplaintWA() {
+            const n = document.getElementById('compName').value.trim();
+            const p = document.getElementById('compPhone').value.trim();
+            const type = document.querySelector('input[name="compType"]:checked').value;
+            const desc = document.getElementById('compDesc').value.trim();
+            const btn = document.getElementById('waComplaintBtn');
+            
+            if (n !== "" && p.length >= 10 && desc !== "") {
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                let text = `السلام عليكم شركة العدل،\nلدي رسالة جديدة:\n📌 النوع: ${type}\n👤 الاسم: ${n}\n📞 الهاتف: ${p}\n📝 التفاصيل:\n${desc}`;
+                btn.href = `https://wa.me/${MAIN_NUM}?text=${encodeURIComponent(text)}`;
+            } else { 
+                btn.classList.add('opacity-50', 'cursor-not-allowed'); 
+                btn.href = "javascript:void(0)"; 
+            }
+        }
+
+        function checkComplaintForm(e) {
+            const n = document.getElementById('compName').value.trim();
+            const p = document.getElementById('compPhone').value.trim();
+            const desc = document.getElementById('compDesc').value.trim();
+            if (n === "" || p === "" || desc === "") { 
+                e.preventDefault(); 
+                alert("يرجى إكمال البيانات الأساسية (الاسم، الهاتف، وتفاصيل الرسالة)"); 
+            }
+        }
+        
+        function updateServiceManualWA() {
+            const n = document.getElementById('smName').value.trim();
+            const p = document.getElementById('smPhone').value.trim();
+            const m = document.getElementById('smMachine').value;
+            const btn = document.getElementById('waServiceManualBtn');
+            
+            if (n !== "" && p.length >= 10 && m !== "") {
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                let text = `السلام عليكم شركة العدل،\nأريد طلب "سيرفيس مانوال" (Service Manual) مدفوع:\n👤 الاسم: ${n}\n📞 الهاتف: ${p}\n🖨️ الماكينة: ${m}\nيرجى إعلامي بالتكلفة وطرق الدفع.`;
+                btn.href = `https://wa.me/${MAIN_NUM}?text=${encodeURIComponent(text)}`;
+            } else { 
+                btn.classList.add('opacity-50', 'cursor-not-allowed'); 
+                btn.href = "javascript:void(0)"; 
+            }
+        }
+
+        function checkServiceManualForm(e) {
+            const n = document.getElementById('smName').value.trim();
+            const p = document.getElementById('smPhone').value.trim();
+            const m = document.getElementById('smMachine').value;
+            if (n === "" || p === "" || m === "") { 
+                e.preventDefault(); 
+                alert("يرجى إكمال البيانات الأساسية واختيار موديل الماكينة"); 
+            }
         }
 
         function orderNowWA(product) {
@@ -1088,6 +1265,69 @@
             }
 
             navigateTo('product-details', 'all', addToHistory, scrollPos, productName);
+        }
+
+        // قاعدة بيانات الأخبار
+        const newsDB = [
+            {
+                id: 'news-1',
+                title: 'حكاية قصة النصر: ذكرى تحرير أرض الفيروز في 25 أبريل',
+                image: 'news_images/sinai.jpg',
+                date: 'أحدث الأخبار',
+                content: `
+                    <p class="mb-4 text-lg">في مثل هذا اليوم من كل عام، تتوقف عقارب الساعة لتنحني إجلالاً لذكرى غالية على قلب كل مصري، ذكرى يوم 25 أبريل، اليوم الذي استعادت فيه مصر كرامتها كاملة غير منقوصة، وارتفع فيه العلم المصري ليرفرف عالياً في سماء سيناء، معلناً للعالم أجمع أننا أسياد هذه الأرض وحراسها.</p>
+                    <p class="mb-8 text-lg">اليوم، لا نحتفل فقط باسترداد جغرافيا الأرض، بل نحتفل باليوم الذي تحول فيه الوجع إلى فرحة، وأصبح فيه الحلم المستحيل حقيقة ملموسة بفضل إرادة لا تلين وعزيمة لا تكسر.</p>
+
+                    <h4 class="text-2xl font-black text-rose-950 mb-5 font-cairo border-b-2 border-rose-100 pb-2 inline-block">لأرض الفيروز.. رمال من ذهب وشمس حرية</h4>
+                    <p class="mb-8 text-lg text-gray-700 leading-loose">سيناء ليست مجرد قطعة أرض، بل هي قطعة من الروح، رمالها التي تشبه الذهب لم تكن يوماً رخيصة، بل سُقيت بدماء طاهرة لتبقى مصرية الهوى والمنتمى. شمس الحرية التي تشرق اليوم على جبال سانت كاترين وشواطئ شرم الشيخ هي ثمرة كفاح طويل خاضته الدولة المصرية، عسكرياً ودبلوماسياً، حتى عادت الأرض إلى حضن الوطن الأم.</p>
+
+                    <h4 class="text-2xl font-black text-rose-950 mb-5 font-cairo border-b-2 border-rose-100 pb-2 inline-block">لأبطالنا الذين سطروا ملاحم العزة</h4>
+                    <p class="mb-8 text-lg text-gray-700 leading-loose">في هذه الذكرى، نوجه تحية إجلال وتقدير لأبطال القوات المسلحة المصرية، الذين سطروا بدمائهم وتضحياتهم أعظم ملاحم الفداء. هم الذين جعلوا من أجسادهم جسراً للعبور ومن إرادتهم سلاحاً لا يقهر، لتبقى رؤوسنا مرفوعة وكلمتنا مسموعة.</p>
+
+                    <h4 class="text-2xl font-black text-rose-950 mb-5 font-cairo border-b-2 border-rose-100 pb-2 inline-block">لكل مصري يبني ويحلم</h4>
+                    <p class="mb-4 text-lg text-gray-700 leading-loose">الاحتفال بتحرير سيناء هو دعوة متجددة لكل مصري مخلص، يساهم اليوم بعرقه في بناء وتنمية هذه الأرض المقدسة. إن معركة التنمية التي تشهدها سيناء الآن هي استكمال لمعركة التحرير، فالحفاظ على الأرض يكون بالبناء والتعمير بقدر ما يكون بالدفاع والذود عنها.</p>
+                    <p class="mb-8 text-lg font-bold text-gray-700 border-r-4 border-rose-600 pr-4 leading-loose">كل مصري يبني ويحلم ويكمل المشوار بحب لبلده هو بطل في ميدانه، وهو الامتداد الطبيعي لجيل النصر الذي لم يعرف اليأس أبداً.</p>
+
+                    <h4 class="text-2xl font-black text-rose-950 mb-5 font-cairo border-b-2 border-rose-100 pb-2 inline-block">دعاء للوطن والأمة</h4>
+                    <p class="mb-6 text-lg text-gray-700 leading-loose">في هذه المناسبة الوطنية الغالية، نسأل الله عز وجل أن يديم على مصرنا الغالية نعمة الأمن والأمان، وأن تظل دائماً منارة للسلام والقوة. كما نسأله سبحانه أن يمنّ على كافة أوطاننا العربية بالأمن والأمان والسلام الدائم، وأن يحفظ شعوبنا من كل سوء.</p>
+                    
+                    <p class="text-xl md:text-2xl font-black text-rose-900 text-center mt-10 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">كل سنة ومصر طيبة وبألف خير.. كل سنة وإحنا ببلدنا فخورين. 🇪🇬</p>
+                `
+            }
+        ];
+
+        function renderNewsGrid() {
+            const grid = document.getElementById('newsGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            grid.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12";
+            newsDB.forEach(news => {
+                grid.insertAdjacentHTML('beforeend', `
+                    <div class="flex flex-col group cursor-pointer bg-transparent transition-transform duration-300 hover:-translate-y-2" onclick="openSingleNews('${news.id}')">
+                        <div class="w-full h-56 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform duration-500">
+                            <img src="${news.image}" class="max-w-full max-h-full object-contain drop-shadow-md">
+                        </div>
+                        <div class="text-right flex-1 flex flex-col px-2">
+                            <span class="text-rose-700 text-[10px] font-black mb-2 block tracking-widest">${news.date}</span>
+                            <h3 class="text-lg md:text-xl font-black text-rose-950 font-cairo leading-snug group-hover:text-rose-700 transition-colors">${news.title}</h3>
+                            <div class="mt-auto pt-4 flex items-center gap-2 text-rose-900 font-bold text-xs"><span>اقرأ التفاصيل</span><i class="fa fa-arrow-left animate-pulse"></i></div>
+                        </div>
+                    </div>
+                `);
+            });
+        }
+
+        function openSingleNews(newsId, addToHistory = true, scrollPos = 0) {
+            const news = newsDB.find(n => n.id === newsId);
+            if (!news) return;
+            document.getElementById('singleNewsContainer').innerHTML = `
+                <div class="mb-10 flex flex-col items-center">
+                    <img src="${news.image}" class="max-w-full h-auto max-h-[400px] object-contain mb-8 drop-shadow-xl">
+                    <span class="bg-rose-100 text-rose-800 text-xs font-black px-4 py-1.5 rounded-full mb-4 inline-block">${news.date}</span>
+                    <h1 class="text-2xl md:text-4xl font-black font-cairo text-center text-rose-950 leading-tight">${news.title}</h1>
+                </div>
+                <div class="text-gray-600 text-lg md:text-xl leading-loose px-4">${news.content}</div>`;
+            navigateTo('single-news', 'all', addToHistory, scrollPos, newsId);
         }
 
         // قاعدة بيانات المقالات (بدون اختصار)
@@ -1252,13 +1492,18 @@
             const h = window.location.hash.substring(1);
             
             if (h && document.getElementById('page-' + h)) {
-                if (h === 'product-details' || h === 'single-article') {
+                if (h === 'product-details' || h === 'single-article' || h === 'single-news') {
                     if (history.state && history.state.itemId) {
                         if (h === 'product-details') openProductDetails(history.state.itemId, false, history.state.scrollY || 0);
-                        else openSingleArticle(history.state.itemId, false, history.state.scrollY || 0);
+                        else if (h === 'single-article') openSingleArticle(history.state.itemId, false, history.state.scrollY || 0);
+                        else openSingleNews(history.state.itemId, false, history.state.scrollY || 0);
                     } else {
                         // حماية: إذا تم الدخول لرابط التفاصيل في نافذة جديدة مباشرة، عُد للقسم الرئيسي
-                        const fallback = h === 'product-details' ? 'products' : 'articles';
+                        let fallback = 'home';
+                        if (h === 'product-details') fallback = 'products';
+                        else if (h === 'single-article') fallback = 'articles';
+                        else if (h === 'single-news') fallback = 'news';
+                        
                         navigateTo(fallback, 'all', false, 0);
                         history.replaceState({ pageId: fallback, cat: 'all', scrollY: 0 }, '', '#' + fallback);
                     }
