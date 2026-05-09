@@ -63,7 +63,7 @@
         .dropdown-card:hover { background-color: #be123c; color: #ffffff; transform: translateX(-5px); }
 
         /* Mobile Menu */
-        #mobile-menu { position: fixed; top: 0; right: -100%; width: 85%; height: 100%; background: #f8fafc; z-index: 2000; transition: right 0.4s ease; box-shadow: -10px 0 40px rgba(0,0,0,0.2); }
+        #mobile-menu { position: fixed; top: 0; right: -100%; width: 85%; height: 100%; background: #f8fafc; z-index: 2000; transition: right 0.4s ease; box-shadow: -10px 0 40px rgba(0,0,0,0.2); display: flex; flex-direction: column; }
         #mobile-menu.open { right: 0; }
         .menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1500; display: none; backdrop-filter: blur(4px); }
         .menu-overlay.show { display: block; }
@@ -94,7 +94,7 @@
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="text-gray-800 text-right">
+<body class="text-gray-800 text-right" ontouchstart="">
 
     <div id="overlay" class="menu-overlay" onclick="toggleMobileMenu()"></div>
 
@@ -183,7 +183,7 @@
             <div class="flex items-center gap-3">
                 <button onclick="toggleMobileMenu()" class="lg:hidden text-rose-900 text-2xl bg-gray-50 p-2 rounded-xl"><i class="fa fa-bars"></i></button>
                 <div class="flex items-center gap-2 cursor-pointer" onclick="navigateTo('home')">
-                    <img src="logo.png" class="w-10 h-10 md:w-16 md:h-16 object-contain" alt="لوجو">
+                    <img src="logo.png" class="w-10 h-10 md:w-16 md:h-16 object-contain" alt="لوجو" onerror="this.src=''">
                     <div class="text-right">
                         <span class="text-base md:text-2xl font-black text-rose-950 block leading-none">شركة العدل</span>
                         <span class="text-[8px] md:text-[10px] font-extrabold text-gray-400 block mt-1 uppercase">لبيع وصيانة الطابعات</span>
@@ -304,13 +304,45 @@
                     </div>
                 </aside>
 
-                <div class="flex-1 w-full relative group/slider">
-                    <!-- أزرار التحكم -->
-                    <button onclick="scrollSlider('recentProductsSlider', 1)" class="absolute right-0 top-[40%] -translate-y-1/2 z-20 w-10 h-10 bg-white border border-gray-200 shadow-md rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-700 hover:text-white transition"><i class="fa fa-chevron-right"></i></button>
-                    <button onclick="scrollSlider('recentProductsSlider', -1)" class="absolute left-0 top-[40%] -translate-y-1/2 z-20 w-10 h-10 bg-white border border-gray-200 shadow-md rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-700 hover:text-white transition"><i class="fa fa-chevron-left"></i></button>
+                <div class="flex-1 w-full overflow-hidden">
+                    <div class="relative w-full group/slider">
+                        <!-- أزرار التحكم -->
+                        <button onclick="scrollSlider('recentProductsSlider', 1)" class="absolute right-0 top-[40%] -translate-y-1/2 z-20 w-10 h-10 bg-white/90 border border-gray-200 shadow-md rounded-full flex items-center justify-center text-rose-900 pointer-events-auto hover:bg-rose-700 hover:text-white transition"><i class="fa fa-chevron-right"></i></button>
+                        <button onclick="scrollSlider('recentProductsSlider', -1)" class="absolute left-0 top-[40%] -translate-y-1/2 z-20 w-10 h-10 bg-white/90 border border-gray-200 shadow-md rounded-full flex items-center justify-center text-rose-900 pointer-events-auto hover:bg-rose-700 hover:text-white transition"><i class="fa fa-chevron-left"></i></button>
 
-                    <div id="recentProductsSlider" class="flex overflow-x-auto gap-4 md:gap-6 pb-6 snap-x snap-mandatory hide-scrollbar scroll-smooth px-4">
-                        <!-- Products JS -->
+                        <div id="recentProductsSlider" class="flex overflow-x-auto gap-4 md:gap-6 pb-6 snap-x snap-mandatory hide-scrollbar scroll-smooth px-4">
+                            <!-- Products JS -->
+                        </div>
+                    </div>
+
+                    <!-- إعلان الخصم المطور (فخم) -->
+                    <div class="mt-12 mb-4 bg-gradient-to-br from-rose-950 via-rose-900 to-rose-800 rounded-[2.5rem] p-8 md:p-12 shadow-2xl relative overflow-hidden group border border-rose-800">
+                        <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+                            <div class="absolute -top-24 -right-24 w-64 h-64 bg-rose-500 opacity-20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000"></div>
+                            <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-yellow-500 opacity-10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000"></div>
+                            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_1px,transparent_1px)]" style="background-size: 20px 20px;"></div>
+                        </div>
+                        
+                        <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
+                            <div class="text-center lg:text-right flex-1">
+                                <div class="inline-flex items-center gap-2 px-5 py-2 bg-white/10 backdrop-blur-sm border border-white/20 text-rose-100 rounded-full font-bold text-sm mb-6">
+                                    <span class="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span>
+                                    عرض لفترة محدودة
+                                </div>
+                                <h3 class="text-3xl md:text-5xl font-black text-white font-cairo leading-tight mb-4 drop-shadow-md">
+                                    خصم <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-500 text-5xl md:text-7xl px-2">50%</span> 
+                                </h3>
+                                <h4 class="text-xl md:text-3xl font-bold text-rose-100 tracking-wide">على عقود الصيانة السنوية</h4>
+                            </div>
+                            
+                            <div class="shrink-0 relative w-full lg:w-auto mt-6 lg:mt-0 flex flex-col items-center">
+                                <div class="absolute inset-0 bg-yellow-400 blur-2xl opacity-20 rounded-full animate-pulse"></div>
+                                <a href="https://wa.me/201094799247?text=السلام%20عليكم،%20أريد%20تفاصيل%20أكثر%20عن%20عرض%20خصم%20الـ%2050%25%20على%20عقود%20الصيانة" target="_blank" class="relative z-10 btn-heartbeat w-full lg:w-auto bg-gradient-to-l from-yellow-400 to-yellow-500 text-rose-950 px-10 py-5 rounded-[2rem] font-black text-xl shadow-xl flex items-center justify-center gap-3 hover:shadow-2xl transition transform hover:-translate-y-1">
+                                    احجز العرض الآن
+                                    <i class="fab fa-whatsapp text-3xl"></i>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -361,12 +393,12 @@
     <!-- ==============================================
          3. PAGE: PRODUCT DETAILS 
     =============================================== -->
-    <main id="page-product-details" class="page-section">
+    <main id="page-product-details" class="page-section bg-white">
         <section class="pt-8 pb-16 container mx-auto px-4 md:px-12 max-w-6xl">
             <!-- Content via JS -->
-            <div id="productDetailsContent" class="flex flex-col lg:flex-row gap-12 mb-16"></div>
+            <div id="productDetailsContent" class="flex flex-col lg:flex-row items-center gap-12 mb-16"></div>
 
-            <!-- سلايدر منتجات متشابهة -->
+            <!-- سلايدر منتجات متشابهة الجديد -->
             <div class="border-t border-gray-100 pt-16 mt-10">
                 <div class="flex items-center justify-center mb-10 w-full relative">
                     <div class="absolute w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent top-1/2"></div>
@@ -375,12 +407,12 @@
                     </div>
                 </div>
                 
-                <div class="relative w-full group/slider">
-                    <!-- أزرار التحكم -->
-                    <button onclick="scrollSlider('similarProductsSlider', 1)" class="absolute right-0 top-[40%] -translate-y-1/2 z-20 w-12 h-12 bg-white border border-gray-200 shadow-xl rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-700 hover:text-white transition"><i class="fa fa-chevron-right"></i></button>
-                    <button onclick="scrollSlider('similarProductsSlider', -1)" class="absolute left-0 top-[40%] -translate-y-1/2 z-20 w-12 h-12 bg-white border border-gray-200 shadow-xl rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-700 hover:text-white transition"><i class="fa fa-chevron-left"></i></button>
+                <div class="relative w-full px-2 md:px-12">
+                    <!-- أزرار التحكم المحسنة -->
+                    <button onclick="scrollSlider('similarProductsSlider', 1)" class="absolute right-0 md:right-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 md:w-12 md:h-12 bg-white border border-gray-200 shadow-xl rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-700 hover:text-white transition-all transform hover:scale-110 focus:outline-none"><i class="fa fa-chevron-right"></i></button>
+                    <button onclick="scrollSlider('similarProductsSlider', -1)" class="absolute left-0 md:left-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 md:w-12 md:h-12 bg-white border border-gray-200 shadow-xl rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-700 hover:text-white transition-all transform hover:scale-110 focus:outline-none"><i class="fa fa-chevron-left"></i></button>
                     
-                    <div id="similarProductsSlider" class="flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory hide-scrollbar scroll-smooth px-4">
+                    <div id="similarProductsSlider" class="flex overflow-x-auto gap-4 md:gap-6 pb-8 pt-4 snap-x snap-mandatory hide-scrollbar scroll-smooth px-2">
                         <!-- Similar Copiers via JS -->
                     </div>
                 </div>
@@ -756,7 +788,7 @@
     <script>
         const MAIN_NUM = "201094799247";
 
-        // حفظ موضع الصفحة للرجوع بدقة
+        // حفظ موضع الصفحة للرجوع بدقة وإلغاء الاستعادة التلقائية للمتصفح
         if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
 
         // دالة موحدة لتحريك أي سلايدر يمين وشمال
@@ -775,11 +807,20 @@
             else { content.classList.add('hidden'); icon.classList.remove('rotate-180'); }
         }
 
-        function navigateTo(targetId, category = 'all', addToHistory = true, scrollPos = 0) {
+        // تطوير نظام الـ Router لحل مشكلة الصفحات البيضاء وحفظ הـ State
+        function navigateTo(targetId, category = 'all', addToHistory = true, scrollPos = 0, itemId = null) {
             if (addToHistory) { history.replaceState({ ...history.state, scrollY: window.scrollY }, ''); }
             
             setTimeout(() => {
                 document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+                
+                // حماية من الدخول المباشر لرابط التفاصيل بدون وجود بيانات (منع الصفحة البيضاء)
+                if (targetId === 'product-details' && !itemId && (!history.state || !history.state.itemId)) {
+                    targetId = 'products';
+                } else if (targetId === 'single-article' && !itemId && (!history.state || !history.state.itemId)) {
+                    targetId = 'articles';
+                }
+
                 const target = document.getElementById('page-' + targetId);
                 if (target) { 
                     target.classList.add('active'); 
@@ -791,12 +832,27 @@
                 if (targetId === 'products') renderProducts(category);
                 else if (targetId === 'articles') renderArticlesGrid();
 
-                if (addToHistory) { history.pushState({ pageId: targetId, cat: category, scrollY: 0 }, '', '#' + targetId); }
+                if (addToHistory) { 
+                    history.pushState({ pageId: targetId, cat: category, scrollY: 0, itemId: itemId }, '', '#' + targetId); 
+                }
             }, 50);
         }
 
+        // استعادة الـ State عند الضغط على زر الرجوع (Back) أو التقدم
         window.addEventListener('popstate', (event) => {
-            if (event.state && event.state.pageId) { navigateTo(event.state.pageId, event.state.cat || 'all', false, event.state.scrollY || 0); } 
+            if (event.state && event.state.pageId) { 
+                const pageId = event.state.pageId;
+                const scrollY = event.state.scrollY || 0;
+                const itemId = event.state.itemId;
+
+                if (pageId === 'product-details' && itemId) {
+                    openProductDetails(itemId, false, scrollY);
+                } else if (pageId === 'single-article' && itemId) {
+                    openSingleArticle(itemId, false, scrollY);
+                } else {
+                    navigateTo(pageId, event.state.cat || 'all', false, scrollY); 
+                }
+            } 
             else { navigateTo('home', 'all', false, 0); }
         });
 
@@ -835,16 +891,19 @@
             window.open(`https://wa.me/${MAIN_NUM}?text=${encodeURIComponent(text)}`, '_blank');
         }
 
-        // قاعدة بيانات المنتجات
+        // قاعدة بيانات المنتجات (تم إضافة منتجات جديدة للتجربة)
         const productsDB = [
             { name: 'ريكو Aficio MP 5002', image: 'images/MP 5002.png', condition: '', speed: '50 ورقة / دقيقة', resolution: '1200 * 1200', functions: 'طباعة – تصوير – سكانر – فاكس', paperSize: 'A3, A4, A5 والعديد من المقاسات', price: '28,000 جنيه', category: 'bw-copiers' },
             { name: 'ريكو Aficio MP C305', image: 'images/Mp C305.png', condition: '', speed: '30 ورقة / دقيقة', resolution: '1200 * 1200', functions: 'طباعة – تصوير – سكانر – فاكس', paperSize: 'A4, A5, A6', price: '6500 جنيه', category: 'color-copiers' },
             { name: 'ريكو Aficio MP C307', image: 'images/Mp C307.png', condition: '', speed: '30 ورقة / دقيقة', resolution: '1200 * 1200', functions: 'طباعة – تصوير – سكانر – فاكس', paperSize: 'A4, A5, A6', price: '8000 جنيه', category: 'color-copiers' },
             { name: 'ريكو Aficio MP 201', image: 'images/MP 201.png', condition: '', speed: '20 ورقة / دقيقة', resolution: '1200 * 1200', functions: 'طباعة – تصوير – سكانر – فاكس', paperSize: 'A4, A5, A6', price: '7500 جنيه', category: 'bw-copiers' },
-            { name: 'ريكو Aficio MP 301', image: 'images/MP 301.png', condition: '', speed: '30 ورقة / دقيقة', resolution: '1200 * 1200', functions: 'طباعة – تصوير – سكانر – فاكس', paperSize: 'A4, A5, A6', price: '6500 جنيه', category: 'bw-copiers' }
+            { name: 'ريكو Aficio MP 301', image: 'images/MP 301.png', condition: '', speed: '30 ورقة / دقيقة', resolution: '1200 * 1200', functions: 'طباعة – تصوير – سكانر – فاكس', paperSize: 'A4, A5, A6', price: '6500 جنيه', category: 'bw-copiers' },
+            { name: 'ريكو Aficio MP 4002', image: 'images/MP 5002.png', condition: 'عرض خاص', speed: '40 ورقة / دقيقة', resolution: '1200 * 1200', functions: 'طباعة – تصوير – سكانر', paperSize: 'A3, A4', price: '24,000 جنيه', category: 'bw-copiers' },
+            { name: 'ريكو Aficio MP C4503', image: 'images/Mp C305.png', condition: 'الأكثر مبيعاً', speed: '45 ورقة / دقيقة', resolution: '1200 * 1200', functions: 'ألوان – طباعة – تصوير', paperSize: 'A3, A4', price: '32,000 جنيه', category: 'color-copiers' },
+            { name: 'ريكو Aficio MP C5503', image: 'images/Mp C307.png', condition: 'استيراد', speed: '55 ورقة / دقيقة', resolution: '1200 * 1200', functions: 'ألوان – طباعة – تصوير', paperSize: 'A3, A4, A5', price: '38,000 جنيه', category: 'color-copiers' }
         ];
 
-        // تصميم الكروت الجديد: خلفية بيضاء لضم المحتوى بشكل نظيف والصورة كبيرة
+        // تصميم الكروت الجديد: خالية من المربعات والخلفيات لتندمج مع الصفحة
         function renderProducts(categoryFilter = 'all') {
             const homeSlider = document.getElementById('recentProductsSlider');
             const catalogGrid = document.getElementById('catalogGrid');
@@ -853,9 +912,9 @@
                 homeSlider.innerHTML = '';
                 [...productsDB].reverse().slice(0, 5).forEach(prod => {
                     homeSlider.insertAdjacentHTML('beforeend', `
-                        <div class="w-[240px] md:w-[280px] shrink-0 snap-center group flex flex-col bg-white rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 p-4">
-                            <div class="h-44 md:h-56 mb-4 flex items-center justify-center relative group-hover:scale-105 transition-transform duration-500">
-                                <img src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain drop-shadow-md">
+                        <div class="w-[240px] md:w-[280px] shrink-0 snap-center group flex flex-col bg-transparent transition-all duration-300 py-4">
+                            <div class="h-48 md:h-64 mb-4 flex items-center justify-center relative group-hover:scale-105 transition-transform duration-500">
+                                <img src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain drop-shadow-lg">
                                 ${prod.condition ? `<div class="absolute top-2 left-2 bg-rose-700 text-white text-[9px] font-black px-2 py-1 rounded shadow-sm z-10">${prod.condition}</div>` : ''}
                             </div>
                             <h3 class="text-sm md:text-base font-black text-rose-950 mb-1 text-center font-cairo leading-tight">${prod.name}</h3>
@@ -866,7 +925,7 @@
                                     <span class="text-rose-900 font-black text-sm">${prod.price}</span>
                                     <button onclick="openProductDetails('${prod.name}')" class="text-gray-400 hover:text-rose-700 font-bold text-[10px] underline underline-offset-4">التفاصيل</button>
                                 </div>
-                                <button onclick="orderNowWA('${prod.name}')" class="btn-heartbeat w-full bg-rose-700 text-white py-2.5 rounded-xl font-black text-xs hover:bg-rose-800 transition">طلب شراء عبر الواتساب</button>
+                                <button onclick="orderNowWA('${prod.name}')" class="btn-heartbeat w-full bg-rose-700 text-white py-2.5 rounded-xl font-black text-xs hover:bg-rose-800 transition shadow-sm">طلب شراء عبر الواتساب</button>
                             </div>
                         </div>
                     `);
@@ -911,15 +970,15 @@
             }
         }
 
-        function openProductDetails(productName) {
+        function openProductDetails(productName, addToHistory = true, scrollPos = 0) {
             const prod = productsDB.find(p => p.name === productName);
             if (!prod) return;
 
             const content = document.getElementById('productDetailsContent');
             content.innerHTML = `
-                <div class="w-full lg:w-1/2 flex items-center justify-center bg-white rounded-[3rem] p-6 md:p-10 shadow-sm border border-gray-100 relative">
-                    ${prod.condition ? `<div class="absolute top-6 left-6 bg-rose-700 text-white text-sm font-black px-4 py-1.5 rounded-full shadow-md z-10">${prod.condition}</div>` : ''}
-                    <img src="${prod.image}" alt="${prod.name}" class="max-w-full h-auto max-h-[400px] object-contain drop-shadow-2xl">
+                <div class="w-full lg:w-1/2 flex items-center justify-center relative p-4">
+                    ${prod.condition ? `<div class="absolute top-2 left-4 bg-rose-700 text-white text-sm font-black px-4 py-1.5 rounded-full shadow-md z-10">${prod.condition}</div>` : ''}
+                    <img src="${prod.image}" alt="${prod.name}" class="max-w-full h-auto max-h-[450px] object-contain">
                 </div>
                 <div class="w-full lg:w-1/2 flex flex-col justify-center">
                     <h1 class="text-3xl md:text-5xl font-black font-cairo text-rose-950 mb-6 leading-tight">${prod.name}</h1>
@@ -939,23 +998,34 @@
                 </div>
             `;
 
-            // ملء سلايدر منتجات متشابهة (جميع الماكينات ابيض واسود والوان)
+            // ملء سلايدر منتجات متشابهة الجديد بشكل احترافي (ماكينات تصوير فقط)
             const slider = document.getElementById('similarProductsSlider');
             slider.innerHTML = '';
-            productsDB.filter(p => p.name !== productName && (p.category === 'bw-copiers' || p.category === 'color-copiers')).forEach(sim => {
-                slider.insertAdjacentHTML('beforeend', `
-                    <div class="w-[200px] md:w-[240px] shrink-0 snap-center group cursor-pointer p-4 hover:bg-white hover:shadow-xl rounded-3xl transition-all duration-300" onclick="openProductDetails('${sim.name}')">
-                        <div class="h-32 md:h-40 mb-4 flex items-center justify-center relative group-hover:scale-105 transition-transform duration-500">
-                            <img src="${sim.image}" alt="${sim.name}" class="max-w-full max-h-full object-contain drop-shadow-md">
+            const similarProducts = productsDB.filter(p => p.name !== productName && (p.category === 'bw-copiers' || p.category === 'color-copiers'));
+            
+            if (similarProducts.length > 0) {
+                similarProducts.forEach(sim => {
+                    slider.insertAdjacentHTML('beforeend', `
+                        <div class="w-[220px] md:w-[260px] shrink-0 snap-center group cursor-pointer bg-white rounded-[2rem] shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 p-5 flex flex-col" onclick="openProductDetails('${sim.name}')">
+                            <div class="h-36 md:h-48 mb-5 flex items-center justify-center relative group-hover:scale-105 transition-transform duration-500">
+                                <img src="${sim.image}" alt="${sim.name}" class="max-w-full max-h-full object-contain drop-shadow-md">
+                            </div>
+                            <h4 class="text-sm md:text-base font-black text-rose-950 text-center leading-tight mb-3 font-cairo">${sim.name}</h4>
+                            <div class="mt-auto pt-4 border-t border-gray-50 flex items-center justify-between">
+                                <span class="text-rose-900 font-black text-xs md:text-sm">${sim.price}</span>
+                                <span class="bg-rose-50 text-rose-700 px-4 py-1.5 rounded-xl text-[10px] font-bold group-hover:bg-rose-700 group-hover:text-white transition-colors shadow-sm">التفاصيل</span>
+                            </div>
                         </div>
-                        <h4 class="text-xs md:text-sm font-black text-rose-950 text-center leading-tight mb-2 font-cairo">${sim.name}</h4>
-                        <p class="text-rose-700 font-black text-center text-xs mt-auto">${sim.price}</p>
-                    </div>
-                `);
-            });
-            navigateTo('product-details', 'all', true);
+                    `);
+                });
+            } else {
+                slider.innerHTML = `<div class="w-full text-center text-gray-400 font-bold py-10">لا توجد منتجات مشابهة حالياً</div>`;
+            }
+
+            navigateTo('product-details', 'all', addToHistory, scrollPos, productName);
         }
 
+        // قاعدة بيانات المقالات (بدون اختصار)
         const articlesDB = [
             {
                 id: 'article-2',
@@ -1061,7 +1131,7 @@
             });
         }
 
-        function openSingleArticle(articleId) {
+        function openSingleArticle(articleId, addToHistory = true, scrollPos = 0) {
             const art = articlesDB.find(a => a.id === articleId);
             if (!art) return;
             document.getElementById('singleArticleContainer').innerHTML = `
@@ -1071,7 +1141,7 @@
                     <h1 class="text-2xl md:text-4xl font-black font-cairo text-center text-rose-950 leading-tight">${art.title}</h1>
                 </div>
                 <div class="text-gray-600 text-lg md:text-xl leading-loose px-4">${art.content}</div>`;
-            navigateTo('single-article', 'all', true);
+            navigateTo('single-article', 'all', addToHistory, scrollPos, articleId);
         }
 
         function handleSearch() {
@@ -1111,11 +1181,30 @@
             });
         }
 
+        // معالجة التحديث (Refresh) والتحميل الأولي بذكاء
         document.addEventListener('DOMContentLoaded', () => {
             renderProducts('all');
             const h = window.location.hash.substring(1);
-            if (h && document.getElementById('page-' + h)) navigateTo(h, 'all', false, 0);
-            else history.replaceState({ pageId: 'home', cat: 'all', scrollY: 0 }, '', '#home');
+            
+            if (h && document.getElementById('page-' + h)) {
+                if (h === 'product-details' || h === 'single-article') {
+                    if (history.state && history.state.itemId) {
+                        if (h === 'product-details') openProductDetails(history.state.itemId, false, history.state.scrollY || 0);
+                        else openSingleArticle(history.state.itemId, false, history.state.scrollY || 0);
+                    } else {
+                        // حماية: إذا تم الدخول لرابط التفاصيل في نافذة جديدة مباشرة، عُد للقسم الرئيسي
+                        const fallback = h === 'product-details' ? 'products' : 'articles';
+                        navigateTo(fallback, 'all', false, 0);
+                        history.replaceState({ pageId: fallback, cat: 'all', scrollY: 0 }, '', '#' + fallback);
+                    }
+                } else {
+                    navigateTo(h, 'all', false, history.state ? history.state.scrollY : 0);
+                    if (!history.state) history.replaceState({ pageId: h, cat: 'all', scrollY: 0 }, '', '#' + h);
+                }
+            } else {
+                navigateTo('home', 'all', false, 0);
+                history.replaceState({ pageId: 'home', cat: 'all', scrollY: 0 }, '', '#home');
+            }
         });
     </script>
 </body>
