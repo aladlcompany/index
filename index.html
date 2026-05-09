@@ -350,7 +350,7 @@
     <!-- ==============================================
          2. PAGE: PRODUCTS (Catalog)
     =============================================== -->
-    <main id="page-products" class="page-section">
+    <main id="page-products" class="page-section bg-white">
         <section class="pt-8 pb-12 container mx-auto px-4 md:px-12">
             <div id="catalogGrid" class="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 justify-items-center">
                 <!-- Products JS -->
@@ -375,7 +375,7 @@
                     </div>
                 </div>
                 
-                <div class="relative w-full">
+                <div class="relative w-full group/slider">
                     <!-- أزرار التحكم -->
                     <button onclick="scrollSlider('similarProductsSlider', 1)" class="absolute right-0 top-[40%] -translate-y-1/2 z-20 w-12 h-12 bg-white border border-gray-200 shadow-xl rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-700 hover:text-white transition"><i class="fa fa-chevron-right"></i></button>
                     <button onclick="scrollSlider('similarProductsSlider', -1)" class="absolute left-0 top-[40%] -translate-y-1/2 z-20 w-12 h-12 bg-white border border-gray-200 shadow-xl rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-700 hover:text-white transition"><i class="fa fa-chevron-left"></i></button>
@@ -883,7 +883,7 @@
                 } else {
                     filtered.forEach(prod => {
                         catalogGrid.insertAdjacentHTML('beforeend', `
-                            <div class="group flex flex-col w-full max-w-[320px] bg-white rounded-[2rem] shadow-sm border border-gray-100 hover:shadow-2xl transition-all duration-300 p-5">
+                            <div class="group flex flex-col w-full max-w-[320px] bg-transparent transition-all duration-300 py-4">
                                 <div class="h-48 md:h-64 flex items-center justify-center mb-6 relative group-hover:scale-105 transition-transform duration-500">
                                     <img src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain drop-shadow-xl">
                                     ${prod.condition ? `<div class="absolute top-2 left-2 bg-rose-700 text-white text-xs font-black px-3 py-1 rounded-full shadow-md z-10">${prod.condition}</div>` : ''}
@@ -944,7 +944,7 @@
             slider.innerHTML = '';
             productsDB.filter(p => p.name !== productName && (p.category === 'bw-copiers' || p.category === 'color-copiers')).forEach(sim => {
                 slider.insertAdjacentHTML('beforeend', `
-                    <div class="w-[200px] md:w-[240px] shrink-0 snap-center group flex flex-col bg-white rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 p-4 cursor-pointer" onclick="openProductDetails('${sim.name}')">
+                    <div class="w-[200px] md:w-[240px] shrink-0 snap-center group cursor-pointer p-4 hover:bg-white hover:shadow-xl rounded-3xl transition-all duration-300" onclick="openProductDetails('${sim.name}')">
                         <div class="h-32 md:h-40 mb-4 flex items-center justify-center relative group-hover:scale-105 transition-transform duration-500">
                             <img src="${sim.image}" alt="${sim.name}" class="max-w-full max-h-full object-contain drop-shadow-md">
                         </div>
@@ -1085,7 +1085,7 @@
             
             filtered.forEach(prod => {
                 grid.insertAdjacentHTML('beforeend', `
-                    <div class="group flex flex-col w-full max-w-[320px] bg-white rounded-[2rem] shadow-sm border border-gray-100 hover:shadow-2xl transition-all duration-300 p-5">
+                    <div class="group flex flex-col w-full max-w-[320px] bg-transparent transition-all duration-300 py-4">
                         <div class="h-48 md:h-64 flex items-center justify-center mb-6 relative group-hover:scale-105 transition-transform duration-500">
                             <img src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain drop-shadow-xl">
                             ${prod.condition ? `<div class="absolute top-2 left-2 bg-rose-700 text-white text-xs font-black px-3 py-1 rounded-full shadow-md z-10">${prod.condition}</div>` : ''}
