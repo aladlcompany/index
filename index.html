@@ -90,6 +90,17 @@
         }
         .btn-heartbeat { animation: heartbeat 1.8s infinite ease-in-out; }
 
+        /* حركات الإعلانات الديناميكية */
+        @keyframes adSlideRight { 0% { transform: translateX(30px); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
+        @keyframes adSlideLeft { 0% { transform: translateX(-30px); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
+        @keyframes adSlideTop { 0% { transform: translateY(-30px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+        @keyframes adFadeFlash { 0% { opacity: 0; filter: brightness(1.5); } 100% { opacity: 1; filter: brightness(1); } }
+        
+        .ad-anim-right { animation: adSlideRight 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .ad-anim-left { animation: adSlideLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .ad-anim-top { animation: adSlideTop 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .ad-anim-flash { animation: adFadeFlash 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
@@ -288,12 +299,11 @@
     <main id="page-home" class="page-section active">
         <section class="pt-6 pb-12 container mx-auto px-4 md:px-12 text-right">
             
-            <div class="w-full max-w-6xl mx-auto mb-10 relative group">
-                <span class="absolute top-2 right-2 bg-white/90 backdrop-blur text-gray-400 text-[10px] font-black px-2 py-1 rounded shadow-sm z-10 pointer-events-none">إعلان</span>
-                <a href="#" class="block rounded-[2rem] overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-all">
-                    <img src="ads_images/ad1-pc.png" onerror="this.onerror=null; this.src='https://placehold.co/1200x180/f8fafc/cbd5e1?font=Cairo&text=مساحة+إعلانية+(كمبيوتر)'" class="hidden md:block w-full h-[120px] md:h-[150px] object-cover" alt="إعلان">
-                    <img src="ads_images/ad1-mobile.png" onerror="this.onerror=null; this.src='https://placehold.co/600x200/f8fafc/cbd5e1?font=Cairo&text=مساحة+إعلانية+(موبايل)'" class="block md:hidden w-full h-[120px] object-cover" alt="إعلان">
-                </a>
+            <div class="w-full max-w-6xl mx-auto mb-10">
+                <div class="block w-full overflow-hidden rounded-[2rem]">
+                    <img id="ad1-pc-img" src="ads_images/ad1-pc.png" onerror="handleAdError(this, 'pc')" class="hidden md:block w-full h-[120px] md:h-[150px] object-contain transition-all" alt="">
+                    <img id="ad1-mobile-img" src="ads_images/ad1-mobile.png" onerror="handleAdError(this, 'mobile')" class="block md:hidden w-full h-[120px] object-contain transition-all" alt="">
+                </div>
             </div>
 
             <div class="flex items-center justify-center mb-8 w-full relative">
@@ -370,12 +380,11 @@
         </div>
 
         <div class="container mx-auto px-4 md:px-12 mb-10 text-center relative z-20">
-            <div class="w-full max-w-5xl mx-auto relative group">
-                <span class="absolute top-2 right-2 bg-white/90 backdrop-blur text-gray-400 text-[10px] font-black px-2 py-1 rounded shadow-sm z-10 pointer-events-none">إعلان</span>
-                <a href="#" class="block rounded-[2rem] overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-all">
-                    <img src="ads_images/ad2-pc.png" onerror="this.onerror=null; this.src='https://placehold.co/1200x150/f8fafc/cbd5e1?font=Cairo&text=مساحة+إعلانية+رقم+2+(كمبيوتر)'" class="hidden md:block w-full h-[100px] md:h-[130px] object-cover" alt="إعلان">
-                    <img src="ads_images/ad2-mobile.png" onerror="this.onerror=null; this.src='https://placehold.co/600x200/f8fafc/cbd5e1?font=Cairo&text=مساحة+إعلانية+رقم+2+(موبايل)'" class="block md:hidden w-full h-[100px] object-cover" alt="إعلان">
-                </a>
+            <div class="w-full max-w-5xl mx-auto">
+                <div class="block w-full overflow-hidden rounded-[2rem]">
+                    <img id="ad2-pc-img" src="ads_images/ad2-pc.png" onerror="handleAdError(this, 'pc')" class="hidden md:block w-full h-[100px] md:h-[130px] object-contain transition-all" alt="">
+                    <img id="ad2-mobile-img" src="ads_images/ad2-mobile.png" onerror="handleAdError(this, 'mobile')" class="block md:hidden w-full h-[100px] object-contain transition-all" alt="">
+                </div>
             </div>
         </div>
 
@@ -968,6 +977,62 @@
 
     <script>
         const MAIN_NUM = "201094799247";
+
+        // معالجة أخطاء صور الإعلانات وعرض الصورة الوهمية
+        function handleAdError(img, type) {
+            img.src = type === 'pc' 
+                ? 'https://placehold.co/1200x180/f8fafc/cbd5e1?font=Cairo&text=مساحة+إعلانية+(كمبيوتر)' 
+                : 'https://placehold.co/600x200/f8fafc/cbd5e1?font=Cairo&text=مساحة+إعلانية+(موبايل)';
+        }
+
+        // نظام الإعلانات الديناميكي والذكي
+        const adGroups = {
+            top: {
+                pc: ['ads_images/ad1-pc.png', 'ads_images/ad1-pc-2.png', 'ads_images/ad1-pc-3.png'],
+                mobile: ['ads_images/ad1-mobile.png', 'ads_images/ad1-mobile-2.png', 'ads_images/ad1-mobile-3.png'],
+                pcId: 'ad1-pc-img',
+                mobileId: 'ad1-mobile-img',
+                currentIndex: 0
+            },
+            middle: {
+                pc: ['ads_images/ad2-pc.png', 'ads_images/ad2-pc-2.png', 'ads_images/ad2-pc-3.png'],
+                mobile: ['ads_images/ad2-mobile.png', 'ads_images/ad2-mobile-2.png', 'ads_images/ad2-mobile-3.png'],
+                pcId: 'ad2-pc-img',
+                mobileId: 'ad2-mobile-img',
+                currentIndex: 0
+            }
+        };
+
+        const adAnimClasses = ['ad-anim-right', 'ad-anim-left', 'ad-anim-top', 'ad-anim-flash'];
+
+        function cycleAds() {
+            for (const key in adGroups) {
+                const group = adGroups[key];
+                // تدوير الاندكس
+                group.currentIndex = (group.currentIndex + 1) % group.pc.length;
+                
+                const pcImg = document.getElementById(group.pcId);
+                const mobileImg = document.getElementById(group.mobileId);
+                
+                // اختيار حركة عشوائية
+                const randomAnim = adAnimClasses[Math.floor(Math.random() * adAnimClasses.length)];
+                
+                const applyAnim = (el, src) => {
+                    if(!el) return;
+                    // إزالة الحركات السابقة وإضافة الحركة الجديدة مع تغيير مسار الصورة
+                    el.classList.remove(...adAnimClasses);
+                    void el.offsetWidth; // إجبار المتصفح على إعادة رسم العنصر (Reflow)
+                    el.src = src;
+                    el.classList.add(randomAnim);
+                };
+
+                applyAnim(pcImg, group.pc[group.currentIndex]);
+                applyAnim(mobileImg, group.mobile[group.currentIndex]);
+            }
+        }
+
+        // تشغيل نظام تبديل الإعلانات كل 5 ثواني
+        setInterval(cycleAds, 5000);
 
         // حفظ موضع الصفحة للرجوع بدقة وإلغاء الاستعادة التلقائية للمتصفح
         if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
