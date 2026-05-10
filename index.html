@@ -592,7 +592,7 @@
 
     <main id="page-product-details" class="page-section bg-white">
         <section class="pt-8 pb-16 container mx-auto px-4 md:px-12 max-w-6xl">
-            <div id="productDetailsContent" class="flex flex-col lg:flex-row items-center gap-12 mb-16"></div>
+            <div id="productDetailsContent" class="flex flex-col lg:flex-row items-start gap-12 lg:gap-16 mb-16"></div>
 
             <div class="border-t border-gray-100 pt-16 mt-10">
                 <div class="flex items-center justify-center mb-10 w-full relative">
@@ -610,6 +610,37 @@
                         </div>
                 </div>
             </div>
+
+            <!-- الإعلان أسفل منتجات متشابهة -->
+            <div class="mt-16 mb-4 bg-gradient-to-br from-rose-950 via-rose-900 to-rose-800 rounded-[2.5rem] p-8 md:p-12 shadow-sm relative overflow-hidden group border border-rose-800/50">
+                <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+                    <div class="absolute -top-24 -right-24 w-64 h-64 bg-rose-500 opacity-20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000"></div>
+                    <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-yellow-500 opacity-10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000"></div>
+                    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_1px,transparent_1px)]" style="background-size: 20px 20px;"></div>
+                </div>
+                
+                <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
+                    <div class="text-center lg:text-right flex-1">
+                        <div class="inline-flex items-center gap-2 px-5 py-2 bg-white/10 backdrop-blur-sm border border-white/20 text-rose-100 rounded-full font-bold text-sm mb-6">
+                            <span class="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span>
+                            عرض لفترة محدودة
+                        </div>
+                        <h3 class="text-3xl md:text-5xl font-black text-white font-cairo leading-tight mb-4">
+                            خصم <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-500 text-5xl md:text-7xl px-2">50%</span> 
+                        </h3>
+                        <h4 class="text-xl md:text-3xl font-bold text-rose-100 tracking-wide">على عقود الصيانة السنوية</h4>
+                    </div>
+                    
+                    <div class="shrink-0 relative w-full lg:w-auto mt-6 lg:mt-0 flex flex-col items-center">
+                        <div class="absolute inset-0 bg-yellow-400 blur-2xl opacity-20 rounded-full animate-pulse"></div>
+                        <a href="https://wa.me/201094799247?text=السلام%20عليكم،%20أريد%20تفاصيل%20أكثر%20عن%20عرض%20خصم%20الـ%2050%25%20على%20عقود%20الصيانة" target="_blank" class="relative z-10 btn-heartbeat w-full lg:w-auto bg-gradient-to-l from-yellow-400 to-yellow-500 text-rose-950 px-10 py-5 rounded-[2rem] font-black text-xl flex items-center justify-center gap-3 transition transform hover:-translate-y-1">
+                            احجز العرض الآن
+                            <i class="fab fa-whatsapp text-3xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
         </section>
     </main>
 
@@ -796,9 +827,8 @@
                     </h3>
                 </div>
                 <div class="relative z-10 w-full md:w-auto shrink-0 flex flex-col items-center">
-                    <a href="https://wa.me/201094799247?text=السلام%20عليكم،%20أريد%20الاستفادة%20من%20عرض%20الـ%2050%25%20على%20عقود%20الصيانة" target="_blank" class="relative z-10 btn-heartbeat w-full lg:w-auto bg-gradient-to-l from-yellow-400 to-yellow-500 text-rose-950 px-10 py-5 rounded-[2rem] font-black text-xl flex items-center justify-center gap-3 transition transform hover:-translate-y-1">
-                        احجز العرض الآن
-                        <i class="fab fa-whatsapp text-3xl"></i>
+                    <a href="https://wa.me/201094799247?text=السلام%20عليكم،%20أريد%20الاستفادة%20من%20عرض%20الـ%2050%25%20على%20عقود%20الصيانة" target="_blank" class="btn-heartbeat bg-white text-rose-900 px-8 py-4 rounded-2xl font-black text-lg md:text-xl shadow-xl flex items-center justify-center gap-3">
+                        احجز العرض الآن <i class="fab fa-whatsapp text-3xl text-green-500"></i>
                     </a>
                 </div>
             </div>
@@ -1576,45 +1606,52 @@
 
             const content = document.getElementById('productDetailsContent');
             content.innerHTML = `
-                <div class="w-full lg:w-1/2 flex items-center justify-center relative p-4">
-                    ${prod.condition ? `<div class="absolute top-2 left-4 bg-rose-700 text-white text-sm font-black px-4 py-1.5 rounded-full shadow-md z-10">${prod.condition}</div>` : ''}
-                    <img src="${prod.image}" alt="${prod.name}" class="max-w-full h-auto max-h-[450px] object-contain">
-                </div>
-                <div class="w-full lg:w-1/2 flex flex-col justify-center">
-                    <h1 class="text-3xl md:text-5xl font-black font-cairo text-rose-950 mb-6 leading-tight">${prod.name}</h1>
+                <div class="w-full flex flex-col lg:flex-row items-start gap-8 lg:gap-12 w-full">
                     
-                    ${prod.description ? `<p class="text-gray-600 mb-8 font-bold leading-relaxed text-base border-r-4 border-rose-600 pr-4">${prod.description}</p>` : ''}
-                    
-                    <div class="flex flex-col gap-6 w-full mb-8">
-                        <ul class="space-y-4 text-gray-700 font-bold text-lg ${prod.description ? 'border-r-4 border-rose-100 pr-6' : 'border-r-4 border-rose-600 pr-4'}">
-                            <li><i class="fa fa-print text-rose-600 ml-2"></i> الوظائف: ${prod.functions}</li>
-                            <li><i class="fa fa-bolt text-rose-600 ml-2"></i> السرعة: ${prod.speed}</li>
-                            <li><i class="fa fa-expand text-rose-600 ml-2"></i> الدقة: ${prod.resolution}</li>
-                            <li><i class="fa fa-file-alt text-rose-600 ml-2"></i> مقاس الورق: ${prod.paperSize}</li>
-                        </ul>
+                    <!-- العمود الأول: صورة الماكينة (يمين) - مدمجة مع الخلفية بدون مربع -->
+                    <div class="w-full lg:w-4/12 relative lg:sticky lg:top-32 shrink-0 flex justify-center pt-4">
+                        ${prod.condition ? `<div class="absolute top-0 right-4 bg-rose-700 text-white text-xs md:text-sm font-black px-4 py-1.5 rounded-full shadow-md z-10">${prod.condition}</div>` : ''}
+                        <img src="${prod.image}" alt="${prod.name}" class="w-full h-auto max-h-[350px] lg:max-h-[500px] object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-700">
+                    </div>
 
-                        ${prod.specs && prod.specs.length > 0 ? `
-                        <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100 shadow-inner w-full">
-                            <h4 class="font-black text-rose-900 mb-4 font-cairo text-xl border-b border-gray-200 pb-2">المواصفات الفنية التفصيلية</h4>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm font-bold text-gray-700">
-                                ${prod.specs.map(spec => `
-                                    <div class="flex flex-col bg-white p-3 rounded-xl shadow-sm border border-gray-100">
-                                        <span class="text-rose-700 text-[10px] font-black uppercase mb-1">${spec.label}</span>
-                                        <span class="text-gray-900 font-bold">${spec.value}</span>
-                                    </div>
-                                `).join('')}
+                    <!-- العمود الثاني: التفاصيل والمواصفات (اليسار بعرض الصفحة المتبقي) -->
+                    <div class="w-full lg:w-8/12 flex flex-col justify-center">
+                        <h1 class="text-2xl md:text-3xl lg:text-4xl font-black font-cairo text-rose-950 mb-5 leading-tight text-center">${prod.name}</h1>
+                        
+                        ${prod.description ? `<p class="text-gray-600 mb-6 font-bold leading-relaxed text-sm md:text-base border-r-4 border-rose-600 pr-4">${prod.description}</p>` : ''}
+                        
+                        <div class="flex flex-col gap-6 w-full mb-6">
+                            <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 font-bold text-base md:text-lg ${prod.description ? 'border-r-4 border-rose-100 pr-4' : 'border-r-4 border-rose-600 pr-4'}">
+                                <li class="flex items-start gap-2"><i class="fa fa-print text-rose-600 mt-1"></i> <span>الوظائف: ${prod.functions}</span></li>
+                                <li class="flex items-start gap-2"><i class="fa fa-bolt text-rose-600 mt-1"></i> <span>السرعة: ${prod.speed}</span></li>
+                                <li class="flex items-start gap-2"><i class="fa fa-expand text-rose-600 mt-1"></i> <span>الدقة: ${prod.resolution}</span></li>
+                                <li class="flex items-start gap-2"><i class="fa fa-file-alt text-rose-600 mt-1"></i> <span>مقاس الورق: ${prod.paperSize}</span></li>
+                            </ul>
+
+                            ${prod.specs && prod.specs.length > 0 ? `
+                            <div class="bg-gray-50 rounded-2xl p-5 border border-gray-100 shadow-inner w-full mt-2">
+                                <h4 class="font-black text-rose-900 mb-4 font-cairo text-lg border-b border-gray-200 pb-2">المواصفات الفنية</h4>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-sm font-bold text-gray-700">
+                                    ${prod.specs.map(spec => `
+                                        <div class="flex flex-col bg-white p-3 rounded-xl shadow-sm border border-gray-100 hover:border-rose-100 transition-colors">
+                                            <span class="text-rose-700 text-[10px] font-black uppercase mb-1 tracking-wider">${spec.label}</span>
+                                            <span class="text-gray-900 font-bold text-xs md:text-sm">${spec.value}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
                             </div>
+                            ` : ''}
                         </div>
-                        ` : ''}
+
+                        <div class="flex flex-col sm:flex-row items-center gap-4 mt-auto w-full pt-4 border-t border-gray-100">
+                            <div class="text-right sm:text-right shrink-0">
+                                <span class="text-gray-400 text-xs font-bold block mb-1">السعر</span>
+                                <span class="text-2xl md:text-3xl font-black text-rose-900">${prod.price}</span>
+                            </div>
+                            <button onclick="orderNowWA('${prod.name}')" class="btn-heartbeat w-full sm:w-auto flex-1 bg-rose-700 text-white py-3.5 md:py-4 rounded-2xl font-black text-base hover:bg-rose-800 transition shadow-xl flex items-center justify-center gap-3">طلب عبر واتساب <i class="fab fa-whatsapp text-2xl"></i></button>
+                        </div>
                     </div>
 
-                    <div class="flex flex-col gap-4 mt-auto w-full">
-                        <div class="text-right">
-                            <span class="text-gray-400 text-sm font-bold block mb-1">السعر</span>
-                            <span class="text-4xl font-black text-rose-900">${prod.price}</span>
-                        </div>
-                        <button onclick="orderNowWA('${prod.name}')" class="btn-heartbeat w-full bg-rose-700 text-white py-5 rounded-3xl font-black text-xl hover:bg-rose-800 transition shadow-2xl flex items-center justify-center gap-4">طلب المنتج عبر واتساب <i class="fab fa-whatsapp text-3xl"></i></button>
-                    </div>
                 </div>
             `;
 
