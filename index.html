@@ -359,6 +359,14 @@
                         </div>
                     </div>
 
+                    <!-- أخبارنا (مضافة حديثاً) -->
+                    <div class="mt-6 mb-8 px-2 md:px-4">
+                        <h3 class="text-base md:text-lg font-bold text-gray-500 mb-5 border-r-4 border-rose-600 pr-3 tracking-wide font-tajawal">أخبارنا</h3>
+                        <div id="homeNewsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- سيتم حقن آخر خبرين هنا بواسطة جافاسكريبت -->
+                        </div>
+                    </div>
+
                     <div class="mt-12 mb-4 bg-gradient-to-br from-rose-950 via-rose-900 to-rose-800 rounded-[2.5rem] p-8 md:p-12 shadow-sm relative overflow-hidden group border border-rose-800/50">
                         <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
                             <div class="absolute -top-24 -right-24 w-64 h-64 bg-rose-500 opacity-20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000"></div>
@@ -1552,6 +1560,29 @@
             });
         }
 
+        // دالة جديدة لعرض الأخبار المصغرة في الرئيسية
+        function renderHomeNews() {
+            const container = document.getElementById('homeNewsContainer');
+            if (!container) return;
+            container.innerHTML = '';
+            
+            // جلب آخر خبرين فقط
+            const latestNews = newsDB.slice(0, 2);
+            latestNews.forEach(news => {
+                container.insertAdjacentHTML('beforeend', `
+                    <div class="flex gap-4 group cursor-pointer items-center transition-all duration-300 hover:-translate-y-1 bg-white p-4 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-rose-100" onclick="openSingleNews('${news.id}')">
+                        <div class="w-20 h-20 md:w-24 md:h-24 shrink-0 flex items-center justify-center bg-gray-50 rounded-xl overflow-hidden">
+                            <img src="${news.image}" class="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-500 drop-shadow-sm">
+                        </div>
+                        <div class="text-right flex-1 flex flex-col justify-center">
+                            <span class="text-rose-600 text-[9px] font-black mb-1.5 block tracking-widest">${news.date}</span>
+                            <h4 class="text-sm md:text-base font-black text-rose-950 font-cairo leading-snug group-hover:text-rose-700 transition-colors" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${news.title}</h4>
+                        </div>
+                    </div>
+                `);
+            });
+        }
+
         function openSingleArticle(articleId, addToHistory = true, scrollPos = 0) {
             const art = articlesDB.find(a => a.id === articleId);
             if (!art) return;
@@ -1606,6 +1637,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             renderProducts('all');
             renderHomeArticles(); // استدعاء دالة عرض المقالات في الرئيسية
+            renderHomeNews(); // استدعاء دالة عرض الأخبار في الرئيسية
             const h = window.location.hash.substring(1);
             
             if (h && document.getElementById('page-' + h)) {
