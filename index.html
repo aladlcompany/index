@@ -1235,6 +1235,12 @@
         function navigateTo(targetId, category = 'all', addToHistory = true, scrollPos = 0, itemId = null) {
             if (addToHistory) { history.replaceState({ ...history.state, scrollY: window.scrollY }, ''); }
             
+            // إضافة مسح شريط البحث تلقائياً عند التنقل لأي قسم في الموقع
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput && searchInput.value !== '') {
+                searchInput.value = '';
+            }
+            
             setTimeout(() => {
                 document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
                 
@@ -1404,8 +1410,10 @@
         function renderProducts(categoryFilter = 'all') {
             const homeSlider = document.getElementById('recentProductsSlider');
             const catalogGrid = document.getElementById('catalogGrid');
+            const searchInput = document.getElementById('searchInput');
+            const query = searchInput ? searchInput.value.trim().toLowerCase() : "";
             
-            if (homeSlider && categoryFilter === 'all') {
+            if (homeSlider && categoryFilter === 'all' && query === "") {
                 homeSlider.innerHTML = '';
                 [...productsDB].reverse().slice(0, 5).forEach(prod => {
                     homeSlider.insertAdjacentHTML('beforeend', `
@@ -1430,15 +1438,20 @@
             }
 
             let filtered = [...productsDB].reverse();
-            if (categoryFilter !== 'all') filtered = filtered.filter(p => p.category === categoryFilter);
+            if (categoryFilter !== 'all') {
+                filtered = filtered.filter(p => p.category === categoryFilter);
+            }
+            if (query !== "") {
+                filtered = filtered.filter(p => p.name.toLowerCase().includes(query) || p.price.toLowerCase().includes(query) || p.functions.toLowerCase().includes(query));
+            }
 
             let gridContent = '';
             if (filtered.length === 0) {
-                gridContent = '<div class="col-span-full text-center py-20 text-gray-400 font-bold text-lg"><i class="fa fa-box-open text-4xl mb-4 block"></i>لا توجد منتجات حالياً في هذا القسم.</div>';
+                gridContent = '<div class="col-span-full text-center py-20 text-gray-400 font-bold text-lg"><i class="fa fa-box-open text-4xl mb-4 block"></i>لا توجد منتجات مطابقة لعملية البحث.</div>';
             } else {
                 filtered.forEach(prod => {
                     gridContent += `
-                        <div class="group flex flex-col w-full max-w-[320px] bg-transparent transition-all duration-300 py-4">
+                        <div class="group flex flex-col w-full max-w-[320px] bg-transparent transition-all duration-300 py-4 mx-auto">
                             <div class="h-48 md:h-64 flex items-center justify-center mb-6 relative group-hover:scale-105 transition-transform duration-500">
                                 <img src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain drop-shadow-xl">
                                 ${prod.condition ? `<div class="absolute top-2 left-2 bg-rose-700 text-white text-xs font-black px-3 py-1 rounded-full shadow-md z-10">${prod.condition}</div>` : ''}
@@ -1448,7 +1461,7 @@
                             <ul class="space-y-2 mb-6 text-xs font-bold text-gray-600 flex-1 px-2">
                                 <li class="flex items-start gap-2"><i class="fa fa-print text-rose-600 mt-1"></i> <span><strong>الوظائف:</strong> ${prod.functions}</span></li>
                                 <li class="flex items-start gap-2"><i class="fa fa-bolt text-rose-600 mt-1"></i> <span><strong>السرعة:</strong> ${prod.speed}</span></li>
-                                <li class="flex items-start gap-2"><i class="flex items-start gap-2"><i class="fa fa-expand text-rose-600 mt-1"></i> <span><strong>الدقة:</strong> ${prod.resolution}</span></li>
+                                <li class="flex items-start gap-2"><i class="fa fa-expand text-rose-600 mt-1"></i> <span><strong>الدقة:</strong> ${prod.resolution}</span></li>
                                 <li class="flex items-start gap-2"><i class="fa fa-file-alt text-rose-600 mt-1"></i> <span><strong>الورق:</strong> ${prod.paperSize}</span></li>
                             </ul>
                             
@@ -1750,41 +1763,20 @@
             navigateTo('single-news', 'all', addToHistory, scrollPos, newsId);
         }
 
+        let searchTimeout;
         function handleSearch() {
-            const query = document.getElementById('searchInput').value.trim().toLowerCase();
-            if (query !== "") { navigateTo('products', 'all', false); }
-            const grid = document.getElementById('catalogGrid');
-            if (!grid) return;
-            grid.innerHTML = '';
-            let filtered = [...productsDB].reverse();
-            if (query !== "") filtered = filtered.filter(p => p.name.toLowerCase().includes(query) || p.price.toLowerCase().includes(query));
-            
-            filtered.forEach(prod => {
-                grid.insertAdjacentHTML('beforeend', `
-                    <div class="group flex flex-col w-full max-w-[320px] bg-transparent transition-all duration-300 py-4">
-                        <div class="h-48 md:h-64 flex items-center justify-center mb-6 relative group-hover:scale-105 transition-transform duration-500">
-                            <img src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain drop-shadow-xl">
-                            ${prod.condition ? `<div class="absolute top-2 left-2 bg-rose-700 text-white text-xs font-black px-3 py-1 rounded-full shadow-md z-10">${prod.condition}</div>` : ''}
-                        </div>
-                        <h3 class="text-lg md:text-xl font-black text-rose-950 mb-3 text-center font-cairo leading-tight">${prod.name}</h3>
-                        
-                        <ul class="space-y-2 mb-6 text-xs font-bold text-gray-600 flex-1 px-2">
-                            <li class="flex items-start gap-2"><i class="fa fa-print text-rose-600 mt-1"></i> <span><strong>الوظائف:</strong> ${prod.functions}</span></li>
-                            <li class="flex items-start gap-2"><i class="fa fa-bolt text-rose-600 mt-1"></i> <span><strong>السرعة:</strong> ${prod.speed}</span></li>
-                            <li class="flex items-start gap-2"><i class="flex items-start gap-2"><i class="fa fa-expand text-rose-600 mt-1"></i> <span><strong>الدقة:</strong> ${prod.resolution}</span></li>
-                            <li class="flex items-start gap-2"><i class="fa fa-file-alt text-rose-600 mt-1"></i> <span><strong>الورق:</strong> ${prod.paperSize}</span></li>
-                        </ul>
-                        
-                        <div class="mt-auto flex flex-col gap-3">
-                            <div class="flex items-center justify-between px-2">
-                                <span class="text-rose-900 font-black text-base md:text-lg">${prod.price}</span>
-                                <button onclick="openProductDetails('${prod.name}')" class="text-rose-600 bg-rose-50 hover:bg-rose-100 px-4 py-1.5 rounded-lg font-bold text-xs transition">تفاصيل</button>
-                            </div>
-                            <button onclick="orderNowWA('${prod.name}')" class="btn-heartbeat w-full bg-rose-700 text-white py-3.5 rounded-2xl font-black text-sm hover:bg-rose-800 transition shadow-md">طلب شراء عبر الواتساب</button>
-                        </div>
-                    </div>
-                `);
-            });
+            clearTimeout(searchTimeout);
+            //หน่วง البحث جزء من الثانية لضمان استقرار العرض ومنع تداخل الصفحات
+            searchTimeout = setTimeout(() => {
+                const query = document.getElementById('searchInput').value.trim();
+                const productsPage = document.getElementById('page-products');
+                
+                if (query !== "" && (!productsPage || !productsPage.classList.contains('active'))) { 
+                    navigateTo('products', 'all', false); 
+                } else {
+                    renderProducts('all');
+                }
+            }, 100);
         }
 
         // معالجة التحديث (Refresh) والتحميل الأولي بذكاء
