@@ -796,8 +796,9 @@
                     </h3>
                 </div>
                 <div class="relative z-10 w-full md:w-auto shrink-0 flex flex-col items-center">
-                    <a href="https://wa.me/201094799247?text=السلام%20عليكم،%20أريد%20الاستفادة%20من%20عرض%20الـ%2050%25%20على%20عقود%20الصيانة" target="_blank" class="btn-heartbeat bg-white text-rose-900 px-8 py-4 rounded-2xl font-black text-lg md:text-xl shadow-xl flex items-center justify-center gap-3">
-                        احجز العرض الآن <i class="fab fa-whatsapp text-3xl text-green-500"></i>
+                    <a href="https://wa.me/201094799247?text=السلام%20عليكم،%20أريد%20الاستفادة%20من%20عرض%20الـ%2050%25%20على%20عقود%20الصيانة" target="_blank" class="relative z-10 btn-heartbeat w-full lg:w-auto bg-gradient-to-l from-yellow-400 to-yellow-500 text-rose-950 px-10 py-5 rounded-[2rem] font-black text-xl flex items-center justify-center gap-3 transition transform hover:-translate-y-1">
+                        احجز العرض الآن
+                        <i class="fab fa-whatsapp text-3xl"></i>
                     </a>
                 </div>
             </div>
@@ -1394,16 +1395,105 @@
             window.open(`https://wa.me/${MAIN_NUM}?text=${encodeURIComponent(text)}`, '_blank');
         }
 
-        // قاعدة بيانات المنتجات (تم إضافة منتجات جديدة للتجربة)
+        // قاعدة بيانات المنتجات (تم تحديثها بالكامل من ملف الوورد)
         const productsDB = [
-            { name: 'ريكو Aficio MP 5002', image: 'images/MP 5002.png', condition: '', speed: '50 ورقة / دقيقة', resolution: '1200 * 1200', functions: 'طباعة – تصوير – سكانر – فاكس', paperSize: 'A3, A4, A5 والعديد من المقاسات', price: '28,000 جنيه', category: 'bw-copiers' },
-            { name: 'ريكو Aficio MP C305', image: 'images/Mp C305.png', condition: '', speed: '30 ورقة / دقيقة', resolution: '1200 * 1200', functions: 'طباعة – تصوير – سكانر – فاكس', paperSize: 'A4, A5, A6', price: '6500 جنيه', category: 'color-copiers' },
-            { name: 'ريكو Aficio MP C307', image: 'images/Mp C307.png', condition: '', speed: '30 ورقة / دقيقة', resolution: '1200 * 1200', functions: 'طباعة – تصوير – سكانر – فاكس', paperSize: 'A4, A5, A6', price: '8000 جنيه', category: 'color-copiers' },
-            { name: 'ريكو Aficio MP 201', image: 'images/MP 201.png', condition: '', speed: '20 ورقة / دقيقة', resolution: '1200 * 1200', functions: 'طباعة – تصوير – سكانر – فاكس', paperSize: 'A4, A5, A6', price: '7500 جنيه', category: 'bw-copiers' },
-            { name: 'ريكو Aficio MP 301', image: 'images/MP 301.png', condition: '', speed: '30 ورقة / دقيقة', resolution: '1200 * 1200', functions: 'طباعة – تصوير – سكانر – فاكس', paperSize: 'A4, A5, A6', price: '6500 جنيه', category: 'bw-copiers' },
-            { name: 'ريكو Aficio MP 4002', image: 'images/MP 5002.png', condition: 'عرض خاص', speed: '40 ورقة / دقيقة', resolution: '1200 * 1200', functions: 'طباعة – تصوير – سكانر', paperSize: 'A3, A4', price: '24,000 جنيه', category: 'bw-copiers' },
-            { name: 'ريكو Aficio MP C4503', image: 'images/Mp C305.png', condition: 'الأكثر مبيعاً', speed: '45 ورقة / دقيقة', resolution: '1200 * 1200', functions: 'ألوان – طباعة – تصوير', paperSize: 'A3, A4', price: '32,000 جنيه', category: 'color-copiers' },
-            { name: 'ريكو Aficio MP C5503', image: 'images/Mp C307.png', condition: 'استيراد', speed: '55 ورقة / دقيقة', resolution: '1200 * 1200', functions: 'ألوان – طباعة – تصوير', paperSize: 'A3, A4, A5', price: '38,000 جنيه', category: 'color-copiers' }
+            // ماكينات الألوان (القديمة للاحتفاظ بها)
+            { name: 'ريكو Aficio MP C305', image: 'images/Mp C305.png', condition: '', speed: '30 ورقة / دقيقة', resolution: '1200 * 1200', functions: 'طباعة – تصوير – سكانر – فاكس', paperSize: 'A4, A5, A6', price: 'غير متوفر', category: 'color-copiers', description: '', specs: [] },
+            { name: 'ريكو Aficio MP C307', image: 'images/Mp C307.png', condition: '', speed: '30 ورقة / دقيقة', resolution: '1200 * 1200', functions: 'طباعة – تصوير – سكانر – فاكس', paperSize: 'A4, A5, A6', price: 'غير متوفر', category: 'color-copiers', description: '', specs: [] },
+            { name: 'ريكو Aficio MP C4503', image: 'images/Mp C305.png', condition: 'الأكثر مبيعاً', speed: '45 ورقة / دقيقة', resolution: '1200 * 1200', functions: 'ألوان – طباعة – تصوير', paperSize: 'A3, A4', price: 'غير متوفر', category: 'color-copiers', description: '', specs: [] },
+            { name: 'ريكو Aficio MP C5503', image: 'images/Mp C307.png', condition: 'استيراد', speed: '55 ورقة / دقيقة', resolution: '1200 * 1200', functions: 'ألوان – طباعة – تصوير', paperSize: 'A3, A4, A5', price: 'غير متوفر', category: 'color-copiers', description: '', specs: [] },
+            
+            // ماكينات أبيض وأسود (تم التحديث والإضافة من ملف الوورد)
+            { 
+                name: 'ريكو Aficio MP 161', image: 'images/MP 161.png', condition: '', speed: '16 ورقة / دقيقة', resolution: '600x600 dpi', functions: 'تصوير – طباعة شبكة – سكانر – فاكس', paperSize: 'من A5 إلى A4', price: 'غير متوفر', category: 'bw-copiers',
+                description: 'تعامَل مع أى مستند : مع ماكينة تصوير مستندات تفعل كل شيء ! ماكينة تصوير المستندات RICOH Aficio MP 161 متعددة الوظائف : تصوير + طباعة + سكانر + فاكس ، بسرعة 16 ورقة فى الدقيقة . لمواكبة المنافسة : تحتاج إلى تنفيذ مجموعة واسعة من مهام تصوير و طباعة المستندات بسرعة وسهولة. هذا هو السبب في أن RICOH Aficio MP 161 هو الاختيار الصحيح للمكاتب الصغيرة ومجموعات العمل الإدارية. فالآلة توفر جميع القدرات التي تحتاجها - والقيمة التي تطلبها - في نظام واحد .',
+                specs: [
+                    {label: 'عدد النسخ بضغطة واحدة', value: '99'}, {label: 'التكبير و التصغير', value: 'من 50% إلى 200%'}, {label: 'وزن الورق', value: '60 إلى 90 جرام/م2'}, {label: 'الذاكرة', value: 'من 16 إلى 640 ميجابايت'}, {label: 'وزن / معدل الحبر', value: '230 جرام / 7000 ورقة (تغطية 5%)'}, {label: 'حجم التصوير الشهرى', value: '5000 ورقة'}, {label: 'أبعاد الألة', value: '485x450x371 مم'}, {label: 'وزن الألة', value: '24 كجم'}
+                ]
+            },
+            { 
+                name: 'ريكو Aficio MP 171', image: 'images/MP 171.png', condition: '', speed: '17 ورقة / دقيقة', resolution: '600x600 dpi', functions: 'تصوير – طباعة شبكة – سكانر – فاكس', paperSize: 'من A5 إلى A4', price: 'غير متوفر', category: 'bw-copiers',
+                description: 'تعامَل مع أى مستند : مع ماكينة تصوير مستندات تفعل كل شيء ! ماكينة تصوير المستندات RICOH Aficio MP 171 متعددة الوظائف : تصوير + طباعة + سكانر + فاكس ، بسرعة 17 ورقة فى الدقيقة . لمواكبة المنافسة : تحتاج إلى تنفيذ مجموعة واسعة من مهام تصوير و طباعة المستندات بسرعة وسهولة. هذا هو السبب في أن RICOH Aficio MP 171 هو الاختيار الصحيح للمكاتب الصغيرة ومجموعات العمل الإدارية. فالآلة توفر جميع القدرات التي تحتاجها - والقيمة التي تطلبها - في نظام واحد .',
+                specs: [
+                    {label: 'عدد النسخ بضغطة واحدة', value: '99'}, {label: 'التكبير و التصغير', value: 'من 50% إلى 200%'}, {label: 'وزن الورق', value: '60 إلى 90 جرام/م2'}, {label: 'الذاكرة', value: 'من 16 إلى 640 ميجابايت'}, {label: 'وزن / معدل الحبر', value: '230 جرام / 7000 ورقة (تغطية 5%)'}, {label: 'حجم التصوير الشهرى', value: '5000 ورقة'}, {label: 'أبعاد الألة', value: '486x450x466 مم'}, {label: 'وزن الألة', value: '24 كجم'}
+                ]
+            },
+            { 
+                name: 'ريكو Aficio MP 201', image: 'images/MP 201.png', condition: '', speed: '20 ورقة / دقيقة', resolution: '600x600 dpi', functions: 'تصوير – طباعة شبكة – سكانر – فاكس', paperSize: 'من A5 إلى A4', price: 'غير متوفر', category: 'bw-copiers',
+                description: 'تعامَل مع أى مستند : مع ماكينة تصوير مستندات تفعل كل شيء ! ماكينة تصوير المستندات RICOH Aficio MP 201 متعددة الوظائف : تصوير + طباعة + سكانر + فاكس ، بسرعة 20 ورقة فى الدقيقة . لمواكبة المنافسة : تحتاج إلى تنفيذ مجموعة واسعة من مهام تصوير و طباعة المستندات بسرعة وسهولة. هذا هو السبب في أن RICOH Aficio MP 201 هو الاختيار الصحيح للمكاتب الصغيرة ومجموعات العمل الإدارية. فالآلة توفر جميع القدرات التي تحتاجها - والقيمة التي تطلبها - في نظام واحد .',
+                specs: [
+                    {label: 'عدد النسخ بضغطة واحدة', value: '99'}, {label: 'التكبير و التصغير', value: 'من 50% إلى 200%'}, {label: 'وزن الورق', value: '60 إلى 90 جرام/م2'}, {label: 'الذاكرة', value: 'من 16 إلى 640 ميجابايت'}, {label: 'وزن / معدل الحبر', value: '230 جرام / 7000 ورقة (تغطية 5%)'}, {label: 'حجم التصوير الشهرى', value: '5000 ورقة'}, {label: 'أبعاد الألة', value: '486x450x466 مم'}, {label: 'وزن الألة', value: '24 كجم'}
+                ]
+            },
+            { 
+                name: 'ريكو Aficio MP 301', image: 'images/MP 301.png', condition: '', speed: '30 ورقة / دقيقة', resolution: '600x600 dpi', functions: 'تصوير – طباعة شبكة – سكانر – فاكس (اختياري)', paperSize: 'من A6 إلى A4', price: 'غير متوفر', category: 'bw-copiers',
+                description: 'تعامَل مع أى مستند : مع ماكينة تصوير مستندات تفعل كل شيء ! ماكينة تصوير المستندات RICOH MP 301 متعددة الوظائف : تصوير + طباعة + سكانر + فاكس ، بسرعة 30 ورقة فى الدقيقة . لمواكبة المنافسة : تحتاج إلى تنفيذ مجموعة واسعة من مهام تصوير و طباعة المستندات بسرعة وسهولة. هذا هو السبب في أن RICOH MP 301 هو الاختيار الصحيح للمكاتب الصغيرة ومجموعات العمل الإدارية. فالآلة توفر جميع القدرات التي تحتاجها - والقيمة التي تطلبها - في نظام واحد .',
+                specs: [
+                    {label: 'عدد النسخ بضغطة واحدة', value: '99'}, {label: 'التكبير و التصغير', value: 'من 25% إلى 400%'}, {label: 'وزن الورق', value: '60 إلى 90 جرام/م2'}, {label: 'الذاكرة', value: '1 جيجابايت'}, {label: 'وزن / معدل الحبر', value: '230 جرام / 7000 ورقة (تغطية 5%)'}, {label: 'حجم التصوير الشهرى', value: '10000 ورقة'}, {label: 'أبعاد الألة', value: '476x450x451 مم'}, {label: 'وزن الألة', value: '26 كجم'}
+                ]
+            },
+            { 
+                name: 'ريكو Aficio MP 2352', image: 'images/MP 2352.png', condition: '', speed: '23 ورقة / دقيقة', resolution: '600x600 dpi', functions: 'تصوير – طباعة شبكة – سكانر – فاكس (اختياري)', paperSize: 'من A6 إلى A3', price: 'غير متوفر', category: 'bw-copiers',
+                description: 'توفر الآلة Ricoh MP 2352 إمكانات لا مثيل لها في النسخ والطباعة والمسح الضوئي "سكانر" والفاكس ، تساعد على زيادة الإنتاجية مع الحفاظ على الطاقة. تمتع بمجموعة كبيرة من المزايا التنافسية ، مثل 23 صفحة مطبوعة في الدقيقة كحد أقصى ، وسير العمل الذي يتم تنفيذه بسلاسة من خلال جهاز واحد متعدد الوظائف ، و اختيار التوصيل بالشبكة للطباعة ، ونقل الملفات للآلة بصيغة PDF ، و لوحة تحكم باللمس تعتمد على الأيقونات. و تعدد مقاسات الورق : A3,A4,A5 و تعدد الأدراج . بهذا ، الآلة Ricoh MP 2352 مناسبة للشركات و للمكتبات الصغيرة .',
+                specs: [
+                    {label: 'عدد النسخ بضغطة واحدة', value: '999'}, {label: 'التكبير و التصغير', value: 'من 25% إلى 400%'}, {label: 'وزن الورق', value: '60 إلى 105 جرام/م2'}, {label: 'الذاكرة', value: '1 جيجابايت'}, {label: 'وزن / معدل الحبر', value: '360 جرام / 11000 ورقة (تغطية 5%)'}, {label: 'حجم التصوير الشهرى', value: '25000 ورقة'}, {label: 'أبعاد الألة', value: '587x653x829 مم'}, {label: 'وزن الألة', value: '75 كجم'}
+                ]
+            },
+            { 
+                name: 'ريكو Aficio MP 2851', image: 'images/MP 2851.png', condition: '', speed: '28 ورقة / دقيقة', resolution: '600x600 dpi', functions: 'تصوير – طباعة شبكة – سكانر – فاكس (اختياري)', paperSize: 'من A6 إلى A3', price: 'غير متوفر', category: 'bw-copiers',
+                description: 'تتطلب إدارة المستندات " من طباعة و تصوير و سكانر " جهازاً يعمل على تحسين الإنتاجية ، ويضمن الخصوصية و يساعد على سير العمل بشكل منظم . لذلك سيكون اختيارك Ricoh Aficio MP 2851 هو الاختيار الأمثل ، لأنها تقدم كل هذه المزايا فى جهاز واحد ، بالإضافة إلى خاصية الفاكس . لقد أحدثت Ricoh Aficio MP 2851 ثورة في مهام إدارة المستندات من أجل تجربة إنتاج ملفات شخصية بشكل مميز و مهنى أيضاً. مع سرعة 28 ورقة فى الدقيقة ، و تعدد مقاسات الورق : A3,A4,A5 و تعدد الأدراج ، ستحقق الماكينة Ricoh Aficio MP 2851 الأداء الأقوى و خفض التكاليف دون التنازل عن الجودة . الماكينة Ricoh Aficio MP 2851 تناسب الشركات و المكتبات الصغيرة.',
+                specs: [
+                    {label: 'عدد النسخ بضغطة واحدة', value: '999'}, {label: 'التكبير و التصغير', value: 'من 25% إلى 400%'}, {label: 'وزن الورق', value: '60 إلى 105 جرام/م2'}, {label: 'الذاكرة', value: '768 ميجابايت'}, {label: 'وزن / معدل الحبر', value: '360 جرام / 11000 ورقة (تغطية 5%)'}, {label: 'حجم التصوير الشهرى', value: '25000 ورقة'}, {label: 'أبعاد الألة', value: '570x653x709 مم'}, {label: 'وزن الألة', value: '65 كجم'}
+                ]
+            },
+            { 
+                name: 'ريكو Aficio MP 2852', image: 'images/MP 2852.png', condition: '', speed: '28 ورقة / دقيقة', resolution: '600x600 dpi', functions: 'تصوير – طباعة شبكة – سكانر – فاكس (اختياري)', paperSize: 'من A6 إلى A3', price: 'غير متوفر', category: 'bw-copiers',
+                description: 'توفر الآلة Ricoh MP 2852 إمكانات لا مثيل لها في النسخ والطباعة والمسح الضوئي "سكانر" والفاكس ، تساعد على زيادة الإنتاجية مع الحفاظ على الطاقة. تمتع بمجموعة كبيرة من المزايا التنافسية ، مثل 28 صفحة مطبوعة في الدقيقة كحد أقصى ، وسير العمل الذي يتم تنفيذه بسلاسة من خلال جهاز واحد متعدد الوظائف ، و اختيار التوصيل بالشبكة للطباعة ، ونقل الملفات للآلة بصيغة PDF ، و لوحة تحكم باللمس تعتمد على الأيقونات. و تعدد مقاسات الورق : A3,A4,A5 و تعدد الأدراج . بهذا ، الآلة Ricoh MP 2852 مناسبة للشركات و للمكتبات الصغيرة .',
+                specs: [
+                    {label: 'عدد النسخ بضغطة واحدة', value: '999'}, {label: 'التكبير و التصغير', value: 'من 25% إلى 400%'}, {label: 'وزن الورق', value: '60 إلى 105 جرام/م2'}, {label: 'الذاكرة', value: '1 جيجابايت'}, {label: 'وزن / معدل الحبر', value: '360 جرام / 11000 ورقة (تغطية 5%)'}, {label: 'حجم التصوير الشهرى', value: '25000 ورقة'}, {label: 'أبعاد الألة', value: '587x653x829 مم'}, {label: 'وزن الألة', value: '75 كجم'}
+                ]
+            },
+            { 
+                name: 'ريكو Aficio MP 3352', image: 'images/MP 3352.png', condition: '', speed: '33 ورقة / دقيقة', resolution: '600x600 dpi', functions: 'تصوير – طباعة شبكة – سكانر – فاكس (اختياري)', paperSize: 'من A6 إلى A3', price: 'غير متوفر', category: 'bw-copiers',
+                description: 'توفر الآلة Ricoh MP 3352 إمكانات لا مثيل لها في النسخ والطباعة والمسح الضوئي "سكانر" والفاكس ، تساعد على زيادة الإنتاجية مع الحفاظ على الطاقة. تمتع بمجموعة كبيرة من المزايا التنافسية ، مثل 33 صفحة مطبوعة في الدقيقة كحد أقصى ، وسير العمل الذي يتم تنفيذه بسلاسة من خلال جهاز واحد متعدد الوظائف ، و اختيار التوصيل بالشبكة للطباعة ، ونقل الملفات للآلة بصيغة PDF ، و لوحة تحكم باللمس تعتمد على الأيقونات. و تعدد مقاسات الورق : A3,A4,A5 و تعدد الأدراج . بهذا ، الآلة Ricoh MP 3352 مناسبة للشركات و للمكتبات الصغيرة .',
+                specs: [
+                    {label: 'عدد النسخ بضغطة واحدة', value: '999'}, {label: 'التكبير و التصغير', value: 'من 25% إلى 400%'}, {label: 'وزن الورق', value: '60 إلى 105 جرام/م2'}, {label: 'الذاكرة', value: '1 جيجابايت'}, {label: 'وزن / معدل الحبر', value: '360 جرام / 11000 ورقة (تغطية 5%)'}, {label: 'حجم التصوير الشهرى', value: '25000 ورقة'}, {label: 'أبعاد الألة', value: '587x653x829 مم'}, {label: 'وزن الألة', value: '75 كجم'}
+                ]
+            },
+            { 
+                name: 'ريكو Aficio MP 4000', image: 'images/MP 4000.png', condition: '', speed: '40 ورقة / دقيقة', resolution: '600 dpi', functions: 'تصوير – طباعة شبكة – سكانر – فاكس (اختياري)', paperSize: 'من A6 إلى A3', price: 'غير متوفر', category: 'bw-copiers',
+                description: 'تعمل ماكينة تصوير المستندات " Aficio ™ MP 4000" القوية والمتعددة الوظائف على رفع مستوى إنتاجية المكاتب. فالماكينة قابلة لإضافة مزايا أخرى مثل : الطباعة و المسح الضوئى "سكانر" و الفاكس و بسرعة : 40 ورقة فى الدقيقة - مع تعدد مقاسات الورق : A3,A4,A5 و تعدد الأدراج تجعل هذا الاصدار من Ricoh مناسباً للشركات والمكتبات التى تحتاج تصوير و طباعة المستندات بكثرة فالآلة Ricoh " Aficio ™ MP 4000" تتيح لك إمكانية التوصيل بالشبكة و تجمع بين الأداء العالى لإدارة الملفات و سهولة الاستخدام .',
+                specs: [
+                    {label: 'عدد النسخ بضغطة واحدة', value: '999'}, {label: 'التكبير و التصغير', value: 'من 25% إلى 400%'}, {label: 'وزن الورق', value: '60 إلى 169 جرام/م2'}, {label: 'الذاكرة', value: '256 ميجابايت'}, {label: 'وزن / معدل الحبر', value: '550 جرام / 15000 ورقة (تغطية 5%)'}, {label: 'حجم التصوير الشهرى', value: '50000 ورقة'}, {label: 'أبعاد الألة', value: '670x677x910 مم'}, {label: 'وزن الألة', value: '97 كجم'}
+                ]
+            },
+            { 
+                name: 'ريكو Aficio MP 4001', image: 'images/MP 4001.png', condition: '', speed: '40 ورقة / دقيقة', resolution: '600x600 dpi', functions: 'تصوير – طباعة شبكة – سكانر – فاكس (اختياري)', paperSize: 'من A6 إلى A3', price: 'غير متوفر', category: 'bw-copiers',
+                description: 'تتطلب إدارة الملفات من : تصوير و طباعة و سكانر و فاكس ، نظاماً يعمل على تحسين سير العمل ، و قد قامت شركة Ricoh بتقديم اصدار متميز للقيام بهذه المهام : الماكينة "Aficio MP 4001" تمثل تجربة مميزة للقيام بإدارة الملفات بشكل آمن و فعال . و بسرعة : 40 ورقة فى الدقيقة - مع تعدد مقاسات الورق : A3,A4,A5 و تعدد الأدراج تجعل هذا الاصدار من Ricoh مناسباً للشركات والمكتبات التى تحتاج تصوير المستندات بكثرة ، مع الاتصال بشبكة الكمبيوتر للطباعة .',
+                specs: [
+                    {label: 'عدد النسخ بضغطة واحدة', value: '999'}, {label: 'التكبير و التصغير', value: 'من 25% إلى 400%'}, {label: 'وزن الورق', value: '60 إلى 169 جرام/م2'}, {label: 'الذاكرة', value: '768 ميجابايت'}, {label: 'وزن / معدل الحبر', value: '550 جرام / 15000 ورقة (تغطية 5%)'}, {label: 'حجم التصوير الشهرى', value: '50000 ورقة'}, {label: 'أبعاد الألة', value: '670x677x910 مم'}, {label: 'وزن الألة', value: '97 كجم'}
+                ]
+            },
+            { 
+                name: 'ريكو Aficio MP 4002', image: 'images/MP 5002.png', condition: 'عرض خاص', speed: '40 ورقة / دقيقة', resolution: '1200 * 1200', functions: 'طباعة – تصوير – سكانر', paperSize: 'A3, A4', price: 'غير متوفر', category: 'bw-copiers', description: '', specs: [] 
+            },
+            { 
+                name: 'ريكو Aficio MP 5000', image: 'images/MP 5000.png', condition: '', speed: '50 ورقة / دقيقة', resolution: '600 dpi', functions: 'تصوير – طباعة شبكة – سكانر – فاكس (اختياري)', paperSize: 'من A6 إلى A3', price: 'غير متوفر', category: 'bw-copiers',
+                description: 'تعمل ماكينة تصوير المستندات " Aficio ™ MP 5000" القوية والمتعددة الوظائف على رفع مستوى إنتاجية المكاتب. فالماكينة قابلة لإضافة مزايا أخرى مثل : الطباعة و المسح الضوئى "سكانر" و الفاكس و بسرعة : 50 ورقة فى الدقيقة - مع تعدد مقاسات الورق : A3,A4,A5 و تعدد الأدراج تجعل هذا الاصدار من Ricoh مناسباً للشركات والمكتبات التى تحتاج تصوير و طباعة المستندات بكثرة فالآلة Ricoh " Aficio ™ MP 5000" تتيح لك إمكانية التوصيل بالشبكة و تجمع بين الأداء العالى لإدارة الملفات و سهولة الاستخدام .',
+                specs: [
+                    {label: 'عدد النسخ بضغطة واحدة', value: '999'}, {label: 'التكبير و التصغير', value: 'من 25% إلى 400%'}, {label: 'وزن الورق', value: '60 إلى 169 جرام/م2'}, {label: 'الذاكرة', value: '256 ميجابايت'}, {label: 'وزن / معدل الحبر', value: '550 جرام / 15000 ورقة (تغطية 5%)'}, {label: 'حجم التصوير الشهرى', value: '50000 ورقة'}, {label: 'أبعاد الألة', value: '670x677x910 مم'}, {label: 'وزن الألة', value: '97 كجم'}
+                ]
+            },
+            { 
+                name: 'ريكو Aficio MP 5001', image: 'images/MP 5001.png', condition: '', speed: '50 ورقة / دقيقة', resolution: '600 dpi', functions: 'تصوير – طباعة شبكة – سكانر – فاكس (اختياري)', paperSize: 'من A6 إلى A3', price: 'غير متوفر', category: 'bw-copiers',
+                description: 'تتطلب إدارة الملفات من : تصوير و طباعة و سكانر و فاكس ، نظاماً يعمل على تحسين سير العمل ، و قد قامت شركة Ricoh بتقديم اصدار متميز للقيام بهذه المهام : الماكينة "Aficio MP 5001" تمثل تجربة مميزة للقيام بإدارة الملفات بشكل آمن و فعال . و بسرعة : 50 ورقة فى الدقيقة - مع تعدد مقاسات الورق : A3,A4,A5 و تعدد الأدراج تجعل هذا الاصدار من Ricoh مناسباً للشركات والمكتبات التى تحتاج تصوير المستندات بكثرة ، مع الاتصال بشبكة الكمبيوتر للطباعة .',
+                specs: [
+                    {label: 'عدد النسخ بضغطة واحدة', value: '999'}, {label: 'التكبير و التصغير', value: 'من 25% إلى 400%'}, {label: 'وزن الورق', value: '60 إلى 169 جرام/م2'}, {label: 'الذاكرة', value: '768 ميجابايت'}, {label: 'وزن / معدل الحبر', value: '550 جرام / 15000 ورقة (تغطية 5%)'}, {label: 'حجم التصوير الشهرى', value: '50000 ورقة'}, {label: 'أبعاد الألة', value: '670x677x910 مم'}, {label: 'وزن الألة', value: '97 كجم'}
+                ]
+            },
+            { 
+                name: 'ريكو Aficio MP 5002', image: 'images/MP 5002.png', condition: '', speed: '50 ورقة / دقيقة', resolution: '1200 * 1200', functions: 'طباعة – تصوير – سكانر – فاكس', paperSize: 'A3, A4, A5 والعديد من المقاسات', price: 'غير متوفر', category: 'bw-copiers', description: '', specs: [] 
+            }
         ];
 
         // تصميم الكروت الجديد: خالية من المربعات والخلفيات لتندمج مع الصفحة
@@ -1492,13 +1582,33 @@
                 </div>
                 <div class="w-full lg:w-1/2 flex flex-col justify-center">
                     <h1 class="text-3xl md:text-5xl font-black font-cairo text-rose-950 mb-6 leading-tight">${prod.name}</h1>
-                    <ul class="space-y-4 mb-10 text-gray-700 font-bold text-lg border-r-4 border-rose-100 pr-6">
-                        <li><i class="fa fa-print text-rose-600 ml-2"></i> الوظائف: ${prod.functions}</li>
-                        <li><i class="fa fa-bolt text-rose-600 ml-2"></i> السرعة: ${prod.speed}</li>
-                        <li><i class="fa fa-expand text-rose-600 ml-2"></i> الدقة: ${prod.resolution}</li>
-                        <li><i class="fa fa-file-alt text-rose-600 ml-2"></i> مقاس الورق: ${prod.paperSize}</li>
-                    </ul>
-                    <div class="flex flex-col gap-4 mt-auto">
+                    
+                    ${prod.description ? `<p class="text-gray-600 mb-8 font-bold leading-relaxed text-base border-r-4 border-rose-600 pr-4">${prod.description}</p>` : ''}
+                    
+                    <div class="flex flex-col gap-6 w-full mb-8">
+                        <ul class="space-y-4 text-gray-700 font-bold text-lg ${prod.description ? 'border-r-4 border-rose-100 pr-6' : 'border-r-4 border-rose-600 pr-4'}">
+                            <li><i class="fa fa-print text-rose-600 ml-2"></i> الوظائف: ${prod.functions}</li>
+                            <li><i class="fa fa-bolt text-rose-600 ml-2"></i> السرعة: ${prod.speed}</li>
+                            <li><i class="fa fa-expand text-rose-600 ml-2"></i> الدقة: ${prod.resolution}</li>
+                            <li><i class="fa fa-file-alt text-rose-600 ml-2"></i> مقاس الورق: ${prod.paperSize}</li>
+                        </ul>
+
+                        ${prod.specs && prod.specs.length > 0 ? `
+                        <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100 shadow-inner w-full">
+                            <h4 class="font-black text-rose-900 mb-4 font-cairo text-xl border-b border-gray-200 pb-2">المواصفات الفنية التفصيلية</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm font-bold text-gray-700">
+                                ${prod.specs.map(spec => `
+                                    <div class="flex flex-col bg-white p-3 rounded-xl shadow-sm border border-gray-100">
+                                        <span class="text-rose-700 text-[10px] font-black uppercase mb-1">${spec.label}</span>
+                                        <span class="text-gray-900 font-bold">${spec.value}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
+
+                    <div class="flex flex-col gap-4 mt-auto w-full">
                         <div class="text-right">
                             <span class="text-gray-400 text-sm font-bold block mb-1">السعر</span>
                             <span class="text-4xl font-black text-rose-900">${prod.price}</span>
