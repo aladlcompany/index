@@ -388,6 +388,23 @@
                         </div>
                     </div>
 
+                    <!-- قائمة أقسام المنتجات (كما في الصورة) -->
+                    <div class="mt-8 mb-8 px-2 md:px-4">
+                        <div class="flex flex-col gap-2.5">
+                            <a onclick="navigateTo('products', 'bw-copiers')" class="block w-full bg-slate-50 hover:bg-rose-50 text-slate-700 hover:text-rose-700 font-bold text-center py-4 rounded-xl transition-colors cursor-pointer border border-transparent hover:border-rose-100">ماكينات تصوير أسود</a>
+                            <a onclick="navigateTo('products', 'color-copiers')" class="block w-full bg-slate-50 hover:bg-rose-50 text-slate-700 hover:text-rose-700 font-bold text-center py-4 rounded-xl transition-colors cursor-pointer border border-transparent hover:border-rose-100">ماكينات تصوير ألوان</a>
+                            <a onclick="navigateTo('products', 'digital-color')" class="block w-full bg-slate-50 hover:bg-rose-50 text-slate-700 hover:text-rose-700 font-bold text-center py-4 rounded-xl transition-colors cursor-pointer border border-transparent hover:border-rose-100">ماكينات طباعة ديجيتال الوان</a>
+                            <a onclick="navigateTo('products', 'digital-bw')" class="block w-full bg-slate-50 hover:bg-rose-50 text-slate-700 hover:text-rose-700 font-bold text-center py-4 rounded-xl transition-colors cursor-pointer border border-transparent hover:border-rose-100">ماكينات طباعة ديجيتال ابيض واسود</a>
+                            <a onclick="navigateTo('products', 'plotters')" class="block w-full bg-slate-50 hover:bg-rose-50 text-slate-700 hover:text-rose-700 font-bold text-center py-4 rounded-xl transition-colors cursor-pointer border border-transparent hover:border-rose-100">ماكينات لوحات هندسية</a>
+                            <a onclick="navigateTo('products', 'photographic')" class="block w-full bg-slate-50 hover:bg-rose-50 text-slate-700 hover:text-rose-700 font-bold text-center py-4 rounded-xl transition-colors cursor-pointer border border-transparent hover:border-rose-100">ماكينات طباعة تصويرية</a>
+                            <a onclick="navigateTo('products', 'medical')" class="block w-full bg-slate-50 hover:bg-rose-50 text-slate-700 hover:text-rose-700 font-bold text-center py-4 rounded-xl transition-colors cursor-pointer border border-transparent hover:border-rose-100">ماكينات طباعة الاشعة الطبية</a>
+                            <a onclick="navigateTo('products', 'inkjet')" class="block w-full bg-slate-50 hover:bg-rose-50 text-slate-700 hover:text-rose-700 font-bold text-center py-4 rounded-xl transition-colors cursor-pointer border border-transparent hover:border-rose-100">طابعات إنكجيت (بأحبار سائلة)</a>
+                            <a onclick="navigateTo('products', 'post-print')" class="block w-full bg-slate-50 hover:bg-rose-50 text-slate-700 hover:text-rose-700 font-bold text-center py-4 rounded-xl transition-colors cursor-pointer border border-transparent hover:border-rose-100">ماكينات ما بعد الطباعة</a>
+                            <a onclick="navigateTo('products', 'outdoor')" class="block w-full bg-slate-50 hover:bg-rose-50 text-slate-700 hover:text-rose-700 font-bold text-center py-4 rounded-xl transition-colors cursor-pointer border border-transparent hover:border-rose-100">بلوتر اوت دور Outdoor Plotter</a>
+                            <a onclick="navigateTo('products', 'appliances')" class="block w-full bg-slate-50 hover:bg-rose-50 text-slate-700 hover:text-rose-700 font-bold text-center py-4 rounded-xl transition-colors cursor-pointer border border-transparent hover:border-rose-100">أجهزة كهربائية - تكييفات</a>
+                        </div>
+                    </div>
+
                     <!-- مقالات وعروض (مضافة حديثاً) -->
                     <div class="mt-6 mb-8 px-2 md:px-4">
                         <h3 class="text-base md:text-lg font-bold text-gray-500 mb-5 border-r-4 border-rose-600 pr-3 tracking-wide font-tajawal">مقالات وعروض</h3>
@@ -1328,42 +1345,42 @@
                 });
             }
 
-            if(catalogGrid) {
-                catalogGrid.innerHTML = '';
-                let filtered = [...productsDB].reverse();
-                if (categoryFilter !== 'all') filtered = filtered.filter(p => p.category === categoryFilter);
+            let filtered = [...productsDB].reverse();
+            if (categoryFilter !== 'all') filtered = filtered.filter(p => p.category === categoryFilter);
 
-                if (filtered.length === 0) {
-                    catalogGrid.innerHTML = '<div class="col-span-full text-center py-20 text-gray-400 font-bold text-lg"><i class="fa fa-box-open text-4xl mb-4 block"></i>لا توجد منتجات حالياً في هذا القسم.</div>';
-                } else {
-                    filtered.forEach(prod => {
-                        catalogGrid.insertAdjacentHTML('beforeend', `
-                            <div class="group flex flex-col w-full max-w-[320px] bg-transparent transition-all duration-300 py-4">
-                                <div class="h-48 md:h-64 flex items-center justify-center mb-6 relative group-hover:scale-105 transition-transform duration-500">
-                                    <img src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain drop-shadow-xl">
-                                    ${prod.condition ? `<div class="absolute top-2 left-2 bg-rose-700 text-white text-xs font-black px-3 py-1 rounded-full shadow-md z-10">${prod.condition}</div>` : ''}
-                                </div>
-                                <h3 class="text-lg md:text-xl font-black text-rose-950 mb-3 text-center font-cairo leading-tight">${prod.name}</h3>
-                                
-                                <ul class="space-y-2 mb-6 text-xs font-bold text-gray-600 flex-1 px-2">
-                                    <li class="flex items-start gap-2"><i class="fa fa-print text-rose-600 mt-1"></i> <span><strong>الوظائف:</strong> ${prod.functions}</span></li>
-                                    <li class="flex items-start gap-2"><i class="fa fa-bolt text-rose-600 mt-1"></i> <span><strong>السرعة:</strong> ${prod.speed}</span></li>
-                                    <li class="flex items-start gap-2"><i class="fa fa-expand text-rose-600 mt-1"></i> <span><strong>الدقة:</strong> ${prod.resolution}</span></li>
-                                    <li class="flex items-start gap-2"><i class="fa fa-file-alt text-rose-600 mt-1"></i> <span><strong>الورق:</strong> ${prod.paperSize}</span></li>
-                                </ul>
-                                
-                                <div class="mt-auto flex flex-col gap-3">
-                                    <div class="flex items-center justify-between px-2">
-                                        <span class="text-rose-900 font-black text-base md:text-lg">${prod.price}</span>
-                                        <button onclick="openProductDetails('${prod.name}')" class="text-rose-600 bg-rose-50 hover:bg-rose-100 px-4 py-1.5 rounded-lg font-bold text-xs transition">تفاصيل</button>
-                                    </div>
-                                    <button onclick="orderNowWA('${prod.name}')" class="btn-heartbeat w-full bg-rose-700 text-white py-3.5 rounded-2xl font-black text-sm hover:bg-rose-800 transition shadow-md">طلب شراء عبر الواتساب</button>
-                                </div>
+            let gridContent = '';
+            if (filtered.length === 0) {
+                gridContent = '<div class="col-span-full text-center py-20 text-gray-400 font-bold text-lg"><i class="fa fa-box-open text-4xl mb-4 block"></i>لا توجد منتجات حالياً في هذا القسم.</div>';
+            } else {
+                filtered.forEach(prod => {
+                    gridContent += `
+                        <div class="group flex flex-col w-full max-w-[320px] bg-transparent transition-all duration-300 py-4">
+                            <div class="h-48 md:h-64 flex items-center justify-center mb-6 relative group-hover:scale-105 transition-transform duration-500">
+                                <img src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain drop-shadow-xl">
+                                ${prod.condition ? `<div class="absolute top-2 left-2 bg-rose-700 text-white text-xs font-black px-3 py-1 rounded-full shadow-md z-10">${prod.condition}</div>` : ''}
                             </div>
-                        `);
-                    });
-                }
+                            <h3 class="text-lg md:text-xl font-black text-rose-950 mb-3 text-center font-cairo leading-tight">${prod.name}</h3>
+                            
+                            <ul class="space-y-2 mb-6 text-xs font-bold text-gray-600 flex-1 px-2">
+                                <li class="flex items-start gap-2"><i class="fa fa-print text-rose-600 mt-1"></i> <span><strong>الوظائف:</strong> ${prod.functions}</span></li>
+                                <li class="flex items-start gap-2"><i class="fa fa-bolt text-rose-600 mt-1"></i> <span><strong>السرعة:</strong> ${prod.speed}</span></li>
+                                <li class="flex items-start gap-2"><i class="fa fa-expand text-rose-600 mt-1"></i> <span><strong>الدقة:</strong> ${prod.resolution}</span></li>
+                                <li class="flex items-start gap-2"><i class="fa fa-file-alt text-rose-600 mt-1"></i> <span><strong>الورق:</strong> ${prod.paperSize}</span></li>
+                            </ul>
+                            
+                            <div class="mt-auto flex flex-col gap-3">
+                                <div class="flex items-center justify-between px-2">
+                                    <span class="text-rose-900 font-black text-base md:text-lg">${prod.price}</span>
+                                    <button onclick="openProductDetails('${prod.name}')" class="text-rose-600 bg-rose-50 hover:bg-rose-100 px-4 py-1.5 rounded-lg font-bold text-xs transition">تفاصيل</button>
+                                </div>
+                                <button onclick="orderNowWA('${prod.name}')" class="btn-heartbeat w-full bg-rose-700 text-white py-3.5 rounded-2xl font-black text-sm hover:bg-rose-800 transition shadow-md">طلب شراء عبر الواتساب</button>
+                            </div>
+                        </div>
+                    `;
+                });
             }
+
+            if (catalogGrid) catalogGrid.innerHTML = gridContent;
         }
 
         function openProductDetails(productName, addToHistory = true, scrollPos = 0) {
