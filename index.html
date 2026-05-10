@@ -390,7 +390,13 @@
 
                     <!-- قائمة أقسام المنتجات (كما في الصورة) -->
                     <div class="mt-8 mb-8 px-2 md:px-4">
-                        <div class="flex flex-col gap-2.5">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-base md:text-lg font-bold text-gray-500 border-r-4 border-rose-600 pr-3 tracking-wide font-tajawal">قائمة المنتجات</h3>
+                            <button onclick="toggleHomeCategories()" id="homeCatToggleBtn" class="text-rose-700 bg-rose-50 px-4 py-1.5 rounded-lg text-xs md:text-sm font-bold shadow-sm hover:bg-rose-100 transition flex items-center gap-2">
+                                إخفاء القائمة <i class="fa fa-chevron-up"></i>
+                            </button>
+                        </div>
+                        <div id="homeCategoriesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 transition-all duration-300">
                             <a onclick="navigateTo('products', 'bw-copiers')" class="block w-full bg-slate-50 hover:bg-rose-50 text-slate-700 hover:text-rose-700 font-bold text-center py-4 rounded-xl transition-colors cursor-pointer border border-transparent hover:border-rose-100">ماكينات تصوير أسود</a>
                             <a onclick="navigateTo('products', 'color-copiers')" class="block w-full bg-slate-50 hover:bg-rose-50 text-slate-700 hover:text-rose-700 font-bold text-center py-4 rounded-xl transition-colors cursor-pointer border border-transparent hover:border-rose-100">ماكينات تصوير ألوان</a>
                             <a onclick="navigateTo('products', 'digital-color')" class="block w-full bg-slate-50 hover:bg-rose-50 text-slate-700 hover:text-rose-700 font-bold text-center py-4 rounded-xl transition-colors cursor-pointer border border-transparent hover:border-rose-100">ماكينات طباعة ديجيتال الوان</a>
@@ -1224,6 +1230,18 @@
         }
 
         function toggleAccordion(id) { document.getElementById(id).classList.toggle('hidden'); }
+
+        function toggleHomeCategories() {
+            const grid = document.getElementById('homeCategoriesGrid');
+            const btn = document.getElementById('homeCatToggleBtn');
+            if (grid.classList.contains('hidden')) {
+                grid.classList.remove('hidden');
+                btn.innerHTML = 'إخفاء القائمة <i class="fa fa-chevron-up"></i>';
+            } else {
+                grid.classList.add('hidden');
+                btn.innerHTML = 'إظهار القائمة <i class="fa fa-chevron-down"></i>';
+            }
+        }
 
         function updateWA() {
             const n = document.getElementById('mName').value.trim();
