@@ -12,6 +12,11 @@
     <meta name="robots" content="index, follow">
     <meta name="language" content="Arabic">
     
+    <!-- إعدادات التوافق المتقدمة (Schema) لإجبار الواتساب على قراءة الصورة -->
+    <meta itemprop="name" content="شركة العدل | لبيع وصيانة الطابعات وماكينات التصوير">
+    <meta itemprop="description" content="المنصة الرسمية المعتمدة لبيع وصيانة الطابعات وماكينات التصوير. جودة تثق بها وخدمة تدوم لعقود.">
+    <meta itemprop="image" content="https://aladlcompany.github.io/index/header-mobile.png">
+
     <!-- إعدادات المشاركة على السوشيال ميديا والواتساب (Open Graph) -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="شركة العدل">
@@ -21,14 +26,15 @@
     <meta property="og:image" content="https://aladlcompany.github.io/index/header-mobile.png">
     <meta property="og:image:secure_url" content="https://aladlcompany.github.io/index/header-mobile.png">
     <meta property="og:image:type" content="image/png">
-    <meta property="og:image:width" content="1080">
-    <meta property="og:image:height" content="1080">
     
     <!-- إعدادات تويتر (Twitter Cards) -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="شركة العدل | لبيع وصيانة الطابعات وماكينات التصوير">
     <meta name="twitter:description" content="المنصة الرسمية المعتمدة لبيع وصيانة الطابعات وماكينات التصوير. جودة تثق بها وخدمة تدوم لعقود.">
     <meta name="twitter:image" content="https://aladlcompany.github.io/index/header-mobile.png">
+
+    <!-- رابط إضافي صريح لصورة المشاركة -->
+    <link rel="image_src" href="https://aladlcompany.github.io/index/header-mobile.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Tajawal:wght@300;500;700;900&display=swap" rel="stylesheet">
@@ -1622,6 +1628,19 @@
                 </div>
                 <div class="text-gray-600 text-lg md:text-xl leading-loose px-4">${art.content}</div>`;
             navigateTo('single-article', 'all', addToHistory, scrollPos, articleId);
+        }
+
+        function openSingleNews(newsId, addToHistory = true, scrollPos = 0) {
+            const news = newsDB.find(n => n.id === newsId);
+            if (!news) return;
+            document.getElementById('singleNewsContainer').innerHTML = `
+                <div class="mb-10 flex flex-col items-center">
+                    <img src="${news.image}" class="max-w-full h-auto max-h-[400px] object-contain mb-8 drop-shadow-xl">
+                    <span class="bg-rose-100 text-rose-800 text-xs font-black px-4 py-1.5 rounded-full mb-4 inline-block">${news.date}</span>
+                    <h1 class="text-2xl md:text-4xl font-black font-cairo text-center text-rose-950 leading-tight">${news.title}</h1>
+                </div>
+                <div class="text-gray-600 text-lg md:text-xl leading-loose px-4">${news.content}</div>`;
+            navigateTo('single-news', 'all', addToHistory, scrollPos, newsId);
         }
 
         function handleSearch() {
