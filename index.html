@@ -177,7 +177,7 @@
         </div>
         
         <div class="p-4">
-            <div class="mobile-card"><button onclick="navigateTo('home')" class="mobile-trigger"><span>الرئيسية</span><i class="fa fa-home text-rose-700"></i></button></div>
+            <div class="mobile-card"><button onclick="navigateTo('start')" class="mobile-trigger"><span>الرئيسية</span><i class="fa fa-home text-rose-700"></i></button></div>
             
             <div class="mobile-card">
                 <button onclick="toggleAccordion('m-who')" class="mobile-trigger"><span>من نحن</span><i class="fa fa-chevron-down text-[10px] opacity-30"></i></button>
@@ -234,7 +234,7 @@
                 <button onclick="toggleAccordion('m-serv')" class="mobile-trigger"><span>خدمات ما بعد البيع</span><i class="fa fa-chevron-down text-[10px] opacity-30"></i></button>
                 <div id="m-serv" class="hidden bg-gray-50 pb-2">
                     <a onclick="navigateTo('tech-support')" class="nested-link">الدعم الفنى</a>
-                    <a onclick="navigateTo('home'); setTimeout(() => document.getElementById('booking').scrollIntoView({behavior: 'smooth'}), 100);" class="nested-link">بلاغات الأعطال</a>
+                    <a onclick="navigateTo('start'); setTimeout(() => document.getElementById('booking').scrollIntoView({behavior: 'smooth'}), 100);" class="nested-link">بلاغات الأعطال</a>
                     <a onclick="navigateTo('complaints')" class="nested-link">الشكاوى و الأقتراحات</a>
                     <a onclick="navigateTo('service-manual')" class="nested-link">سيرفيس مانوال</a>
                 </div>
@@ -253,7 +253,7 @@
         <div class="bg-white container mx-auto px-4 md:px-12 py-3 md:py-4 flex flex-wrap justify-between items-center">
             <div class="flex items-center gap-3">
                 <button onclick="toggleMobileMenu()" class="lg:hidden text-rose-900 text-2xl bg-gray-50 p-2 rounded-xl"><i class="fa fa-bars"></i></button>
-                <div class="flex items-center gap-2 cursor-pointer" onclick="navigateTo('home')">
+                <div class="flex items-center gap-2 cursor-pointer" onclick="navigateTo('start')">
                     <img src="logo.png" class="w-10 h-10 md:w-16 md:h-16 object-contain" alt="لوجو" onerror="this.src=''">
                     <div class="text-right">
                         <span class="text-base md:text-2xl font-black text-rose-950 block leading-none">شركة العدل</span>
@@ -281,7 +281,7 @@
 
         <nav class="bg-white border-t border-gray-100 hidden lg:block shadow-sm">
             <div class="container mx-auto px-12 flex justify-start gap-x-8 font-black text-gray-600 text-sm">
-                <a onclick="navigateTo('home')" class="py-5 hover:text-rose-700 transition cursor-pointer">الرئيسية</a>
+                <a onclick="navigateTo('start')" class="py-5 hover:text-rose-700 transition cursor-pointer">الرئيسية</a>
 
                 <div class="dropdown-container">
                     <button class="py-5 flex items-center gap-2">من نحن <i class="fa fa-chevron-down text-[9px] opacity-40"></i></button>
@@ -338,7 +338,7 @@
                     <button class="py-5 flex items-center gap-2">خدمات ما بعد البيع <i class="fa fa-chevron-down text-[9px] opacity-40"></i></button>
                     <div class="dropdown-menu text-right" style="left: 0; right: auto;">
                         <a onclick="navigateTo('tech-support')" class="dropdown-card">الدعم الفنى</a>
-                        <a onclick="navigateTo('home'); setTimeout(() => document.getElementById('booking').scrollIntoView({behavior: 'smooth'}), 100);" class="dropdown-card">بلاغات الأعطال</a>
+                        <a onclick="navigateTo('start'); setTimeout(() => document.getElementById('booking').scrollIntoView({behavior: 'smooth'}), 100);" class="dropdown-card">بلاغات الأعطال</a>
                         <a onclick="navigateTo('complaints')" class="dropdown-card">الشكاوى و الأقتراحات</a>
                         <a onclick="navigateTo('service-manual')" class="dropdown-card">سيرفيس مانوال</a>
                     </div>
@@ -354,7 +354,7 @@
         <img src="header-mobile.png" alt="بانر شركة العدل" class="block md:hidden">
     </div>
 
-    <main id="page-home" class="page-section active">
+    <main id="page-start" class="page-section active">
         <section class="pt-6 pb-12 container mx-auto px-4 md:px-12 text-right">
             
             <div class="w-full max-w-6xl mx-auto mb-10">
@@ -1224,7 +1224,7 @@
                     navigateTo(pageId, event.state.cat || 'all', false, scrollY); 
                 }
             } 
-            else { navigateTo('home', 'all', false, 0); }
+            else { navigateTo('start', 'all', false, 0); }
         });
 
         function toggleMobileMenu() {
@@ -1390,7 +1390,7 @@
                             <ul class="space-y-2 mb-6 text-xs font-bold text-gray-600 flex-1 px-2">
                                 <li class="flex items-start gap-2"><i class="fa fa-print text-rose-600 mt-1"></i> <span><strong>الوظائف:</strong> ${prod.functions}</span></li>
                                 <li class="flex items-start gap-2"><i class="fa fa-bolt text-rose-600 mt-1"></i> <span><strong>السرعة:</strong> ${prod.speed}</span></li>
-                                <li class="flex items-start gap-2"><i class="flex items-start gap-2"><i class="fa fa-expand text-rose-600 mt-1"></i> <span><strong>الدقة:</strong> ${prod.resolution}</span></li>
+                                <li class="flex items-start gap-2"><i class="fa fa-expand text-rose-600 mt-1"></i> <span><strong>الدقة:</strong> ${prod.resolution}</span></li>
                                 <li class="flex items-start gap-2"><i class="fa fa-file-alt text-rose-600 mt-1"></i> <span><strong>الورق:</strong> ${prod.paperSize}</span></li>
                             </ul>
                             
@@ -1713,7 +1713,7 @@
                         <ul class="space-y-2 mb-6 text-xs font-bold text-gray-600 flex-1 px-2">
                             <li class="flex items-start gap-2"><i class="fa fa-print text-rose-600 mt-1"></i> <span><strong>الوظائف:</strong> ${prod.functions}</span></li>
                             <li class="flex items-start gap-2"><i class="fa fa-bolt text-rose-600 mt-1"></i> <span><strong>السرعة:</strong> ${prod.speed}</span></li>
-                            <li class="flex items-start gap-2"><i class="flex items-start gap-2"><i class="fa fa-expand text-rose-600 mt-1"></i> <span><strong>الدقة:</strong> ${prod.resolution}</span></li>
+                            <li class="flex items-start gap-2"><i class="fa fa-expand text-rose-600 mt-1"></i> <span><strong>الدقة:</strong> ${prod.resolution}</span></li>
                             <li class="flex items-start gap-2"><i class="fa fa-file-alt text-rose-600 mt-1"></i> <span><strong>الورق:</strong> ${prod.paperSize}</span></li>
                         </ul>
                         
@@ -1744,7 +1744,7 @@
                         else openSingleNews(history.state.itemId, false, history.state.scrollY || 0);
                     } else {
                         // حماية: إذا تم الدخول لرابط التفاصيل في نافذة جديدة مباشرة، عُد للقسم الرئيسي
-                        let fallback = 'home';
+                        let fallback = 'start';
                         if (h === 'product-details') fallback = 'products';
                         else if (h === 'single-article') fallback = 'articles';
                         else if (h === 'single-news') fallback = 'news';
@@ -1757,8 +1757,8 @@
                     if (!history.state) history.replaceState({ pageId: h, cat: 'all', scrollY: 0 }, '', '#' + h);
                 }
             } else {
-                navigateTo('home', 'all', false, 0);
-                history.replaceState({ pageId: 'home', cat: 'all', scrollY: 0 }, '', '#home');
+                navigateTo('start', 'all', false, 0);
+                history.replaceState({ pageId: 'start', cat: 'all', scrollY: 0 }, '', '#start');
             }
         });
     </script>
