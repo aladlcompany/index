@@ -1266,7 +1266,6 @@
                 const target = document.getElementById('page-' + targetId);
                 if (target) { 
                     target.classList.add('active'); 
-                    window.scrollTo(0, scrollPos);
                 }
                 
                 closeMobileMenu();
@@ -1274,6 +1273,15 @@
                 if (targetId === 'products') renderProducts(category, requestedPage);
                 else if (targetId === 'articles') renderArticlesGrid();
                 else if (targetId === 'news') renderNewsGrid();
+
+                // تأخير بسيط لضمان اكتمال تحميل وبناء المنتجات في الصفحة قبل تحديد مسافة النزول
+                setTimeout(() => {
+                    document.body.style.scrollBehavior = 'auto'; // تعطيل السكرول البطيء مؤقتاً لتجنب القفزات الوهمية
+                    window.scrollTo(0, scrollPos);
+                    setTimeout(() => {
+                        document.body.style.scrollBehavior = 'smooth'; // إرجاعه مرة أخرى
+                    }, 50);
+                }, 50);
 
                 if (addToHistory) { 
                     history.pushState({ pageId: targetId, cat: category, pNum: requestedPage, scrollY: 0, itemId: itemId }, '', '#' + targetId); 
@@ -2073,36 +2081,51 @@
             }, 100);
         }
 
+        // التقاط وتخزين مكان الشاشة (الـ Scroll) لحظة عمل تحديث للصفحة
+        window.addEventListener('beforeunload', () => {
+            sessionStorage.setItem('scrollPosition', window.scrollY);
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
             renderProducts('all', 1);
             renderHomeArticles(); 
             renderHomeNews(); 
+
+            // استعادة مكان الشاشة القديم (إن وجد)
+            let initialScroll = 0;
+            if (sessionStorage.getItem('scrollPosition')) {
+                initialScroll = parseInt(sessionStorage.getItem('scrollPosition'));
+                sessionStorage.removeItem('scrollPosition');
+            } else if (history.state && history.state.scrollY) {
+                initialScroll = history.state.scrollY;
+            }
+
             const h = window.location.hash.substring(1);
             
             if (h && document.getElementById('page-' + h)) {
                 if (h === 'product-details' || h === 'single-article' || h === 'single-news') {
                     if (history.state && history.state.itemId) {
-                        if (h === 'product-details') openProductDetails(history.state.itemId, false, history.state.scrollY || 0);
-                        else if (h === 'single-article') openSingleArticle(history.state.itemId, false, history.state.scrollY || 0);
-                        else openSingleNews(history.state.itemId, false, history.state.scrollY || 0);
+                        if (h === 'product-details') openProductDetails(history.state.itemId, false, initialScroll);
+                        else if (h === 'single-article') openSingleArticle(history.state.itemId, false, initialScroll);
+                        else openSingleNews(history.state.itemId, false, initialScroll);
                     } else {
                         let fallback = 'start';
                         if (h === 'product-details') fallback = 'products';
                         else if (h === 'single-article') fallback = 'articles';
                         else if (h === 'single-news') fallback = 'news';
                         
-                        navigateTo(fallback, 'all', false, 0);
-                        history.replaceState({ pageId: fallback, cat: 'all', pNum: 1, scrollY: 0 }, '', '#' + fallback);
+                        navigateTo(fallback, 'all', false, initialScroll);
+                        history.replaceState({ pageId: fallback, cat: 'all', pNum: 1, scrollY: initialScroll }, '', '#' + fallback);
                     }
                 } else {
                     const cat = history.state ? history.state.cat : 'all';
                     const pNum = history.state && history.state.pNum ? history.state.pNum : 1;
-                    navigateTo(h, cat, false, history.state ? history.state.scrollY : 0, null, pNum);
-                    if (!history.state) history.replaceState({ pageId: h, cat: cat, pNum: pNum, scrollY: 0 }, '', '#' + h);
+                    navigateTo(h, cat, false, initialScroll, null, pNum);
+                    if (!history.state) history.replaceState({ pageId: h, cat: cat, pNum: pNum, scrollY: initialScroll }, '', '#' + h);
                 }
             } else {
-                navigateTo('start', 'all', false, 0, null, 1);
-                history.replaceState({ pageId: 'start', cat: 'all', pNum: 1, scrollY: 0 }, '', '#start');
+                navigateTo('start', 'all', false, initialScroll, null, 1);
+                history.replaceState({ pageId: 'start', cat: 'all', pNum: 1, scrollY: initialScroll }, '', '#start');
             }
         });
     </script>
