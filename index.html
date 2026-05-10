@@ -981,11 +981,12 @@
     <script>
         const MAIN_NUM = "201094799247";
 
-        // معالجة أخطاء صور الإعلانات وعرض الصورة الوهمية
+        // معالجة أخطاء صور الإعلانات وعرض الصورة الوهمية الذكية
         function handleAdError(img, type) {
+            img.onerror = null; // لمنع التكرار
             img.src = type === 'pc' 
-                ? 'https://placehold.co/1200x180/f8fafc/cbd5e1?font=Cairo&text=مساحة+إعلانية+(كمبيوتر)' 
-                : 'https://placehold.co/600x200/f8fafc/cbd5e1?font=Cairo&text=مساحة+إعلانية+(موبايل)';
+                ? 'https://placehold.co/1200x180/f8fafc/cbd5e1?font=Cairo&text=إعلان' 
+                : 'https://placehold.co/600x200/f8fafc/cbd5e1?font=Cairo&text=إعلان';
         }
 
         // نظام الإعلانات الديناميكي والذكي
@@ -1020,22 +1021,26 @@
                 // اختيار حركة عشوائية
                 const randomAnim = adAnimClasses[Math.floor(Math.random() * adAnimClasses.length)];
                 
-                const applyAnim = (el, src) => {
+                const applyAnim = (el, src, type) => {
                     if(!el) return;
                     // إزالة الحركات السابقة وإضافة الحركة الجديدة مع تغيير مسار الصورة
                     el.classList.remove(...adAnimClasses);
                     void el.offsetWidth; // إجبار المتصفح على إعادة رسم العنصر (Reflow)
+                    
+                    // إعادة تعيين دالة الخطأ عشان لو الصورة مش موجودة يعالجها
+                    el.onerror = function() { handleAdError(this, type); };
+                    
                     el.src = src;
                     el.classList.add(randomAnim);
                 };
 
-                applyAnim(pcImg, group.pc[group.currentIndex]);
-                applyAnim(mobileImg, group.mobile[group.currentIndex]);
+                applyAnim(pcImg, group.pc[group.currentIndex], 'pc');
+                applyAnim(mobileImg, group.mobile[group.currentIndex], 'mobile');
             }
         }
 
-        // تشغيل نظام تبديل الإعلانات كل 5 ثواني
-        setInterval(cycleAds, 5000);
+        // تشغيل نظام تبديل الإعلانات كل 10 ثواني
+        setInterval(cycleAds, 10000);
 
         // حفظ موضع الصفحة للرجوع بدقة وإلغاء الاستعادة التلقائية للمتصفح
         if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
