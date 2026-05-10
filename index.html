@@ -199,7 +199,7 @@
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="text-gray-800 text-right" ontouchstart="">
+<body id="mainBody" class="text-gray-800 text-right" style="opacity: 0; transition: opacity 0.3s ease-out;" ontouchstart="">
 
     <div id="overlay" class="menu-overlay" onclick="toggleMobileMenu()"></div>
 
@@ -397,7 +397,8 @@
         </div>
     </div>
 
-    <main id="page-start" class="page-section active">
+    <!-- لا نستخدم class="active" هنا ليتم إضافته فوراً بواسطة الـ JavaScript وتجنب الوميض -->
+    <main id="page-start" class="page-section">
         <section class="pt-6 pb-12 container mx-auto px-4 md:px-12 text-right">
             
             <div class="w-full max-w-6xl mx-auto mb-10">
@@ -814,8 +815,9 @@
                     </h3>
                 </div>
                 <div class="relative z-10 w-full md:w-auto shrink-0 flex flex-col items-center">
-                    <a href="https://wa.me/201094799247?text=السلام%20عليكم،%20أريد%20الاستفادة%20من%20عرض%20الـ%2050%25%20على%20عقود%20الصيانة" target="_blank" class="btn-heartbeat bg-white text-rose-900 px-8 py-4 rounded-2xl font-black text-lg md:text-xl shadow-xl flex items-center justify-center gap-3">
-                        احجز العرض الآن <i class="fab fa-whatsapp text-3xl text-green-500"></i>
+                    <a href="https://wa.me/201094799247?text=السلام%20عليكم،%20أريد%20الاستفادة%20من%20عرض%20الـ%2050%25%20على%20عقود%20الصيانة" target="_blank" class="relative z-10 btn-heartbeat w-full lg:w-auto bg-gradient-to-l from-yellow-400 to-yellow-500 text-rose-950 px-10 py-5 rounded-[2rem] font-black text-xl flex items-center justify-center gap-3 transition transform hover:-translate-y-1">
+                        احجز العرض الآن
+                        <i class="fab fa-whatsapp text-3xl"></i>
                     </a>
                 </div>
             </div>
@@ -1236,9 +1238,9 @@
             else { content.classList.add('hidden'); icon.classList.remove('rotate-180'); }
         }
 
-        function navigateTo(targetId, category = 'all', addToHistory = true, scrollPos = 0, itemId = null, requestedPage = 1) {
+        function navigateTo(targetId, category = 'all', addToHistory = true, scrollPos = 0, itemId = null, requestedPage = 1, isImmediate = false) {
+            
             if (addToHistory) { 
-                // Store the CURRENT state before navigating away
                 const currentState = { ...history.state, scrollY: window.scrollY };
                 if (history.state && history.state.pageId === 'products') {
                     currentState.cat = currentCategory;
@@ -1252,41 +1254,51 @@
                 searchInput.value = '';
             }
             
-            setTimeout(() => {
-                document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
-                
-                if (targetId === 'product-details' && !itemId && (!history.state || !history.state.itemId)) {
-                    targetId = 'products';
-                } else if (targetId === 'single-article' && !itemId && (!history.state || !history.state.itemId)) {
-                    targetId = 'articles';
-                } else if (targetId === 'single-news' && !itemId && (!history.state || !history.state.itemId)) {
-                    targetId = 'news';
-                }
+            if (targetId === 'product-details' && !itemId && (!history.state || !history.state.itemId)) {
+                targetId = 'products';
+            } else if (targetId === 'single-article' && !itemId && (!history.state || !history.state.itemId)) {
+                targetId = 'articles';
+            } else if (targetId === 'single-news' && !itemId && (!history.state || !history.state.itemId)) {
+                targetId = 'news';
+            }
 
-                const target = document.getElementById('page-' + targetId);
-                if (target) { 
-                    target.classList.add('active'); 
-                }
-                
-                closeMobileMenu();
-                
-                if (targetId === 'products') renderProducts(category, requestedPage);
-                else if (targetId === 'articles') renderArticlesGrid();
-                else if (targetId === 'news') renderNewsGrid();
+            closeMobileMenu();
+            
+            if (targetId === 'products') renderProducts(category, requestedPage);
+            else if (targetId === 'articles') renderArticlesGrid();
+            else if (targetId === 'news') renderNewsGrid();
 
-                // تأخير بسيط لضمان اكتمال تحميل وبناء المنتجات في الصفحة قبل تحديد مسافة النزول
+            document.querySelectorAll('.page-section').forEach(sec => {
+                sec.classList.remove('active');
+                if (isImmediate) sec.style.animation = 'none'; 
+            });
+
+            const target = document.getElementById('page-' + targetId);
+            if (target) { 
+                target.classList.add('active'); 
+            }
+
+            if (isImmediate) {
+                document.body.style.setProperty('scroll-behavior', 'auto', 'important');
+                document.documentElement.style.setProperty('scroll-behavior', 'auto', 'important');
+                
+                window.scrollTo(0, scrollPos);
+                
                 setTimeout(() => {
-                    document.body.style.scrollBehavior = 'auto'; // تعطيل السكرول البطيء مؤقتاً لتجنب القفزات الوهمية
                     window.scrollTo(0, scrollPos);
-                    setTimeout(() => {
-                        document.body.style.scrollBehavior = 'smooth'; // إرجاعه مرة أخرى
-                    }, 50);
-                }, 50);
+                    document.documentElement.style.removeProperty('scroll-behavior');
+                    document.body.style.removeProperty('scroll-behavior');
+                    if (target) target.style.animation = ''; 
+                    document.getElementById('mainBody').style.opacity = '1';
+                }, 10);
+            } else {
+                window.scrollTo({top: scrollPos, behavior: 'smooth'});
+                document.getElementById('mainBody').style.opacity = '1';
+            }
 
-                if (addToHistory) { 
-                    history.pushState({ pageId: targetId, cat: category, pNum: requestedPage, scrollY: 0, itemId: itemId }, '', '#' + targetId); 
-                }
-            }, 50);
+            if (addToHistory) { 
+                history.pushState({ pageId: targetId, cat: category, pNum: requestedPage, scrollY: 0, itemId: itemId }, '', '#' + targetId); 
+            }
         }
 
         window.addEventListener('popstate', (event) => {
@@ -1298,16 +1310,16 @@
                 const pNum = event.state.pNum || 1;
 
                 if (pageId === 'product-details' && itemId) {
-                    openProductDetails(itemId, false, scrollY);
+                    openProductDetails(itemId, false, scrollY, true);
                 } else if (pageId === 'single-article' && itemId) {
-                    openSingleArticle(itemId, false, scrollY);
+                    openSingleArticle(itemId, false, scrollY, true);
                 } else if (pageId === 'single-news' && itemId) {
-                    openSingleNews(itemId, false, scrollY);
+                    openSingleNews(itemId, false, scrollY, true);
                 } else {
-                    navigateTo(pageId, cat, false, scrollY, null, pNum); 
+                    navigateTo(pageId, cat, false, scrollY, null, pNum, true); 
                 }
             } 
-            else { navigateTo('start', 'all', false, 0, null, 1); }
+            else { navigateTo('start', 'all', false, 0, null, 1, true); }
         });
 
         function toggleMobileMenu() {
@@ -1663,7 +1675,6 @@
         }
 
         function changePage(page) {
-            // قم بتحديث الـ History State عند تغيير الصفحة من أزرار الترقيم
             if (history.state) {
                 history.replaceState({ ...history.state, pNum: page, scrollY: window.scrollY }, '');
             }
@@ -1676,7 +1687,7 @@
             }
         }
 
-        function openProductDetails(productName, addToHistory = true, scrollPos = 0) {
+        function openProductDetails(productName, addToHistory = true, scrollPos = 0, isImmediate = false) {
             const prod = productsDB.find(p => p.name === productName);
             if (!prod) return;
 
@@ -1752,7 +1763,7 @@
                 slider.innerHTML = `<div class="w-full text-center text-gray-400 font-bold py-10">لا توجد منتجات مشابهة حالياً</div>`;
             }
 
-            navigateTo('product-details', 'all', addToHistory, scrollPos, productName);
+            navigateTo('product-details', 'all', addToHistory, scrollPos, productName, 1, isImmediate);
         }
 
         const articlesDB = [
@@ -1977,27 +1988,6 @@
             }
         ];
 
-        function renderNewsGrid() {
-            const grid = document.getElementById('newsGrid');
-            if (!grid) return;
-            grid.innerHTML = '';
-            grid.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12";
-            newsDB.forEach(news => {
-                grid.insertAdjacentHTML('beforeend', `
-                    <div class="flex flex-col group cursor-pointer bg-transparent transition-transform duration-300 hover:-translate-y-2" onclick="openSingleNews('${news.id}')">
-                        <div class="w-full h-56 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform duration-500">
-                            <img loading="lazy" src="${news.image}" class="max-w-full max-h-full object-contain drop-shadow-md">
-                        </div>
-                        <div class="text-right flex-1 flex flex-col px-2">
-                            <span class="text-rose-700 text-[10px] font-black mb-2 block tracking-widest">${news.date}</span>
-                            <h3 class="text-lg md:text-xl font-extrabold text-rose-950 font-almarai leading-snug group-hover:text-rose-700 transition-colors">${news.title}</h3>
-                            <div class="mt-auto pt-4 flex items-center gap-2 text-rose-900 font-bold text-xs"><span>اقرأ التفاصيل</span><i class="fa fa-arrow-left animate-pulse"></i></div>
-                        </div>
-                    </div>
-                `);
-            });
-        }
-
         function renderHomeArticles() {
             const container = document.getElementById('homeArticlesContainer');
             if (!container) return;
@@ -2040,7 +2030,7 @@
             });
         }
 
-        function openSingleArticle(articleId, addToHistory = true, scrollPos = 0) {
+        function openSingleArticle(articleId, addToHistory = true, scrollPos = 0, isImmediate = false) {
             const art = articlesDB.find(a => a.id === articleId);
             if (!art) return;
             document.getElementById('singleArticleContainer').innerHTML = `
@@ -2050,10 +2040,10 @@
                     <h1 class="text-2xl md:text-4xl font-extrabold font-almarai text-center text-rose-950 leading-tight">${art.title}</h1>
                 </div>
                 <div class="text-gray-600 text-lg md:text-xl leading-loose px-4">${art.content}</div>`;
-            navigateTo('single-article', 'all', addToHistory, scrollPos, articleId);
+            navigateTo('single-article', 'all', addToHistory, scrollPos, articleId, 1, isImmediate);
         }
 
-        function openSingleNews(newsId, addToHistory = true, scrollPos = 0) {
+        function openSingleNews(newsId, addToHistory = true, scrollPos = 0, isImmediate = false) {
             const news = newsDB.find(n => n.id === newsId);
             if (!news) return;
             document.getElementById('singleNewsContainer').innerHTML = `
@@ -2063,7 +2053,7 @@
                     <h1 class="text-2xl md:text-4xl font-extrabold font-almarai text-center text-rose-950 leading-tight">${news.title}</h1>
                 </div>
                 <div class="text-gray-600 text-lg md:text-xl leading-loose px-4">${news.content}</div>`;
-            navigateTo('single-news', 'all', addToHistory, scrollPos, newsId);
+            navigateTo('single-news', 'all', addToHistory, scrollPos, newsId, 1, isImmediate);
         }
 
         let searchTimeout;
@@ -2081,7 +2071,6 @@
             }, 100);
         }
 
-        // التقاط وتخزين مكان الشاشة (الـ Scroll) لحظة عمل تحديث للصفحة
         window.addEventListener('beforeunload', () => {
             sessionStorage.setItem('scrollPosition', window.scrollY);
         });
@@ -2091,7 +2080,6 @@
             renderHomeArticles(); 
             renderHomeNews(); 
 
-            // استعادة مكان الشاشة القديم (إن وجد)
             let initialScroll = 0;
             if (sessionStorage.getItem('scrollPosition')) {
                 initialScroll = parseInt(sessionStorage.getItem('scrollPosition'));
@@ -2105,28 +2093,33 @@
             if (h && document.getElementById('page-' + h)) {
                 if (h === 'product-details' || h === 'single-article' || h === 'single-news') {
                     if (history.state && history.state.itemId) {
-                        if (h === 'product-details') openProductDetails(history.state.itemId, false, initialScroll);
-                        else if (h === 'single-article') openSingleArticle(history.state.itemId, false, initialScroll);
-                        else openSingleNews(history.state.itemId, false, initialScroll);
+                        if (h === 'product-details') openProductDetails(history.state.itemId, false, initialScroll, true);
+                        else if (h === 'single-article') openSingleArticle(history.state.itemId, false, initialScroll, true);
+                        else openSingleNews(history.state.itemId, false, initialScroll, true);
                     } else {
                         let fallback = 'start';
                         if (h === 'product-details') fallback = 'products';
                         else if (h === 'single-article') fallback = 'articles';
                         else if (h === 'single-news') fallback = 'news';
                         
-                        navigateTo(fallback, 'all', false, initialScroll);
+                        navigateTo(fallback, 'all', false, initialScroll, null, 1, true);
                         history.replaceState({ pageId: fallback, cat: 'all', pNum: 1, scrollY: initialScroll }, '', '#' + fallback);
                     }
                 } else {
                     const cat = history.state ? history.state.cat : 'all';
                     const pNum = history.state && history.state.pNum ? history.state.pNum : 1;
-                    navigateTo(h, cat, false, initialScroll, null, pNum);
+                    navigateTo(h, cat, false, initialScroll, null, pNum, true);
                     if (!history.state) history.replaceState({ pageId: h, cat: cat, pNum: pNum, scrollY: initialScroll }, '', '#' + h);
                 }
             } else {
-                navigateTo('start', 'all', false, initialScroll, null, 1);
+                navigateTo('start', 'all', false, initialScroll, null, 1, true);
                 history.replaceState({ pageId: 'start', cat: 'all', pNum: 1, scrollY: initialScroll }, '', '#start');
             }
+            
+            // إظهار الموقع بأمان بعد التجهيز
+            setTimeout(() => {
+                document.getElementById('mainBody').style.opacity = '1';
+            }, 50);
         });
     </script>
 </body>
