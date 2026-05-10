@@ -9,6 +9,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Tajawal:wght@300;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
+    <!-- نقل الدالة هنا لضمان تحميلها قبل ظهور الصور لتجنب خطأ ReferenceError -->
+    <script>
+        function handleAdError(img, type) {
+            img.onerror = null; // لمنع التكرار
+            img.src = type === 'pc' 
+                ? 'https://placehold.co/1200x180/f8fafc/cbd5e1?font=Cairo&text=إعلان' 
+                : 'https://placehold.co/600x200/f8fafc/cbd5e1?font=Cairo&text=إعلان';
+        }
+    </script>
+
     <style>
         body { font-family: 'Tajawal', sans-serif; scroll-behavior: smooth; background-color: #f8fafc; overflow-x: hidden; }
         .font-cairo { font-family: 'Cairo', sans-serif; }
@@ -989,14 +999,6 @@
     <script>
         const MAIN_NUM = "201094799247";
 
-        // معالجة أخطاء صور الإعلانات وعرض الصورة الوهمية الذكية
-        function handleAdError(img, type) {
-            img.onerror = null; // لمنع التكرار
-            img.src = type === 'pc' 
-                ? 'https://placehold.co/1200x180/f8fafc/cbd5e1?font=Cairo&text=إعلان' 
-                : 'https://placehold.co/600x200/f8fafc/cbd5e1?font=Cairo&text=إعلان';
-        }
-
         // نظام الإعلانات الديناميكي والذكي
         const adGroups = {
             top: {
@@ -1098,7 +1100,7 @@
                 const target = document.getElementById('page-' + targetId);
                 if (target) { 
                     target.classList.add('active'); 
-                    window.scrollTo({ top: scrollPos, behavior: scrollPos > 0 ? 'auto' : 'smooth' });
+                    window.scrollTo(0, scrollPos);
                 }
                 
                 closeMobileMenu();
