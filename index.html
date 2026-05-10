@@ -14,8 +14,8 @@
         function handleAdError(img, type) {
             img.onerror = null; // لمنع التكرار
             img.src = type === 'pc' 
-                ? 'https://placehold.co/1200x180/f8fafc/cbd5e1?font=Cairo&text=إعلان' 
-                : 'https://placehold.co/600x200/f8fafc/cbd5e1?font=Cairo&text=إعلان';
+                ? 'https://placehold.co/1200x180/f8fafc/cbd5e1?text=Banner' 
+                : 'https://placehold.co/600x200/f8fafc/cbd5e1?text=Banner';
         }
     </script>
 
@@ -314,8 +314,8 @@
             
             <div class="w-full max-w-6xl mx-auto mb-10">
                 <div class="block w-full overflow-hidden rounded-none">
-                    <img id="ad1-pc-img" src="ads_images/ad1-pc.png" onerror="handleAdError(this, 'pc')" class="hidden md:block w-full h-[120px] md:h-[150px] object-contain" alt="">
-                    <img id="ad1-mobile-img" src="ads_images/ad1-mobile.png" onerror="handleAdError(this, 'mobile')" class="block md:hidden w-full h-[120px] object-contain" alt="">
+                    <img id="ad1-pc-img" src="banners/banner1-pc.png" onerror="handleAdError(this, 'pc')" class="hidden md:block w-full h-[120px] md:h-[150px] object-contain" alt="">
+                    <img id="ad1-mobile-img" src="banners/banner1-mobile.png" onerror="handleAdError(this, 'mobile')" class="block md:hidden w-full h-[120px] object-contain" alt="">
                 </div>
             </div>
 
@@ -411,8 +411,8 @@
         <div class="container mx-auto px-4 md:px-12 mb-10 text-center relative z-20">
             <div class="w-full max-w-5xl mx-auto">
                 <div class="block w-full overflow-hidden rounded-none">
-                    <img id="ad2-pc-img" src="ads_images/ad2-pc.png" onerror="handleAdError(this, 'pc')" class="hidden md:block w-full h-[100px] md:h-[130px] object-contain" alt="">
-                    <img id="ad2-mobile-img" src="ads_images/ad2-mobile.png" onerror="handleAdError(this, 'mobile')" class="block md:hidden w-full h-[100px] object-contain" alt="">
+                    <img id="ad2-pc-img" src="banners/banner2-pc.png" onerror="handleAdError(this, 'pc')" class="hidden md:block w-full h-[100px] md:h-[130px] object-contain" alt="">
+                    <img id="ad2-mobile-img" src="banners/banner2-mobile.png" onerror="handleAdError(this, 'mobile')" class="block md:hidden w-full h-[100px] object-contain" alt="">
                 </div>
             </div>
         </div>
@@ -1010,15 +1010,15 @@
         // نظام الإعلانات الديناميكي والذكي
         const adGroups = {
             top: {
-                pc: ['ads_images/ad1-pc.png', 'ads_images/ad1-pc-2.png', 'ads_images/ad1-pc-3.png'],
-                mobile: ['ads_images/ad1-mobile.png', 'ads_images/ad1-mobile-2.png', 'ads_images/ad1-mobile-3.png'],
+                pc: ['banners/banner1-pc.png', 'banners/banner1-pc-2.png', 'banners/banner1-pc-3.png'],
+                mobile: ['banners/banner1-mobile.png', 'banners/banner1-mobile-2.png', 'banners/banner1-mobile-3.png'],
                 pcId: 'ad1-pc-img',
                 mobileId: 'ad1-mobile-img',
                 currentIndex: 0
             },
             middle: {
-                pc: ['ads_images/ad2-pc.png', 'ads_images/ad2-pc-2.png', 'ads_images/ad2-pc-3.png'],
-                mobile: ['ads_images/ad2-mobile.png', 'ads_images/ad2-mobile-2.png', 'ads_images/ad2-mobile-3.png'],
+                pc: ['banners/banner2-pc.png', 'banners/banner2-pc-2.png', 'banners/banner2-pc-3.png'],
+                mobile: ['banners/banner2-mobile.png', 'banners/banner2-mobile-2.png', 'banners/banner2-mobile-3.png'],
                 pcId: 'ad2-pc-img',
                 mobileId: 'ad2-mobile-img',
                 currentIndex: 0
@@ -1055,8 +1055,8 @@
                         el.classList.remove(...adAnimClasses);
                         void el.offsetWidth;
                         el.src = type === 'pc' 
-                            ? 'https://placehold.co/1200x180/f8fafc/cbd5e1?font=Cairo&text=إعلان' 
-                            : 'https://placehold.co/600x200/f8fafc/cbd5e1?font=Cairo&text=إعلان';
+                            ? 'https://placehold.co/1200x180/f8fafc/cbd5e1?text=Banner' 
+                            : 'https://placehold.co/600x200/f8fafc/cbd5e1?text=Banner';
                         el.classList.add(randomAnim);
                     };
                     preloader.src = src;
