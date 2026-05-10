@@ -169,6 +169,18 @@
         .hero-banner-box { width: 100%; overflow: hidden; background: #fff; max-height: 450px; }
         .hero-banner-box img { width: 100%; height: auto; object-fit: contain; }
 
+        /* الأنيميشن الجديد لشريط الأخبار */
+        @keyframes smoothOscillate {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(15vw); }
+            75% { transform: translateX(-15vw); }
+        }
+        .news-ticker-text {
+            display: inline-block;
+            white-space: nowrap;
+            animation: smoothOscillate 5s ease-in-out infinite;
+        }
+
         @keyframes colorFlash {
             0% { color: #be123c; text-shadow: 0 0 5px rgba(190, 18, 60, 0.2); }
             25% { color: #1e3a8a; text-shadow: 0 0 10px rgba(30, 58, 138, 0.3); }
@@ -393,11 +405,11 @@
         <img src="header-mobile.png" alt="بانر شركة العدل" class="block md:hidden">
     </div>
     
-    <!-- شريط الأخبار المتحرك (المطلوب إضافته) -->
-    <div class="bg-rose-950 text-yellow-400 py-1.5 overflow-hidden border-b-4 border-rose-700 relative w-full flex items-center">
-        <marquee behavior="alternate" scrollamount="4" class="text-xs md:text-sm font-black font-cairo tracking-wider w-full">
+    <!-- شريط الأخبار المتحرك (أنيميشن CSS سلس ومتجاوب) -->
+    <div class="bg-rose-950 text-yellow-400 py-1.5 overflow-hidden border-b-4 border-rose-700 relative w-full flex justify-center items-center">
+        <div class="news-ticker-text text-xs md:text-sm font-black font-cairo tracking-wider px-4">
             عزيزي الزائر نحيط علمكم بأن الموقع تحت الإنشاء
-        </marquee>
+        </div>
     </div>
 
     <main id="page-start" class="page-section active">
@@ -1436,7 +1448,7 @@
                             <ul class="space-y-2 mb-6 text-xs font-bold text-gray-600 flex-1 px-2">
                                 <li class="flex items-start gap-2"><i class="fa fa-print text-rose-600 mt-1"></i> <span><strong>الوظائف:</strong> ${prod.functions}</span></li>
                                 <li class="flex items-start gap-2"><i class="fa fa-bolt text-rose-600 mt-1"></i> <span><strong>السرعة:</strong> ${prod.speed}</span></li>
-                                <li class="flex items-start gap-2"><i class="fa fa-expand text-rose-600 mt-1"></i> <span><strong>الدقة:</strong> ${prod.resolution}</span></li>
+                                <li class="flex items-start gap-2"><i class="flex items-start gap-2"><i class="fa fa-expand text-rose-600 mt-1"></i> <span><strong>الدقة:</strong> ${prod.resolution}</span></li>
                                 <li class="flex items-start gap-2"><i class="fa fa-file-alt text-rose-600 mt-1"></i> <span><strong>الورق:</strong> ${prod.paperSize}</span></li>
                             </ul>
                             
@@ -1759,7 +1771,7 @@
                         <ul class="space-y-2 mb-6 text-xs font-bold text-gray-600 flex-1 px-2">
                             <li class="flex items-start gap-2"><i class="fa fa-print text-rose-600 mt-1"></i> <span><strong>الوظائف:</strong> ${prod.functions}</span></li>
                             <li class="flex items-start gap-2"><i class="fa fa-bolt text-rose-600 mt-1"></i> <span><strong>السرعة:</strong> ${prod.speed}</span></li>
-                            <li class="flex items-start gap-2"><i class="fa fa-expand text-rose-600 mt-1"></i> <span><strong>الدقة:</strong> ${prod.resolution}</span></li>
+                            <li class="flex items-start gap-2"><i class="flex items-start gap-2"><i class="fa fa-expand text-rose-600 mt-1"></i> <span><strong>الدقة:</strong> ${prod.resolution}</span></li>
                             <li class="flex items-start gap-2"><i class="fa fa-file-alt text-rose-600 mt-1"></i> <span><strong>الورق:</strong> ${prod.paperSize}</span></li>
                         </ul>
                         
