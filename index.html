@@ -1341,7 +1341,7 @@
             
             track.prepend(track.lastElementChild);
             track.style.transition = 'none';
-            track.style.transform = `translateX(-${itemWidth}px)`;
+            track.style.transform = `translateX(${itemWidth}px)`;
             
             void track.offsetWidth; 
             
@@ -1574,21 +1574,15 @@
             window.open(`https://wa.me/${MAIN_NUM}?text=${encodeURIComponent(text)}`, '_blank');
         }
 
-        /**
-         * دالة البحث (handleSearch)
-         * تقوم بتحديث صفحة المنتجات فوراً عند الكتابة
-         */
         function handleSearch() {
             const searchInput = document.getElementById('searchInput');
             if (!searchInput) return;
             const query = searchInput.value.trim();
 
-            // إذا كان المستخدم في أي صفحة أخرى غير صفحة المنتجات، ننتقل إليها
             const activePage = document.querySelector('.page-section.active');
             if (!activePage || (activePage.id !== 'page-products' && activePage.id !== 'page-product-details')) {
                 navigateTo('products', 'all', true, 0, null, 1, false, true);
             } else {
-                // إذا كنا بالفعل في المنتجات، نكتفي بتحديث النتائج
                 renderProducts(currentCategory, 1);
             }
         }
@@ -1755,35 +1749,10 @@
             currentCategory = categoryFilter;
             currentPage = page;
 
-            const homeSlider = document.getElementById('recentProductsSlider');
             const catalogGrid = document.getElementById('catalogGrid');
             const paginationContainer = document.getElementById('paginationContainer');
             const searchInput = document.getElementById('searchInput');
             const query = searchInput ? searchInput.value.trim().toLowerCase() : "";
-            
-            if (homeSlider && categoryFilter === 'all' && query === "") {
-                homeSlider.innerHTML = '';
-                [...productsDB].reverse().slice(0, 5).forEach(prod => {
-                    homeSlider.insertAdjacentHTML('beforeend', `
-                        <div class="w-[240px] md:w-[280px] shrink-0 snap-center group flex flex-col bg-transparent transition-all duration-300 py-4">
-                            <div class="h-48 md:h-64 mb-4 flex items-center justify-center relative group-hover:scale-105 transition-transform duration-500">
-                                <img loading="lazy" src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain drop-shadow-xl">
-                                ${prod.condition ? `<div class="absolute top-2 left-2 bg-rose-700 text-white text-[9px] font-black px-2 py-1 rounded shadow-sm z-10">${prod.condition}</div>` : ''}
-                            </div>
-                            <h3 class="text-sm md:text-base font-black text-rose-950 mb-1 text-center font-cairo leading-tight">${prod.name}</h3>
-                            <p class="text-[10px] text-gray-400 font-bold mb-4 text-center">${prod.speed} | ${prod.functions.split('–')[0].trim()}</p>
-                            
-                            <div class="mt-auto flex flex-col gap-3">
-                                <div class="flex items-center justify-between px-1">
-                                    <span class="text-rose-900 font-black text-sm">${prod.price}</span>
-                                    <button onclick="openProductDetails('${prod.name}')" class="text-gray-400 hover:text-rose-700 font-bold text-[10px] underline underline-offset-4">التفاصيل</button>
-                                </div>
-                                <button onclick="orderNowWA('${prod.name}')" class="btn-heartbeat w-full bg-rose-700 text-white py-2.5 rounded-xl font-black text-xs hover:bg-rose-800 transition shadow-sm">طلب شراء عبر الواتساب</button>
-                            </div>
-                        </div>
-                    `);
-                });
-            }
 
             let filtered = [...productsDB].reverse();
             if (categoryFilter !== 'all') {
@@ -1800,14 +1769,12 @@
             let gridContent = '';
             if (filtered.length === 0) {
                 if (query !== "") {
-                    // رسالة عند عدم العثور على نتائج في البحث
                     gridContent = `
                         <div class="col-span-full flex flex-col items-center justify-center py-20 text-gray-400 font-bold text-lg">
                             <i class="fa fa-search-minus text-5xl mb-4 text-gray-300"></i>
                             <p>لا توجد منتجات مطابقة لعملية البحث.</p>
                         </div>`;
                 } else {
-                    // تصميم احترافي للأقسام الفارغة (قريباً)
                     gridContent = `
                         <div class="col-span-full flex flex-col items-center justify-center py-16 px-4 text-center bg-gradient-to-b from-white to-rose-50/30 rounded-[3rem] shadow-sm border border-rose-100/50 w-full max-w-4xl mx-auto my-8 relative overflow-hidden group">
                             <div class="absolute top-0 right-0 w-40 h-40 bg-rose-100 rounded-full -mr-10 -mt-10 blur-3xl transition-transform duration-700 group-hover:scale-150 pointer-events-none"></div>
@@ -2137,6 +2104,121 @@
             }
         ];
 
+        const newsDB = [
+            {
+                id: 'news-1',
+                title: 'حكاية قصة النصر: ذكرى تحرير أرض الفيروز في 25 أبريل',
+                image: 'news_images/sinai.jpg',
+                date: '25 أبريل',
+                content: `
+                    <p class="mb-6 text-lg font-bold text-gray-700 leading-loose">في مثل هذا اليوم من كل عام، تتوقف عقارب الساعة لتنحني إجلالاً لذكرى غالية على قلب كل مصري، ذكرى يوم 25 أبريل، اليوم الذي استعادت فيه مصر كرامتها كاملة غير منقوصة، وارتفع فيه العلم المصري ليرفرف عالياً في سماء سيناء، معلناً للعالم أجمع أننا أسياد هذه الأرض وحراسها.</p>
+                    <p class="mb-8 text-lg font-bold text-gray-700 leading-loose">اليوم، لا نحتفل فقط باسترداد جغرافيا الأرض، بل نحتفل باليوم الذي تحول فيه الوجع إلى فرحة، وأصبح فيه الحلم المستحيل حقيقة ملموسة بفضل إرادة لا تلين وعزيمة لا تكسر.</p>
+
+                    <h4 class="text-2xl font-black text-rose-950 mb-4 font-cairo border-r-4 border-rose-600 pr-4">لأرض الفيروز.. رمال من ذهب وشمس حرية</h4>
+                    <p class="mb-8 text-lg font-bold text-gray-600 leading-loose">سيناء ليست مجرد قطعة أرض، بل هي قطعة من الروح، رمالها التي تشبه الذهب لم تكن يوماً رخيصة، بل سُقيت بدماء طاهرة لتبقى مصرية الهوى والمنتمى. شمس الحرية التي تشرق اليوم على جبال سانت كاترين وشواطئ شرم الشيخ هي ثمرة كفاح طويل خاضته الدولة المصرية، عسكرياً ودبلوماسياً، حتى عادت الأرض إلى حضن الوطن الأم.</p>
+
+                    <h4 class="text-2xl font-black text-rose-950 mb-4 font-cairo border-r-4 border-rose-600 pr-4">لأبطالنا الذين سطروا ملاحم العزة</h4>
+                    <p class="mb-8 text-lg font-bold text-gray-600 leading-loose">في هذه الذكرى، نوجه تحية إجلال وتقدير لأبطال القوات المسلحة المصرية، الذين سطروا بدمائهم وتضحياتهم أعظم ملاحم الفداء. هم الذين جعلوا من أجسادهم جسراً للعبور ومن إرادتهم سلاحاً لا يقهر، لتبقى رؤوسنا مرفوعة وكلمتنا مسموعة.</p>
+
+                    <h4 class="text-2xl font-black text-rose-950 mb-4 font-cairo border-r-4 border-rose-600 pr-4">لكل مصري يبني ويحلم</h4>
+                    <p class="mb-4 text-lg font-bold text-gray-600 leading-loose">الاحتفال بتحرير سيناء هو دعوة متجددة لكل مصري مخلص، يساهم اليوم بعرقه في بناء وتنمية هذه الأرض المقدسة. إن معركة التنمية التي تشهدها سيناء الآن هي استكمال لمعركة التحرير، فالحفاظ على الأرض يكون بالبناء والتعمير بقدر ما يكون بالدفاع والذود عنها.</p>
+                    <p class="mb-8 text-lg font-bold text-gray-600 leading-loose">كل مصري يبني ويحلم ويكمل المشوار بحب لبلده هو بطل في ميدانه، وهو الامتداد الطبيعي لجيل النصر الذي لم يعرف اليأس أبداً.</p>
+
+                    <h4 class="text-2xl font-black text-rose-950 mb-4 font-cairo border-r-4 border-rose-600 pr-4">دعاء للوطن والأمة</h4>
+                    <p class="mb-8 text-lg font-bold text-gray-600 leading-loose">في هذه المناسبة الوطنية الغالية، نسأل الله عز وجل أن يديم على مصرنا الغالية نعمة الأمن والأمان، وأن تظل دائماً منارة للسلام والقوة. كما نسأله سبحانه أن يمنّ على كافة أوطاننا العربية بالأمن والأمان والسلام الدائم، وأن يحفظ شعوبنا من كل سوء.</p>
+
+                    <p class="text-rose-700 font-black text-xl text-center mt-10 p-8 bg-rose-50 rounded-3xl border border-rose-100 shadow-inner">كل سنة ومصر طيبة وبألف خير.. كل سنة وإحنا ببلدنا فخورين. 🇪🇬</p>
+                `
+            }
+        ];
+
+        function renderArticlesGrid() {
+            const grid = document.getElementById('articlesGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            grid.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12";
+            articlesDB.forEach(art => {
+                grid.insertAdjacentHTML('beforeend', `
+                    <div class="flex flex-col group cursor-pointer bg-transparent transition-transform duration-300 hover:-translate-y-2" onclick="openSingleArticle('${art.id}')">
+                        <div class="w-full h-56 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform duration-500">
+                            <img loading="lazy" src="${art.image}" class="max-w-full max-h-full object-contain drop-shadow-md">
+                        </div>
+                        <div class="text-right flex-1 flex flex-col px-2">
+                            <span class="text-rose-700 text-[10px] font-black mb-2 block tracking-widest">${art.date}</span>
+                            <h3 class="text-lg md:text-xl font-extrabold text-rose-950 font-almarai leading-snug group-hover:text-rose-700 transition-colors">${art.title}</h3>
+                            <div class="mt-auto pt-4 flex items-center gap-2 text-rose-900 font-bold text-xs"><span>اقرأ التفاصيل</span><i class="fa fa-arrow-left mt-1 transform group-hover:-translate-x-2 transition-transform duration-300"></i></div>
+                        </div>
+                    </div>
+                `);
+            });
+        }
+
+        function renderNewsGrid() {
+            const grid = document.getElementById('newsGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            newsDB.forEach(item => {
+                grid.insertAdjacentHTML('beforeend', `
+                    <div class="flex flex-col group cursor-pointer bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-2" onclick="openSingleNews('${item.id}')">
+                        <div class="w-full h-56 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform duration-500">
+                            <img loading="lazy" src="${item.image}" class="max-w-full max-h-full object-contain drop-shadow-md" onerror="handleAdError(this, 'pc')">
+                        </div>
+                        <div class="p-6 text-right flex-1 flex flex-col">
+                            <span class="text-gray-400 text-[10px] font-black mb-3 block tracking-widest"><i class="fa fa-calendar-alt text-rose-600 ml-1"></i> ${item.date}</span>
+                            <h3 class="text-xl font-black text-rose-950 font-cairo leading-snug mb-4 group-hover:text-rose-700 transition-colors">${item.title}</h3>
+                            <div class="mt-auto flex items-center gap-2 text-rose-700 font-bold text-sm border-t border-gray-50 pt-4"><span>التفاصيل</span><i class="fa fa-arrow-left mt-1 transform group-hover:-translate-x-2 transition-transform duration-300"></i></div>
+                        </div>
+                    </div>
+                `);
+            });
+        }
+
+        function openSingleArticle(articleId, addToHistory = true, scrollPos = 0, isImmediate = false) {
+            const article = articlesDB.find(a => a.id === articleId);
+            if (!article) return;
+            const container = document.getElementById('singleArticleContainer');
+            if (container) {
+                container.innerHTML = `
+                    <div class="bg-white rounded-[3rem] shadow-xl border border-gray-100 overflow-hidden mb-12">
+                        <div class="w-full h-[300px] md:h-[450px] flex items-center justify-center p-8 bg-gray-50 border-b border-gray-100">
+                            <img src="${article.image}" alt="${article.title}" class="max-w-full max-h-full object-contain drop-shadow-xl hover:scale-105 transition-transform duration-700">
+                        </div>
+                        <div class="p-8 md:p-14">
+                            <span class="inline-block bg-rose-50 text-rose-700 px-4 py-1.5 rounded-full text-[11px] font-black tracking-widest mb-6 shadow-sm border border-rose-100">${article.date}</span>
+                            <h1 class="text-3xl md:text-5xl font-black text-rose-950 mb-8 font-cairo leading-tight">${article.title}</h1>
+                            <div class="article-body text-gray-600 leading-loose text-lg md:text-xl font-bold">
+                                ${article.content}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            navigateTo('single-article', 'all', addToHistory, scrollPos, articleId, 1, isImmediate);
+        }
+
+        function openSingleNews(newsId, addToHistory = true, scrollPos = 0, isImmediate = false) {
+            const newsItem = newsDB.find(n => n.id === newsId);
+            if (!newsItem) return;
+            const container = document.getElementById('singleNewsContainer');
+            if (container) {
+                container.innerHTML = `
+                    <div class="bg-white rounded-[3rem] shadow-xl border border-gray-100 overflow-hidden mb-12">
+                        <div class="w-full h-[250px] md:h-[400px] flex items-center justify-center bg-gray-50 border-b border-gray-50">
+                            <img src="${newsItem.image}" alt="${newsItem.title}" class="max-w-full max-h-full object-contain drop-shadow-2xl" onerror="handleAdError(this, 'pc')">
+                        </div>
+                        <div class="p-8 md:p-14">
+                            <span class="inline-block text-rose-700 bg-rose-50 px-4 py-1.5 rounded-full text-sm font-black tracking-widest mb-6 border border-rose-100"><i class="fa fa-calendar-alt ml-1"></i> ${newsItem.date}</span>
+                            <h1 class="text-3xl md:text-5xl font-black text-rose-950 mb-10 font-cairo leading-tight">${newsItem.title}</h1>
+                            <div class="article-body text-gray-600 leading-loose text-lg font-bold">
+                                ${newsItem.content}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            navigateTo('single-news', 'all', addToHistory, scrollPos, newsId, 1, isImmediate);
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             const path = window.location.hash.substring(1) || 'start';
             navigateTo(path, 'all', false, 0, null, 1, true);
@@ -2186,7 +2268,7 @@
                         <div class="w-full md:w-1/3 shrink-0 snap-center flex flex-col items-center justify-center cursor-pointer group pb-6 px-2" onclick="openProductDetails('${prod.name}')">
                             <div class="h-64 md:h-[400px] w-full flex items-center justify-center mb-6 relative transition-transform duration-700 group-hover:scale-105">
                                 <div class="absolute inset-0 bg-rose-100/40 blur-3xl rounded-full scale-75 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-                                <img loading="lazy" src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain drop-shadow-2xl relative z-10">
+                                <img loading="lazy" src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain mix-blend-multiply relative z-10 transition-transform duration-500 group-hover:-translate-y-2">
                                 ${prod.condition ? `<div class="absolute top-4 right-4 md:right-10 bg-rose-700 text-white text-xs md:text-sm font-black px-4 py-1.5 rounded-full shadow-lg z-20">${prod.condition}</div>` : ''}
                             </div>
                             <h3 class="text-2xl md:text-3xl font-black text-rose-950 text-center font-cairo tracking-wide px-4 mb-5">${prod.name}</h3>
