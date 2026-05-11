@@ -199,7 +199,7 @@
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body id="mainBody" class="text-gray-800 text-right bg-slate-50" style="opacity: 0; transition: opacity 0.3s ease-out;" ontouchstart="">
+<body id="mainBody" class="text-gray-800 text-right" style="opacity: 0; transition: opacity 0.3s ease-out;" ontouchstart="">
 
     <div id="overlay" class="menu-overlay" onclick="toggleMobileMenu()"></div>
 
@@ -225,7 +225,7 @@
                     <a onclick="navigateTo('articles')" class="nested-link">مقالات و عروض</a>
                     <a onclick="navigateTo('news')" class="nested-link">أخبارنا</a>
                     <a onclick="navigateTo('faq')" class="nested-link">أسئلة و أجوبة</a>
-                    <a onclick="navigateTo('products', 'all')" class="nested-link">عملاؤنا</a>
+                    <a onclick="navigateTo('clients')" class="nested-link">عملاؤنا</a>
                 </div>
             </div>
 
@@ -267,7 +267,7 @@
             </div>
 
             <div class="mobile-card"><button onclick="navigateTo('sales')" class="mobile-trigger"><span>أنظمة البيع</span></button></div>
-            <div class="mobile-card"><button onclick="navigateTo('products', 'all')" class="mobile-trigger"><span>المعرض</span></button></div>
+            <div class="mobile-card"><button onclick="navigateTo('gallery')" class="mobile-trigger"><span>المعرض</span></button></div>
             
             <div class="mobile-card">
                 <button onclick="toggleAccordion('m-serv')" class="mobile-trigger"><span>خدمات ما بعد البيع</span><i class="fa fa-chevron-down text-[10px] opacity-30"></i></button>
@@ -329,7 +329,7 @@
                         <a onclick="navigateTo('articles')" class="dropdown-card">مقالات و عروض</a>
                         <a onclick="navigateTo('news')" class="dropdown-card">أخبارنا</a>
                         <a onclick="navigateTo('faq')" class="dropdown-card">أسئلة و أجوبة</a>
-                        <a onclick="navigateTo('products', 'all')" class="dropdown-card">عملاؤنا</a>
+                        <a onclick="navigateTo('clients')" class="dropdown-card">عملاؤنا</a>
                     </div>
                 </div>
 
@@ -371,7 +371,7 @@
                 </div>
 
                 <a onclick="navigateTo('sales')" class="py-5 hover:text-rose-700 transition cursor-pointer">أنظمة البيع</a>
-                <a onclick="navigateTo('products', 'all', true, 0, null, 1)" class="py-5 hover:text-rose-700 transition cursor-pointer">المعرض</a>
+                <a onclick="navigateTo('gallery')" class="py-5 hover:text-rose-700 transition cursor-pointer">المعرض</a>
                 
                 <div class="dropdown-container">
                     <button class="py-5 flex items-center gap-2">خدمات ما بعد البيع <i class="fa fa-chevron-down text-[9px] opacity-40"></i></button>
@@ -397,6 +397,7 @@
         </div>
     </div>
 
+    <!-- لا نستخدم class="active" هنا ليتم إضافته فوراً بواسطة الـ JavaScript وتجنب الوميض -->
     <main id="page-start" class="page-section">
         <section class="pt-6 pb-12 container mx-auto px-4 md:px-12 text-right">
             
@@ -439,6 +440,7 @@
                         </div>
                     </div>
 
+                    <!-- قائمة أقسام المنتجات -->
                     <div class="mt-8 mb-8 px-2 md:px-4">
                         <div class="flex justify-between items-center mb-4">
                             <h3 class="text-base md:text-lg font-bold text-gray-500 border-r-4 border-rose-600 pr-3 tracking-wide font-tajawal">قائمة المنتجات</h3>
@@ -461,15 +463,19 @@
                         </div>
                     </div>
 
+                    <!-- مقالات وعروض (مضافة حديثاً) -->
                     <div class="mt-6 mb-8 px-2 md:px-4">
                         <h3 class="text-base md:text-lg font-bold text-gray-500 mb-5 border-r-4 border-rose-600 pr-3 tracking-wide font-tajawal">مقالات وعروض</h3>
                         <div id="homeArticlesContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- سيتم حقن آخر مقالين هنا بواسطة جافاسكريبت -->
                         </div>
                     </div>
 
+                    <!-- أخبارنا -->
                     <div class="mt-6 mb-8 px-2 md:px-4">
                         <h3 class="text-base md:text-lg font-bold text-gray-500 mb-5 border-r-4 border-rose-600 pr-3 tracking-wide font-tajawal">أخبارنا</h3>
                         <div id="homeNewsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- سيتم حقن آخر خبرين هنا بواسطة جافاسكريبت -->
                         </div>
                     </div>
 
@@ -559,6 +565,56 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
+    </main>
+
+    <main id="page-gallery" class="page-section bg-white">
+        <section class="pt-8 pb-12 container mx-auto px-4 md:px-12">
+            <div class="col-span-full flex flex-col items-center justify-center py-16 px-4 text-center bg-gradient-to-b from-white to-rose-50/30 rounded-[3rem] shadow-sm border border-rose-100/50 w-full max-w-4xl mx-auto my-8 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-40 h-40 bg-rose-100 rounded-full -mr-10 -mt-10 blur-3xl transition-transform duration-700 group-hover:scale-150 pointer-events-none"></div>
+                
+                <div class="relative z-10 w-24 h-24 bg-rose-100 text-rose-600 rounded-3xl flex items-center justify-center text-4xl mb-6 shadow-sm transform group-hover:-translate-y-2 transition-transform duration-500">
+                    <i class="fa fa-images"></i>
+                    <div class="absolute -bottom-2 -right-2 w-10 h-10 bg-rose-700 text-white rounded-full flex items-center justify-center text-sm border-4 border-white shadow-sm animate-bounce">
+                        <i class="fa fa-clock"></i>
+                    </div>
+                </div>
+                
+                <h3 class="relative z-10 text-2xl md:text-3xl font-black text-rose-950 font-cairo mb-4 tracking-wide">قريباً.. صور المعرض!</h3>
+                
+                <p class="relative z-10 text-gray-500 font-bold text-base md:text-lg max-w-xl leading-relaxed mb-8">
+                    نعمل بشغف على تجهيز وإضافة صور حصرية لمعرضنا قريباً لتتمكنوا من أخذ جولة افتراضية داخل مقر الشركة والتعرف على منتجاتنا عن قرب.. ترقبوا الإضافة!
+                </p>
+                
+                <button onclick="navigateTo('products', 'bw-copiers', true, 0, null, 1)" class="relative z-10 bg-rose-700 text-white hover:bg-rose-800 px-8 py-3.5 rounded-2xl font-black transition-all transform hover:-translate-y-1 shadow-lg flex items-center gap-3">
+                    <i class="fa fa-print"></i> تصفح الماكينات المتوفرة حالياً
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <main id="page-clients" class="page-section bg-white">
+        <section class="pt-8 pb-12 container mx-auto px-4 md:px-12">
+            <div class="col-span-full flex flex-col items-center justify-center py-16 px-4 text-center bg-gradient-to-b from-white to-rose-50/30 rounded-[3rem] shadow-sm border border-rose-100/50 w-full max-w-4xl mx-auto my-8 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-40 h-40 bg-rose-100 rounded-full -mr-10 -mt-10 blur-3xl transition-transform duration-700 group-hover:scale-150 pointer-events-none"></div>
+                
+                <div class="relative z-10 w-24 h-24 bg-rose-100 text-rose-600 rounded-3xl flex items-center justify-center text-4xl mb-6 shadow-sm transform group-hover:-translate-y-2 transition-transform duration-500">
+                    <i class="fa fa-handshake"></i>
+                    <div class="absolute -bottom-2 -right-2 w-10 h-10 bg-rose-700 text-white rounded-full flex items-center justify-center text-sm border-4 border-white shadow-sm animate-bounce">
+                        <i class="fa fa-clock"></i>
+                    </div>
+                </div>
+                
+                <h3 class="relative z-10 text-2xl md:text-3xl font-black text-rose-950 font-cairo mb-4 tracking-wide">قريباً.. شركاء النجاح!</h3>
+                
+                <p class="relative z-10 text-gray-500 font-bold text-base md:text-lg max-w-xl leading-relaxed mb-8">
+                    نعمل على إعداد قائمة بأبرز عملائنا وشركاء النجاح الذين نعتز بثقتهم في خدماتنا.. ترقبوا الإضافة قريباً!
+                </p>
+                
+                <button onclick="navigateTo('start')" class="relative z-10 bg-rose-700 text-white hover:bg-rose-800 px-8 py-3.5 rounded-2xl font-black transition-all transform hover:-translate-y-1 shadow-lg flex items-center gap-3">
+                    <i class="fa fa-home"></i> العودة للرئيسية
+                </button>
             </div>
         </section>
     </main>
@@ -677,7 +733,7 @@
                     <div class="grid md:grid-cols-2 gap-4 md:gap-6">
                         <div class="flex gap-4 items-start bg-gray-50 p-5 rounded-2xl hover:bg-rose-50 transition duration-300">
                             <span class="bg-rose-700 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-black shrink-0 mt-0.5 shadow-md">1</span>
-                            <p class="text-sm md:text-base font-bold text-gray-700 leading-relaxed">التزام الشركة بتوفير قطع الغيار والاحبار طوال فترة التعاقد (36 شهر) لعدد نسخ يبدأ من 3000 نسخة ويصل الي 100 الف نسخة شهريا مقابل قيمة ايجارية تختلف من موديل الي اخر وحسب نوع الماكينة.</p>
+                            <p class="text-sm md:text-base font-bold text-gray-700 leading-relaxed">التزام الشركة بتوفير قطع الغيار والاحبار ط طوال فترة التعاقد (36 شهر) لعدد نسخ يبدأ من 3000 نسخة ويصل الي 100 الف نسخة شهريا مقابل قيمة ايجارية تختلف من موديل الي اخر وحسب نوع الماكينة.</p>
                         </div>
                         <div class="flex gap-4 items-start bg-gray-50 p-5 rounded-2xl hover:bg-rose-50 transition duration-300">
                             <span class="bg-rose-700 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-black shrink-0 mt-0.5 shadow-md">2</span>
@@ -746,7 +802,7 @@
                         <div class="w-16 h-16 bg-gray-100 text-gray-600 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-sm"><i class="fa fa-box-open"></i></div>
                         <h3 class="text-2xl md:text-3xl font-black text-rose-950 font-cairo mb-6">بيع بدون ضمان (تجارى)</h3>
                         <p class="text-gray-600 text-base md:text-lg font-bold leading-relaxed mb-6">
-                            وفى هذا النظام يأتى العميل الى الشركة ليقوم بتجربة الماكينة التى يرغب فى شرائها على أن ينتقل الضمان والصيانة على مسئوليته الشخصية.
+                            وفى هذا نظام يأتى العميل الى الشركة ليقوم بتجربة الماكينة التى يرغب فى شرائها على أن ينتقل الضمان والصيانة على مسئوليته الشخصية.
                         </p>
                         <p class="text-gray-600 text-base md:text-lg font-bold leading-relaxed mb-8">
                             ويتم تلبية الأعطال وتوريد قطع الغيار فى مثل هذا النوع من التعاقد بنظام الزيارة الحرة أو بنظام عقود الصيانة.
@@ -896,7 +952,7 @@
             </div>
 
             <div class="bg-white rounded-[3rem] shadow-xl border border-gray-100 p-8 md:p-14 relative overflow-hidden group">
-                <div class="absolute top-0 left-0 w-64 h-64 bg-gray-100 rounded-full -ml-20 -mt-20 blur-3xl pointer-events-none transition-transform duration-700 group-hover:scale-110"></div>
+                <div class="absolute top-0 right-0 w-64 h-64 bg-gray-100 rounded-full -ml-20 -mt-20 blur-3xl pointer-events-none transition-transform duration-700 group-hover:scale-110"></div>
                 
                 <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="col-span-full md:col-span-1">
@@ -944,6 +1000,150 @@
                         <a id="waServiceManualBtn" href="javascript:void(0)" onclick="checkServiceManualForm(event)" target="_blank" class="w-full bg-gray-900 text-yellow-500 font-black py-5 rounded-2xl text-xl flex items-center justify-center gap-4 shadow-xl hover:bg-black transition transform hover:-translate-y-1 no-underline opacity-50 cursor-not-allowed border border-gray-800">
                             طلب السيرفيس مانوال عبر واتساب <i class="fab fa-whatsapp text-3xl text-green-500"></i>
                         </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <main id="page-faq" class="page-section text-right">
+        <section class="pt-8 pb-12 container mx-auto px-6 lg:px-12 text-right">
+            <div class="text-center mb-12">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-600 font-cairo leading-relaxed">أكثر الإستفسارات التي تصلنا والإجابة الشاملة عليها</h2>
+            </div>
+
+            <div class="max-w-4xl mx-auto space-y-5">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300">
+                    <button onclick="toggleFAQ('faq-1', 'icon-1')" class="w-full text-right px-6 py-5 flex justify-between items-center focus:outline-none hover:bg-rose-50 transition-colors group">
+                        <h3 class="font-cairo font-black text-rose-950 text-lg md:text-xl pl-4 group-hover:text-rose-700">ما هي الطباعة الثري دي وهل يمكن أن تطبع مواد بالأبعاد الثلاثية ؟</h3>
+                        <div class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center shrink-0 group-hover:bg-rose-100"><i id="icon-1" class="fa fa-chevron-down text-rose-700 transition-transform duration-300"></i></div>
+                    </button>
+                    <div id="faq-1" class="hidden px-6 pb-6"><div class="border-t border-gray-100 pt-5"><p class="text-gray-600 font-bold leading-loose">الطباعة ثلاثية الأبعاد (3D) هي ببساطة عملية تحويل ملف رقمي لتصميم ثلاثي الأبعاد إلى جسم صلب ثلاثي الأبعاد في أرض الواقع. وتعمل الطابعة ثلاثية الأبعاد على مبدأ إضافة طبقات متعاقبة فوق بعضها من المواد المستخدمة حتى يتم تشكيل المجسم المطلوب، نعم يمكنها ذلك وتستخدم في العديد من المجالات مثل الطب والهندسة والصناعات المختلفة لتصنيع النماذج وقطع الغيار المعقدة بدقة متناهية.</p></div></div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300">
+                    <button onclick="toggleFAQ('faq-2', 'icon-2')" class="w-full text-right px-6 py-5 flex justify-between items-center focus:outline-none hover:bg-rose-50 transition-colors group">
+                        <h3 class="font-cairo font-black text-rose-950 text-lg md:text-xl pl-4 group-hover:text-rose-700">هل عدم ثبات التيار الكهربائي يؤثر على الماكينات ؟ وكيف نتجنبه ؟</h3>
+                        <div class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center shrink-0 group-hover:bg-rose-100"><i id="icon-2" class="fa fa-chevron-down text-rose-700 transition-transform duration-300"></i></div>
+                    </button>
+                    <div id="faq-2" class="hidden px-6 pb-6"><div class="border-t border-gray-100 pt-5"><p class="text-gray-600 font-bold leading-loose">نعم بكل تأكيد، في أماكن كثيرة التيار الكهربي غير ثابت، وهذا التذبذب أو الانقطاع المفاجئ للتيار من شأنه أن يسبب تلف واحتراق في أجزاء كثيرة ومهمة في الماكينة مثل: البوردة الكهربية (اللوحة الأم) ووحدة التسخين (السخان). ولتجنب هذه المشكلة وتفادي الخسائر المادية الكبيرة، يجب توفير جهاز مثبت للتيار الكهربائي "Stabilizer" يتناسب مع قدرة الماكينة للحفاظ على استقرارها وضمان عملها بكفاءة.</p></div></div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300">
+                    <button onclick="toggleFAQ('faq-3', 'icon-3')" class="w-full text-right px-6 py-5 flex justify-between items-center focus:outline-none hover:bg-rose-50 transition-colors group">
+                        <h3 class="font-cairo font-black text-rose-950 text-lg md:text-xl pl-4 group-hover:text-rose-700">ما هو الفرق بين طباعة الإن دور والأوت دور، والسلك سكرين، والأوفست؟</h3>
+                        <div class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center shrink-0 group-hover:bg-rose-100"><i id="icon-3" class="fa fa-chevron-down text-rose-700 transition-transform duration-300"></i></div>
+                    </button>
+                    <div id="faq-3" class="hidden px-6 pb-6"><div class="border-t border-gray-100 pt-5"><p class="text-gray-600 font-bold leading-loose"><strong class="text-rose-700">طباعة الإن دور (Indoor):</strong> مخصصة للطباعة الداخلية التي تُعرض عن قرب وتمتاز بالدقة العالية، وتستخدم أحبار مائية (Water-based) صديقة للبيئة، لكنها لا تتحمل أشعة الشمس المباشرة أو العوامل الجوية بقوة.<br><br><strong class="text-rose-700">طباعة الأوت دور (Outdoor):</strong> مخصصة للأعمال والإعلانات الخارجية كاللافتات الكبيرة، حيث تستخدم أحبار (Solvent) قوية تتحمل الحرارة العالية وأشعة الشمس والمطر لتدوم فترات طويلة.<br><br><strong class="text-rose-700">طباعة الأوفست (Offset):</strong> هي التقنية الأشهر والأدق للأعمال التجارية والمطبوعات الورقية بكميات كبيرة (مثل المجلات، الكتيبات، والفواتير)، وتعتمد على نقل الحبر من لوح معدني إلى أسطوانة مطاطية ثم إلى الورق، وتمتاز بانخفاض تكلفتها كلما زادت الكمية.<br><br><strong class="text-rose-700">طباعة السلك سكرين (Silk Screen):</strong> أو الطباعة بالشاشة الحريرية، هي الأقل تكلفة وتتيح الطباعة على خامات متنوعة ومتعددة مثل القماش، الخشب، البلاستيك، وحتى المعادن، وتعتمد على تمرير الحبر عبر شبكة حريرية.</p></div></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <main id="page-about" class="page-section text-right">
+        <section class="pt-8 pb-24 container mx-auto px-6 lg:px-12 text-right">
+            
+            <div class="text-center mb-12">
+                <h2 class="text-2xl md:text-4xl font-black text-rose-950 font-cairo leading-relaxed">أهلاً بك في شركة العدل لبيع وصيانة الطابعات وماكينات التصوير</h2>
+            </div>
+
+            <div class="bg-white rounded-[3rem] p-8 md:p-14 shadow-xl border border-gray-100 mb-12 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-48 h-48 bg-rose-50 rounded-full -mr-16 -mt-16 blur-3xl transition-transform duration-700 group-hover:scale-150"></div>
+                <i class="fa fa-quote-right text-6xl md:text-8xl text-rose-50 absolute top-6 right-8 md:right-12 z-0"></i>
+                <div class="relative z-10">
+                    <h3 class="text-2xl md:text-3xl font-black text-rose-900 mb-6 font-cairo">رؤية ورسالة واضحة</h3>
+                    <p class="text-lg md:text-2xl text-gray-600 leading-loose md:leading-loose font-medium">
+                        منذ بداية الالفية الجديدة وكانت لشركة العدل رؤية ورسالة لتقديم كل ما هو جديد فى عالم تكنولوجيا الطباعة الحديثة لجميع شرائح العملاء سواء القطاع العام أو الخاص، والشركات والمكتبات ومراكز التصوير وحتى الاستخدام الشخصى فى المنازل والمكاتب وعدم الاقتصار على شريحة واحدة من العملاء مثلما تفعل الكثير من الشركات.
+                    </p>
+                </div>
+            </div>
+
+            <div class="bg-zinc-900 rounded-[3rem] p-8 md:p-14 shadow-2xl mb-16 relative overflow-hidden text-white">
+                <div class="absolute bottom-0 left-0 w-64 h-64 bg-rose-900/40 rounded-full -ml-20 -mb-20 blur-3xl"></div>
+                <div class="flex items-center gap-5 mb-8 relative z-10">
+                    <div class="w-16 h-16 md:w-20 md:h-20 bg-rose-700 rounded-2xl flex items-center justify-center text-3xl md:text-4xl shadow-lg"><i class="fa fa-rocket text-rose-50"></i></div>
+                    <h3 class="text-3xl md:text-4xl font-black text-rose-50 font-cairo">التأسيس والإنطلاق</h3>
+                </div>
+                <p class="text-gray-300 leading-relaxed md:leading-loose text-lg md:text-xl relative z-10 font-medium">
+                    وبعد الانطلاق والتأسيس عام 2020 سعت الشركة لتلبية احتياجات ومتطلبات العملاء فى جميع انحاء مصر من خلال توفير العديد من الماركات العالمية الاكثر انتشارا والأصدارات الحديثة من ماكينات الطباعة والتصوير مع تنوع الماركات وعدم العمل فى ماركة واحدة لاختلاف رغبات وثقافات وأنشطة العملاء لتصبح شركة العدل رائدة بيع وصيانة وتأجير ماكينات تصوير وطباعة المستندات لكبرى المركات العالمية الجديدة او المجددة فى مصر والوطن العربى خصوصا مع انتشار الفروع داخل جمهورية مصر العربية وتحقيق طفرة كبيرة فى السوق المصرى من خلال الانفراد بتقديم انظمة سداد وتقسيط يناسب جميع العملاء وتوفير اكبر فريق من المهندسين وفنيين الصيانة على اعلى مستوى من التدريب والخبرة.
+                </p>
+            </div>
+
+            <div class="mb-24 text-right">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-black text-rose-950 mb-4 font-cairo">الانضمام لمنظمات المجتمع المدنى</h3>
+                    <p class="text-lg text-gray-500 max-w-3xl mx-auto">وخلال خمسة أعوام من التأسيس كانت لشركة العدل دافع كبير لتصبح عضو فعال فى المجتمع من خلال الأنضمام للعديد من منظمات المجتمع المدنى مثل:</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-rose-50 hover:border-rose-200 flex items-start gap-4 hover:-translate-y-1 transition duration-300">
+                        <div class="w-12 h-12 bg-rose-50 text-rose-700 rounded-xl flex items-center justify-center shrink-0 text-xl"><i class="fa fa-certificate"></i></div>
+                        <p class="text-gray-700 font-bold mt-2 leading-relaxed">عضوية جمعية رجال اعمال الأجهزة المكتبية</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-rose-50 hover:border-rose-200 flex items-start gap-4 hover:-translate-y-1 transition duration-300">
+                        <div class="w-12 h-12 bg-rose-50 text-rose-700 rounded-xl flex items-center justify-center shrink-0 text-xl"><i class="fa fa-certificate"></i></div>
+                        <p class="text-gray-700 font-bold mt-2 leading-relaxed">عضوية غرفة الطباعة والتغليف التابع لاتحاد الصناعات</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-rose-50 hover:border-rose-200 flex items-start gap-4 hover:-translate-y-1 transition duration-300">
+                        <div class="w-12 h-12 bg-rose-50 text-rose-700 rounded-xl flex items-center justify-center shrink-0 text-xl"><i class="fa fa-certificate"></i></div>
+                        <p class="text-gray-700 font-bold mt-2 leading-relaxed">عضوية جمعية تنمية الطباعة "بيدا"</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-rose-50 hover:border-rose-200 flex items-start gap-4 hover:-translate-y-1 transition duration-300">
+                        <div class="w-12 h-12 bg-rose-50 text-rose-700 rounded-xl flex items-center justify-center shrink-0 text-xl"><i class="fa fa-certificate"></i></div>
+                        <p class="text-gray-700 font-bold mt-2 leading-relaxed">عضوية جمعية المهندسين الميكانيكيين</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-rose-50 hover:border-rose-200 flex items-start gap-4 hover:-translate-y-1 transition duration-300 md:col-span-2 lg:col-span-1">
+                        <div class="w-12 h-12 bg-rose-50 text-rose-700 rounded-xl flex items-center justify-center shrink-0 text-xl"><i class="fa fa-certificate"></i></div>
+                        <p class="text-gray-700 font-bold mt-2 leading-relaxed">عضوية الغرفة الألمانية العربية للصناعة والتجارة</p>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="flex items-center justify-between mb-10 border-r-[8px] border-rose-700 pr-4">
+                    <h3 class="text-3xl font-black text-rose-950 font-cairo">فريق القيادة والعمل</h3>
+                    
+                    <div class="flex gap-3">
+                        <button onclick="scrollSlider('teamContainer', 1)" class="w-12 h-12 bg-white border border-gray-200 rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-50 hover:border-rose-200 transition shadow-sm"><i class="fa fa-chevron-right"></i></button>
+                        <button onclick="scrollSlider('teamContainer', -1)" class="w-12 h-12 bg-white border border-gray-200 rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-50 hover:border-rose-200 transition shadow-sm"><i class="fa fa-chevron-left"></i></button>
+                    </div>
+                </div>
+
+                <div id="teamContainer" class="flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory hide-scrollbar scroll-smooth">
+                    <div class="min-w-[280px] md:min-w-[320px] bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 snap-center text-center group hover:-translate-y-2 transition-transform duration-300">
+                        <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-600 mb-6 group-hover:border-rose-400 transition-colors duration-300 shadow-[0_0_15px_rgba(190,18,60,0.2)] flex items-center justify-center bg-gray-50">
+                            <img loading="lazy" src="manager.jpg" alt="م / عمرو عبدالستار العدل" class="max-w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=عمرو+العدل&background=be123c&color=fff&size=150&font-size=0.3'">
+                        </div>
+                        <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">م / عمرو عبدالستار العدل</h4>
+                        <div class="inline-block px-4 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-black mb-5">المدير العام والمؤسس</div>
+                        <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">رؤية ثاقبة وخبرة عميقة في تطوير استراتيجيات السوق، يقود فريق العدل نحو القمة برؤية تواكب أحدث تكنولوجيات الطباعة.</p>
+                    </div>
+
+                    <div class="min-w-[280px] md:min-w-[320px] bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 snap-center text-center group hover:-translate-y-2 transition-transform duration-300">
+                        <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-50 mb-6 group-hover:border-rose-200 transition-colors duration-300">
+                            <img loading="lazy" src="mohamed_fouad.jpg" onerror="this.src='https://ui-avatars.com/api/?name=محمد+فؤاد&background=be123c&color=fff&size=150&font-size=0.3'" alt="م / محمد فؤاد" class="w-full h-full object-cover">
+                        </div>
+                        <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">م / محمد فؤاد</h4>
+                        <div class="inline-block px-4 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-black mb-5">مدير المبيعات</div>
+                        <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">متابعة مستمرة للسوق وتوفير أنسب الحلول وأنظمة التقسيط والسداد التي تضمن للعميل تحقيق أقصى استفادة.</p>
+                    </div>
+
+                    <div class="min-w-[280px] md:min-w-[320px] bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 snap-center text-center group hover:-translate-y-2 transition-transform duration-300">
+                        <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-600 mb-6 group-hover:border-rose-200 transition-colors duration-300">
+                            <img loading="lazy" src="ziad_aladl.jpg" onerror="this.src='https://ui-avatars.com/api/?name=زياد+العدل&background=be123c&color=fff&size=150&font-size=0.3'" alt="م / زياد العدل" class="w-full h-full object-cover">
+                        </div>
+                        <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">م / زياد العدل</h4>
+                        <div class="inline-block px-4 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-black mb-5">مدير الصيانة</div>
+                        <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">يشرف على تدريب وتوجيه فريق الصيانة، لضمان حل أصعب الأعطال الفنية باحترافية وسرعة.</p>
+                    </div>
+
+                    <div class="min-w-[280px] md:min-w-[320px] bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 snap-center text-center group hover:-translate-y-2 transition-transform duration-300">
+                        <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-600 mb-6 group-hover:border-rose-200 transition-colors duration-300">
+                            <img loading="lazy" src="zahra_abdelFattah.jpg" onerror="this.src='https://ui-avatars.com/api/?name=زهرة+عبدالفتاح&background=be123c&color=fff&size=150&font-size=0.3'" alt="أ / زهرة عبدالفتاح" class="w-full h-full object-cover">
+                        </div>
+                        <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">أ / زهرة عبدالفتاح</h4>
+                        <div class="inline-block px-4 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-black mb-5">خدمة العملاء</div>
+                        <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">الوجه المبتسم للشركة، نضمن لك استجابة سريعة لبلاغات الأعطال واستفساراتك.</p>
                     </div>
                 </div>
             </div>
@@ -1004,10 +1204,16 @@
         const MAIN_NUM = "201094799247";
 
         function handleAdError(img, type) {
-            img.onerror = null; 
-            img.src = type === 'pc' 
-                ? 'https://placehold.co/1200x180/f8fafc/cbd5e1?text=Banner' 
-                : 'https://placehold.co/600x200/f8fafc/cbd5e1?text=Banner';
+            img.onerror = function() {
+                this.onerror = null;
+                this.src = 'https://placehold.co/1200x180/f8fafc/cbd5e1?text=Banner';
+            };
+            
+            if (type === 'mobile' && img.src.includes('-mobile')) {
+                img.src = img.src.replace('-mobile', '-pc');
+            } else {
+                img.src = 'https://placehold.co/1200x180/f8fafc/cbd5e1?text=Banner';
+            }
         }
 
         const adGroups = {
@@ -1075,20 +1281,15 @@
             }
         }
 
-        // تم التعديل: إغلاق القوائم الأخرى عند فتح قائمة جديدة
-        function toggleAccordion(id) {
-            const accordions = ['m-who', 'm-prods', 'm-parts', 'm-toners', 'm-serv'];
-            accordions.forEach(acc => {
-                if (acc !== id) {
-                    const el = document.getElementById(acc);
-                    if (el) el.classList.add('hidden');
-                }
-            });
-            document.getElementById(id).classList.toggle('hidden');
+        function toggleFAQ(contentId, iconId) {
+            const content = document.getElementById(contentId);
+            const icon = document.getElementById(iconId);
+            if (content.classList.contains('hidden')) { content.classList.remove('hidden'); icon.classList.add('rotate-180'); } 
+            else { content.classList.add('hidden'); icon.classList.remove('rotate-180'); }
         }
 
-        // تم التعديل: القفز المباشر للأعلى
         function navigateTo(targetId, category = 'all', addToHistory = true, scrollPos = 0, itemId = null, requestedPage = 1, isImmediate = false) {
+            
             if (addToHistory) { 
                 const currentState = { ...history.state, scrollY: window.scrollY };
                 if (history.state && history.state.pageId === 'products') {
@@ -1098,11 +1299,15 @@
                 history.replaceState(currentState, ''); 
             }
             
+            // Do not clear search input here if the navigation is triggered by searching
             const searchInput = document.getElementById('searchInput');
-            if (searchInput && searchInput.value !== '') {
-                searchInput.value = '';
-            }
-            
+
+            // إغلاق القوائم المنسدلة (للكمبيوتر) تلقائياً عند اختيار قسم
+            document.querySelectorAll('.dropdown-container').forEach(container => {
+                container.style.pointerEvents = 'none';
+                setTimeout(() => container.style.pointerEvents = 'auto', 150);
+            });
+
             if (targetId === 'product-details' && !itemId && (!history.state || !history.state.itemId)) {
                 targetId = 'products';
             } else if (targetId === 'single-article' && !itemId && (!history.state || !history.state.itemId)) {
@@ -1113,12 +1318,6 @@
 
             closeMobileMenu();
             
-            // إخفاء القوائم المنسدلة في نسخة الكمبيوتر عند الاختيار
-            document.querySelectorAll('.dropdown-menu').forEach(menu => {
-                menu.style.display = 'none';
-                setTimeout(() => menu.style.removeProperty('display'), 50);
-            });
-
             if (targetId === 'products') renderProducts(category, requestedPage);
             else if (targetId === 'articles') renderArticlesGrid();
             else if (targetId === 'news') renderNewsGrid();
@@ -1133,19 +1332,26 @@
                 target.classList.add('active'); 
             }
 
-            // إجبار المتصفح على الانتقال للأعلى فورا وبدون تمرير بطيء
-            document.documentElement.style.setProperty('scroll-behavior', 'auto', 'important');
             document.body.style.setProperty('scroll-behavior', 'auto', 'important');
+            document.documentElement.style.setProperty('scroll-behavior', 'auto', 'important');
             
             window.scrollTo(0, scrollPos);
-            
-            setTimeout(() => {
-                window.scrollTo(0, scrollPos);
-                document.documentElement.style.removeProperty('scroll-behavior');
-                document.body.style.removeProperty('scroll-behavior');
-                if (isImmediate && target) target.style.animation = ''; 
-                document.getElementById('mainBody').style.opacity = '1';
-            }, 10);
+
+            if (isImmediate) {
+                setTimeout(() => {
+                    window.scrollTo(0, scrollPos);
+                    document.documentElement.style.removeProperty('scroll-behavior');
+                    document.body.style.removeProperty('scroll-behavior');
+                    if (target) target.style.animation = ''; 
+                    document.getElementById('mainBody').style.opacity = '1';
+                }, 10);
+            } else {
+                setTimeout(() => {
+                    document.documentElement.style.removeProperty('scroll-behavior');
+                    document.body.style.removeProperty('scroll-behavior');
+                    document.getElementById('mainBody').style.opacity = '1';
+                }, 10);
+            }
 
             if (addToHistory) { 
                 history.pushState({ pageId: targetId, cat: category, pNum: requestedPage, scrollY: 0, itemId: itemId }, '', '#' + targetId); 
@@ -1181,6 +1387,21 @@
         function closeMobileMenu() {
             document.getElementById('mobile-menu').classList.remove('open');
             document.getElementById('overlay').classList.remove('show');
+        }
+
+        function toggleAccordion(id) {
+            const target = document.getElementById(id);
+            const isHidden = target.classList.contains('hidden');
+            
+            // إغلاق جميع القوائم الأخرى المفتوحة في القائمة الجانبية
+            document.querySelectorAll('#mobile-menu .mobile-card > div[id^="m-"]').forEach(el => {
+                el.classList.add('hidden');
+            });
+
+            // فتح القائمة التي تم النقر عليها (إذا كانت مغلقة)
+            if (isHidden) {
+                target.classList.remove('hidden');
+            }
         }
 
         function toggleHomeCategories() {
@@ -1272,6 +1493,25 @@
         function orderNowWA(product) {
             const text = `السلام عليكم شركة العدل،\nأريد الاستفسار عن منتج: ${product}`;
             window.open(`https://wa.me/${MAIN_NUM}?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        /**
+         * دالة البحث (handleSearch)
+         * تقوم بتحديث صفحة المنتجات فوراً عند الكتابة
+         */
+        function handleSearch() {
+            const searchInput = document.getElementById('searchInput');
+            if (!searchInput) return;
+            const query = searchInput.value.trim();
+
+            // إذا كان المستخدم في أي صفحة أخرى غير صفحة المنتجات، ننتقل إليها
+            const activePage = document.querySelector('.page-section.active');
+            if (!activePage || (activePage.id !== 'page-products' && activePage.id !== 'page-product-details')) {
+                navigateTo('products', 'all', true, 0, null, 1);
+            } else {
+                // إذا كنا بالفعل في المنتجات، نكتفي بتحديث النتائج
+                renderProducts(currentCategory, 1);
+            }
         }
 
         let currentCategory = 'all';
@@ -1480,7 +1720,37 @@
 
             let gridContent = '';
             if (filtered.length === 0) {
-                gridContent = '<div class="col-span-full text-center py-20 text-gray-400 font-bold text-lg"><i class="fa fa-box-open text-4xl mb-4 block"></i>لا توجد منتجات مطابقة لعملية البحث.</div>';
+                if (query !== "") {
+                    // رسالة عند عدم العثور على نتائج في البحث
+                    gridContent = `
+                        <div class="col-span-full flex flex-col items-center justify-center py-20 text-gray-400 font-bold text-lg">
+                            <i class="fa fa-search-minus text-5xl mb-4 text-gray-300"></i>
+                            <p>لا توجد منتجات مطابقة لعملية البحث.</p>
+                        </div>`;
+                } else {
+                    // تصميم احترافي للأقسام الفارغة (قريباً)
+                    gridContent = `
+                        <div class="col-span-full flex flex-col items-center justify-center py-16 px-4 text-center bg-gradient-to-b from-white to-rose-50/30 rounded-[3rem] shadow-sm border border-rose-100/50 w-full max-w-4xl mx-auto my-8 relative overflow-hidden group">
+                            <div class="absolute top-0 right-0 w-40 h-40 bg-rose-100 rounded-full -mr-10 -mt-10 blur-3xl transition-transform duration-700 group-hover:scale-150 pointer-events-none"></div>
+                            
+                            <div class="relative z-10 w-24 h-24 bg-rose-100 text-rose-600 rounded-3xl flex items-center justify-center text-4xl mb-6 shadow-sm transform group-hover:-translate-y-2 transition-transform duration-500">
+                                <i class="fa fa-boxes-packing"></i>
+                                <div class="absolute -bottom-2 -right-2 w-10 h-10 bg-rose-700 text-white rounded-full flex items-center justify-center text-sm border-4 border-white shadow-sm animate-bounce">
+                                    <i class="fa fa-clock"></i>
+                                </div>
+                            </div>
+                            
+                            <h3 class="relative z-10 text-2xl md:text-3xl font-black text-rose-950 font-cairo mb-4 tracking-wide">قريباً.. أحدث المنتجات!</h3>
+                            
+                            <p class="relative z-10 text-gray-500 font-bold text-base md:text-lg max-w-xl leading-relaxed mb-8">
+                                نعمل بشغف على تجهيز وإضافة تشكيلة مميزة من المنتجات في هذا القسم لتلبية كافة احتياجاتكم.. ترقبوا الإضافة قريباً!
+                            </p>
+                            
+                            <button onclick="navigateTo('products', 'all', true, 0, null, 1)" class="relative z-10 bg-rose-700 text-white hover:bg-rose-800 px-8 py-3.5 rounded-2xl font-black transition-all transform hover:-translate-y-1 shadow-lg flex items-center gap-3">
+                                <i class="fa fa-th-large"></i> تصفح المنتجات المتوفرة حالياً
+                            </button>
+                        </div>`;
+                }
             } else {
                 paginatedProducts.forEach(prod => {
                     gridContent += `
@@ -1492,7 +1762,7 @@
                             <h3 class="text-lg md:text-xl font-black text-rose-950 mb-3 text-center font-cairo leading-tight">${prod.name}</h3>
                             
                             <ul class="space-y-2 mb-6 text-xs font-bold text-gray-600 flex-1 px-2">
-                                <li class="flex items-start gap-2"><i class="fa fa-bolt text-rose-600 mt-1"></i> <span><strong class="block pb-1">السرعة:</strong><span class="text-gray-500 font-medium">${prod.speed}</span></span></li>
+                                <li class="flex items-start gap-2"><i class="fa fa-bolt text-rose-600 mt-1"></i> <span class="flex flex-col gap-1"><strong>السرعة:</strong> <span>${prod.speed}</span></span></li>
                             </ul>
                             
                             <div class="mt-auto flex flex-col gap-3">
@@ -1565,10 +1835,10 @@
                             ${prod.specs && prod.specs.length > 0 ? `
                             <div class="bg-gray-50 rounded-2xl p-5 border border-gray-100 shadow-inner w-full mt-2">
                                 <h4 class="font-black text-rose-900 mb-4 font-cairo text-lg border-b border-gray-200 pb-2">المواصفات الفنية</h4>
-                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-sm font-bold text-gray-700">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm font-bold text-gray-700">
                                     ${prod.specs.map(spec => `
                                         <div class="flex flex-col bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:border-rose-100 transition-colors">
-                                            <span class="text-rose-700 text-sm md:text-base font-black uppercase mb-2 tracking-wider">${spec.label}</span>
+                                            <span class="text-rose-700 text-xs md:text-sm font-black uppercase mb-1.5 tracking-wider">${spec.label}</span>
                                             <span class="text-gray-900 font-bold text-base md:text-lg">${spec.value}</span>
                                         </div>
                                     `).join('')}
@@ -1700,7 +1970,7 @@
                             <p class="flex items-center gap-2 text-center"><i class="fa fa-map-marker-alt text-rose-600"></i> العنوان: الدقهلية، جمصة، شارع الشباب بجوار مسجد السلام</p>
                         </div>
                         <div class="text-center mt-8">
-                            <a href="https://wa.me/201094799247?text=السلام%20عليكم،%20قرأت%20مقال%20ماكينة%20ريكو%205002%20وأريد%20الاستفسار%20عنها" target="_blank" class="inline-flex items-center justify-center gap-3 bg-green-600 text-white px-8 py-3 rounded-2xl font-black text-lg shadow-lg hover:bg-green-700 transition hover:-translate-y-1">تواصل معنا واتساب <i class="fab fa-whatsapp text-2xl"></i></a>
+                            <a href="https://wa.me/201094799247?text=السلام%20عليكم،%20قرأت%20مقال%20ماكينة%20ريكو%205002%20وأريد%20الاستفسار%20عن%20ها" target="_blank" class="inline-flex items-center justify-center gap-3 bg-green-600 text-white px-8 py-3 rounded-2xl font-black text-lg shadow-lg hover:bg-green-700 transition hover:-translate-y-1">تواصل معنا واتساب <i class="fab fa-whatsapp text-2xl"></i></a>
                         </div>
                     </div>
                 `
@@ -1802,11 +2072,34 @@
                         <div class="text-right flex-1 flex flex-col px-2">
                             <span class="text-rose-700 text-[10px] font-black mb-2 block tracking-widest">${art.date}</span>
                             <h3 class="text-lg md:text-xl font-extrabold text-rose-950 font-almarai leading-snug group-hover:text-rose-700 transition-colors">${art.title}</h3>
-                            <div class="mt-auto pt-4 flex items-center gap-2 text-rose-900 font-bold text-xs"><span>اقرأ التفاصيل</span><i class="fa fa-arrow-left animate-pulse"></i></div>
+                            <div class="mt-auto pt-4 flex items-center gap-2 text-rose-900 font-bold text-xs"><span>اقرأ التفاصيل</span><i class="fa fa-arrow-left mt-1 transform group-hover:-translate-x-2 transition-transform duration-300"></i></div>
                         </div>
                     </div>
                 `);
             });
+        }
+
+        function openSingleArticle(articleId, addToHistory = true, scrollPos = 0, isImmediate = false) {
+            const article = articlesDB.find(a => a.id === articleId);
+            if (!article) return;
+            const container = document.getElementById('singleArticleContainer');
+            if (container) {
+                container.innerHTML = `
+                    <div class="bg-white rounded-[3rem] shadow-xl border border-gray-100 overflow-hidden mb-12">
+                        <div class="w-full h-[300px] md:h-[450px] flex items-center justify-center p-8 bg-gray-50 border-b border-gray-100">
+                            <img src="${article.image}" alt="${article.title}" class="max-w-full max-h-full object-contain drop-shadow-xl hover:scale-105 transition-transform duration-700">
+                        </div>
+                        <div class="p-8 md:p-14">
+                            <span class="inline-block bg-rose-50 text-rose-700 px-4 py-1.5 rounded-full text-[11px] font-black tracking-widest mb-6 shadow-sm border border-rose-100">${article.date}</span>
+                            <h1 class="text-3xl md:text-5xl font-black text-rose-950 mb-8 font-cairo leading-tight">${article.title}</h1>
+                            <div class="article-body text-gray-600 leading-loose text-lg md:text-xl font-bold">
+                                ${article.content}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            navigateTo('single-article', 'all', addToHistory, scrollPos, articleId, 1, isImmediate);
         }
 
         const newsDB = [
@@ -1814,25 +2107,25 @@
                 id: 'news-1',
                 title: 'حكاية قصة النصر: ذكرى تحرير أرض الفيروز في 25 أبريل',
                 image: 'news_images/sinai.jpg',
-                date: 'أحدث الأخبار',
+                date: '25 أبريل',
                 content: `
-                    <p class="mb-4 text-lg">في مثل هذا اليوم من كل عام، تتوقف عقارب الساعة لتنحني إجلالاً لذكرى غالية على قلب كل مصري، ذكرى يوم 25 أبريل، اليوم الذي استعادت فيه مصر كرامتها كاملة غير منقوصة، وارتفع فيه العلم المصري ليرفرف عالياً في سماء سيناء، معلناً للعالم أجمع أننا أسياد هذه الأرض وحراسها.</p>
-                    <p class="mb-8 text-lg">اليوم، لا نحتفل فقط باسترداد جغرافيا الأرض، بل نحتفل باليوم الذي تحول فيه الوجع إلى فرحة، وأصبح فيه الحلم المستحيل حقيقة ملموسة بفضل إرادة لا تلين وعزيمة لا تكسر.</p>
+                    <p class="mb-6 text-lg font-bold text-gray-700 leading-loose">في مثل هذا اليوم من كل عام، تتوقف عقارب الساعة لتنحني إجلالاً لذكرى غالية على قلب كل مصري، ذكرى يوم 25 أبريل، اليوم الذي استعادت فيه مصر كرامتها كاملة غير منقوصة، وارتفع فيه العلم المصري ليرفرف عالياً في سماء سيناء، معلناً للعالم أجمع أننا أسياد هذه الأرض وحراسها.</p>
+                    <p class="mb-8 text-lg font-bold text-gray-700 leading-loose">اليوم، لا نحتفل فقط باسترداد جغرافيا الأرض، بل نحتفل باليوم الذي تحول فيه الوجع إلى فرحة، وأصبح فيه الحلم المستحيل حقيقة ملموسة بفضل إرادة لا تلين وعزيمة لا تكسر.</p>
 
-                    <h4 class="text-2xl font-black text-rose-950 mb-5 font-cairo border-b-2 border-rose-100 pb-2 inline-block">لأرض الفيروز.. رمال من ذهب وشمس حرية</h4>
-                    <p class="mb-8 text-lg text-gray-700 leading-loose">سيناء ليست مجرد قطعة أرض، بل هي قطعة من الروح، رمالها التي تشبه الذهب لم تكن يوماً رخيصة، بل سُقيت بدماء طاهرة لتبقى مصرية الهوى والمنتمى. شمس الحرية التي تشرق اليوم على جبال سانت كاترين وشواطئ شرم الشيخ هي ثمرة كفاح طويل خاضته الدولة المصرية، عسكرياً ودبلوماسياً، حتى عادت الأرض إلى حضن الوطن الأم.</p>
+                    <h4 class="text-2xl font-black text-rose-950 mb-4 font-cairo border-r-4 border-rose-600 pr-4">لأرض الفيروز.. رمال من ذهب وشمس حرية</h4>
+                    <p class="mb-8 text-lg font-bold text-gray-600 leading-loose">سيناء ليست مجرد قطعة أرض، بل هي قطعة من الروح، رمالها التي تشبه الذهب لم تكن يوماً رخيصة، بل سُقيت بدماء طاهرة لتبقى مصرية الهوى والمنتمى. شمس الحرية التي تشرق اليوم على جبال سانت كاترين وشواطئ شرم الشيخ هي ثمرة كفاح طويل خاضته الدولة المصرية، عسكرياً ودبلوماسياً، حتى عادت الأرض إلى حضن الوطن الأم.</p>
 
-                    <h4 class="text-2xl font-black text-rose-950 mb-5 font-cairo border-b-2 border-rose-100 pb-2 inline-block">لأبطالنا الذين سطروا ملاحم العزة</h4>
-                    <p class="mb-8 text-lg text-gray-700 leading-loose">في هذه الذكرى، نوجه تحية إجلال وتقدير لأبطال القوات المسلحة المصرية، الذين سطروا بدمائهم وتضحياتهم أعظم ملاحم الفداء. هم الذين جعلوا من أجسادهم جسراً للعبور ومن إرادتهم سلاحاً لا يقهر، لتبقى رؤوسنا مرفوعة وكلمتنا مسموعة.</p>
+                    <h4 class="text-2xl font-black text-rose-950 mb-4 font-cairo border-r-4 border-rose-600 pr-4">لأبطالنا الذين سطروا ملاحم العزة</h4>
+                    <p class="mb-8 text-lg font-bold text-gray-600 leading-loose">في هذه الذكرى، نوجه تحية إجلال وتقدير لأبطال القوات المسلحة المصرية، الذين سطروا بدمائهم وتضحياتهم أعظم ملاحم الفداء. هم الذين جعلوا من أجسادهم جسراً للعبور ومن إرادتهم سلاحاً لا يقهر، لتبقى رؤوسنا مرفوعة وكلمتنا مسموعة.</p>
 
-                    <h4 class="text-2xl font-black text-rose-950 mb-5 font-cairo border-b-2 border-rose-100 pb-2 inline-block">لكل مصري يبني ويحلم</h4>
-                    <p class="mb-4 text-lg text-gray-700 leading-loose">الاحتفال بتحرير سيناء هو دعوة متجددة لكل مصري مخلص، يساهم اليوم بعرقه في بناء وتنمية هذه الأرض المقدسة. إن معركة التنمية التي تشهدها سيناء الآن هي استكمال لمعركة التحرير، فالحفاظ على الأرض يكون بالبناء والتعمير بقدر ما يكون بالدفاع والذود عنها.</p>
-                    <p class="mb-8 text-lg font-bold text-gray-700 border-r-4 border-rose-600 pr-4 leading-loose">كل مصري يبني ويحلم ويكمل المشوار بحب لبلده هو بطل في ميدانه، وهو الامتداد الطبيعي لجيل النصر الذي لم يعرف اليأس أبداً.</p>
+                    <h4 class="text-2xl font-black text-rose-950 mb-4 font-cairo border-r-4 border-rose-600 pr-4">لكل مصري يبني ويحلم</h4>
+                    <p class="mb-4 text-lg font-bold text-gray-600 leading-loose">الاحتفال بتحرير سيناء هو دعوة متجددة لكل مصري مخلص، يساهم اليوم بعرقه في بناء وتنمية هذه الأرض المقدسة. إن معركة التنمية التي تشهدها سيناء الآن هي استكمال لمعركة التحرير، فالحفاظ على الأرض يكون بالبناء والتعمير بقدر ما يكون بالدفاع والذود عنها.</p>
+                    <p class="mb-8 text-lg font-bold text-gray-600 leading-loose">كل مصري يبني ويحلم ويكمل المشوار بحب لبلده هو بطل في ميدانه، وهو الامتداد الطبيعي لجيل النصر الذي لم يعرف اليأس أبداً.</p>
 
-                    <h4 class="text-2xl font-black text-rose-950 mb-5 font-cairo border-b-2 border-rose-100 pb-2 inline-block">دعاء للوطن والأمة</h4>
-                    <p class="mb-6 text-lg text-gray-700 leading-loose">في هذه المناسبة الوطنية الغالية، نسأل الله عز وجل أن يديم على مصرنا الغالية نعمة الأمن والأمان، وأن تظل دائماً منارة للسلام والقوة. كما نسأله سبحانه أن يمنّ على كافة أوطاننا العربية بالأمن والأمان والسلام الدائم، وأن يحفظ شعوبنا من كل سوء.</p>
-                    
-                    <p class="text-xl md:text-2xl font-black text-rose-900 text-center mt-10 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">كل سنة ومصر طيبة وبألف خير.. كل سنة وإحنا ببلدنا فخورين. 🇪🇬</p>
+                    <h4 class="text-2xl font-black text-rose-950 mb-4 font-cairo border-r-4 border-rose-600 pr-4">دعاء للوطن والأمة</h4>
+                    <p class="mb-8 text-lg font-bold text-gray-600 leading-loose">في هذه المناسبة الوطنية الغالية، نسأل الله عز وجل أن يديم على مصرنا الغالية نعمة الأمن والأمان، وأن تظل دائماً منارة للسلام والقوة. كما نسأله سبحانه أن يمنّ على كافة أوطاننا العربية بالأمن والأمان والسلام الدائم، وأن يحفظ شعوبنا من كل سوء.</p>
+
+                    <p class="text-rose-700 font-black text-xl text-center mt-10 p-8 bg-rose-50 rounded-3xl border border-rose-100 shadow-inner">كل سنة ومصر طيبة وبألف خير.. كل سنة وإحنا ببلدنا فخورين. 🇪🇬</p>
                 `
             }
         ];
@@ -1841,154 +2134,84 @@
             const grid = document.getElementById('newsGrid');
             if (!grid) return;
             grid.innerHTML = '';
-            grid.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12";
-            newsDB.forEach(news => {
+            newsDB.forEach(item => {
                 grid.insertAdjacentHTML('beforeend', `
-                    <div class="flex flex-col group cursor-pointer bg-transparent transition-transform duration-300 hover:-translate-y-2" onclick="openSingleNews('${news.id}')">
+                    <div class="flex flex-col group cursor-pointer bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-2" onclick="openSingleNews('${item.id}')">
                         <div class="w-full h-56 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform duration-500">
-                            <img loading="lazy" src="${news.image}" class="max-w-full max-h-full object-contain drop-shadow-md">
+                            <img loading="lazy" src="${item.image}" class="max-w-full max-h-full object-contain drop-shadow-md" onerror="handleAdError(this, 'pc')">
                         </div>
-                        <div class="text-right flex-1 flex flex-col px-2">
-                            <span class="text-rose-700 text-[10px] font-black mb-2 block tracking-widest">${news.date}</span>
-                            <h3 class="text-lg md:text-xl font-extrabold text-rose-950 font-almarai leading-snug group-hover:text-rose-700 transition-colors">${news.title}</h3>
-                            <div class="mt-auto pt-4 flex items-center gap-2 text-rose-900 font-bold text-xs"><span>اقرأ التفاصيل</span><i class="fa fa-arrow-left animate-pulse"></i></div>
-                        </div>
-                    </div>
-                `);
-            });
-        }
-
-        function renderHomeArticles() {
-            const container = document.getElementById('homeArticlesContainer');
-            if (!container) return;
-            container.innerHTML = '';
-            
-            const latestArticles = articlesDB.slice(0, 2);
-            latestArticles.forEach(art => {
-                container.insertAdjacentHTML('beforeend', `
-                    <div class="flex gap-4 group cursor-pointer items-center transition-all duration-300 hover:-translate-y-1 bg-white p-4 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-rose-100" onclick="openSingleArticle('${art.id}')">
-                        <div class="w-20 h-20 md:w-24 md:h-24 shrink-0 flex items-center justify-center bg-gray-50 rounded-xl overflow-hidden">
-                            <img loading="lazy" src="${art.image}" class="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-500 drop-shadow-sm">
-                        </div>
-                        <div class="text-right flex-1 flex flex-col justify-center">
-                            <span class="text-rose-600 text-[9px] font-black mb-1.5 block tracking-widest">${art.date}</span>
-                            <h4 class="text-sm md:text-base font-extrabold text-rose-950 font-almarai leading-snug group-hover:text-rose-700 transition-colors" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${art.title}</h4>
+                        <div class="p-6 text-right flex-1 flex flex-col">
+                            <span class="text-gray-400 text-[10px] font-black mb-3 block tracking-widest"><i class="fa fa-calendar-alt text-rose-600 ml-1"></i> ${item.date}</span>
+                            <h3 class="text-xl font-black text-rose-950 font-cairo leading-snug mb-4 group-hover:text-rose-700 transition-colors">${item.title}</h3>
+                            <div class="mt-auto flex items-center gap-2 text-rose-700 font-bold text-sm border-t border-gray-50 pt-4"><span>التفاصيل</span><i class="fa fa-arrow-left mt-1 transform group-hover:-translate-x-2 transition-transform duration-300"></i></div>
                         </div>
                     </div>
                 `);
             });
-        }
-
-        function renderHomeNews() {
-            const container = document.getElementById('homeNewsContainer');
-            if (!container) return;
-            container.innerHTML = '';
-            
-            const latestNews = newsDB.slice(0, 2);
-            latestNews.forEach(news => {
-                container.insertAdjacentHTML('beforeend', `
-                    <div class="flex gap-4 group cursor-pointer items-center transition-all duration-300 hover:-translate-y-1 bg-white p-4 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-rose-100" onclick="openSingleNews('${news.id}')">
-                        <div class="w-20 h-20 md:w-24 md:h-24 shrink-0 flex items-center justify-center bg-gray-50 rounded-xl overflow-hidden">
-                            <img loading="lazy" src="${news.image}" class="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-500 drop-shadow-sm">
-                        </div>
-                        <div class="text-right flex-1 flex flex-col justify-center">
-                            <span class="text-rose-600 text-[9px] font-black mb-1.5 block tracking-widest">${news.date}</span>
-                            <h4 class="text-sm md:text-base font-extrabold text-rose-950 font-almarai leading-snug group-hover:text-rose-700 transition-colors" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${news.title}</h4>
-                        </div>
-                    </div>
-                `);
-            });
-        }
-
-        function openSingleArticle(articleId, addToHistory = true, scrollPos = 0, isImmediate = false) {
-            const art = articlesDB.find(a => a.id === articleId);
-            if (!art) return;
-            document.getElementById('singleArticleContainer').innerHTML = `
-                <div class="mb-10 flex flex-col items-center">
-                    <img loading="lazy" src="${art.image}" class="max-w-full h-auto max-h-[400px] object-contain mb-8 drop-shadow-xl">
-                    <span class="bg-rose-100 text-rose-800 text-xs font-black px-4 py-1.5 rounded-full mb-4 inline-block">${art.date}</span>
-                    <h1 class="text-2xl md:text-4xl font-extrabold font-almarai text-center text-rose-950 leading-tight">${art.title}</h1>
-                </div>
-                <div class="text-gray-600 text-lg md:text-xl leading-loose px-4">${art.content}</div>`;
-            navigateTo('single-article', 'all', addToHistory, scrollPos, articleId, 1, isImmediate);
         }
 
         function openSingleNews(newsId, addToHistory = true, scrollPos = 0, isImmediate = false) {
-            const news = newsDB.find(n => n.id === newsId);
-            if (!news) return;
-            document.getElementById('singleNewsContainer').innerHTML = `
-                <div class="mb-10 flex flex-col items-center">
-                    <img loading="lazy" src="${news.image}" class="max-w-full h-auto max-h-[400px] object-contain mb-8 drop-shadow-xl">
-                    <span class="bg-rose-100 text-rose-800 text-xs font-black px-4 py-1.5 rounded-full mb-4 inline-block">${news.date}</span>
-                    <h1 class="text-2xl md:text-4xl font-extrabold font-almarai text-center text-rose-950 leading-tight">${news.title}</h1>
-                </div>
-                <div class="text-gray-600 text-lg md:text-xl leading-loose px-4">${news.content}</div>`;
+            const newsItem = newsDB.find(n => n.id === newsId);
+            if (!newsItem) return;
+            const container = document.getElementById('singleNewsContainer');
+            if (container) {
+                container.innerHTML = `
+                    <div class="bg-white rounded-[3rem] shadow-xl border border-gray-100 overflow-hidden mb-12">
+                        <div class="w-full h-[250px] md:h-[400px] flex items-center justify-center bg-gray-50 border-b border-gray-50">
+                            <img src="${newsItem.image}" alt="${newsItem.title}" class="max-w-full max-h-full object-contain drop-shadow-2xl" onerror="handleAdError(this, 'pc')">
+                        </div>
+                        <div class="p-8 md:p-14">
+                            <span class="inline-block text-rose-700 bg-rose-50 px-4 py-1.5 rounded-full text-sm font-black tracking-widest mb-6 border border-rose-100"><i class="fa fa-calendar-alt ml-1"></i> ${newsItem.date}</span>
+                            <h1 class="text-3xl md:text-5xl font-black text-rose-950 mb-10 font-cairo leading-tight">${newsItem.title}</h1>
+                            <div class="article-body text-gray-600 leading-loose text-lg font-bold">
+                                ${newsItem.content}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
             navigateTo('single-news', 'all', addToHistory, scrollPos, newsId, 1, isImmediate);
         }
 
-        let searchTimeout;
-        function handleSearch() {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => {
-                const query = document.getElementById('searchInput').value.trim();
-                const productsPage = document.getElementById('page-products');
-                
-                if (query !== "" && (!productsPage || !productsPage.classList.contains('active'))) { 
-                    navigateTo('products', currentCategory, false); 
-                } else {
-                    renderProducts(currentCategory, 1);
-                }
-            }, 100);
-        }
-
-        window.addEventListener('beforeunload', () => {
-            sessionStorage.setItem('scrollPosition', window.scrollY);
-        });
-
         document.addEventListener('DOMContentLoaded', () => {
-            renderProducts('all', 1);
-            renderHomeArticles(); 
-            renderHomeNews(); 
+            const path = window.location.hash.substring(1) || 'start';
+            navigateTo(path, 'all', false, 0, null, 1, true);
 
-            let initialScroll = 0;
-            if (sessionStorage.getItem('scrollPosition')) {
-                initialScroll = parseInt(sessionStorage.getItem('scrollPosition'));
-                sessionStorage.removeItem('scrollPosition');
-            } else if (history.state && history.state.scrollY) {
-                initialScroll = history.state.scrollY;
+            // Populate Home Articles
+            const homeArticles = document.getElementById('homeArticlesContainer');
+            if (homeArticles) {
+                articlesDB.slice(0, 2).forEach(art => {
+                    homeArticles.insertAdjacentHTML('beforeend', `
+                        <div class="flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition cursor-pointer group" onclick="openSingleArticle('${art.id}')">
+                            <div class="w-20 h-20 md:w-24 md:h-24 bg-gray-50 rounded-xl flex items-center justify-center shrink-0 overflow-hidden">
+                                <img src="${art.image}" class="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-500">
+                            </div>
+                            <div class="flex-1 text-right">
+                                <h4 class="text-sm md:text-base font-black text-rose-950 font-cairo leading-tight mb-2 group-hover:text-rose-700 transition">${art.title}</h4>
+                                <span class="text-xs text-gray-400 font-bold">${art.date}</span>
+                            </div>
+                        </div>
+                    `);
+                });
             }
 
-            const h = window.location.hash.substring(1);
-            
-            if (h && document.getElementById('page-' + h)) {
-                if (h === 'product-details' || h === 'single-article' || h === 'single-news') {
-                    if (history.state && history.state.itemId) {
-                        if (h === 'product-details') openProductDetails(history.state.itemId, false, initialScroll, true);
-                        else if (h === 'single-article') openSingleArticle(history.state.itemId, false, initialScroll, true);
-                        else openSingleNews(history.state.itemId, false, initialScroll, true);
-                    } else {
-                        let fallback = 'start';
-                        if (h === 'product-details') fallback = 'products';
-                        else if (h === 'single-article') fallback = 'articles';
-                        else if (h === 'single-news') fallback = 'news';
-                        
-                        navigateTo(fallback, 'all', false, initialScroll, null, 1, true);
-                        history.replaceState({ pageId: fallback, cat: 'all', pNum: 1, scrollY: initialScroll }, '', '#' + fallback);
-                    }
-                } else {
-                    const cat = history.state ? history.state.cat : 'all';
-                    const pNum = history.state && history.state.pNum ? history.state.pNum : 1;
-                    navigateTo(h, cat, false, initialScroll, null, pNum, true);
-                    if (!history.state) history.replaceState({ pageId: h, cat: cat, pNum: pNum, scrollY: initialScroll }, '', '#' + h);
-                }
-            } else {
-                navigateTo('start', 'all', false, initialScroll, null, 1, true);
-                history.replaceState({ pageId: 'start', cat: 'all', pNum: 1, scrollY: initialScroll }, '', '#start');
+            // Populate Home News
+            const homeNews = document.getElementById('homeNewsContainer');
+            if (homeNews) {
+                newsDB.slice(0, 2).forEach(item => {
+                    homeNews.insertAdjacentHTML('beforeend', `
+                        <div class="flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition cursor-pointer group" onclick="openSingleNews('${item.id}')">
+                            <div class="w-20 h-20 md:w-24 md:h-24 bg-gray-50 rounded-xl flex items-center justify-center shrink-0 overflow-hidden">
+                                <img src="${item.image}" class="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-500" onerror="handleAdError(this, 'pc')">
+                            </div>
+                            <div class="flex-1 text-right">
+                                <h4 class="text-sm md:text-base font-black text-rose-950 font-cairo leading-tight mb-2 group-hover:text-rose-700 transition">${item.title}</h4>
+                                <span class="text-xs text-gray-400 font-bold"><i class="fa fa-calendar-alt text-rose-600 ml-1"></i> ${item.date}</span>
+                            </div>
+                        </div>
+                    `);
+                });
             }
-            
-            setTimeout(() => {
-                document.getElementById('mainBody').style.opacity = '1';
-            }, 50);
         });
     </script>
 </body>
