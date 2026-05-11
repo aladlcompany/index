@@ -199,7 +199,7 @@
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body id="mainBody" class="text-gray-800 text-right" style="opacity: 0; transition: opacity 0.3s ease-out;" ontouchstart="">
+<body id="mainBody" class="text-gray-800 text-right bg-slate-50" style="opacity: 0; transition: opacity 0.3s ease-out;" ontouchstart="">
 
     <div id="overlay" class="menu-overlay" onclick="toggleMobileMenu()"></div>
 
@@ -397,7 +397,6 @@
         </div>
     </div>
 
-    <!-- لا نستخدم class="active" هنا ليتم إضافته فوراً بواسطة الـ JavaScript وتجنب الوميض -->
     <main id="page-start" class="page-section">
         <section class="pt-6 pb-12 container mx-auto px-4 md:px-12 text-right">
             
@@ -440,7 +439,6 @@
                         </div>
                     </div>
 
-                    <!-- قائمة أقسام المنتجات -->
                     <div class="mt-8 mb-8 px-2 md:px-4">
                         <div class="flex justify-between items-center mb-4">
                             <h3 class="text-base md:text-lg font-bold text-gray-500 border-r-4 border-rose-600 pr-3 tracking-wide font-tajawal">قائمة المنتجات</h3>
@@ -463,19 +461,15 @@
                         </div>
                     </div>
 
-                    <!-- مقالات وعروض (مضافة حديثاً) -->
                     <div class="mt-6 mb-8 px-2 md:px-4">
                         <h3 class="text-base md:text-lg font-bold text-gray-500 mb-5 border-r-4 border-rose-600 pr-3 tracking-wide font-tajawal">مقالات وعروض</h3>
                         <div id="homeArticlesContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <!-- سيتم حقن آخر مقالين هنا بواسطة جافاسكريبت -->
                         </div>
                     </div>
 
-                    <!-- أخبارنا (مضافة حديثاً) -->
                     <div class="mt-6 mb-8 px-2 md:px-4">
                         <h3 class="text-base md:text-lg font-bold text-gray-500 mb-5 border-r-4 border-rose-600 pr-3 tracking-wide font-tajawal">أخبارنا</h3>
                         <div id="homeNewsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <!-- سيتم حقن آخر خبرين هنا بواسطة جافاسكريبت -->
                         </div>
                     </div>
 
@@ -956,150 +950,6 @@
         </section>
     </main>
 
-    <main id="page-faq" class="page-section text-right">
-        <section class="pt-8 pb-12 container mx-auto px-6 lg:px-12 text-right">
-            <div class="text-center mb-12">
-                <h2 class="text-xl md:text-2xl font-bold text-gray-600 font-cairo leading-relaxed">أكثر الإستفسارات التي تصلنا والإجابة الشاملة عليها</h2>
-            </div>
-
-            <div class="max-w-4xl mx-auto space-y-5">
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300">
-                    <button onclick="toggleFAQ('faq-1', 'icon-1')" class="w-full text-right px-6 py-5 flex justify-between items-center focus:outline-none hover:bg-rose-50 transition-colors group">
-                        <h3 class="font-cairo font-black text-rose-950 text-lg md:text-xl pl-4 group-hover:text-rose-700">ما هي الطباعة الثري دي وهل يمكن أن تطبع مواد بالأبعاد الثلاثية ؟</h3>
-                        <div class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center shrink-0 group-hover:bg-rose-100"><i id="icon-1" class="fa fa-chevron-down text-rose-700 transition-transform duration-300"></i></div>
-                    </button>
-                    <div id="faq-1" class="hidden px-6 pb-6"><div class="border-t border-gray-100 pt-5"><p class="text-gray-600 font-bold leading-loose">الطباعة ثلاثية الأبعاد (3D) هي ببساطة عملية تحويل ملف رقمي لتصميم ثلاثي الأبعاد إلى جسم صلب ثلاثي الأبعاد في أرض الواقع. وتعمل الطابعة ثلاثية الأبعاد على مبدأ إضافة طبقات متعاقبة فوق بعضها من المواد المستخدمة حتى يتم تشكيل المجسم المطلوب، نعم يمكنها ذلك وتستخدم في العديد من المجالات مثل الطب والهندسة والصناعات المختلفة لتصنيع النماذج وقطع الغيار المعقدة بدقة متناهية.</p></div></div>
-                </div>
-
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300">
-                    <button onclick="toggleFAQ('faq-2', 'icon-2')" class="w-full text-right px-6 py-5 flex justify-between items-center focus:outline-none hover:bg-rose-50 transition-colors group">
-                        <h3 class="font-cairo font-black text-rose-950 text-lg md:text-xl pl-4 group-hover:text-rose-700">هل عدم ثبات التيار الكهربائي يؤثر على الماكينات ؟ وكيف نتجنبه ؟</h3>
-                        <div class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center shrink-0 group-hover:bg-rose-100"><i id="icon-2" class="fa fa-chevron-down text-rose-700 transition-transform duration-300"></i></div>
-                    </button>
-                    <div id="faq-2" class="hidden px-6 pb-6"><div class="border-t border-gray-100 pt-5"><p class="text-gray-600 font-bold leading-loose">نعم بكل تأكيد، في أماكن كثيرة التيار الكهربي غير ثابت، وهذا التذبذب أو الانقطاع المفاجئ للتيار من شأنه أن يسبب تلف واحتراق في أجزاء كثيرة ومهمة في الماكينة مثل: البوردة الكهربية (اللوحة الأم) ووحدة التسخين (السخان). ولتجنب هذه المشكلة وتفادي الخسائر المادية الكبيرة، يجب توفير جهاز مثبت للتيار الكهربائي "Stabilizer" يتناسب مع قدرة الماكينة للحفاظ على استقرارها وضمان عملها بكفاءة.</p></div></div>
-                </div>
-
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300">
-                    <button onclick="toggleFAQ('faq-3', 'icon-3')" class="w-full text-right px-6 py-5 flex justify-between items-center focus:outline-none hover:bg-rose-50 transition-colors group">
-                        <h3 class="font-cairo font-black text-rose-950 text-lg md:text-xl pl-4 group-hover:text-rose-700">ما هو الفرق بين طباعة الإن دور والأوت دور، والسلك سكرين، والأوفست؟</h3>
-                        <div class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center shrink-0 group-hover:bg-rose-100"><i id="icon-3" class="fa fa-chevron-down text-rose-700 transition-transform duration-300"></i></div>
-                    </button>
-                    <div id="faq-3" class="hidden px-6 pb-6"><div class="border-t border-gray-100 pt-5"><p class="text-gray-600 font-bold leading-loose"><strong class="text-rose-700">طباعة الإن دور (Indoor):</strong> مخصصة للطباعة الداخلية التي تُعرض عن قرب وتمتاز بالدقة العالية، وتستخدم أحبار مائية (Water-based) صديقة للبيئة، لكنها لا تتحمل أشعة الشمس المباشرة أو العوامل الجوية بقوة.<br><br><strong class="text-rose-700">طباعة الأوت دور (Outdoor):</strong> مخصصة للأعمال والإعلانات الخارجية كاللافتات الكبيرة، حيث تستخدم أحبار (Solvent) قوية تتحمل الحرارة العالية وأشعة الشمس والمطر لتدوم فترات طويلة.<br><br><strong class="text-rose-700">طباعة الأوفست (Offset):</strong> هي التقنية الأشهر والأدق للأعمال التجارية والمطبوعات الورقية بكميات كبيرة (مثل المجلات، الكتيبات، والفواتير)، وتعتمد على نقل الحبر من لوح معدني إلى أسطوانة مطاطية ثم إلى الورق، وتمتاز بانخفاض تكلفتها كلما زادت الكمية.<br><br><strong class="text-rose-700">طباعة السلك سكرين (Silk Screen):</strong> أو الطباعة بالشاشة الحريرية، هي الأقل تكلفة وتتيح الطباعة على خامات متنوعة ومتعددة مثل القماش، الخشب، البلاستيك، وحتى المعادن، وتعتمد على تمرير الحبر عبر شبكة حريرية.</p></div></div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <main id="page-about" class="page-section text-right">
-        <section class="pt-8 pb-24 container mx-auto px-6 lg:px-12 text-right">
-            
-            <div class="text-center mb-12">
-                <h2 class="text-2xl md:text-4xl font-black text-rose-950 font-cairo leading-relaxed">أهلاً بك في شركة العدل لبيع وصيانة الطابعات وماكينات التصوير</h2>
-            </div>
-
-            <div class="bg-white rounded-[3rem] p-8 md:p-14 shadow-xl border border-gray-100 mb-12 relative overflow-hidden group">
-                <div class="absolute top-0 right-0 w-48 h-48 bg-rose-50 rounded-full -mr-16 -mt-16 blur-3xl transition-transform duration-700 group-hover:scale-150"></div>
-                <i class="fa fa-quote-right text-6xl md:text-8xl text-rose-50 absolute top-6 right-8 md:right-12 z-0"></i>
-                <div class="relative z-10">
-                    <h3 class="text-2xl md:text-3xl font-black text-rose-900 mb-6 font-cairo">رؤية ورسالة واضحة</h3>
-                    <p class="text-lg md:text-2xl text-gray-600 leading-loose md:leading-loose font-medium">
-                        منذ بداية الالفية الجديدة وكانت لشركة العدل رؤية ورسالة لتقديم كل ما هو جديد فى عالم تكنولوجيا الطباعة الحديثة لجميع شرائح العملاء سواء القطاع العام أو الخاص، والشركات والمكتبات ومراكز التصوير وحتى الاستخدام الشخصى فى المنازل والمكاتب وعدم الاقتصار على شريحة واحدة من العملاء مثلما تفعل الكثير من الشركات.
-                    </p>
-                </div>
-            </div>
-
-            <div class="bg-zinc-900 rounded-[3rem] p-8 md:p-14 shadow-2xl mb-16 relative overflow-hidden text-white">
-                <div class="absolute bottom-0 left-0 w-64 h-64 bg-rose-900/40 rounded-full -ml-20 -mb-20 blur-3xl"></div>
-                <div class="flex items-center gap-5 mb-8 relative z-10">
-                    <div class="w-16 h-16 md:w-20 md:h-20 bg-rose-700 rounded-2xl flex items-center justify-center text-3xl md:text-4xl shadow-lg"><i class="fa fa-rocket text-rose-50"></i></div>
-                    <h3 class="text-3xl md:text-4xl font-black text-rose-50 font-cairo">التأسيس والإنطلاق</h3>
-                </div>
-                <p class="text-gray-300 leading-relaxed md:leading-loose text-lg md:text-xl relative z-10 font-medium">
-                    وبعد الانطلاق والتأسيس عام 2020 سعت الشركة لتلبية احتياجات ومتطلبات العملاء فى جميع انحاء مصر من خلال توفير العديد من الماركات العالمية الاكثر انتشارا والأصدارات الحديثة من ماكينات الطباعة والتصوير مع تنوع الماركات وعدم العمل فى ماركة واحدة لاختلاف رغبات وثقافات وأنشطة العملاء لتصبح شركة العدل رائدة بيع وصيانة وتأجير ماكينات تصوير وطباعة المستندات لكبرى المركات العالمية الجديدة او المجددة فى مصر والوطن العربى خصوصا مع انتشار الفروع داخل جمهورية مصر العربية وتحقيق طفرة كبيرة فى السوق المصرى من خلال الانفراد بتقديم انظمة سداد وتقسيط يناسب جميع العملاء وتوفير اكبر فريق من المهندسين وفنيين الصيانة على اعلى مستوى من التدريب والخبرة.
-                </p>
-            </div>
-
-            <div class="mb-24 text-right">
-                <div class="text-center mb-12">
-                    <h3 class="text-3xl font-black text-rose-950 mb-4 font-cairo">الانضمام لمنظمات المجتمع المدنى</h3>
-                    <p class="text-lg text-gray-500 max-w-3xl mx-auto">وخلال خمسة أعوام من التأسيس كانت لشركة العدل دافع كبير لتصبح عضو فعال فى المجتمع من خلال الأنضمام للعديد من منظمات المجتمع المدنى مثل:</p>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-rose-50 hover:border-rose-200 flex items-start gap-4 hover:-translate-y-1 transition duration-300">
-                        <div class="w-12 h-12 bg-rose-50 text-rose-700 rounded-xl flex items-center justify-center shrink-0 text-xl"><i class="fa fa-certificate"></i></div>
-                        <p class="text-gray-700 font-bold mt-2 leading-relaxed">عضوية جمعية رجال اعمال الأجهزة المكتبية</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-rose-50 hover:border-rose-200 flex items-start gap-4 hover:-translate-y-1 transition duration-300">
-                        <div class="w-12 h-12 bg-rose-50 text-rose-700 rounded-xl flex items-center justify-center shrink-0 text-xl"><i class="fa fa-certificate"></i></div>
-                        <p class="text-gray-700 font-bold mt-2 leading-relaxed">عضوية غرفة الطباعة والتغليف التابع لاتحاد الصناعات</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-rose-50 hover:border-rose-200 flex items-start gap-4 hover:-translate-y-1 transition duration-300">
-                        <div class="w-12 h-12 bg-rose-50 text-rose-700 rounded-xl flex items-center justify-center shrink-0 text-xl"><i class="fa fa-certificate"></i></div>
-                        <p class="text-gray-700 font-bold mt-2 leading-relaxed">عضوية جمعية تنمية الطباعة "بيدا"</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-rose-50 hover:border-rose-200 flex items-start gap-4 hover:-translate-y-1 transition duration-300">
-                        <div class="w-12 h-12 bg-rose-50 text-rose-700 rounded-xl flex items-center justify-center shrink-0 text-xl"><i class="fa fa-certificate"></i></div>
-                        <p class="text-gray-700 font-bold mt-2 leading-relaxed">عضوية جمعية المهندسين الميكانيكيين</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-rose-50 hover:border-rose-200 flex items-start gap-4 hover:-translate-y-1 transition duration-300 md:col-span-2 lg:col-span-1">
-                        <div class="w-12 h-12 bg-rose-50 text-rose-700 rounded-xl flex items-center justify-center shrink-0 text-xl"><i class="fa fa-certificate"></i></div>
-                        <p class="text-gray-700 font-bold mt-2 leading-relaxed">عضوية الغرفة الألمانية العربية للصناعة والتجارة</p>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <div class="flex items-center justify-between mb-10 border-r-[8px] border-rose-700 pr-4">
-                    <h3 class="text-3xl font-black text-rose-950 font-cairo">فريق القيادة والعمل</h3>
-                    
-                    <div class="flex gap-3">
-                        <button onclick="scrollSlider('teamContainer', 1)" class="w-12 h-12 bg-white border border-gray-200 rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-50 hover:border-rose-200 transition shadow-sm"><i class="fa fa-chevron-right"></i></button>
-                        <button onclick="scrollSlider('teamContainer', -1)" class="w-12 h-12 bg-white border border-gray-200 rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-50 hover:border-rose-200 transition shadow-sm"><i class="fa fa-chevron-left"></i></button>
-                    </div>
-                </div>
-
-                <div id="teamContainer" class="flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory hide-scrollbar scroll-smooth">
-                    <div class="min-w-[280px] md:min-w-[320px] bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 snap-center text-center group hover:-translate-y-2 transition-transform duration-300">
-                        <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-600 mb-6 group-hover:border-rose-400 transition-colors duration-300 shadow-[0_0_15px_rgba(190,18,60,0.2)] flex items-center justify-center bg-gray-50">
-                            <img loading="lazy" src="manager.jpg" alt="م / عمرو عبدالستار العدل" class="max-w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=عمرو+العدل&background=be123c&color=fff&size=150&font-size=0.3'">
-                        </div>
-                        <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">م / عمرو عبدالستار العدل</h4>
-                        <div class="inline-block px-4 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-black mb-5">المدير العام والمؤسس</div>
-                        <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">رؤية ثاقبة وخبرة عميقة في تطوير استراتيجيات السوق، يقود فريق العدل نحو القمة برؤية تواكب أحدث تكنولوجيات الطباعة.</p>
-                    </div>
-
-                    <div class="min-w-[280px] md:min-w-[320px] bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 snap-center text-center group hover:-translate-y-2 transition-transform duration-300">
-                        <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-50 mb-6 group-hover:border-rose-200 transition-colors duration-300">
-                            <img loading="lazy" src="mohamed_fouad.jpg" onerror="this.src='https://ui-avatars.com/api/?name=محمد+فؤاد&background=be123c&color=fff&size=150&font-size=0.3'" alt="م / محمد فؤاد" class="w-full h-full object-cover">
-                        </div>
-                        <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">م / محمد فؤاد</h4>
-                        <div class="inline-block px-4 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-black mb-5">مدير المبيعات</div>
-                        <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">متابعة مستمرة للسوق وتوفير أنسب الحلول وأنظمة التقسيط والسداد التي تضمن للعميل تحقيق أقصى استفادة.</p>
-                    </div>
-
-                    <div class="min-w-[280px] md:min-w-[320px] bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 snap-center text-center group hover:-translate-y-2 transition-transform duration-300">
-                        <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-50 mb-6 group-hover:border-rose-200 transition-colors duration-300">
-                            <img loading="lazy" src="ziad_aladl.jpg" onerror="this.src='https://ui-avatars.com/api/?name=زياد+العدل&background=be123c&color=fff&size=150&font-size=0.3'" alt="م / زياد العدل" class="w-full h-full object-cover">
-                        </div>
-                        <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">م / زياد العدل</h4>
-                        <div class="inline-block px-4 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-black mb-5">مدير الصيانة</div>
-                        <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">يشرف على تدريب وتوجيه فريق الصيانة، لضمان حل أصعب الأعطال الفنية باحترافية وسرعة.</p>
-                    </div>
-
-                    <div class="min-w-[280px] md:min-w-[320px] bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 snap-center text-center group hover:-translate-y-2 transition-transform duration-300">
-                        <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-50 mb-6 group-hover:border-rose-200 transition-colors duration-300">
-                            <img loading="lazy" src="zahra_abdelFattah.jpg" onerror="this.src='https://ui-avatars.com/api/?name=زهرة+عبدالفتاح&background=be123c&color=fff&size=150&font-size=0.3'" alt="أ / زهرة عبدالفتاح" class="w-full h-full object-cover">
-                        </div>
-                        <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">أ / زهرة عبدالفتاح</h4>
-                        <div class="inline-block px-4 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-black mb-5">خدمة العملاء</div>
-                        <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">الوجه المبتسم للشركة، نضمن لك استجابة سريعة لبلاغات الأعطال واستفساراتك.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
     <footer class="bg-zinc-950 text-white pt-10 pb-6 px-4 md:px-6 border-t-8 border-rose-700">
         <div class="container mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 border-b border-white/5 pb-8">
             
@@ -1154,16 +1004,10 @@
         const MAIN_NUM = "201094799247";
 
         function handleAdError(img, type) {
-            img.onerror = function() {
-                this.onerror = null;
-                this.src = 'https://placehold.co/1200x180/f8fafc/cbd5e1?text=Banner';
-            };
-            
-            if (type === 'mobile' && img.src.includes('-mobile')) {
-                img.src = img.src.replace('-mobile', '-pc');
-            } else {
-                img.src = 'https://placehold.co/1200x180/f8fafc/cbd5e1?text=Banner';
-            }
+            img.onerror = null; 
+            img.src = type === 'pc' 
+                ? 'https://placehold.co/1200x180/f8fafc/cbd5e1?text=Banner' 
+                : 'https://placehold.co/600x200/f8fafc/cbd5e1?text=Banner';
         }
 
         const adGroups = {
@@ -1231,15 +1075,20 @@
             }
         }
 
-        function toggleFAQ(contentId, iconId) {
-            const content = document.getElementById(contentId);
-            const icon = document.getElementById(iconId);
-            if (content.classList.contains('hidden')) { content.classList.remove('hidden'); icon.classList.add('rotate-180'); } 
-            else { content.classList.add('hidden'); icon.classList.remove('rotate-180'); }
+        // تم التعديل: إغلاق القوائم الأخرى عند فتح قائمة جديدة
+        function toggleAccordion(id) {
+            const accordions = ['m-who', 'm-prods', 'm-parts', 'm-toners', 'm-serv'];
+            accordions.forEach(acc => {
+                if (acc !== id) {
+                    const el = document.getElementById(acc);
+                    if (el) el.classList.add('hidden');
+                }
+            });
+            document.getElementById(id).classList.toggle('hidden');
         }
 
+        // تم التعديل: القفز المباشر للأعلى
         function navigateTo(targetId, category = 'all', addToHistory = true, scrollPos = 0, itemId = null, requestedPage = 1, isImmediate = false) {
-            
             if (addToHistory) { 
                 const currentState = { ...history.state, scrollY: window.scrollY };
                 if (history.state && history.state.pageId === 'products') {
@@ -1264,6 +1113,12 @@
 
             closeMobileMenu();
             
+            // إخفاء القوائم المنسدلة في نسخة الكمبيوتر عند الاختيار
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                menu.style.display = 'none';
+                setTimeout(() => menu.style.removeProperty('display'), 50);
+            });
+
             if (targetId === 'products') renderProducts(category, requestedPage);
             else if (targetId === 'articles') renderArticlesGrid();
             else if (targetId === 'news') renderNewsGrid();
@@ -1278,23 +1133,19 @@
                 target.classList.add('active'); 
             }
 
-            if (isImmediate) {
-                document.body.style.setProperty('scroll-behavior', 'auto', 'important');
-                document.documentElement.style.setProperty('scroll-behavior', 'auto', 'important');
-                
+            // إجبار المتصفح على الانتقال للأعلى فورا وبدون تمرير بطيء
+            document.documentElement.style.setProperty('scroll-behavior', 'auto', 'important');
+            document.body.style.setProperty('scroll-behavior', 'auto', 'important');
+            
+            window.scrollTo(0, scrollPos);
+            
+            setTimeout(() => {
                 window.scrollTo(0, scrollPos);
-                
-                setTimeout(() => {
-                    window.scrollTo(0, scrollPos);
-                    document.documentElement.style.removeProperty('scroll-behavior');
-                    document.body.style.removeProperty('scroll-behavior');
-                    if (target) target.style.animation = ''; 
-                    document.getElementById('mainBody').style.opacity = '1';
-                }, 10);
-            } else {
-                window.scrollTo({top: scrollPos, behavior: 'smooth'});
+                document.documentElement.style.removeProperty('scroll-behavior');
+                document.body.style.removeProperty('scroll-behavior');
+                if (isImmediate && target) target.style.animation = ''; 
                 document.getElementById('mainBody').style.opacity = '1';
-            }
+            }, 10);
 
             if (addToHistory) { 
                 history.pushState({ pageId: targetId, cat: category, pNum: requestedPage, scrollY: 0, itemId: itemId }, '', '#' + targetId); 
@@ -1331,8 +1182,6 @@
             document.getElementById('mobile-menu').classList.remove('open');
             document.getElementById('overlay').classList.remove('show');
         }
-
-        function toggleAccordion(id) { document.getElementById(id).classList.toggle('hidden'); }
 
         function toggleHomeCategories() {
             const grid = document.getElementById('homeCategoriesGrid');
@@ -1643,7 +1492,7 @@
                             <h3 class="text-lg md:text-xl font-black text-rose-950 mb-3 text-center font-cairo leading-tight">${prod.name}</h3>
                             
                             <ul class="space-y-2 mb-6 text-xs font-bold text-gray-600 flex-1 px-2">
-                                <li class="flex items-start gap-2"><i class="fa fa-bolt text-rose-600 mt-1"></i> <span><strong>السرعة:</strong> ${prod.speed}</span></li>
+                                <li class="flex items-start gap-2"><i class="fa fa-bolt text-rose-600 mt-1"></i> <span><strong class="block pb-1">السرعة:</strong><span class="text-gray-500 font-medium">${prod.speed}</span></span></li>
                             </ul>
                             
                             <div class="mt-auto flex flex-col gap-3">
@@ -1718,9 +1567,9 @@
                                 <h4 class="font-black text-rose-900 mb-4 font-cairo text-lg border-b border-gray-200 pb-2">المواصفات الفنية</h4>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-sm font-bold text-gray-700">
                                     ${prod.specs.map(spec => `
-                                        <div class="flex flex-col bg-white p-3 rounded-xl shadow-sm border border-gray-100 hover:border-rose-100 transition-colors">
-                                            <span class="text-rose-700 text-[10px] font-black uppercase mb-1 tracking-wider">${spec.label}</span>
-                                            <span class="text-gray-900 font-bold text-xs md:text-sm">${spec.value}</span>
+                                        <div class="flex flex-col bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:border-rose-100 transition-colors">
+                                            <span class="text-rose-700 text-sm md:text-base font-black uppercase mb-2 tracking-wider">${spec.label}</span>
+                                            <span class="text-gray-900 font-bold text-base md:text-lg">${spec.value}</span>
                                         </div>
                                     `).join('')}
                                 </div>
@@ -1988,6 +1837,27 @@
             }
         ];
 
+        function renderNewsGrid() {
+            const grid = document.getElementById('newsGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            grid.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12";
+            newsDB.forEach(news => {
+                grid.insertAdjacentHTML('beforeend', `
+                    <div class="flex flex-col group cursor-pointer bg-transparent transition-transform duration-300 hover:-translate-y-2" onclick="openSingleNews('${news.id}')">
+                        <div class="w-full h-56 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform duration-500">
+                            <img loading="lazy" src="${news.image}" class="max-w-full max-h-full object-contain drop-shadow-md">
+                        </div>
+                        <div class="text-right flex-1 flex flex-col px-2">
+                            <span class="text-rose-700 text-[10px] font-black mb-2 block tracking-widest">${news.date}</span>
+                            <h3 class="text-lg md:text-xl font-extrabold text-rose-950 font-almarai leading-snug group-hover:text-rose-700 transition-colors">${news.title}</h3>
+                            <div class="mt-auto pt-4 flex items-center gap-2 text-rose-900 font-bold text-xs"><span>اقرأ التفاصيل</span><i class="fa fa-arrow-left animate-pulse"></i></div>
+                        </div>
+                    </div>
+                `);
+            });
+        }
+
         function renderHomeArticles() {
             const container = document.getElementById('homeArticlesContainer');
             if (!container) return;
@@ -2116,7 +1986,6 @@
                 history.replaceState({ pageId: 'start', cat: 'all', pNum: 1, scrollY: initialScroll }, '', '#start');
             }
             
-            // إظهار الموقع بأمان بعد التجهيز
             setTimeout(() => {
                 document.getElementById('mainBody').style.opacity = '1';
             }, 50);
