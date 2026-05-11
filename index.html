@@ -412,8 +412,8 @@
             <!-- سلايدر أحدث ماكينات التصوير (مدمج مع الخلفية) -->
             <div class="w-full max-w-6xl mx-auto mb-10 relative group/topslider flex flex-col items-center">
                 <div class="w-full relative px-6 md:px-10">
-                    <button onclick="scrollSlider('topCopiersSlider', 1)" class="absolute right-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 md:w-10 md:h-10 bg-rose-900/10 hover:bg-rose-700 hover:text-white rounded-full flex items-center justify-center text-rose-900 transition-all duration-300 opacity-0 group-hover/topslider:opacity-100 shadow-sm"><i class="fa fa-chevron-right text-sm"></i></button>
-                    <button onclick="scrollSlider('topCopiersSlider', -1)" class="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 md:w-10 md:h-10 bg-rose-900/10 hover:bg-rose-700 hover:text-white rounded-full flex items-center justify-center text-rose-900 transition-all duration-300 opacity-0 group-hover/topslider:opacity-100 shadow-sm"><i class="fa fa-chevron-left text-sm"></i></button>
+                    <button onclick="scrollSlider('topCopiersSlider', 1)" class="absolute right-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 md:w-10 md:h-10 bg-white border border-rose-100 hover:bg-rose-700 hover:text-white hover:border-transparent rounded-full flex items-center justify-center text-rose-900 transition-all duration-300 shadow-md"><i class="fa fa-chevron-right text-sm"></i></button>
+                    <button onclick="scrollSlider('topCopiersSlider', -1)" class="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 md:w-10 md:h-10 bg-white border border-rose-100 hover:bg-rose-700 hover:text-white hover:border-transparent rounded-full flex items-center justify-center text-rose-900 transition-all duration-300 shadow-md"><i class="fa fa-chevron-left text-sm"></i></button>
 
                     <div id="topCopiersSlider" class="flex overflow-x-auto gap-8 pb-4 snap-x snap-mandatory hide-scrollbar scroll-smooth justify-start md:justify-center">
                         <!-- سيتم الحقن بواسطة الجافاسكريبت -->
@@ -1299,7 +1299,7 @@
             else { content.classList.add('hidden'); icon.classList.remove('rotate-180'); }
         }
 
-        function navigateTo(targetId, category = 'all', addToHistory = true, scrollPos = 0, itemId = null, requestedPage = 1, isImmediate = false) {
+        function navigateTo(targetId, category = 'all', addToHistory = true, scrollPos = 0, itemId = null, requestedPage = 1, isImmediate = false, fromSearch = false) {
             
             if (addToHistory) { 
                 const currentState = { ...history.state, scrollY: window.scrollY };
@@ -1310,8 +1310,11 @@
                 history.replaceState(currentState, ''); 
             }
             
-            // Do not clear search input here if the navigation is triggered by searching
+            // مسح مربع البحث عند الانتقال لأي صفحة أخرى (إلا إذا كان الانتقال بسبب البحث نفسه)
             const searchInput = document.getElementById('searchInput');
+            if (searchInput && !fromSearch) {
+                searchInput.value = '';
+            }
 
             // إغلاق القوائم المنسدلة (للكمبيوتر) تلقائياً عند اختيار قسم
             document.querySelectorAll('.dropdown-container').forEach(container => {
@@ -1518,7 +1521,7 @@
             // إذا كان المستخدم في أي صفحة أخرى غير صفحة المنتجات، ننتقل إليها
             const activePage = document.querySelector('.page-section.active');
             if (!activePage || (activePage.id !== 'page-products' && activePage.id !== 'page-product-details')) {
-                navigateTo('products', 'all', true, 0, null, 1);
+                navigateTo('products', 'all', true, 0, null, 1, false, true);
             } else {
                 // إذا كنا بالفعل في المنتجات، نكتفي بتحديث النتائج
                 renderProducts(currentCategory, 1);
@@ -2217,7 +2220,7 @@
                                 <img loading="lazy" src="${art.image}" class="max-w-full max-h-full object-contain">
                             </div>
                             <div class="flex flex-col text-right">
-                                <h4 class="text-sm md:text-base font-black text-rose-950 font-cairo leading-snug mb-1 group-hover:text-rose-700 transition">${art.title}</h4>
+                                <h4 class="text-sm md:text-base font-bold text-gray-800 font-tajawal leading-relaxed mb-1 group-hover:text-rose-700 transition">${art.title}</h4>
                                 <span class="text-gray-400 text-[10px] font-bold"><i class="fa fa-calendar-alt text-rose-600 ml-1"></i> ${art.date}</span>
                             </div>
                         </div>
@@ -2235,7 +2238,7 @@
                                 <img loading="lazy" src="${item.image}" class="max-w-full max-h-full object-contain" onerror="handleAdError(this, 'pc')">
                             </div>
                             <div class="flex flex-col text-right">
-                                <h4 class="text-sm md:text-base font-black text-rose-950 font-cairo leading-snug mb-1 group-hover:text-rose-700 transition">${item.title}</h4>
+                                <h4 class="text-sm md:text-base font-bold text-gray-800 font-tajawal leading-relaxed mb-1 group-hover:text-rose-700 transition">${item.title}</h4>
                                 <span class="text-gray-400 text-[10px] font-bold"><i class="fa fa-calendar-alt text-rose-600 ml-1"></i> ${item.date}</span>
                             </div>
                         </div>
