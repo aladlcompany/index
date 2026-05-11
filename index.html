@@ -422,18 +422,19 @@
             <!-- عنوان أحدث المنتجات -->
             <div class="text-center mb-4 relative w-full max-w-6xl mx-auto z-10">
                 <div class="inline-block relative">
-                    <h2 class="text-2xl md:text-4xl font-black font-cairo text-transparent bg-clip-text bg-gradient-to-r from-rose-900 via-rose-500 to-rose-900 text-gradient-anim pb-2">
-                        أحدث ماكينات التصوير المضافة
+                    <span class="absolute -top-1 -right-8 text-xl md:text-2xl text-yellow-500 animate-bounce" style="animation-delay: 0.2s;"><i class="fa fa-star"></i></span>
+                    <h2 class="text-2xl md:text-4xl font-black font-cairo text-transparent bg-clip-text bg-gradient-to-r from-rose-900 via-rose-500 to-rose-900 text-gradient-anim pb-2 px-2">
+                        المضاف حديثاً
                     </h2>
-                    <span class="absolute -top-2 -right-5 text-xl text-yellow-500 animate-bounce"><i class="fa fa-star"></i></span>
+                    <span class="absolute -top-1 -left-8 text-xl md:text-2xl text-yellow-500 animate-bounce"><i class="fa fa-star"></i></span>
                 </div>
-                <p class="text-gray-500 font-bold text-sm mt-1 font-tajawal">تصفح أحدث الإصدارات المتوفرة في معارضنا</p>
+                <p class="text-gray-500 font-bold text-sm mt-1 font-tajawal">تصفح أخر الماكينات المضافة حديثاً</p>
             </div>
 
             <!-- سلايدر أحدث ماكينات التصوير اللانهائي المطور -->
             <div id="topCopiersSliderWrapper" class="w-full max-w-6xl mx-auto mb-16 relative flex items-center justify-center px-4 group">
                 <!-- الأزرار مرئية ومتاحة بشكل دائم -->
-                <button onclick="prevTopCopier()" class="absolute right-2 md:right-4 z-20 w-10 h-10 md:w-12 md:h-12 bg-white border border-rose-100 hover:bg-rose-700 hover:text-white hover:border-transparent rounded-full flex items-center justify-center text-rose-900 transition-all duration-300 shadow-xl transform hover:scale-110 focus:outline-none"><i class="fa fa-chevron-right text-lg md:text-xl"></i></button>
+                <button onclick="nextTopCopier()" class="absolute right-2 md:right-4 z-20 w-10 h-10 md:w-12 md:h-12 bg-white border border-rose-100 hover:bg-rose-700 hover:text-white hover:border-transparent rounded-full flex items-center justify-center text-rose-900 transition-all duration-300 shadow-xl transform hover:scale-110 focus:outline-none"><i class="fa fa-chevron-right text-lg md:text-xl"></i></button>
                 
                 <!-- الحاوية المخفية التي يتم تحريك المسار بداخلها -->
                 <div class="overflow-hidden w-full mx-10 md:mx-16" dir="rtl">
@@ -442,7 +443,7 @@
                     </div>
                 </div>
 
-                <button onclick="nextTopCopier()" class="absolute left-2 md:left-4 z-20 w-10 h-10 md:w-12 md:h-12 bg-white border border-rose-100 hover:bg-rose-700 hover:text-white hover:border-transparent rounded-full flex items-center justify-center text-rose-900 transition-all duration-300 shadow-xl transform hover:scale-110 focus:outline-none"><i class="fa fa-chevron-left text-lg md:text-xl"></i></button>
+                <button onclick="prevTopCopier()" class="absolute left-2 md:left-4 z-20 w-10 h-10 md:w-12 md:h-12 bg-white border border-rose-100 hover:bg-rose-700 hover:text-white hover:border-transparent rounded-full flex items-center justify-center text-rose-900 transition-all duration-300 shadow-xl transform hover:scale-110 focus:outline-none"><i class="fa fa-chevron-left text-lg md:text-xl"></i></button>
             </div>
 
             <!-- التقسيم الرئيسي (شريط جانبي + منتجات) -->
@@ -1139,46 +1140,103 @@
                     <h3 class="text-3xl font-black text-rose-950 font-cairo">فريق القيادة والعمل</h3>
                     
                     <div class="flex gap-3">
-                        <button onclick="scrollSlider('teamContainer', 1)" class="w-12 h-12 bg-white border border-gray-200 rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-50 hover:border-rose-200 transition shadow-sm"><i class="fa fa-chevron-right"></i></button>
-                        <button onclick="scrollSlider('teamContainer', -1)" class="w-12 h-12 bg-white border border-gray-200 rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-50 hover:border-rose-200 transition shadow-sm"><i class="fa fa-chevron-left"></i></button>
+                        <button onclick="prevTeamMember()" class="w-12 h-12 bg-white border border-gray-200 rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-50 hover:border-rose-200 transition shadow-sm focus:outline-none"><i class="fa fa-chevron-right"></i></button>
+                        <button onclick="nextTeamMember()" class="w-12 h-12 bg-white border border-gray-200 rounded-full flex items-center justify-center text-rose-900 hover:bg-rose-50 hover:border-rose-200 transition shadow-sm focus:outline-none"><i class="fa fa-chevron-left"></i></button>
                     </div>
                 </div>
 
-                <div id="teamContainer" class="flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory hide-scrollbar scroll-smooth">
-                    <div class="min-w-[280px] md:min-w-[320px] bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 snap-center text-center group hover:-translate-y-2 transition-transform duration-300">
-                        <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-600 mb-6 group-hover:border-rose-400 transition-colors duration-300 shadow-[0_0_15px_rgba(190,18,60,0.2)] flex items-center justify-center bg-gray-50">
-                            <img loading="lazy" src="manager.jpg" alt="م / عمرو عبدالستار العدل" class="max-w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=عمرو+العدل&background=be123c&color=fff&size=150&font-size=0.3'">
+                <div id="teamSliderWrapper" class="overflow-hidden w-full pb-10 group" dir="rtl">
+                    <div id="teamSliderTrack" class="flex transition-transform duration-500 ease-in-out w-max">
+                        
+                        <!-- العضو 1 -->
+                        <div class="shrink-0 px-3 w-[280px] md:w-[320px]">
+                            <div class="bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 h-full text-center group-hover:-translate-y-2 transition-transform duration-300">
+                                <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-600 mb-6 transition-colors duration-300 shadow-[0_0_15px_rgba(190,18,60,0.2)] flex items-center justify-center bg-gray-50">
+                                    <img loading="lazy" src="manager.jpg" alt="م / عمرو عبدالستار العدل" class="max-w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=عمرو+العدل&background=be123c&color=fff&size=150&font-size=0.3'">
+                                </div>
+                                <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">م / عمرو عبدالستار العدل</h4>
+                                <div class="inline-block px-4 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-black mb-5">المدير العام والمؤسس</div>
+                                <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">رؤية ثاقبة وخبرة عميقة في تطوير استراتيجيات السوق، يقود فريق العدل نحو القمة برؤية تواكب أحدث تكنولوجيات الطباعة.</p>
+                            </div>
                         </div>
-                        <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">م / عمرو عبدالستار العدل</h4>
-                        <div class="inline-block px-4 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-black mb-5">المدير العام والمؤسس</div>
-                        <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">رؤية ثاقبة وخبرة عميقة في تطوير استراتيجيات السوق، يقود فريق العدل نحو القمة برؤية تواكب أحدث تكنولوجيات الطباعة.</p>
-                    </div>
 
-                    <div class="min-w-[280px] md:min-w-[320px] bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 snap-center text-center group hover:-translate-y-2 transition-transform duration-300">
-                        <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-50 mb-6 group-hover:border-rose-200 transition-colors duration-300">
-                            <img loading="lazy" src="mohamed_fouad.jpg" onerror="this.src='https://ui-avatars.com/api/?name=محمد+فؤاد&background=be123c&color=fff&size=150&font-size=0.3'" alt="م / محمد فؤاد" class="w-full h-full object-cover">
+                        <!-- العضو 2 -->
+                        <div class="shrink-0 px-3 w-[280px] md:w-[320px]">
+                            <div class="bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 h-full text-center group-hover:-translate-y-2 transition-transform duration-300">
+                                <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-50 mb-6 transition-colors duration-300">
+                                    <img loading="lazy" src="mohamed_fouad.jpg" onerror="this.src='https://ui-avatars.com/api/?name=محمد+فؤاد&background=be123c&color=fff&size=150&font-size=0.3'" alt="م / محمد فؤاد" class="w-full h-full object-cover">
+                                </div>
+                                <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">م / محمد فؤاد</h4>
+                                <div class="inline-block px-4 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-black mb-5">مدير المبيعات</div>
+                                <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">متابعة مستمرة للسوق وتوفير أنسب الحلول وأنظمة التقسيط والسداد التي تضمن للعميل تحقيق أقصى استفادة.</p>
+                            </div>
                         </div>
-                        <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">م / محمد فؤاد</h4>
-                        <div class="inline-block px-4 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-black mb-5">مدير المبيعات</div>
-                        <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">متابعة مستمرة للسوق وتوفير أنسب الحلول وأنظمة التقسيط والسداد التي تضمن للعميل تحقيق أقصى استفادة.</p>
-                    </div>
 
-                    <div class="min-w-[280px] md:min-w-[320px] bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 snap-center text-center group hover:-translate-y-2 transition-transform duration-300">
-                        <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-600 mb-6 group-hover:border-rose-200 transition-colors duration-300">
-                            <img loading="lazy" src="ziad_aladl.jpg" onerror="this.src='https://ui-avatars.com/api/?name=زياد+العدل&background=be123c&color=fff&size=150&font-size=0.3'" alt="م / زياد العدل" class="w-full h-full object-cover">
+                        <!-- العضو 3 -->
+                        <div class="shrink-0 px-3 w-[280px] md:w-[320px]">
+                            <div class="bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 h-full text-center group-hover:-translate-y-2 transition-transform duration-300">
+                                <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-600 mb-6 transition-colors duration-300">
+                                    <img loading="lazy" src="ziad_aladl.jpg" onerror="this.src='https://ui-avatars.com/api/?name=زياد+العدل&background=be123c&color=fff&size=150&font-size=0.3'" alt="م / زياد العدل" class="w-full h-full object-cover">
+                                </div>
+                                <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">م / زياد العدل</h4>
+                                <div class="inline-block px-4 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-black mb-5">مدير الصيانة</div>
+                                <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">يشرف على تدريب وتوجيه فريق الصيانة، لضمان حل أصعب الأعطال الفنية باحترافية وسرعة.</p>
+                            </div>
                         </div>
-                        <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">م / زياد العدل</h4>
-                        <div class="inline-block px-4 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-black mb-5">مدير الصيانة</div>
-                        <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">يشرف على تدريب وتوجيه فريق الصيانة، لضمان حل أصعب الأعطال الفنية باحترافية وسرعة.</p>
-                    </div>
 
-                    <div class="min-w-[280px] md:min-w-[320px] bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 snap-center text-center group hover:-translate-y-2 transition-transform duration-300">
-                        <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-600 mb-6 group-hover:border-rose-200 transition-colors duration-300">
-                            <img loading="lazy" src="zahra_abdelFattah.jpg" onerror="this.src='https://ui-avatars.com/api/?name=زهرة+عبدالفتاح&background=be123c&color=fff&size=150&font-size=0.3'" alt="أ / زهرة عبدالفتاح" class="w-full h-full object-cover">
+                        <!-- العضو 4 -->
+                        <div class="shrink-0 px-3 w-[280px] md:w-[320px]">
+                            <div class="bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 h-full text-center group-hover:-translate-y-2 transition-transform duration-300">
+                                <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-600 mb-6 transition-colors duration-300">
+                                    <img loading="lazy" src="zahra_abdelFattah.jpg" onerror="this.src='https://ui-avatars.com/api/?name=زهرة+عبدالفتاح&background=be123c&color=fff&size=150&font-size=0.3'" alt="أ / زهرة عبدالفتاح" class="w-full h-full object-cover">
+                                </div>
+                                <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">أ / زهرة عبدالفتاح</h4>
+                                <div class="inline-block px-4 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-black mb-5">خدمة العملاء</div>
+                                <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">الوجه المبتسم للشركة، نضمن لك استجابة سريعة لبلاغات الأعطال واستفساراتك.</p>
+                            </div>
                         </div>
-                        <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">أ / زهرة عبدالفتاح</h4>
-                        <div class="inline-block px-4 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-black mb-5">خدمة العملاء</div>
-                        <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">الوجه المبتسم للشركة، نضمن لك استجابة سريعة لبلاغات الأعطال واستفساراتك.</p>
+
+                        <!-- تم تكرار العناصر برمجياً لضمان سلاسة الدوران اللانهائي -->
+                        <div class="shrink-0 px-3 w-[280px] md:w-[320px]">
+                            <div class="bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 h-full text-center group-hover:-translate-y-2 transition-transform duration-300">
+                                <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-600 mb-6 transition-colors duration-300 shadow-[0_0_15px_rgba(190,18,60,0.2)] flex items-center justify-center bg-gray-50">
+                                    <img loading="lazy" src="manager.jpg" alt="م / عمرو عبدالستار العدل" class="max-w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=عمرو+العدل&background=be123c&color=fff&size=150&font-size=0.3'">
+                                </div>
+                                <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">م / عمرو عبدالستار العدل</h4>
+                                <div class="inline-block px-4 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-black mb-5">المدير العام والمؤسس</div>
+                                <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">رؤية ثاقبة وخبرة عميقة في تطوير استراتيجيات السوق، يقود فريق العدل نحو القمة برؤية تواكب أحدث تكنولوجيات الطباعة.</p>
+                            </div>
+                        </div>
+                        <div class="shrink-0 px-3 w-[280px] md:w-[320px]">
+                            <div class="bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 h-full text-center group-hover:-translate-y-2 transition-transform duration-300">
+                                <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-50 mb-6 transition-colors duration-300">
+                                    <img loading="lazy" src="mohamed_fouad.jpg" onerror="this.src='https://ui-avatars.com/api/?name=محمد+فؤاد&background=be123c&color=fff&size=150&font-size=0.3'" alt="م / محمد فؤاد" class="w-full h-full object-cover">
+                                </div>
+                                <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">م / محمد فؤاد</h4>
+                                <div class="inline-block px-4 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-black mb-5">مدير المبيعات</div>
+                                <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">متابعة مستمرة للسوق وتوفير أنسب الحلول وأنظمة التقسيط والسداد التي تضمن للعميل تحقيق أقصى استفادة.</p>
+                            </div>
+                        </div>
+                        <div class="shrink-0 px-3 w-[280px] md:w-[320px]">
+                            <div class="bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 h-full text-center group-hover:-translate-y-2 transition-transform duration-300">
+                                <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-600 mb-6 transition-colors duration-300">
+                                    <img loading="lazy" src="ziad_aladl.jpg" onerror="this.src='https://ui-avatars.com/api/?name=زياد+العدل&background=be123c&color=fff&size=150&font-size=0.3'" alt="م / زياد العدل" class="w-full h-full object-cover">
+                                </div>
+                                <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">م / زياد العدل</h4>
+                                <div class="inline-block px-4 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-black mb-5">مدير الصيانة</div>
+                                <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">يشرف على تدريب وتوجيه فريق الصيانة، لضمان حل أصعب الأعطال الفنية باحترافية وسرعة.</p>
+                            </div>
+                        </div>
+                        <div class="shrink-0 px-3 w-[280px] md:w-[320px]">
+                            <div class="bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 h-full text-center group-hover:-translate-y-2 transition-transform duration-300">
+                                <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-rose-600 mb-6 transition-colors duration-300">
+                                    <img loading="lazy" src="zahra_abdelFattah.jpg" onerror="this.src='https://ui-avatars.com/api/?name=زهرة+عبدالفتاح&background=be123c&color=fff&size=150&font-size=0.3'" alt="أ / زهرة عبدالفتاح" class="w-full h-full object-cover">
+                                </div>
+                                <h4 class="text-xl font-black text-rose-950 mb-2 font-cairo">أ / زهرة عبدالفتاح</h4>
+                                <div class="inline-block px-4 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-black mb-5">خدمة العملاء</div>
+                                <p class="text-gray-500 text-sm leading-relaxed font-medium border-t border-gray-50 pt-5">الوجه المبتسم للشركة، نضمن لك استجابة سريعة لبلاغات الأعطال واستفساراتك.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1341,7 +1399,7 @@
             
             track.prepend(track.lastElementChild);
             track.style.transition = 'none';
-            track.style.transform = `translateX(${itemWidth}px)`;
+            track.style.transform = `translateX(-${itemWidth}px)`;
             
             void track.offsetWidth; 
             
@@ -1350,6 +1408,51 @@
             
             setTimeout(() => {
                 isTopSliderAnimating = false;
+            }, 400);
+        }
+
+        // الدوال الخاصة بسلايدر فريق العمل (دوران لا نهائي)
+        let isTeamSliderAnimating = false;
+        let autoPlayTeamSlider;
+
+        function nextTeamMember() {
+            if (isTeamSliderAnimating) return;
+            const track = document.getElementById('teamSliderTrack');
+            if(!track || track.children.length <= 1) return;
+            
+            isTeamSliderAnimating = true;
+            const itemWidth = track.firstElementChild.offsetWidth;
+            
+            track.style.transition = 'transform 0.4s ease-in-out';
+            track.style.transform = `translateX(${itemWidth}px)`;
+            
+            setTimeout(() => {
+                track.style.transition = 'none';
+                track.style.transform = 'translateX(0)';
+                track.appendChild(track.firstElementChild);
+                isTeamSliderAnimating = false;
+            }, 400);
+        }
+
+        function prevTeamMember() {
+            if (isTeamSliderAnimating) return;
+            const track = document.getElementById('teamSliderTrack');
+            if(!track || track.children.length <= 1) return;
+            
+            isTeamSliderAnimating = true;
+            const itemWidth = track.firstElementChild.offsetWidth;
+            
+            track.prepend(track.lastElementChild);
+            track.style.transition = 'none';
+            track.style.transform = `translateX(-${itemWidth}px)`;
+            
+            void track.offsetWidth; 
+            
+            track.style.transition = 'transform 0.4s ease-in-out';
+            track.style.transform = 'translateX(0)';
+            
+            setTimeout(() => {
+                isTeamSliderAnimating = false;
             }, 400);
         }
 
@@ -2132,6 +2235,192 @@
             }
         ];
 
+        function renderProducts(categoryFilter = 'all', page = 1) {
+            currentCategory = categoryFilter;
+            currentPage = page;
+
+            const catalogGrid = document.getElementById('catalogGrid');
+            const paginationContainer = document.getElementById('paginationContainer');
+            const searchInput = document.getElementById('searchInput');
+            const query = searchInput ? searchInput.value.trim().toLowerCase() : "";
+
+            let filtered = [...productsDB].reverse();
+            if (categoryFilter !== 'all') {
+                filtered = filtered.filter(p => p.category === categoryFilter);
+            }
+            if (query !== "") {
+                filtered = filtered.filter(p => p.name.toLowerCase().includes(query) || p.price.toLowerCase().includes(query) || p.functions.toLowerCase().includes(query));
+            }
+
+            const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+            const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+            const paginatedProducts = filtered.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+            let gridContent = '';
+            if (filtered.length === 0) {
+                if (query !== "") {
+                    gridContent = `
+                        <div class="col-span-full flex flex-col items-center justify-center py-20 text-gray-400 font-bold text-lg">
+                            <i class="fa fa-search-minus text-5xl mb-4 text-gray-300"></i>
+                            <p>لا توجد منتجات مطابقة لعملية البحث.</p>
+                        </div>`;
+                } else {
+                    gridContent = `
+                        <div class="col-span-full flex flex-col items-center justify-center py-16 px-4 text-center bg-gradient-to-b from-white to-rose-50/30 rounded-[3rem] shadow-sm border border-rose-100/50 w-full max-w-4xl mx-auto my-8 relative overflow-hidden group">
+                            <div class="absolute top-0 right-0 w-40 h-40 bg-rose-100 rounded-full -mr-10 -mt-10 blur-3xl transition-transform duration-700 group-hover:scale-150 pointer-events-none"></div>
+                            
+                            <div class="relative z-10 w-24 h-24 bg-rose-100 text-rose-600 rounded-3xl flex items-center justify-center text-4xl mb-6 shadow-sm transform group-hover:-translate-y-2 transition-transform duration-500">
+                                <i class="fa fa-boxes-packing"></i>
+                                <div class="absolute -bottom-2 -right-2 w-10 h-10 bg-rose-700 text-white rounded-full flex items-center justify-center text-sm border-4 border-white shadow-sm animate-bounce">
+                                    <i class="fa fa-clock"></i>
+                                </div>
+                            </div>
+                            
+                            <h3 class="relative z-10 text-2xl md:text-3xl font-black text-rose-950 font-cairo mb-4 tracking-wide">قريباً.. أحدث المنتجات!</h3>
+                            
+                            <p class="relative z-10 text-gray-500 font-bold text-base md:text-lg max-w-xl leading-relaxed mb-8">
+                                نعمل بشغف على تجهيز وإضافة تشكيلة مميزة من المنتجات في هذا القسم لتلبية كافة احتياجاتكم.. ترقبوا الإضافة قريباً!
+                            </p>
+                            
+                            <button onclick="navigateTo('products', 'all', true, 0, null, 1)" class="relative z-10 bg-rose-700 text-white hover:bg-rose-800 px-8 py-3.5 rounded-2xl font-black transition-all transform hover:-translate-y-1 shadow-lg flex items-center gap-3">
+                                <i class="fa fa-th-large"></i> تصفح المنتجات المتوفرة حالياً
+                            </button>
+                        </div>`;
+                }
+            } else {
+                paginatedProducts.forEach(prod => {
+                    gridContent += `
+                        <div class="group flex flex-col w-full max-w-[320px] bg-transparent transition-all duration-300 py-4 mx-auto">
+                            <div class="h-48 md:h-64 flex items-center justify-center mb-6 relative group-hover:scale-105 transition-transform duration-500">
+                                <img loading="lazy" src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain drop-shadow-xl">
+                                ${prod.condition ? `<div class="absolute top-2 left-2 bg-rose-700 text-white text-xs font-black px-3 py-1 rounded-full shadow-md z-10">${prod.condition}</div>` : ''}
+                            </div>
+                            <h3 class="text-lg md:text-xl font-black text-rose-950 mb-3 text-center font-cairo leading-tight">${prod.name}</h3>
+                            
+                            <ul class="space-y-2 mb-6 text-xs font-bold text-gray-600 flex-1 px-2">
+                                <li class="flex items-start gap-2"><i class="fa fa-bolt text-rose-600 mt-1"></i> <span class="flex flex-col gap-1"><strong>السرعة:</strong> <span>${prod.speed}</span></span></li>
+                            </ul>
+                            
+                            <div class="mt-auto flex flex-col gap-3">
+                                <div class="flex items-center justify-between px-2">
+                                    <span class="text-rose-900 font-black text-base md:text-lg">${prod.price}</span>
+                                    <button onclick="openProductDetails('${prod.name}')" class="text-rose-600 bg-rose-50 hover:bg-rose-100 px-4 py-1.5 rounded-lg font-bold text-xs transition">تفاصيل</button>
+                                </div>
+                                <button onclick="orderNowWA('${prod.name}')" class="btn-heartbeat w-full bg-rose-700 text-white py-3.5 rounded-2xl font-black text-sm hover:bg-rose-800 transition shadow-md">طلب شراء عبر الواتساب</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            if (catalogGrid) catalogGrid.innerHTML = gridContent;
+
+            if (paginationContainer) {
+                let paginationHTML = '';
+                if (totalPages > 1) {
+                    for (let i = 1; i <= totalPages; i++) {
+                        const activeClass = i === currentPage 
+                            ? 'bg-rose-700 text-white shadow-lg transform scale-110' 
+                            : 'bg-gray-50 text-gray-500 border border-gray-200 hover:border-rose-300 hover:text-rose-700 hover:-translate-y-1';
+                        paginationHTML += `<button onclick="changePage(${i})" class="w-10 h-10 md:w-12 md:h-12 rounded-2xl font-black transition-all duration-300 flex items-center justify-center ${activeClass}">${i}</button>`;
+                    }
+                }
+                paginationContainer.innerHTML = paginationHTML;
+            }
+        }
+
+        function changePage(page) {
+            if (history.state) {
+                history.replaceState({ ...history.state, pNum: page, scrollY: window.scrollY }, '');
+            }
+            renderProducts(currentCategory, page);
+            const productsSection = document.getElementById('page-products');
+            if (productsSection) {
+                const yOffset = -80;
+                const y = productsSection.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                window.scrollTo({top: y, behavior: 'smooth'});
+            }
+        }
+
+        function openProductDetails(productName, addToHistory = true, scrollPos = 0, isImmediate = false) {
+            const prod = productsDB.find(p => p.name === productName);
+            if (!prod) return;
+
+            const content = document.getElementById('productDetailsContent');
+            content.innerHTML = `
+                <div class="w-full flex flex-col lg:flex-row items-start gap-8 lg:gap-12 w-full">
+                    
+                    <div class="w-full lg:w-4/12 relative lg:sticky lg:top-32 shrink-0 flex justify-center pt-4">
+                        ${prod.condition ? `<div class="absolute top-0 right-4 bg-rose-700 text-white text-xs md:text-sm font-black px-4 py-1.5 rounded-full shadow-md z-10">${prod.condition}</div>` : ''}
+                        <img src="${prod.image}" alt="${prod.name}" class="w-full h-auto max-h-[350px] lg:max-h-[500px] object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-700">
+                    </div>
+
+                    <div class="w-full lg:w-8/12 flex flex-col justify-center">
+                        <h1 class="text-2xl md:text-3xl lg:text-4xl font-black font-cairo text-rose-950 mb-5 leading-tight text-center">${prod.name}</h1>
+                        
+                        ${prod.description ? `<p class="text-gray-600 mb-6 font-bold leading-relaxed text-sm md:text-base border-r-4 border-rose-600 pr-4">${prod.description}</p>` : ''}
+                        
+                        <div class="flex flex-col gap-6 w-full mb-6">
+                            <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 font-bold text-base md:text-lg ${prod.description ? 'border-r-4 border-rose-100 pr-4' : 'border-r-4 border-rose-600 pr-4'}">
+                                <li class="flex items-start gap-2"><i class="fa fa-print text-rose-600 mt-1"></i> <span>الوظائف: ${prod.functions}</span></li>
+                                <li class="flex items-start gap-2"><i class="fa fa-bolt text-rose-600 mt-1"></i> <span>السرعة: ${prod.speed}</span></li>
+                                <li class="flex items-start gap-2"><i class="fa fa-expand text-rose-600 mt-1"></i> <span>الدقة: ${prod.resolution}</span></li>
+                                <li class="flex items-start gap-2"><i class="fa fa-file-alt text-rose-600 mt-1"></i> <span>مقاس الورق: ${prod.paperSize}</span></li>
+                            </ul>
+
+                            ${prod.specs && prod.specs.length > 0 ? `
+                            <div class="bg-gray-50 rounded-2xl p-5 border border-gray-100 shadow-inner w-full mt-2">
+                                <h4 class="font-black text-rose-900 mb-4 font-cairo text-lg border-b border-gray-200 pb-2">المواصفات الفنية</h4>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm font-bold text-gray-700">
+                                    ${prod.specs.map(spec => `
+                                        <div class="flex flex-col bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:border-rose-100 transition-colors">
+                                            <span class="text-rose-700 text-xs md:text-sm font-black uppercase mb-1.5 tracking-wider">${spec.label}</span>
+                                            <span class="text-gray-900 font-bold text-base md:text-lg">${spec.value}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            ` : ''}
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row items-center gap-4 mt-auto w-full pt-4 border-t border-gray-100">
+                            <div class="text-right sm:text-right shrink-0">
+                                <span class="text-gray-400 text-xs font-bold block mb-1">السعر</span>
+                                <span class="text-2xl md:text-3xl font-black text-rose-900">${prod.price}</span>
+                            </div>
+                            <button onclick="orderNowWA('${prod.name}')" class="btn-heartbeat w-full sm:w-auto flex-1 bg-rose-700 text-white py-3.5 md:py-4 rounded-2xl font-black text-base hover:bg-rose-800 transition shadow-xl flex items-center justify-center gap-3">طلب عبر واتساب <i class="fab fa-whatsapp text-2xl"></i></button>
+                        </div>
+                    </div>
+
+                </div>
+            `;
+
+            const slider = document.getElementById('similarProductsSlider');
+            slider.innerHTML = '';
+            const similarProducts = productsDB.filter(p => p.name !== productName && (p.category === 'bw-copiers' || p.category === 'color-copiers'));
+            
+            if (similarProducts.length > 0) {
+                similarProducts.forEach(sim => {
+                    slider.insertAdjacentHTML('beforeend', `
+                        <div class="w-[220px] md:w-[260px] shrink-0 snap-center group cursor-pointer bg-white rounded-[2rem] shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 p-5 flex flex-col" onclick="openProductDetails('${sim.name}')">
+                            <div class="h-36 md:h-48 mb-5 flex items-center justify-center relative group-hover:scale-105 transition-transform duration-500">
+                                <img loading="lazy" src="${sim.image}" alt="${sim.name}" class="max-w-full max-h-full object-contain drop-shadow-md">
+                            </div>
+                            <h4 class="text-sm md:text-base font-black text-rose-950 text-center leading-tight mb-3 font-cairo">${sim.name}</h4>
+                            <div class="mt-auto pt-4 border-t border-gray-50 flex items-center justify-between">
+                                <span class="text-rose-900 font-black text-xs md:text-sm">${sim.price}</span>
+                                <span class="bg-rose-50 text-rose-700 px-4 py-1.5 rounded-xl text-[10px] font-bold group-hover:bg-rose-700 group-hover:text-white transition-colors shadow-sm">التفاصيل</span>
+                            </div>
+                        </div>
+                    `);
+                });
+            } else {
+                slider.innerHTML = `<div class="w-full text-center text-gray-400 font-bold py-10">لا توجد منتجات مشابهة حالياً</div>`;
+            }
+
+            navigateTo('product-details', 'all', addToHistory, scrollPos, productName, 1, isImmediate);
+        }
+
         function renderArticlesGrid() {
             const grid = document.getElementById('articlesGrid');
             if (!grid) return;
@@ -2313,6 +2602,42 @@
                 }
                 
                 startTopSliderAutoPlay();
+            }
+
+            // Team Slider Logic
+            const teamSliderTrack = document.getElementById('teamSliderTrack');
+            if (teamSliderTrack) {
+                const startTeamSliderAutoPlay = () => {
+                    autoPlayTeamSlider = setInterval(() => {
+                        nextTeamMember();
+                    }, 3500);
+                };
+
+                const stopTeamSliderAutoPlay = () => {
+                    clearInterval(autoPlayTeamSlider);
+                };
+
+                const teamSliderWrapper = document.getElementById('teamSliderWrapper');
+                if(teamSliderWrapper) {
+                    teamSliderWrapper.addEventListener('mouseenter', stopTeamSliderAutoPlay);
+                    teamSliderWrapper.addEventListener('mouseleave', startTeamSliderAutoPlay);
+                    
+                    let touchStartX = 0;
+                    let touchEndX = 0;
+                    teamSliderWrapper.addEventListener('touchstart', e => {
+                        touchStartX = e.changedTouches[0].screenX;
+                        stopTeamSliderAutoPlay();
+                    }, {passive: true});
+                    
+                    teamSliderWrapper.addEventListener('touchend', e => {
+                        touchEndX = e.changedTouches[0].screenX;
+                        if (touchStartX - touchEndX > 50) nextTeamMember();
+                        if (touchEndX - touchStartX > 50) prevTeamMember();
+                        startTeamSliderAutoPlay();
+                    }, {passive: true});
+                }
+                
+                startTeamSliderAutoPlay();
             }
 
             // Populate Home Articles
