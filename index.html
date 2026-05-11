@@ -179,6 +179,16 @@
         }
         .flash-title { animation: colorFlash 4s infinite; }
 
+        @keyframes textGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .text-gradient-anim {
+            background-size: 200% auto;
+            animation: textGradient 3s ease-in-out infinite;
+        }
+
         @keyframes heartbeat {
             0%, 100% { transform: scale(1); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); }
             50% { transform: scale(1.04); box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2); }
@@ -409,16 +419,30 @@
                 </div>
             </div>
 
-            <!-- سلايدر أحدث ماكينات التصوير (مدمج مع الخلفية) -->
-            <div class="w-full max-w-6xl mx-auto mb-10 relative group/topslider flex flex-col items-center">
-                <div class="w-full relative px-6 md:px-10">
-                    <button onclick="scrollSlider('topCopiersSlider', 1)" class="absolute right-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 md:w-10 md:h-10 bg-white border border-rose-100 hover:bg-rose-700 hover:text-white hover:border-transparent rounded-full flex items-center justify-center text-rose-900 transition-all duration-300 shadow-md"><i class="fa fa-chevron-right text-sm"></i></button>
-                    <button onclick="scrollSlider('topCopiersSlider', -1)" class="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 md:w-10 md:h-10 bg-white border border-rose-100 hover:bg-rose-700 hover:text-white hover:border-transparent rounded-full flex items-center justify-center text-rose-900 transition-all duration-300 shadow-md"><i class="fa fa-chevron-left text-sm"></i></button>
+            <!-- عنوان أحدث المنتجات -->
+            <div class="text-center mb-4 relative w-full max-w-6xl mx-auto z-10">
+                <div class="inline-block relative">
+                    <h2 class="text-2xl md:text-4xl font-black font-cairo text-transparent bg-clip-text bg-gradient-to-r from-rose-900 via-rose-500 to-rose-900 text-gradient-anim pb-2">
+                        أحدث ماكينات التصوير المضافة
+                    </h2>
+                    <span class="absolute -top-2 -right-5 text-xl text-yellow-500 animate-bounce"><i class="fa fa-star"></i></span>
+                </div>
+                <p class="text-gray-500 font-bold text-sm mt-1 font-tajawal">تصفح أحدث الإصدارات المتوفرة في معارضنا</p>
+            </div>
 
-                    <div id="topCopiersSlider" class="flex overflow-x-auto gap-8 pb-4 snap-x snap-mandatory hide-scrollbar scroll-smooth justify-start md:justify-center">
+            <!-- سلايدر أحدث ماكينات التصوير اللانهائي المطور -->
+            <div id="topCopiersSliderWrapper" class="w-full max-w-6xl mx-auto mb-16 relative flex items-center justify-center px-4 group">
+                <!-- الأزرار مرئية ومتاحة بشكل دائم -->
+                <button onclick="prevTopCopier()" class="absolute right-2 md:right-4 z-20 w-10 h-10 md:w-12 md:h-12 bg-white border border-rose-100 hover:bg-rose-700 hover:text-white hover:border-transparent rounded-full flex items-center justify-center text-rose-900 transition-all duration-300 shadow-xl transform hover:scale-110 focus:outline-none"><i class="fa fa-chevron-right text-lg md:text-xl"></i></button>
+                
+                <!-- الحاوية المخفية التي يتم تحريك المسار بداخلها -->
+                <div class="overflow-hidden w-full mx-10 md:mx-16" dir="rtl">
+                    <div id="topCopiersSliderTrack" class="flex w-full transition-transform duration-500 ease-in-out">
                         <!-- سيتم الحقن بواسطة الجافاسكريبت -->
                     </div>
                 </div>
+
+                <button onclick="nextTopCopier()" class="absolute left-2 md:left-4 z-20 w-10 h-10 md:w-12 md:h-12 bg-white border border-rose-100 hover:bg-rose-700 hover:text-white hover:border-transparent rounded-full flex items-center justify-center text-rose-900 transition-all duration-300 shadow-xl transform hover:scale-110 focus:outline-none"><i class="fa fa-chevron-left text-lg md:text-xl"></i></button>
             </div>
 
             <!-- التقسيم الرئيسي (شريط جانبي + منتجات) -->
@@ -1284,10 +1308,55 @@
 
         if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
 
+        // الدوران اللانهائي المرن لسلايدر أحدث المنتجات
+        let isTopSliderAnimating = false;
+        let autoPlayTopSlider;
+
+        function nextTopCopier() {
+            if (isTopSliderAnimating) return;
+            const track = document.getElementById('topCopiersSliderTrack');
+            if(!track || track.children.length <= 1) return;
+            
+            isTopSliderAnimating = true;
+            const itemWidth = track.firstElementChild.offsetWidth;
+            
+            track.style.transition = 'transform 0.4s ease-in-out';
+            track.style.transform = `translateX(${itemWidth}px)`;
+            
+            setTimeout(() => {
+                track.style.transition = 'none';
+                track.style.transform = 'translateX(0)';
+                track.appendChild(track.firstElementChild);
+                isTopSliderAnimating = false;
+            }, 400);
+        }
+
+        function prevTopCopier() {
+            if (isTopSliderAnimating) return;
+            const track = document.getElementById('topCopiersSliderTrack');
+            if(!track || track.children.length <= 1) return;
+            
+            isTopSliderAnimating = true;
+            const itemWidth = track.firstElementChild.offsetWidth;
+            
+            track.prepend(track.lastElementChild);
+            track.style.transition = 'none';
+            track.style.transform = `translateX(-${itemWidth}px)`;
+            
+            void track.offsetWidth; 
+            
+            track.style.transition = 'transform 0.4s ease-in-out';
+            track.style.transform = 'translateX(0)';
+            
+            setTimeout(() => {
+                isTopSliderAnimating = false;
+            }, 400);
+        }
+
         function scrollSlider(sliderId, direction) {
             const container = document.getElementById(sliderId);
-            if(container) {
-                const scrollAmount = direction * -300; 
+            if(container && container.firstElementChild) {
+                const scrollAmount = direction * -(container.firstElementChild.offsetWidth + 16); 
                 container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
             }
         }
@@ -1310,13 +1379,11 @@
                 history.replaceState(currentState, ''); 
             }
             
-            // مسح مربع البحث عند الانتقال لأي صفحة أخرى (إلا إذا كان الانتقال بسبب البحث نفسه)
             const searchInput = document.getElementById('searchInput');
             if (searchInput && !fromSearch) {
                 searchInput.value = '';
             }
 
-            // إغلاق القوائم المنسدلة (للكمبيوتر) تلقائياً عند اختيار قسم
             document.querySelectorAll('.dropdown-container').forEach(container => {
                 container.style.pointerEvents = 'none';
                 setTimeout(() => container.style.pointerEvents = 'auto', 150);
@@ -1407,12 +1474,10 @@
             const target = document.getElementById(id);
             const isHidden = target.classList.contains('hidden');
             
-            // إغلاق جميع القوائم الأخرى المفتوحة في القائمة الجانبية
             document.querySelectorAll('#mobile-menu .mobile-card > div[id^="m-"]').forEach(el => {
                 el.classList.add('hidden');
             });
 
-            // فتح القائمة التي تم النقر عليها (إذا كانت مغلقة)
             if (isHidden) {
                 target.classList.remove('hidden');
             }
@@ -2072,142 +2137,74 @@
             }
         ];
 
-        function renderArticlesGrid() {
-            const grid = document.getElementById('articlesGrid');
-            if (!grid) return;
-            grid.innerHTML = '';
-            grid.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12";
-            articlesDB.forEach(art => {
-                grid.insertAdjacentHTML('beforeend', `
-                    <div class="flex flex-col group cursor-pointer bg-transparent transition-transform duration-300 hover:-translate-y-2" onclick="openSingleArticle('${art.id}')">
-                        <div class="w-full h-56 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform duration-500">
-                            <img loading="lazy" src="${art.image}" class="max-w-full max-h-full object-contain drop-shadow-md">
-                        </div>
-                        <div class="text-right flex-1 flex flex-col px-2">
-                            <span class="text-rose-700 text-[10px] font-black mb-2 block tracking-widest">${art.date}</span>
-                            <h3 class="text-lg md:text-xl font-extrabold text-rose-950 font-almarai leading-snug group-hover:text-rose-700 transition-colors">${art.title}</h3>
-                            <div class="mt-auto pt-4 flex items-center gap-2 text-rose-900 font-bold text-xs"><span>اقرأ التفاصيل</span><i class="fa fa-arrow-left mt-1 transform group-hover:-translate-x-2 transition-transform duration-300"></i></div>
-                        </div>
-                    </div>
-                `);
-            });
-        }
-
-        function openSingleArticle(articleId, addToHistory = true, scrollPos = 0, isImmediate = false) {
-            const article = articlesDB.find(a => a.id === articleId);
-            if (!article) return;
-            const container = document.getElementById('singleArticleContainer');
-            if (container) {
-                container.innerHTML = `
-                    <div class="bg-white rounded-[3rem] shadow-xl border border-gray-100 overflow-hidden mb-12">
-                        <div class="w-full h-[300px] md:h-[450px] flex items-center justify-center p-8 bg-gray-50 border-b border-gray-100">
-                            <img src="${article.image}" alt="${article.title}" class="max-w-full max-h-full object-contain drop-shadow-xl hover:scale-105 transition-transform duration-700">
-                        </div>
-                        <div class="p-8 md:p-14">
-                            <span class="inline-block bg-rose-50 text-rose-700 px-4 py-1.5 rounded-full text-[11px] font-black tracking-widest mb-6 shadow-sm border border-rose-100">${article.date}</span>
-                            <h1 class="text-3xl md:text-5xl font-black text-rose-950 mb-8 font-cairo leading-tight">${article.title}</h1>
-                            <div class="article-body text-gray-600 leading-loose text-lg md:text-xl font-bold">
-                                ${article.content}
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-            navigateTo('single-article', 'all', addToHistory, scrollPos, articleId, 1, isImmediate);
-        }
-
-        const newsDB = [
-            {
-                id: 'news-1',
-                title: 'حكاية قصة النصر: ذكرى تحرير أرض الفيروز في 25 أبريل',
-                image: 'news_images/sinai.jpg',
-                date: '25 أبريل',
-                content: `
-                    <p class="mb-6 text-lg font-bold text-gray-700 leading-loose">في مثل هذا اليوم من كل عام، تتوقف عقارب الساعة لتنحني إجلالاً لذكرى غالية على قلب كل مصري، ذكرى يوم 25 أبريل، اليوم الذي استعادت فيه مصر كرامتها كاملة غير منقوصة، وارتفع فيه العلم المصري ليرفرف عالياً في سماء سيناء، معلناً للعالم أجمع أننا أسياد هذه الأرض وحراسها.</p>
-                    <p class="mb-8 text-lg font-bold text-gray-700 leading-loose">اليوم، لا نحتفل فقط باسترداد جغرافيا الأرض، بل نحتفل باليوم الذي تحول فيه الوجع إلى فرحة، وأصبح فيه الحلم المستحيل حقيقة ملموسة بفضل إرادة لا تلين وعزيمة لا تكسر.</p>
-
-                    <h4 class="text-2xl font-black text-rose-950 mb-4 font-cairo border-r-4 border-rose-600 pr-4">لأرض الفيروز.. رمال من ذهب وشمس حرية</h4>
-                    <p class="mb-8 text-lg font-bold text-gray-600 leading-loose">سيناء ليست مجرد قطعة أرض، بل هي قطعة من الروح، رمالها التي تشبه الذهب لم تكن يوماً رخيصة، بل سُقيت بدماء طاهرة لتبقى مصرية الهوى والمنتمى. شمس الحرية التي تشرق اليوم على جبال سانت كاترين وشواطئ شرم الشيخ هي ثمرة كفاح طويل خاضته الدولة المصرية، عسكرياً ودبلوماسياً، حتى عادت الأرض إلى حضن الوطن الأم.</p>
-
-                    <h4 class="text-2xl font-black text-rose-950 mb-4 font-cairo border-r-4 border-rose-600 pr-4">لأبطالنا الذين سطروا ملاحم العزة</h4>
-                    <p class="mb-8 text-lg font-bold text-gray-600 leading-loose">في هذه الذكرى، نوجه تحية إجلال وتقدير لأبطال القوات المسلحة المصرية، الذين سطروا بدمائهم وتضحياتهم أعظم ملاحم الفداء. هم الذين جعلوا من أجسادهم جسراً للعبور ومن إرادتهم سلاحاً لا يقهر، لتبقى رؤوسنا مرفوعة وكلمتنا مسموعة.</p>
-
-                    <h4 class="text-2xl font-black text-rose-950 mb-4 font-cairo border-r-4 border-rose-600 pr-4">لكل مصري يبني ويحلم</h4>
-                    <p class="mb-4 text-lg font-bold text-gray-600 leading-loose">الاحتفال بتحرير سيناء هو دعوة متجددة لكل مصري مخلص، يساهم اليوم بعرقه في بناء وتنمية هذه الأرض المقدسة. إن معركة التنمية التي تشهدها سيناء الآن هي استكمال لمعركة التحرير، فالحفاظ على الأرض يكون بالبناء والتعمير بقدر ما يكون بالدفاع والذود عنها.</p>
-                    <p class="mb-8 text-lg font-bold text-gray-600 leading-loose">كل مصري يبني ويحلم ويكمل المشوار بحب لبلده هو بطل في ميدانه، وهو الامتداد الطبيعي لجيل النصر الذي لم يعرف اليأس أبداً.</p>
-
-                    <h4 class="text-2xl font-black text-rose-950 mb-4 font-cairo border-r-4 border-rose-600 pr-4">دعاء للوطن والأمة</h4>
-                    <p class="mb-8 text-lg font-bold text-gray-600 leading-loose">في هذه المناسبة الوطنية الغالية، نسأل الله عز وجل أن يديم على مصرنا الغالية نعمة الأمن والأمان، وأن تظل دائماً منارة للسلام والقوة. كما نسأله سبحانه أن يمنّ على كافة أوطاننا العربية بالأمن والأمان والسلام الدائم، وأن يحفظ شعوبنا من كل سوء.</p>
-
-                    <p class="text-rose-700 font-black text-xl text-center mt-10 p-8 bg-rose-50 rounded-3xl border border-rose-100 shadow-inner">كل سنة ومصر طيبة وبألف خير.. كل سنة وإحنا ببلدنا فخورين. 🇪🇬</p>
-                `
-            }
-        ];
-
-        function renderNewsGrid() {
-            const grid = document.getElementById('newsGrid');
-            if (!grid) return;
-            grid.innerHTML = '';
-            newsDB.forEach(item => {
-                grid.insertAdjacentHTML('beforeend', `
-                    <div class="flex flex-col group cursor-pointer bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-2" onclick="openSingleNews('${item.id}')">
-                        <div class="w-full h-56 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform duration-500">
-                            <img loading="lazy" src="${item.image}" class="max-w-full max-h-full object-contain drop-shadow-md" onerror="handleAdError(this, 'pc')">
-                        </div>
-                        <div class="p-6 text-right flex-1 flex flex-col">
-                            <span class="text-gray-400 text-[10px] font-black mb-3 block tracking-widest"><i class="fa fa-calendar-alt text-rose-600 ml-1"></i> ${item.date}</span>
-                            <h3 class="text-xl font-black text-rose-950 font-cairo leading-snug mb-4 group-hover:text-rose-700 transition-colors">${item.title}</h3>
-                            <div class="mt-auto flex items-center gap-2 text-rose-700 font-bold text-sm border-t border-gray-50 pt-4"><span>التفاصيل</span><i class="fa fa-arrow-left mt-1 transform group-hover:-translate-x-2 transition-transform duration-300"></i></div>
-                        </div>
-                    </div>
-                `);
-            });
-        }
-
-        function openSingleNews(newsId, addToHistory = true, scrollPos = 0, isImmediate = false) {
-            const newsItem = newsDB.find(n => n.id === newsId);
-            if (!newsItem) return;
-            const container = document.getElementById('singleNewsContainer');
-            if (container) {
-                container.innerHTML = `
-                    <div class="bg-white rounded-[3rem] shadow-xl border border-gray-100 overflow-hidden mb-12">
-                        <div class="w-full h-[250px] md:h-[400px] flex items-center justify-center bg-gray-50 border-b border-gray-50">
-                            <img src="${newsItem.image}" alt="${newsItem.title}" class="max-w-full max-h-full object-contain drop-shadow-2xl" onerror="handleAdError(this, 'pc')">
-                        </div>
-                        <div class="p-8 md:p-14">
-                            <span class="inline-block text-rose-700 bg-rose-50 px-4 py-1.5 rounded-full text-sm font-black tracking-widest mb-6 border border-rose-100"><i class="fa fa-calendar-alt ml-1"></i> ${newsItem.date}</span>
-                            <h1 class="text-3xl md:text-5xl font-black text-rose-950 mb-10 font-cairo leading-tight">${newsItem.title}</h1>
-                            <div class="article-body text-gray-600 leading-loose text-lg font-bold">
-                                ${newsItem.content}
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-            navigateTo('single-news', 'all', addToHistory, scrollPos, newsId, 1, isImmediate);
-        }
-
         document.addEventListener('DOMContentLoaded', () => {
             const path = window.location.hash.substring(1) || 'start';
             navigateTo(path, 'all', false, 0, null, 1, true);
 
+            // إخفاء قائمة المنتجات في الموبايل بشكل افتراضي
+            const homeCategoriesGrid = document.getElementById('homeCategoriesGrid');
+            const homeCatToggleBtn = document.getElementById('homeCatToggleBtn');
+            if (homeCategoriesGrid && homeCatToggleBtn && window.innerWidth < 768) {
+                homeCategoriesGrid.classList.add('hidden');
+                homeCatToggleBtn.innerHTML = 'إظهار القائمة <i class="fa fa-chevron-down"></i>';
+            }
+
             // Populate Top Copiers Slider (أحدث 5 ماكينات تصوير)
-            const topCopiersContainer = document.getElementById('topCopiersSlider');
+            const topCopiersContainer = document.getElementById('topCopiersSliderTrack');
             if (topCopiersContainer) {
                 // تصفية المنتجات لجلب ماكينات التصوير فقط (ألوان أو أبيض وأسود) وعكس الترتيب لجلب الأحدث ثم قص أول 5
                 const copiers = productsDB.filter(p => p.category === 'bw-copiers' || p.category === 'color-copiers').reverse().slice(0, 5);
                 
                 copiers.forEach(prod => {
                     topCopiersContainer.insertAdjacentHTML('beforeend', `
-                        <div class="w-[140px] md:w-[200px] shrink-0 snap-center flex flex-col items-center justify-center cursor-pointer hover:scale-110 transition-transform duration-500" onclick="openProductDetails('${prod.name}')">
-                            <div class="h-32 md:h-44 w-full flex items-center justify-center mb-3 relative group-hover:drop-shadow-2xl">
-                                <div class="absolute inset-0 bg-rose-100/40 blur-2xl rounded-full scale-50 opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
-                                <img loading="lazy" src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain drop-shadow-xl relative z-10">
+                        <div class="w-full md:w-1/3 shrink-0 snap-center flex flex-col items-center justify-center cursor-pointer group pb-6 px-2" onclick="openProductDetails('${prod.name}')">
+                            <div class="h-64 md:h-[400px] w-full flex items-center justify-center mb-6 relative transition-transform duration-700 group-hover:scale-105">
+                                <div class="absolute inset-0 bg-rose-100/40 blur-3xl rounded-full scale-75 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                                <img loading="lazy" src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain drop-shadow-2xl relative z-10">
+                                ${prod.condition ? `<div class="absolute top-4 right-4 md:right-10 bg-rose-700 text-white text-xs md:text-sm font-black px-4 py-1.5 rounded-full shadow-lg z-20">${prod.condition}</div>` : ''}
                             </div>
-                            <h3 class="text-xs md:text-sm font-black text-rose-950 text-center font-cairo tracking-wide px-2">${prod.name}</h3>
+                            <h3 class="text-2xl md:text-3xl font-black text-rose-950 text-center font-cairo tracking-wide px-4 mb-5">${prod.name}</h3>
+                            <div class="flex justify-center items-center gap-2">
+                                <span class="text-sm font-bold text-gray-500">السعر:</span>
+                                <span class="text-xl font-black text-rose-700 bg-rose-50 px-4 py-1.5 rounded-xl shadow-sm border border-rose-100">${prod.price}</span>
+                            </div>
                         </div>
                     `);
                 });
+
+                // Auto Play Top Slider Logic
+                const startTopSliderAutoPlay = () => {
+                    autoPlayTopSlider = setInterval(() => {
+                        nextTopCopier();
+                    }, 4000);
+                };
+
+                const stopTopSliderAutoPlay = () => {
+                    clearInterval(autoPlayTopSlider);
+                };
+
+                const sliderWrapper = document.getElementById('topCopiersSliderWrapper');
+                if(sliderWrapper) {
+                    sliderWrapper.addEventListener('mouseenter', stopTopSliderAutoPlay);
+                    sliderWrapper.addEventListener('mouseleave', startTopSliderAutoPlay);
+                    
+                    // Touch events for mobile swiping
+                    let touchStartX = 0;
+                    let touchEndX = 0;
+                    sliderWrapper.addEventListener('touchstart', e => {
+                        touchStartX = e.changedTouches[0].screenX;
+                        stopTopSliderAutoPlay();
+                    }, {passive: true});
+                    
+                    sliderWrapper.addEventListener('touchend', e => {
+                        touchEndX = e.changedTouches[0].screenX;
+                        if (touchStartX - touchEndX > 50) nextTopCopier();
+                        if (touchEndX - touchStartX > 50) prevTopCopier();
+                        startTopSliderAutoPlay();
+                    }, {passive: true});
+                }
+                
+                startTopSliderAutoPlay();
             }
 
             // Populate Home Articles
