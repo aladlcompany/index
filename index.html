@@ -2149,6 +2149,32 @@
                 homeCatToggleBtn.innerHTML = 'إظهار القائمة <i class="fa fa-chevron-down"></i>';
             }
 
+            // إضافة خاصية إغلاق القائمة الجانبية في الموبايل عبر السحب (Swipe) لليمين
+            const mobileMenuEl = document.getElementById('mobile-menu');
+            if (mobileMenuEl) {
+                let menuTouchStartX = 0;
+                let menuTouchStartY = 0;
+
+                mobileMenuEl.addEventListener('touchstart', e => {
+                    menuTouchStartX = e.changedTouches[0].screenX;
+                    menuTouchStartY = e.changedTouches[0].screenY;
+                }, {passive: true});
+
+                mobileMenuEl.addEventListener('touchend', e => {
+                    let touchEndX = e.changedTouches[0].screenX;
+                    let touchEndY = e.changedTouches[0].screenY;
+
+                    // حساب المسافة المقطوعة أفقياً ورأسياً
+                    let deltaX = touchEndX - menuTouchStartX;
+                    let deltaY = Math.abs(touchEndY - menuTouchStartY);
+
+                    // التأكد من أن السحب للجهة اليمنى بمسافة كافية وأن الحركة ليست عمودية بشكل أساسي
+                    if (deltaX > 70 && deltaY < 50) {
+                        closeMobileMenu();
+                    }
+                }, {passive: true});
+            }
+
             // Populate Top Copiers Slider (أحدث 5 ماكينات تصوير)
             const topCopiersContainer = document.getElementById('topCopiersSliderTrack');
             if (topCopiersContainer) {
