@@ -1543,7 +1543,11 @@
             }
 
             if (addToHistory) { 
-                history.pushState({ pageId: targetId, cat: category, pNum: requestedPage, scrollY: 0, itemId: itemId }, '', '#' + targetId); 
+                let hashUrl = '#' + targetId;
+                if (itemId && (targetId === 'product-details' || targetId === 'single-article' || targetId === 'single-news')) {
+                    hashUrl += '/' + encodeURIComponent(itemId);
+                }
+                history.pushState({ pageId: targetId, cat: category, pNum: requestedPage, scrollY: 0, itemId: itemId }, '', hashUrl); 
             }
         }
 
@@ -1565,7 +1569,22 @@
                     navigateTo(pageId, cat, false, scrollY, null, pNum, true); 
                 }
             } 
-            else { navigateTo('start', 'all', false, 0, null, 1, true); }
+            else { 
+                let fullPath = window.location.hash.substring(1) || 'start';
+                let pathParts = fullPath.split('/');
+                let pageId = pathParts[0];
+                let itemId = pathParts.length > 1 ? decodeURIComponent(pathParts.slice(1).join('/')) : null;
+                
+                if (pageId === 'product-details' && itemId) {
+                    openProductDetails(itemId, false, 0, true);
+                } else if (pageId === 'single-article' && itemId) {
+                    openSingleArticle(itemId, false, 0, true);
+                } else if (pageId === 'single-news' && itemId) {
+                    openSingleNews(itemId, false, 0, true);
+                } else {
+                    navigateTo(pageId, 'all', false, 0, null, 1, true);
+                }
+            }
         });
 
         function toggleMobileMenu() {
@@ -2158,7 +2177,10 @@
 
         function openProductDetails(productName, addToHistory = true, scrollPos = 0, isImmediate = false) {
             const prod = productsDB.find(p => p.name === productName);
-            if (!prod) return;
+            if (!prod) {
+                navigateTo('products', 'all', addToHistory, scrollPos, null, 1, isImmediate);
+                return;
+            }
 
             const content = document.getElementById('productDetailsContent');
             content.innerHTML = `
@@ -2279,7 +2301,10 @@
 
         function openSingleArticle(articleId, addToHistory = true, scrollPos = 0, isImmediate = false) {
             const article = articlesDB.find(a => a.id === articleId);
-            if (!article) return;
+            if (!article) {
+                navigateTo('articles', 'all', addToHistory, scrollPos, null, 1, isImmediate);
+                return;
+            }
             const container = document.getElementById('singleArticleContainer');
             if (container) {
                 container.innerHTML = `
@@ -2302,7 +2327,10 @@
 
         function openSingleNews(newsId, addToHistory = true, scrollPos = 0, isImmediate = false) {
             const newsItem = newsDB.find(n => n.id === newsId);
-            if (!newsItem) return;
+            if (!newsItem) {
+                navigateTo('news', 'all', addToHistory, scrollPos, null, 1, isImmediate);
+                return;
+            }
             const container = document.getElementById('singleNewsContainer');
             if (container) {
                 container.innerHTML = `
@@ -2324,8 +2352,20 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            const path = window.location.hash.substring(1) || 'start';
-            navigateTo(path, 'all', false, 0, null, 1, true);
+            let fullPath = window.location.hash.substring(1) || 'start';
+            let pathParts = fullPath.split('/');
+            let pageId = pathParts[0];
+            let itemId = pathParts.length > 1 ? decodeURIComponent(pathParts.slice(1).join('/')) : null;
+
+            if (pageId === 'product-details' && itemId) {
+                openProductDetails(itemId, false, 0, true);
+            } else if (pageId === 'single-article' && itemId) {
+                openSingleArticle(itemId, false, 0, true);
+            } else if (pageId === 'single-news' && itemId) {
+                openSingleNews(itemId, false, 0, true);
+            } else {
+                navigateTo(pageId, 'all', false, 0, null, 1, true);
+            }
 
             // إخفاء قائمة المنتجات في الموبايل بشكل افتراضي
             const homeCategoriesGrid = document.getElementById('homeCategoriesGrid');
