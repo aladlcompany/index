@@ -207,6 +207,25 @@
 
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* ستايل صفحة بورصة الورق (مستقل ولا يؤثر على باقي الموقع) */
+        .paper-grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); width: 100%; max-width: 1200px; margin: 0 auto; }
+        .paper-card { display: flex; align-items: center; background-color: #ffffff; border: 1px solid #d7d7d7; border-radius: 16px; padding: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .paper-card:hover { transform: translateY(-3px); box-shadow: 0 8px 15px rgba(0, 0, 0, 0.08); }
+        .paper-img-container { width: 85px; height: 110px; flex-shrink: 0; margin-left: 12px; display: flex; align-items: center; justify-content: center; }
+        .paper-img { width: 100%; height: 100%; object-fit: contain; }
+        .paper-details { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
+        .img-placeholder { display: flex; align-items: center; justify-content: center; background-color: #f8fafc; color: #94a3b8; font-size: 0.65rem; text-align: center; width: 100%; height: 100%; border-radius: 8px; border: 1px dashed #cbd5e1; font-weight: 700; }
+        @media (max-width: 640px) {
+            .paper-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 0.5rem; }
+            .paper-card { padding: 8px; border-radius: 12px; }
+            .paper-img-container { width: 55px; height: 75px; margin-left: 8px; }
+            .product-name-paper { font-size: 0.85rem !important; margin-bottom: 2px !important; }
+            .product-price-paper { font-size: 1rem !important; }
+            .product-price-paper small { font-size: 0.65rem !important; }
+            .product-specs-paper { font-size: 0.65rem !important; gap: 0.25rem !important; }
+            .specs-badge-paper { padding: 1px 4px !important; }
+        }
     </style>
 </head>
 <body id="mainBody" class="text-gray-800 text-right" style="opacity: 0; transition: opacity 0.3s ease-out;" ontouchstart="">
@@ -492,6 +511,14 @@
                 </div>
             </div> <!-- نهاية التقسيم الرئيسي -->
 
+            <!-- زر بورصة أسعار الورق اليومية -->
+            <div class="w-full flex justify-center mb-8 relative z-20 px-4">
+                <button onclick="navigateTo('paper-prices')" class="inline-flex items-center justify-center gap-3 bg-white border-2 border-rose-700 text-rose-900 hover:bg-rose-700 hover:text-white px-8 py-3.5 md:py-4 rounded-full font-black text-base md:text-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 w-full sm:w-auto focus:outline-none">
+                    <i class="fa fa-chart-line text-xl md:text-2xl"></i>
+                    بورصة أسعار الورق اليومية
+                </button>
+            </div>
+
             <!-- شريط الثقة والمميزات (تم رفعه للأعلى) -->
             <div class="mb-10 relative z-20 w-full max-w-6xl mx-auto">
                 <div class="bg-white rounded-[2rem] p-4 md:p-6 shadow-lg border border-rose-50 flex flex-wrap justify-center sm:justify-between items-center gap-4 text-center divide-x divide-x-reverse divide-gray-100">
@@ -603,6 +630,47 @@
                 </div>
             </div>
         </section>
+    </main>
+
+    <!-- قسم بورصة أسعار الورق -->
+    <main id="page-paper-prices" class="page-section bg-white text-right pb-12">
+        <!-- شريط العودة للرئيسية -->
+        <div class="w-full bg-[#2f3f66] text-white py-2 px-4 mb-6 shadow-md">
+            <div class="container mx-auto max-w-6xl flex justify-start">
+                <button onclick="navigateTo('start')" class="flex items-center gap-2 text-sm md:text-base font-bold hover:text-[#f6bd27] transition-colors focus:outline-none">
+                    <i class="fa fa-arrow-right"></i>
+                    العودة للصفحة الرئيسية
+                </button>
+            </div>
+        </div>
+
+        <!-- ترويسة الصفحة -->
+        <header class="container mx-auto px-4 max-w-4xl text-center mb-8">
+            <h2 class="text-3xl md:text-4xl font-black text-[#2f3f66] mb-3 font-cairo">بورصة أسعار الورق اليومية</h2>
+            <p class="text-gray-600 font-bold text-sm md:text-lg mb-6">متابعة يومية لأحدث مؤشرات أسعار ورق التصوير والطباعة في السوق</p>
+            
+            <!-- التنويه -->
+            <div class="bg-[#fff8e5] border border-[#f6bd27] text-[#8a6d13] p-4 rounded-xl font-bold text-xs md:text-sm shadow-sm max-w-2xl mx-auto mb-6">
+                <i class="fa fa-info-circle ml-1"></i> تنويه: الأسعار المعروضة استرشادية وقد تختلف حسب الكمية والتوافر وتحديثات السوق.
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-6 text-sm font-bold text-[#2f3f66]">
+                <span class="bg-gray-50 border border-[#d7d7d7] px-4 py-2 rounded-lg shadow-sm">الأسعار يتم تحديثها وفقًا لحركة السوق</span>
+                <span class="bg-gray-50 border border-[#d7d7d7] px-4 py-2 rounded-lg text-rose-700 shadow-sm">
+                    <i class="fa fa-calendar-alt ml-1"></i> آخر تحديث: <span id="currentDatePaper"></span>
+                </span>
+            </div>
+        </header>
+
+        <!-- منطقة الكروت -->
+        <section class="container mx-auto px-2 md:px-4 max-w-6xl">
+            <div id="paperGrid" class="paper-grid"></div>
+        </section>
+
+        <!-- ملاحظة الفوتر -->
+        <div class="container mx-auto px-4 mt-12 text-center border-t border-[#d7d7d7] pt-6">
+            <p class="text-gray-500 font-bold text-xs md:text-sm">هذه الأسعار استرشادية وتتغير حسب حركة السوق.</p>
+        </div>
     </main>
 
     <main id="page-gallery" class="page-section bg-white">
@@ -1714,6 +1782,62 @@
             }
         }
 
+        // بيانات بورصة الورق (Array)
+        const paperProductsData = [
+            { name: "أمنيه", price: "670", size: "A4", weight: "80 جم", image: "paper/omnia-a4-80.png" },
+            { name: "مرام", price: "580", size: "A4", weight: "70 جم", image: "paper/maram-a4-70.png" },
+            { name: "شيمكس", price: "655", size: "A4", weight: "80 جم", image: "paper/chamex-a4-80.png" },
+            { name: "شيمكس", price: "600", size: "A4", weight: "70 جم", image: "paper/chamex-a4-70.png" },
+            { name: "بروجيكتا", price: "675", size: "A4", weight: "80 جم", image: "paper/projecta-a4-80.png" },
+            { name: "ازهار احمر", price: "490", size: "A4", weight: "70 جم", image: "paper/azhar-red-a4-70.png" },
+            { name: "مالتي أوفيس", price: "725", size: "A4", weight: "80 جم", image: "paper/multioffice-a4-80.png" },
+            { name: "ازهار", price: "565", size: "A4", weight: "70 جم", image: "paper/azhar-a4-70.png" },
+            { name: "بيبروان", price: "700", size: "A4", weight: "80 جم", image: "paper/paperone-a4-80.png" },
+            { name: "ارتورك", price: "575", size: "A4", weight: "70 جم", image: "paper/artwork-a4-70.png" },
+            { name: "بريو", price: "645", size: "A4", weight: "80 جم", image: "paper/brio-a4-80.png" },
+            { name: "ايكوروكس", price: "570", size: "A4", weight: "70 جم", image: "paper/ecorox-a4-70.png" },
+            { name: "ازهار", price: "685", size: "A4", weight: "80 جم", image: "paper/azhar-laser-a4-80.png" },
+            { name: "بروجيكتا", price: "595", size: "A4", weight: "70 جم", image: "paper/projecta-green-a4-70.png" },
+            { name: "بروجيكتا", price: "1250", size: "A3", weight: "80 جم", image: "paper/projecta-a3-80.png" },
+            { name: "مالتي أوفيس", price: "1400", size: "A3", weight: "80 جم", image: "paper/multioffice-a3-80.png" },
+            { name: "شيمكس", price: "1285", size: "A3", weight: "80 جم", image: "paper/chamex-a3-80.png" },
+            { name: "أمنيه", price: "1275", size: "A3", weight: "80 جم", image: "paper/omnia-a3-80.png" }
+        ];
+
+        // دالة توليد وعرض كروت الورق
+        function renderPaperGrid() {
+            const grid = document.getElementById('paperGrid');
+            if(!grid) return;
+            let htmlContent = '';
+
+            paperProductsData.forEach(product => {
+                htmlContent += `
+                    <div class="paper-card">
+                        <div class="paper-img-container">
+                            <img src="${product.image}" alt="${product.name}" class="paper-img" onerror="this.onerror=null; this.outerHTML='<div class=\\'img-placeholder\\'>صورة المنتج</div>';">
+                        </div>
+                        <div class="paper-details">
+                            <h3 class="product-name-paper text-[#2f3f66] font-black text-sm md:text-lg mb-1 leading-tight font-cairo">${product.name}</h3>
+                            <div class="product-price-paper text-[#f6bd27] font-black text-xl md:text-2xl mb-1.5 flex items-baseline gap-1">
+                                ${product.price} <small class="text-xs md:text-sm text-gray-500 font-bold">ج.م</small>
+                            </div>
+                            <div class="product-specs-paper flex flex-wrap gap-1.5 text-xs md:text-sm font-bold text-gray-600 font-tajawal">
+                                <span class="specs-badge-paper bg-gray-100 border border-gray-200 px-2 py-0.5 rounded-md flex items-center gap-1"><i class="fa fa-expand text-[#d7d7d7]"></i> ${product.size}</span>
+                                <span class="specs-badge-paper bg-gray-100 border border-gray-200 px-2 py-0.5 rounded-md flex items-center gap-1"><i class="fa fa-weight-hanging text-[#d7d7d7]"></i> ${product.weight}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            grid.innerHTML = htmlContent;
+
+            const dateSpan = document.getElementById('currentDatePaper');
+            if(dateSpan) {
+                const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                dateSpan.textContent = new Date().toLocaleDateString('ar-EG', dateOptions);
+            }
+        }
+
         let currentCategory = 'all';
         let currentPage = 1;
         const ITEMS_PER_PAGE = 6;
@@ -2366,6 +2490,9 @@
             } else {
                 navigateTo(pageId, 'all', false, 0, null, 1, true);
             }
+
+            // توليد شبكة بورصة الورق عند تحميل الصفحة
+            renderPaperGrid();
 
             // إخفاء قائمة المنتجات في الموبايل بشكل افتراضي
             const homeCategoriesGrid = document.getElementById('homeCategoriesGrid');
