@@ -744,9 +744,13 @@
 
     <main id="page-products" class="page-section bg-white">
         <section class="pt-8 pb-12 container mx-auto px-4 md:px-12">
+            <!-- حاوية الترقيم العلوية -->
+            <div id="paginationContainerTop" class="flex justify-center items-center gap-2 md:gap-3 mb-10 w-full"></div>
+            
             <div id="catalogGrid" class="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 justify-items-center">
             </div>
-            <!-- حاوية الترقيم (Pagination) -->
+            
+            <!-- حاوية الترقيم (Pagination) السفلية -->
             <div id="paginationContainer" class="flex justify-center items-center gap-2 md:gap-3 mt-16 w-full"></div>
         </section>
     </main>
@@ -2295,7 +2299,9 @@
 
             if (catalogGrid) catalogGrid.innerHTML = gridContent;
 
-            if (paginationContainer) {
+            const paginationContainerTop = document.getElementById('paginationContainerTop');
+
+            if (paginationContainer || paginationContainerTop) {
                 let paginationHTML = '';
                 if (totalPages > 1) {
                     for (let i = 1; i <= totalPages; i++) {
@@ -2305,7 +2311,8 @@
                         paginationHTML += `<button onclick="changePage(${i})" class="w-10 h-10 md:w-12 md:h-12 rounded-2xl font-black transition-all duration-300 flex items-center justify-center ${activeClass}">${i}</button>`;
                     }
                 }
-                paginationContainer.innerHTML = paginationHTML;
+                if (paginationContainer) paginationContainer.innerHTML = paginationHTML;
+                if (paginationContainerTop) paginationContainerTop.innerHTML = paginationHTML;
             }
         }
 
