@@ -2550,8 +2550,14 @@
             `;
             
             document.querySelectorAll('main.page-section').forEach(page => {
-                // استثناء الصفحة الرئيسية، تفاصيل المنتجات، وصفحة البورصة (لأن بها الشريط بالفعل)
-                const excludedPages = ['page-start', 'page-product-details', 'page-paper-prices'];
+                // استثناء الصفحة الرئيسية، تفاصيل المنتجات، صفحة البورصة، وتفاصيل المقالات والأخبار فقط
+                const excludedPages = [
+                    'page-start', 
+                    'page-product-details', 
+                    'page-paper-prices',
+                    'page-single-article',
+                    'page-single-news'
+                ];
                 if (!excludedPages.includes(page.id)) {
                     page.insertAdjacentHTML('afterbegin', backBarHTML);
                 }
