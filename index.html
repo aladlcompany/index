@@ -2310,12 +2310,7 @@
                 history.replaceState({ ...history.state, pNum: page, scrollY: window.scrollY }, '');
             }
             renderProducts(currentCategory, page);
-            const productsSection = document.getElementById('page-products');
-            if (productsSection) {
-                const yOffset = -80;
-                const y = productsSection.getBoundingClientRect().top + window.pageYOffset + yOffset;
-                window.scrollTo({top: y, behavior: 'smooth'});
-            }
+            window.scrollTo(0, 0);
         }
 
         function openProductDetails(productName, addToHistory = true, scrollPos = 0, isImmediate = false) {
@@ -2495,19 +2490,32 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            let fullPath = window.location.hash.substring(1) || 'start';
-            let pathParts = fullPath.split('/');
-            let pageId = pathParts[0];
-            let itemId = pathParts.length > 1 ? decodeURIComponent(pathParts.slice(1).join('/')) : null;
-
-            if (pageId === 'product-details' && itemId) {
-                openProductDetails(itemId, false, 0, true);
-            } else if (pageId === 'single-article' && itemId) {
-                openSingleArticle(itemId, false, 0, true);
-            } else if (pageId === 'single-news' && itemId) {
-                openSingleNews(itemId, false, 0, true);
+            if (history.state && history.state.pageId) {
+                const state = history.state;
+                if (state.pageId === 'product-details' && state.itemId) {
+                    openProductDetails(state.itemId, false, 0, true);
+                } else if (state.pageId === 'single-article' && state.itemId) {
+                    openSingleArticle(state.itemId, false, 0, true);
+                } else if (state.pageId === 'single-news' && state.itemId) {
+                    openSingleNews(state.itemId, false, 0, true);
+                } else {
+                    navigateTo(state.pageId, state.cat || 'all', false, 0, null, state.pNum || 1, true);
+                }
             } else {
-                navigateTo(pageId, 'all', false, 0, null, 1, true);
+                let fullPath = window.location.hash.substring(1) || 'start';
+                let pathParts = fullPath.split('/');
+                let pageId = pathParts[0];
+                let itemId = pathParts.length > 1 ? decodeURIComponent(pathParts.slice(1).join('/')) : null;
+
+                if (pageId === 'product-details' && itemId) {
+                    openProductDetails(itemId, false, 0, true);
+                } else if (pageId === 'single-article' && itemId) {
+                    openSingleArticle(itemId, false, 0, true);
+                } else if (pageId === 'single-news' && itemId) {
+                    openSingleNews(itemId, false, 0, true);
+                } else {
+                    navigateTo(pageId, 'all', false, 0, null, 1, true);
+                }
             }
 
             // توليد شبكة بورصة الورق عند تحميل الصفحة
