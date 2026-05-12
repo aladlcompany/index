@@ -512,10 +512,29 @@
             </div> <!-- نهاية التقسيم الرئيسي -->
 
             <!-- زر بورصة أسعار الورق اليومية -->
-            <div class="w-full flex justify-center mb-8 relative z-20 px-4">
-                <button onclick="navigateTo('paper-prices')" class="inline-flex items-center justify-center gap-3 bg-white border-2 border-rose-700 text-rose-900 hover:bg-rose-700 hover:text-white px-8 py-3.5 md:py-4 rounded-full font-black text-base md:text-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 w-full sm:w-auto focus:outline-none">
-                    <i class="fa fa-chart-line text-xl md:text-2xl"></i>
-                    بورصة أسعار الورق اليومية
+            <div class="w-full max-w-6xl mx-auto flex justify-center mb-10 relative z-20 px-4">
+                <button onclick="navigateTo('paper-prices')" class="relative overflow-hidden w-full flex items-center justify-between bg-white border border-rose-100 hover:border-rose-400 text-rose-950 px-5 md:px-8 py-4 md:py-5 rounded-[2rem] shadow-md hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 group focus:outline-none">
+                    
+                    <!-- تأثير الخلفية عند المرور -->
+                    <div class="absolute inset-0 bg-gradient-to-r from-rose-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                    
+                    <!-- الأيقونة والنص -->
+                    <div class="flex items-center gap-3 md:gap-5 relative z-10">
+                        <div class="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-rose-700 to-rose-900 text-white rounded-2xl flex items-center justify-center text-xl md:text-3xl shadow-md transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shrink-0">
+                            <i class="fa fa-chart-line"></i>
+                        </div>
+                        <div class="text-right">
+                            <span class="block font-black font-cairo text-lg md:text-3xl tracking-wide group-hover:text-rose-700 transition-colors duration-300">بورصة أسعار الورق اليومية</span>
+                            <span class="hidden md:block text-gray-500 font-bold text-sm mt-1">متابعة يومية لأحدث مؤشرات الأسعار في السوق</span>
+                        </div>
+                    </div>
+
+                    <!-- المؤشر (سهم وكلمة) -->
+                    <div class="relative z-10 flex items-center gap-2 text-rose-700 font-bold bg-rose-50 px-4 py-2 md:py-3 rounded-xl group-hover:bg-rose-700 group-hover:text-white transition-colors duration-300 shrink-0">
+                        <span class="hidden sm:inline text-sm md:text-base">تصفح الأسعار الآن</span>
+                        <i class="fa fa-arrow-left animate-pulse"></i>
+                    </div>
+                    
                 </button>
             </div>
 
