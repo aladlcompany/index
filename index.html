@@ -2489,17 +2489,27 @@
             navigateTo('single-news', 'all', addToHistory, scrollPos, newsId, 1, isImmediate);
         }
 
+        window.addEventListener('beforeunload', () => {
+            sessionStorage.setItem('savedScrollPosition', window.scrollY);
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
+            let savedScroll = 0;
+            if (sessionStorage.getItem('savedScrollPosition')) {
+                savedScroll = parseInt(sessionStorage.getItem('savedScrollPosition'), 10);
+                sessionStorage.removeItem('savedScrollPosition');
+            }
+
             if (history.state && history.state.pageId) {
                 const state = history.state;
                 if (state.pageId === 'product-details' && state.itemId) {
-                    openProductDetails(state.itemId, false, 0, true);
+                    openProductDetails(state.itemId, false, savedScroll, true);
                 } else if (state.pageId === 'single-article' && state.itemId) {
-                    openSingleArticle(state.itemId, false, 0, true);
+                    openSingleArticle(state.itemId, false, savedScroll, true);
                 } else if (state.pageId === 'single-news' && state.itemId) {
-                    openSingleNews(state.itemId, false, 0, true);
+                    openSingleNews(state.itemId, false, savedScroll, true);
                 } else {
-                    navigateTo(state.pageId, state.cat || 'all', false, 0, null, state.pNum || 1, true);
+                    navigateTo(state.pageId, state.cat || 'all', false, savedScroll, null, state.pNum || 1, true);
                 }
             } else {
                 let fullPath = window.location.hash.substring(1) || 'start';
@@ -2508,14 +2518,19 @@
                 let itemId = pathParts.length > 1 ? decodeURIComponent(pathParts.slice(1).join('/')) : null;
 
                 if (pageId === 'product-details' && itemId) {
-                    openProductDetails(itemId, false, 0, true);
+                    openProductDetails(itemId, false, savedScroll, true);
                 } else if (pageId === 'single-article' && itemId) {
-                    openSingleArticle(itemId, false, 0, true);
+                    openSingleArticle(itemId, false, savedScroll, true);
                 } else if (pageId === 'single-news' && itemId) {
-                    openSingleNews(itemId, false, 0, true);
+                    openSingleNews(itemId, false, savedScroll, true);
                 } else {
-                    navigateTo(pageId, 'all', false, 0, null, 1, true);
+                    navigateTo(pageId, 'all', false, savedScroll, null, 1, true);
                 }
+            }
+
+            if (savedScroll > 0) {
+                setTimeout(() => window.scrollTo(0, savedScroll), 100);
+                setTimeout(() => window.scrollTo(0, savedScroll), 300);
             }
 
             // توليد شبكة بورصة الورق عند تحميل الصفحة
