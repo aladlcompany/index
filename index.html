@@ -2318,8 +2318,12 @@
 
         function changePage(page) {
             if (history.state) {
-                history.replaceState({ ...history.state, pNum: page, scrollY: window.scrollY }, '');
+                // حفظ مكان السكرول الحالي فقط دون تغيير رقم الصفحة القديم
+                history.replaceState({ ...history.state, scrollY: window.scrollY }, '');
             }
+            // إضافة حالة جديدة للتاريخ برقم الصفحة الجديد لكي يعمل زر (Back) بشكل صحيح
+            history.pushState({ pageId: 'products', cat: currentCategory, pNum: page, scrollY: 0, itemId: null }, '', '#products');
+            
             renderProducts(currentCategory, page);
             window.scrollTo(0, 0);
         }
