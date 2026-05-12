@@ -2544,20 +2544,22 @@
                 setTimeout(() => window.scrollTo(0, savedScroll), 300);
             }
 
+            // تحديد مصدر الدخول لصفحة المنتجات (من الرئيسية أم من القائمة العلوية)
+            window.returnToHomeProducts = false;
+            document.addEventListener('click', (e) => {
+                // إذا ضغط العميل من شبكة المنتجات في الرئيسية أو الشريط الجانبي
+                if (e.target.closest('#homeCategoriesGrid') || e.target.closest('aside')) {
+                    window.returnToHomeProducts = true;
+                } 
+                // إذا ضغط من القائمة العلوية أو قائمة الموبايل
+                else if (e.target.closest('nav') || e.target.closest('#mobile-menu')) {
+                    window.returnToHomeProducts = false;
+                }
+            });
+
             // شريط العودة للرئيسية يضاف تلقائياً لجميع الصفحات الفرعية ما عدا المستثناة
-            const backBarHTML = `
-                <div class="w-full bg-[#2f3f66] text-white py-2 px-4 mb-6 shadow-md">
-                    <div class="container mx-auto max-w-6xl flex justify-start">
-                        <button onclick="navigateTo('start')" class="flex items-center gap-2 text-sm md:text-base font-bold hover:text-[#f6bd27] transition-colors focus:outline-none">
-                            <i class="fa fa-arrow-right"></i>
-                            العودة للصفحة الرئيسية
-                        </button>
-                    </div>
-                </div>
-            `;
-            
             document.querySelectorAll('main.page-section').forEach(page => {
-                // استثناء الصفحة الرئيسية، تفاصيل المنتجات، صفحة البورصة، وتفاصيل المقالات والأخبار فقط
+                // استثناء الصفحة الرئيسية، تفاصيل المنتجات، البورصة، وتفاصيل المقالات والأخبار
                 const excludedPages = [
                     'page-start', 
                     'page-product-details', 
@@ -2566,6 +2568,25 @@
                     'page-single-news'
                 ];
                 if (!excludedPages.includes(page.id)) {
+                    
+                    // تحديد الإجراء الافتراضي للزر (العودة للأعلى)
+                    let btnAction = "navigateTo('start')";
+                    
+                    // إذا كانت الصفحة هي صفحة المنتجات، نحدد نوع الرجوع حسب مصدر الدخول
+                    if (page.id === 'page-products') {
+                        btnAction = "navigateTo('start'); if(window.returnToHomeProducts){ setTimeout(() => { const el = document.getElementById('homeCategoriesGrid'); if(el) { const offset = el.getBoundingClientRect().top + window.scrollY - 120; window.scrollTo({top: offset, behavior: 'auto'}); } }, 10); }";
+                    }
+
+                    const backBarHTML = `
+                        <div class="w-full bg-[#2f3f66] text-white py-2 px-4 mb-6 shadow-md">
+                            <div class="container mx-auto max-w-6xl flex justify-start">
+                                <button onclick="${btnAction}" class="flex items-center gap-2 text-sm md:text-base font-bold hover:text-[#f6bd27] transition-colors focus:outline-none">
+                                    <i class="fa fa-arrow-right"></i>
+                                    العودة للصفحة الرئيسية
+                                </button>
+                            </div>
+                        </div>
+                    `;
                     page.insertAdjacentHTML('afterbegin', backBarHTML);
                 }
             });
