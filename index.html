@@ -780,8 +780,22 @@
     </main>
 
     <main id="page-products" class="page-section bg-white">
-        <section class="pt-2 pb-12 container mx-auto px-4 md:px-12">
-            <!-- حاوية الترقيم العلوية (تم تصغير المسافات وجعلها على اليسار) -->
+        <section class="pt-6 pb-12 container mx-auto px-4 md:px-12">
+            
+            <!-- عنوان قسم المنتجات الديناميكي -->
+            <div class="text-center mb-10 w-full relative">
+                <div class="inline-flex items-center justify-center gap-4 bg-gradient-to-r from-rose-50 via-white to-rose-50 px-6 md:px-10 py-4 rounded-[2.5rem] border border-rose-100 shadow-sm relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-rose-100 opacity-20 blur-xl group-hover:scale-150 transition-transform duration-700 pointer-events-none"></div>
+                    <div class="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-rose-700 to-rose-900 text-white rounded-2xl flex items-center justify-center text-2xl md:text-3xl shadow-lg z-10 relative transform group-hover:rotate-6 transition-transform duration-300">
+                        <i id="dynamicCatIcon" class="fa fa-boxes"></i>
+                    </div>
+                    <h2 id="dynamicCatTitle" class="text-2xl md:text-4xl font-black font-cairo text-rose-950 z-10 relative tracking-wide">
+                        المنتجات
+                    </h2>
+                </div>
+            </div>
+
+            <!-- حاوية الترقيم العلوية -->
             <div id="paginationContainerTop" class="flex justify-end items-center gap-2 mb-4 w-full"></div>
             
             <div id="catalogGrid" class="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 justify-items-center">
@@ -793,16 +807,11 @@
     </main>
 
     <main id="page-product-details" class="page-section bg-white">
-        <!-- شريط العودة -->
-        <div class="w-full bg-[#2f3f66] text-white py-2 px-4 mb-6 shadow-md">
-            <div class="container mx-auto max-w-6xl flex justify-start">
-                <button onclick="window.history.back()" class="flex items-center gap-2 text-sm md:text-base font-bold hover:text-[#f6bd27] transition-colors focus:outline-none">
-                    <i class="fa fa-arrow-right"></i>
-                    رجوع لقائمة المنتجات
-                </button>
-            </div>
-        </div>
-        <section class="pt-2 pb-16 container mx-auto px-4 md:px-12 max-w-6xl">
+        <section class="pt-8 pb-16 container mx-auto px-4 md:px-12 max-w-6xl">
+            <button onclick="window.history.back()" class="flex items-center gap-2 text-rose-700 font-black hover:text-rose-900 transition-colors mb-8 bg-white px-5 py-2.5 rounded-full shadow-sm border border-gray-100 w-fit group">
+                <i class="fa fa-arrow-right group-hover:-translate-x-1 transition-transform"></i>
+                رجوع لقائمة المنتجات
+            </button>
             <div id="productDetailsContent" class="flex flex-col lg:flex-row items-start gap-12 lg:gap-16 mb-16"></div>
 
             <div class="border-t border-gray-100 pt-16 mt-10">
@@ -857,45 +866,60 @@
 
     <main id="page-articles" class="page-section text-right">
         <section class="pt-8 pb-12 container mx-auto px-6 max-w-5xl text-right">
+            
+            <!-- عنوان صفحة المقالات -->
+            <div class="text-center mb-12 w-full relative">
+                <div class="inline-flex items-center justify-center gap-4 bg-gradient-to-r from-rose-50 via-white to-rose-50 px-6 md:px-10 py-4 rounded-[2.5rem] border border-rose-100 shadow-sm relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-rose-100 opacity-20 blur-xl group-hover:scale-150 transition-transform duration-700 pointer-events-none"></div>
+                    <div class="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-rose-700 to-rose-900 text-white rounded-2xl flex items-center justify-center text-2xl md:text-3xl shadow-lg z-10 relative transform group-hover:-rotate-6 transition-transform duration-300">
+                        <i class="fa fa-newspaper"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-4xl font-black font-cairo text-rose-950 z-10 relative tracking-wide">
+                        المقالات والعروض
+                    </h2>
+                </div>
+            </div>
+
             <div id="articlesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12"></div>
         </section>
     </main>
 
     <main id="page-single-article" class="page-section text-right">
-        <!-- شريط العودة -->
-        <div class="w-full bg-[#2f3f66] text-white py-2 px-4 mb-6 shadow-md">
-            <div class="container mx-auto max-w-6xl flex justify-start">
-                <button onclick="window.history.back()" class="flex items-center gap-2 text-sm md:text-base font-bold hover:text-[#f6bd27] transition-colors focus:outline-none">
-                    <i class="fa fa-arrow-right"></i>
-                    رجوع لقائمة المقالات
-                </button>
-            </div>
-        </div>
-        <section class="pt-2 pb-16 container mx-auto px-4 max-w-4xl text-right">
+        <section class="pt-8 pb-16 container mx-auto px-4 max-w-4xl text-right">
+            <button onclick="window.history.back()" class="flex items-center gap-2 text-rose-700 font-black hover:text-rose-900 transition-colors mb-8 bg-white px-5 py-2.5 rounded-full shadow-sm border border-gray-100 w-fit group">
+                <i class="fa fa-arrow-right group-hover:-translate-x-1 transition-transform"></i>
+                رجوع لقائمة المقالات
+            </button>
             <div id="singleArticleContainer"></div>
         </section>
     </main>
 
     <main id="page-news" class="page-section text-right">
         <section class="pt-8 pb-12 container mx-auto px-6 max-w-5xl text-right">
-            <div class="text-center mb-12">
-                <h2 class="text-2xl md:text-4xl font-black text-rose-950 font-cairo leading-relaxed">أحدث الأخبار والفعاليات</h2>
+            
+            <!-- عنوان صفحة الأخبار -->
+            <div class="text-center mb-12 w-full relative">
+                <div class="inline-flex items-center justify-center gap-4 bg-gradient-to-r from-rose-50 via-white to-rose-50 px-6 md:px-10 py-4 rounded-[2.5rem] border border-rose-100 shadow-sm relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-rose-100 opacity-20 blur-xl group-hover:scale-150 transition-transform duration-700 pointer-events-none"></div>
+                    <div class="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-rose-700 to-rose-900 text-white rounded-2xl flex items-center justify-center text-2xl md:text-3xl shadow-lg z-10 relative transform group-hover:rotate-6 transition-transform duration-300">
+                        <i class="fa fa-bullhorn"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-4xl font-black font-cairo text-rose-950 z-10 relative tracking-wide">
+                        أحدث الأخبار والفعاليات
+                    </h2>
+                </div>
             </div>
+
             <div id="newsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12"></div>
         </section>
     </main>
 
     <main id="page-single-news" class="page-section text-right">
-        <!-- شريط العودة -->
-        <div class="w-full bg-[#2f3f66] text-white py-2 px-4 mb-6 shadow-md">
-            <div class="container mx-auto max-w-6xl flex justify-start">
-                <button onclick="window.history.back()" class="flex items-center gap-2 text-sm md:text-base font-bold hover:text-[#f6bd27] transition-colors focus:outline-none">
-                    <i class="fa fa-arrow-right"></i>
-                    رجوع لقائمة الأخبار
-                </button>
-            </div>
-        </div>
-        <section class="pt-2 pb-16 container mx-auto px-4 max-w-4xl text-right">
+        <section class="pt-8 pb-16 container mx-auto px-4 max-w-4xl text-right">
+            <button onclick="window.history.back()" class="flex items-center gap-2 text-rose-700 font-black hover:text-rose-900 transition-colors mb-8 bg-white px-5 py-2.5 rounded-full shadow-sm border border-gray-100 w-fit group">
+                <i class="fa fa-arrow-right group-hover:-translate-x-1 transition-transform"></i>
+                رجوع لقائمة الأخبار
+            </button>
             <div id="singleNewsContainer"></div>
         </section>
     </main>
@@ -2720,6 +2744,47 @@
         function renderProducts(categoryFilter = 'all', page = 1) {
             currentCategory = categoryFilter;
             currentPage = page;
+
+            // تحديث العنوان والأيقونة ديناميكياً بناءً على القسم
+            const catMap = {
+                'bw-copiers': { title: 'ماكينات تصوير أسود', icon: 'fa-print' },
+                'color-copiers': { title: 'ماكينات تصوير ألوان', icon: 'fa-palette' },
+                'digital-color': { title: 'ماكينات طباعة ديجيتال ألوان', icon: 'fa-fill-drip' },
+                'digital-bw': { title: 'طباعة ديجيتال أبيض وأسود', icon: 'fa-copy' },
+                'plotters': { title: 'ماكينات لوحات هندسية', icon: 'fa-drafting-compass' },
+                'photographic': { title: 'ماكينات طباعة تصويرية', icon: 'fa-camera-retro' },
+                'medical': { title: 'ماكينات طباعة الأشعة الطبية', icon: 'fa-x-ray' },
+                'inkjet': { title: 'طابعات إنكجيت', icon: 'fa-tint' },
+                'post-print': { title: 'ماكينات ما بعد الطباعة', icon: 'fa-layer-group' },
+                'outdoor': { title: 'بلوتر أوت دور', icon: 'fa-sign' },
+                'appliances': { title: 'أجهزة كهربائية - تكييفات', icon: 'fa-snowflake' },
+                'parts-bw': { title: 'قطع غيار أبيض وأسود', icon: 'fa-cogs' },
+                'parts-plotter': { title: 'قطع غيار لوحات هندسية', icon: 'fa-tools' },
+                'parts-color': { title: 'قطع غيار ألوان', icon: 'fa-cog' },
+                'parts-digital': { title: 'قطع غيار ديجيتال', icon: 'fa-microchip' },
+                'toner-bw': { title: 'أحبار أبيض وأسود', icon: 'fa-fill' },
+                'toner-color': { title: 'أحبار ألوان', icon: 'fa-spray-can' },
+                'toner-digital': { title: 'أحبار ديجيتال', icon: 'fa-vial' },
+                'toner-plotter': { title: 'أحبار لوحات هندسية', icon: 'fa-brush' },
+                'all': { title: 'جميع المنتجات', icon: 'fa-boxes' }
+            };
+
+            const catTitleEl = document.getElementById('dynamicCatTitle');
+            const catIconEl = document.getElementById('dynamicCatIcon');
+            
+            if (catTitleEl && catIconEl) {
+                const searchInput = document.getElementById('searchInput');
+                const query = searchInput ? searchInput.value.trim().toLowerCase() : "";
+                
+                if (query !== "") {
+                    catTitleEl.textContent = 'نتائج البحث';
+                    catIconEl.className = 'fa fa-search';
+                } else {
+                    const currentMap = catMap[categoryFilter] || catMap['all'];
+                    catTitleEl.textContent = currentMap.title;
+                    catIconEl.className = 'fa ' + currentMap.icon;
+                }
+            }
 
             const catalogGrid = document.getElementById('catalogGrid');
             const paginationContainer = document.getElementById('paginationContainer');
