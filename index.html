@@ -1653,7 +1653,14 @@
         }
 
         function openWhatsApp(phone, text = '') {
-            window.open(getWhatsAppLink(phone, text), '_blank');
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const link = getWhatsAppLink(phone, text);
+            
+            if (isMobile) {
+                window.location.href = link; // في الموبايل، يفتح في نفس الصفحة (ينقل للتطبيق)
+            } else {
+                window.open(link, '_blank'); // في الكمبيوتر، يفتح في صفحة جديدة (واتساب ويب)
+            }
         }
 
         function handleAdError(img, type) {
