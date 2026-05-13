@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
 
-# رابط السايت ماب لمساعدة جوجل في الوصول للمقالات فوراً
 Sitemap: https://aladlcompany.github.io/index/sitemap.xml
