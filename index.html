@@ -118,9 +118,85 @@
     <link rel="apple-touch-icon" href="https://aladlcompany.github.io/header-mobile.png?v=5">
     <link rel="icon" type="image/png" href="https://aladlcompany.github.io/header-mobile.png?v=5">
 
-    <link rel="stylesheet" href="tailwind-local.css">
-    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@700;800&family=Cairo:wght@700;900&family=Tajawal:wght@300;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="tailwind-local.css" data-aladl-critical="tailwind-local">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@700;800&family=Cairo:wght@700;900&family=Tajawal:wght@300;500;700;900&display=swap" rel="stylesheet" data-aladl-optional="fonts">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" data-aladl-optional="icons">
+
+    <!-- Gemini / Web Preview Compatibility Layer
+         لا يؤثر على العرض الطبيعي في Chrome أو GitHub Pages.
+         وظيفته: لو بيئة المعاينة لم تحمل CSS/Icons/Fonts، يضيف Fallback ويجرب تحميل أدوات الويب تلقائيًا. -->
+    <script>
+        (function () {
+            window.ALADL_PREVIEW_COMPAT = true;
+            function loadCssOnce(id, href) {
+                if (document.getElementById(id)) return;
+                var link = document.createElement('link');
+                link.id = id;
+                link.rel = 'stylesheet';
+                link.href = href;
+                document.head.appendChild(link);
+            }
+            function loadScriptOnce(id, src) {
+                if (document.getElementById(id)) return;
+                var sc = document.createElement('script');
+                sc.id = id;
+                sc.src = src;
+                sc.defer = true;
+                document.head.appendChild(sc);
+            }
+            function testClassDisplay(className, expected) {
+                var el = document.createElement('div');
+                el.className = className;
+                el.style.position = 'absolute';
+                el.style.left = '-9999px';
+                document.body.appendChild(el);
+                var ok = window.getComputedStyle(el).display === expected;
+                el.remove();
+                return ok;
+            }
+            window.addEventListener('DOMContentLoaded', function () {
+                setTimeout(function () {
+                    var tailwindOk = testClassDisplay('hidden', 'none');
+                    if (!tailwindOk) {
+                        document.documentElement.classList.add('aladl-preview-safe');
+                        loadCssOnce('aladl-tailwind-local-retry', './tailwind-local.css?v=preview-fix');
+                        loadScriptOnce('aladl-tailwind-cdn-fallback', 'https://cdn.tailwindcss.com');
+                    }
+                    var icon = document.createElement('i');
+                    icon.className = 'fa fa-phone';
+                    icon.style.position = 'absolute';
+                    icon.style.left = '-9999px';
+                    document.body.appendChild(icon);
+                    var fam = window.getComputedStyle(icon).fontFamily || '';
+                    icon.remove();
+                    if (!/Font Awesome|FontAwesome/i.test(fam)) {
+                        document.documentElement.classList.add('aladl-icons-missing');
+                        loadCssOnce('aladl-fa-retry', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+                    }
+                }, 350);
+            });
+        })();
+    </script>
+
+
+    <script>
+        /* Gemini / embedded preview navigation fix
+           بعض أدوات المعاينة مثل Gemini تعرض الموقع داخل iframe وبعرض أقل من 1024px،
+           لذلك Tailwind يخفي القائمة الرئيسية desktop nav ويظهر زر الموبايل فقط.
+           هذا الكلاس يعمل فقط داخل المعاينات المضمنة ولا يؤثر على فتح الموقع الطبيعي في Chrome. */
+        (function () {
+            try {
+                var isEmbeddedPreview = window.self !== window.top;
+                var ua = (navigator.userAgent || '').toLowerCase();
+                var isLikelyPreview = isEmbeddedPreview || /gemini|idx|preview|webcontainer|stackblitz|codesandbox/.test(ua);
+                if (isLikelyPreview) {
+                    document.documentElement.classList.add('aladl-embedded-preview');
+                }
+            } catch (e) {
+                document.documentElement.classList.add('aladl-embedded-preview');
+            }
+        })();
+    </script>
 
     <script>
         function handleAdError(img, type) {
@@ -132,6 +208,102 @@
     </script>
 
     <style>
+        /* Preview-safe fallback: يعمل فقط لو Gemini Preview أو أي Web Preview لم يحمّل Tailwind/FontAwesome بشكل صحيح */
+        html.aladl-preview-safe body { direction: rtl; text-align: right; margin: 0; font-family: Tahoma, Arial, sans-serif; background: #f8fafc; color: #1f2937; overflow-x: hidden; }
+        html.aladl-preview-safe img { max-width: 100%; height: auto; object-fit: contain; }
+        html.aladl-preview-safe a { color: inherit; text-decoration: none; cursor: pointer; }
+        html.aladl-preview-safe .container { width: min(1200px, calc(100% - 24px)); margin-left: auto; margin-right: auto; padding-left: 12px; padding-right: 12px; }
+        html.aladl-preview-safe .sticky-header { position: sticky; top: 0; z-index: 999; background: #fff; box-shadow: 0 4px 18px rgba(0,0,0,.08); }
+        html.aladl-preview-safe .page-section { display: none; }
+        html.aladl-preview-safe .page-section.active { display: block; }
+        html.aladl-preview-safe .hidden { display: none !important; }
+        html.aladl-preview-safe .flex { display: flex !important; }
+        html.aladl-preview-safe .grid { display: grid !important; gap: 16px; }
+        html.aladl-preview-safe .items-center { align-items: center !important; }
+        html.aladl-preview-safe .justify-center { justify-content: center !important; }
+        html.aladl-preview-safe .justify-between { justify-content: space-between !important; }
+        html.aladl-preview-safe .text-center { text-align: center !important; }
+        html.aladl-preview-safe .rounded-full { border-radius: 9999px !important; }
+        html.aladl-preview-safe .rounded-xl { border-radius: 12px !important; }
+        html.aladl-preview-safe .shadow-lg, html.aladl-preview-safe .shadow-xl { box-shadow: 0 12px 28px rgba(15,23,42,.12) !important; }
+        html.aladl-preview-safe header, html.aladl-preview-safe nav { width: 100%; }
+        html.aladl-preview-safe .dropdown-menu { display: none; position: absolute; background: #fff; border: 1px solid #eee; border-radius: 16px; box-shadow: 0 18px 40px rgba(15,23,42,.12); z-index: 1000; }
+        html.aladl-preview-safe .dropdown-container:hover .dropdown-menu { display: block; }
+        html.aladl-preview-safe .ai-assistant-container { position: fixed; left: 22px; bottom: 22px; z-index: 99999; }
+        html.aladl-preview-safe .ai-bubble { display: flex; align-items: center; justify-content: center; gap: 8px; }
+        html.aladl-icons-missing .fa::before, html.aladl-icons-missing .fas::before, html.aladl-icons-missing .fab::before { font-family: Arial, sans-serif !important; font-weight: 900; display: inline-block; }
+        html.aladl-icons-missing .fa-phone::before { content: "☎"; }
+        html.aladl-icons-missing .fa-search::before { content: "⌕"; }
+        html.aladl-icons-missing .fa-tools::before { content: "⚙"; }
+        html.aladl-icons-missing .fa-headset::before { content: "☏"; }
+        html.aladl-icons-missing .fa-comment-dots::before { content: "💬"; }
+        html.aladl-icons-missing .fa-paper-plane::before { content: "➤"; }
+        html.aladl-icons-missing .fab.fa-whatsapp::before { content: "☘"; }
+        @media (min-width: 768px) { html.aladl-preview-safe .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0,1fr)); } html.aladl-preview-safe .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0,1fr)); } }
+        @media (min-width: 1024px) { html.aladl-preview-safe .lg\:flex { display: flex !important; } html.aladl-preview-safe .lg\:hidden { display: none !important; } html.aladl-preview-safe .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0,1fr)); } html.aladl-preview-safe .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0,1fr)); } }
+
+
+        /* Gemini Preview Menu Fix: يظهر القائمة الرئيسية لو المعاينة أخفتها بسبب عرض iframe */
+        html.aladl-embedded-preview header nav,
+        html.aladl-embedded-preview header nav.hidden,
+        html.aladl-embedded-preview .sticky-header nav,
+        html.aladl-embedded-preview .sticky-header nav.hidden {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            height: auto !important;
+            overflow: visible !important;
+            background: #fff !important;
+            border-top: 1px solid #f1f5f9 !important;
+            box-shadow: 0 8px 22px rgba(15,23,42,.06) !important;
+        }
+        html.aladl-embedded-preview header nav > .container,
+        html.aladl-embedded-preview .sticky-header nav > .container {
+            width: min(1200px, calc(100% - 24px)) !important;
+            margin: 0 auto !important;
+            padding: 0 12px !important;
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 4px 14px !important;
+            justify-content: flex-start !important;
+            align-items: center !important;
+            font-size: 13px !important;
+        }
+        html.aladl-embedded-preview header nav a,
+        html.aladl-embedded-preview header nav button {
+            display: flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            padding: 12px 4px !important;
+            white-space: nowrap !important;
+        }
+        html.aladl-embedded-preview .dropdown-container { position: relative !important; }
+        html.aladl-embedded-preview .dropdown-menu {
+            position: absolute !important;
+            top: 100% !important;
+            right: 0 !important;
+            min-width: 250px !important;
+            background: #fff !important;
+            border: 1px solid #f1f5f9 !important;
+            border-radius: 16px !important;
+            box-shadow: 0 18px 40px rgba(15,23,42,.14) !important;
+            z-index: 5000 !important;
+            display: none !important;
+            padding: 10px !important;
+        }
+        html.aladl-embedded-preview .dropdown-container:hover .dropdown-menu,
+        html.aladl-embedded-preview .dropdown-container:focus-within .dropdown-menu {
+            display: flex !important;
+            flex-direction: column !important;
+        }
+        html.aladl-embedded-preview .dropdown-card {
+            display: block !important;
+            padding: 10px 12px !important;
+            border-radius: 12px !important;
+            color: #475569 !important;
+        }
+        html.aladl-embedded-preview .dropdown-card:hover { background: #fff1f2 !important; color: #9f1239 !important; }
+
         body { font-family: 'Tajawal', sans-serif; scroll-behavior: smooth; background-color: #f8fafc; overflow-x: hidden; }
         .font-cairo { font-family: 'Cairo', sans-serif; }
         .font-almarai { font-family: 'Almarai', sans-serif; }
@@ -2323,6 +2495,42 @@
                 {
                     keywords: ['تعلم', 'بتتعلم', 'ذكي', 'مساعد ذكي'],
                     answer: 'أنا مساعد شركة العدل الذكي، متجهز ببيانات الماكينات والأسئلة المتكررة عشان أساعدك بسرعة. وكل ما نضيف بيانات جديدة عن المنتجات والأسئلة، ترشيحاتي بتبقى أدق.'
+                }
+
+                ,{
+                    keywords: ['متاح', 'المتاح', 'في مخزن', 'موجوده حاليا', 'موجود حاليا', 'available'],
+                    answer: 'المتاح بيتغير حسب حركة البيع والاستيراد. اكتب اسم الموديل أو ابعته على واتساب، ونأكد لك فورًا هل متوفر حاليًا والحالة والتجهيزات.',
+                    whatsapp: 'مرحبًا، أريد معرفة المتاح حاليًا من ماكينات شركة العدل.'
+                },
+                {
+                    keywords: ['توصيل', 'شحن', 'تركيب', 'تسليم', 'للمحافظات'],
+                    answer: 'التوصيل والتركيب بيتحدد حسب المحافظة ونوع الماكينة. ابعت لنا العنوان والموديل المطلوب، ونوضح لك إمكانية التوصيل والتركيب والتكلفة إن وجدت.',
+                    whatsapp: 'مرحبًا، أريد الاستفسار عن توصيل وتركيب ماكينة.'
+                },
+                {
+                    keywords: ['ايجار', 'إيجار', 'ايجار تمليكي', 'عقد صيانة', 'عقود صيانة', 'صيانة سنوية'],
+                    answer: 'متاح الاستفسار عن الإيجار التمليكي وعقود الصيانة حسب نوع الماكينة وحجم الاستخدام. اكتب نوع نشاطك وعدد النسخ اليومي ونرشح لك النظام الأنسب.',
+                    whatsapp: 'مرحبًا، أريد الاستفسار عن الإيجار التمليكي أو عقد صيانة لماكينات التصوير.'
+                },
+                {
+                    keywords: ['عايز صوره', 'صور الماكينة', 'فيديو', 'معاينة', 'اشوفها', 'قبل الشراء'],
+                    answer: 'أكيد يا فندم. ممكن نبعت لك صور أو فيديو للماكينة المتاحة ونوضح الحالة والتجهيزات قبل الاتفاق. ابعت اسم الموديل المطلوب على واتساب.',
+                    whatsapp: 'مرحبًا، أريد صور أو فيديو للماكينة المتاحة قبل الشراء.'
+                },
+                {
+                    keywords: ['مش عايز مستعمل', 'جديدة', 'زيرو', 'جديده', 'حالة ممتازة'],
+                    answer: 'اكتب لنا الموديل أو الاستخدام المطلوب، ونوضح لك المتاح منه وحالته: استيراد، كسر زيرو، أو حالة ممتازة حسب الموجود وقت الطلب.',
+                    whatsapp: 'مرحبًا، أريد ماكينة بحالة ممتازة أو أقرب للزيرو.'
+                },
+                {
+                    keywords: ['طباعة بس', 'مش محتاج تصوير', 'printer فقط', 'طابعة فقط'],
+                    answer: 'لو محتاج طباعة فقط، الأفضل نرشح طابعة ليزر بدل ماكينة تصوير متعددة الوظائف. اكتب حجم الطباعة اليومي وهل محتاج ألوان ولا أبيض وأسود ونحدد لك الأنسب.',
+                    whatsapp: 'مرحبًا، أحتاج طابعة فقط مناسبة لاستخدامي.'
+                },
+                {
+                    keywords: ['فاتورة', 'شركة', 'توريد', 'مقايسة', 'عرض سعر'],
+                    answer: 'نقدر نساعدك بعرض سعر أو مقايسة حسب المطلوب. ابعت بيانات الشركة، الموديل أو المواصفات، والكمية المطلوبة على واتساب.',
+                    whatsapp: 'مرحبًا، أحتاج عرض سعر / مقايسة من شركة العدل.'
                 }
             ];
 
