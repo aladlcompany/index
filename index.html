@@ -1988,6 +1988,110 @@
             margin-bottom: 4px;
         }
 
+
+
+        /* Assistant attention announcement on page load */
+        .ai-bubble.calling {
+            animation: aiBubbleCall 0.85s ease-in-out 0s 3;
+        }
+        .ai-bubble::after {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border: 2px solid rgba(190, 18, 60, 0.35);
+            border-radius: 999px;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .ai-bubble.calling::after {
+            animation: aiPulseRing 1.2s ease-out 0s 2;
+        }
+        .ai-bubble-label {
+            position: absolute;
+            left: 72px;
+            bottom: 8px;
+            background: #ffffff;
+            color: #881337;
+            border: 1px solid #fecdd3;
+            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.12);
+            border-radius: 16px;
+            padding: 8px 12px;
+            white-space: nowrap;
+            font-size: 12px;
+            font-weight: 900;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.25s ease;
+        }
+        .ai-bubble.calling .ai-bubble-label,
+        .ai-bubble:hover .ai-bubble-label {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        body.ai-assistant-alert {
+            animation: aiScreenNudge 0.55s ease-in-out 0s 1;
+        }
+        @keyframes aiBubbleCall {
+            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+            20% { transform: translateY(-3px) rotate(-6deg) scale(1.05); }
+            40% { transform: translateY(2px) rotate(6deg) scale(1.08); }
+            60% { transform: translateY(-2px) rotate(-4deg) scale(1.04); }
+            80% { transform: translateY(1px) rotate(4deg) scale(1.02); }
+        }
+        @keyframes aiPulseRing {
+            0% { opacity: 0.75; transform: scale(0.95); }
+            100% { opacity: 0; transform: scale(1.45); }
+        }
+        @keyframes aiScreenNudge {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-3px); }
+            40% { transform: translateX(3px); }
+            60% { transform: translateX(-2px); }
+            80% { transform: translateX(2px); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .ai-bubble.calling,
+            .ai-bubble.calling::after,
+            body.ai-assistant-alert {
+                animation: none !important;
+            }
+        }
+
+        .ai-whatsapp-btn {
+            display: flex !important;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #22c55e, #16a34a) !important;
+            color: #ffffff !important;
+            border: none !important;
+            border-radius: 14px !important;
+            padding: 10px 14px !important;
+            margin-top: 10px !important;
+            font-size: 14px !important;
+            font-weight: 900 !important;
+            text-align: center !important;
+            box-shadow: 0 8px 18px rgba(22, 163, 74, 0.22);
+        }
+        .ai-whatsapp-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 22px rgba(22, 163, 74, 0.28);
+            background: linear-gradient(135deg, #16a34a, #15803d) !important;
+        }
+        .ai-whatsapp-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #ffffff;
+            color: #16a34a;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            flex: 0 0 24px;
+        }
+
         @media (max-width: 480px) {
             .ai-chat-panel {
                 bottom: 80px;
@@ -2008,15 +2112,15 @@
             <div class="ai-chat-header">
                 <div class="ai-chat-title">
                     <i class="fa fa-headset"></i>
-                    <span>مساعد العدل للمبيعات</span>
+                    <span>خدمة عملاء شركة العدل</span>
                 </div>
                 <button class="ai-close-btn" id="aiCloseBtn">&times;</button>
             </div>
             
             <div class="ai-chat-messages" id="aiChatMessages">
                 <div class="ai-message bot">
-                    أهلاً بك يا فندم في شركة العدل! 👋 <br>
-                    أنا مساعدك الذكي للمبيعات والدعم الفني. بتدور على ماكينة تصوير معينة ولا محتاج مساعدة في اختيار الأنسب لشغلك؟
+                    أهلاً بحضرتك في شركة العدل 👋 <br>
+                    معاك خدمة العملاء. اكتب رقم الموديل أو نوع الاستخدام، ونرشح لك أقرب ماكينة أو نوجهك للدعم الفني.
                 </div>
                 <!-- Messages will be appended here -->
                 <div class="ai-typing-indicator" id="aiTypingIndicator">
@@ -2037,12 +2141,14 @@
         <!-- Floating Bubble -->
         <div class="ai-bubble" id="aiBubble">
             <i class="fa fa-comment-dots"></i>
+            <span class="ai-bubble-label">اسأل شركة العدل</span>
             <span class="notification-dot" id="aiNotificationDot"></span>
         </div>
     </div>
 
     <script>
-        // AI Assistant Logic - Isolated Scope
+        // Smart Sales Assistant v4 - Rule-based + Product Knowledge Base + Learnable FAQ
+        // يعمل بدون Backend وبدون API، مناسب لـ GitHub Pages.
         (function() {
             const bubble = document.getElementById('aiBubble');
             const panel = document.getElementById('aiChatPanel');
@@ -2054,57 +2160,587 @@
             const notificationDot = document.getElementById('aiNotificationDot');
 
             let isOpen = false;
-            let chatHistory = []; // Keep track of the conversation
+            const customerState = {
+                color: null,
+                paper: null,
+                usage: null,
+                budget: null,
+                intent: null,
+                lastProduct: null,
+                asked: []
+            };
 
-            // Extract context from productsDB (using the global variable if available)
-            let productsContextText = "";
-            if (typeof productsDB !== 'undefined') {
-                const popularProducts = productsDB.filter(p => p.condition !== '' || p.category === 'bw-copiers' || p.category === 'color-copiers').slice(0, 15);
-                productsContextText = popularProducts.map(p => 
-                    `- اسم الماكينة: ${p.name}, الفئة: ${p.category === 'bw-copiers' ? 'أبيض وأسود' : 'ألوان'}, السرعة: ${p.speed}, الوظائف: ${p.functions}. ${p.description ? p.description.substring(0, 100) + '...' : ''}`
-                ).join("\n");
+            const companyData = {
+                name: 'شركة العدل لتجارة ماكينات التصوير والطابعات',
+                phone: '01094799247',
+                whatsapp: '201094799247',
+                location: 'جمصة، الدقهلية - شارع الشباب بجوار مسجد السلام',
+                specialty: 'بيع وصيانة ماكينات تصوير وطابعات Ricoh وتوفير الأحبار وقطع الغيار'
+            };
+
+            // قاعدة تدريب قابلة للزيادة لاحقًا: أضف كلمات مفتاحية ورد مثالي فقط.
+            const faqTraining = [
+                {
+                    keywords: ['رقم', 'تليفون', 'موبايل', 'واتساب', 'تواصل', 'اكلمكم'],
+                    answer: 'تحت أمرك يا فندم. تقدر تتواصل مع شركة العدل مباشرة على واتساب، واكتب لنا نوع الماكينة أو العطل أو المنتج المطلوب وهنرد عليك بأفضل عرض متاح.',
+                    whatsapp: 'مرحبًا، أريد التواصل مع شركة العدل بخصوص ماكينة تصوير أو طابعة.'
+                },
+                {
+                    keywords: ['العنوان', 'مكانكم', 'فين', 'المكان', 'المحل'],
+                    answer: 'مقر شركة العدل في جمصة - الدقهلية، شارع الشباب بجوار مسجد السلام. لو محتاج ماكينة أو صيانة، ابعت لنا طلبك على واتساب ونوجهك للأنسب.'
+                },
+                {
+                    keywords: ['السعر', 'بكام', 'كام', 'تكلفة', 'اسعار', 'السعر كام'],
+                    answer: 'السعر بيتحدد حسب الموديل، الحالة، التجهيزات، والضمان. ابعت لنا اسم الماكينة أو الاستخدام المطلوب، وهنرشح لك أفضل اختيار مناسب للميزانية.',
+                    whatsapp: 'مرحبًا، أريد معرفة سعر ماكينة مناسبة من شركة العدل.'
+                },
+                {
+                    keywords: ['صيانة', 'عطل', 'بتعلق', 'مش بتطبع', 'حشر', 'كود', 'مشكلة', 'بايظة'],
+                    answer: 'تمام يا فندم. ابعت لنا موديل الماكينة، وصف العطل، وصورة رسالة الخطأ لو موجودة. فريق الصيانة يقدر يحدد لك السبب والخطوة المناسبة.' ,
+                    page: {target:'tech-support', label:'فتح قسم الدعم الفني'}
+                },
+                {
+                    keywords: ['حبر', 'تونر', 'خرطوشة', 'درام', 'رول', 'قطع غيار', 'فيوزر'],
+                    answer: 'عندنا أحبار وقطع غيار لماكينات وطابعات مختلفة. أهم حاجة تبعت لنا موديل الماكينة أو رقم الخرطوشة عشان نحدد لك القطعة الصح بدون لخبطة.',
+                    whatsapp: 'مرحبًا، أريد الاستفسار عن حبر أو قطع غيار. هذا هو موديل الماكينة/الطابعة:'
+                },
+                {
+                    keywords: ['ضمان', 'مضمونة', 'جودة', 'استيراد'],
+                    answer: 'بنرشح لك الماكينة حسب الاستخدام، ونوضح الحالة والتجهيزات قبل الشراء. الضمان والتفاصيل بتتحدد حسب الموديل والحالة المتاحة وقت الطلب.'
+                },
+                {
+                    keywords: ['اقتصادية', 'رخيصة', 'موفرة', 'ميزانية قليلة', 'اقل سعر', 'سعر قليل', 'مش غاليه', 'حاجه على قد الميزانيه'],
+                    answer: 'لو حضرتك عايز اختيار اقتصادي، الأفضل نبدأ بماكينة أبيض وأسود لأنها أوفر في التشغيل. للمكتب الصغير: MP 301 أو MP 201، ولو محتاج A3: MP 2352 أو MP 2852. لو الاستخدام مكتبة وضغط عالي يبقى نطلع لفئة MP 4002 أو MP 5002.',
+                    whatsapp: 'مرحبًا، أريد ترشيح ماكينة اقتصادية مناسبة لاستخدامي.'
+                },
+                {
+                    keywords: ['مكنه لمكتبه', 'ماكينة لمكتبة', 'سنتر تصوير', 'مركز تصوير', 'مكتبه تصوير', 'ضغط عالي', 'تتحمل شغل'],
+                    answer: 'للمكتبات والسناتر ماينفعش نختار ماكينة ضعيفة. الأفضل أبيض وأسود A3 بسرعة عالية مثل MP 4002 أو MP 5002، ولو محتاج ألوان وشغل عالي نشوف C3002 أو C4502 حسب الميزانية.',
+                    whatsapp: 'مرحبًا، أحتاج ماكينة مناسبة لمكتبة أو سنتر تصوير بضغط شغل.'
+                },
+                {
+                    keywords: ['مكتب صغير', 'عياده', 'محامي', 'شركة صغيرة', 'استخدام خفيف'],
+                    answer: 'للمكتب الصغير الأفضل ماكينة موفرة وصغيرة. لو أبيض وأسود: MP 301 ممتازة لو A4 يكفيك، أو MP 201/2352 لو محتاج A3. لو ألوان: MP C307 أو MP C305 مناسبين جدًا للمكاتب.',
+                    whatsapp: 'مرحبًا، أحتاج ماكينة مناسبة لمكتب صغير.'
+                },
+                {
+                    keywords: ['الفرق', 'مقارنه', 'اقارن', 'انهي افضل', 'ايهما افضل'],
+                    answer: 'أقدر أقارن لك بين موديلين بسهولة. اكتبلي مثلًا: الفرق بين MP 301 و MP 201، أو الفرق بين C305 و C307، وهقولك الأنسب حسب الاستخدام والميزانية.'
+                },
+                {
+                    keywords: ['تقسيط', 'قسط', 'دفعات'],
+                    answer: 'التقسيط أو الدفع على دفعات بيتحدد حسب الموديل وقيمة العرض المتاح. ابعتلنا الموديل أو نوع الاستخدام على واتساب ونشوف أفضل طريقة مناسبة لك.',
+                    whatsapp: 'مرحبًا، أريد الاستفسار عن إمكانية التقسيط أو الدفع على دفعات.'
+                },
+                {
+                    keywords: ['استيراد', 'مستعمل', 'كسر زيرو', 'بحاله', 'حالة الماكينة'],
+                    answer: 'حالة الماكينة بتختلف حسب القطعة المتاحة. قبل الشراء بنوضح الحالة، التجهيزات، والضمان المتاح. الأفضل تبعت الموديل المطلوب ونأكد لك المتوفر حاليًا.',
+                    whatsapp: 'مرحبًا، أريد معرفة حالة ماكينة معينة والمتاح منها.'
+                },
+                {
+                    keywords: ['شبكه', 'نتورك', 'network', 'لان', 'lan'],
+                    answer: 'في موديلات كثيرة بتدعم الطباعة من الشبكة، خصوصًا ماكينات الشركات والمكاتب. ابعتلنا الموديل أو حجم الاستخدام ونأكد لك هل الشبكة متاحة ضمن التجهيز.',
+                    whatsapp: 'مرحبًا، أحتاج ماكينة تدعم الطباعة من الشبكة.'
+                },
+                {
+                    keywords: ['دوبلكس', 'وش وضهر', 'وجهين', 'على الوجهين'],
+                    answer: 'خاصية الدوبلكس مهمة جدًا لتوفير الورق في الطباعة على الوجهين. كثير من موديلات Ricoh تدعمها حسب التجهيز، ابعت الموديل ونأكدها لك قبل الشراء.',
+                    whatsapp: 'مرحبًا، أحتاج ماكينة تدعم الدوبلكس / الطباعة وش وضهر.'
+                },
+                {
+                    keywords: ['فاكس', 'fax'],
+                    answer: 'الفاكس في بعض الموديلات بيكون أساسي وفي موديلات بيكون اختياري حسب التجهيز. ابعت اسم الموديل ونأكد لك وجود الفاكس قبل الشراء.',
+                    whatsapp: 'مرحبًا، أريد ماكينة بها فاكس أو أريد التأكد من وجود الفاكس.'
+                },
+                {
+                    keywords: ['سكانر', 'اسكانر', 'scan', 'مسح ضوئي'],
+                    answer: 'لو محتاج سكانر، ركز على ماكينة متعددة الوظائف. أغلب ماكينات Ricoh المكتبية فيها تصوير وطباعة وسكانر، لكن نأكد التجهيز حسب الموديل والحالة.',
+                    whatsapp: 'مرحبًا، أحتاج ماكينة بها سكانر.'
+                },
+                {
+                    keywords: ['واي فاي', 'wifi', 'wireless', 'لاسلكي'],
+                    answer: 'الواي فاي مهم لو عايز تطبع بسهولة من أجهزة مختلفة. بعض الموديلات تدعمه حسب التجهيز، ومن أشهر الاختيارات المكتبية للألوان MP C307. ابعت لنا استخدامك ونرشح لك الأنسب.',
+                    whatsapp: 'مرحبًا، أحتاج ماكينة أو طابعة تدعم Wi-Fi.'
+                },
+                {
+                    keywords: ['a3', 'ايه ثري', 'ورق كبير'],
+                    answer: 'لو محتاج A3، اختار ماكينة A3 حقيقية مثل MP 2352 أو MP 2852 أو MP 4002/5002 للأبيض والأسود، أو C3002/C4502 للألوان. موديلات A4 مثل MP 301 أو C307 لا تناسب ورق A3.'
+                },
+                {
+                    keywords: ['a4', 'ايه فور', 'ورق عادي'],
+                    answer: 'لو استخدامك A4 فقط، هتوفر في المساحة والتكلفة. للأبيض والأسود ممكن MP 301، وللألوان ممكن MP C307 أو MP C305 حسب المتاح.'
+                },
+                {
+                    keywords: ['85a', 'hp 85a', 'ce285a'],
+                    answer: 'كارتدج 85A من أشهر أحبار HP. ابعتلنا موديل الطابعة أو صورة الخرطوشة على واتساب ونأكد لك التوافق والسعر المتاح.',
+                    whatsapp: 'مرحبًا، أريد الاستفسار عن حبر HP 85A / CE285A.'
+                },
+                {
+                    keywords: ['59a', 'cf259a'],
+                    answer: 'حبر 59A مناسب لموديلات HP محددة. ابعت موديل الطابعة أو صورة الخرطوشة ونأكد لك النوع الصحيح والمتاح.',
+                    whatsapp: 'مرحبًا، أريد الاستفسار عن حبر HP 59A / CF259A.'
+                },
+                {
+                    keywords: ['305', 'c305', 'mp c305', 'mpc305'],
+                    answer: 'لو حضرتك تقصد رقم 305 فقط، فالأقرب هو Ricoh MP C305: ماكينة ألوان A4 مناسبة للمكاتب، فيها تصوير وطباعة وسكانر وفاكس حسب التجهيز. ولو تقصد 3053 أو 3054 اكتب الرقم كامل عشان مايحصلش لخبطة.',
+                    whatsapp: 'مرحبًا، أريد الاستفسار عن Ricoh MP C305.'
+                },
+                {
+                    keywords: ['3053', 'mp 3053'],
+                    answer: 'Ricoh MP 3053 ماكينة أبيض وأسود A3 بسرعة 30 ورقة/دقيقة، مناسبة للشركات والمكاتب اللي محتاجة A3 وشغل يومي متوسط إلى عالي.',
+                    whatsapp: 'مرحبًا، أريد الاستفسار عن Ricoh MP 3053.'
+                },
+                {
+                    keywords: ['3054', 'mp 3054'],
+                    answer: 'Ricoh MP 3054 ماكينة أبيض وأسود A3، مناسبة للاستخدام المكتبي والشركات حسب الحالة والتجهيزات المتاحة. ابعتلنا استخدامك ونأكد لك هل هي الأنسب ولا فيه بديل أفضل.',
+                    whatsapp: 'مرحبًا، أريد الاستفسار عن Ricoh MP 3054.'
+                },
+                {
+                    keywords: ['307', 'c307', 'mp c307', 'mpc307'],
+                    answer: 'Ricoh MP C307 اختيار ممتاز لو محتاج ماكينة ألوان A4 للمكتب، مناسبة للشركات الصغيرة والمتوسطة، وبها تصوير وطباعة وسكانر وفاكس حسب التجهيز.',
+                    whatsapp: 'مرحبًا، أريد الاستفسار عن Ricoh MP C307.'
+                },
+                {
+                    keywords: ['301', 'mp 301'],
+                    answer: 'Ricoh MP 301 ماكينة أبيض وأسود A4 صغيرة وعملية، مناسبة جدًا للمكاتب الصغيرة والاستخدام اليومي الخفيف والمتوسط، وبتوفر مساحة وتكلفة تشغيل.',
+                    whatsapp: 'مرحبًا، أريد الاستفسار عن Ricoh MP 301.'
+                },
+                {
+                    keywords: ['2001', 'mp 2001'],
+                    answer: 'Ricoh MP 2001 ماكينة أبيض وأسود A3 اقتصادية، مناسبة للمكاتب اللي محتاجة تصوير مستندات A3 وA4 بتكلفة تشغيل معقولة.',
+                    whatsapp: 'مرحبًا، أريد الاستفسار عن Ricoh MP 2001.'
+                },
+                {
+                    keywords: ['ورق', 'رزمة', 'علبة ورق', 'a4 80', 'a4 70', 'اسعار الورق'],
+                    answer: 'متوفر لدينا ورق تصوير وطباعة بمقاسات وأنواع مختلفة. اكتب نوع الورق أو المقاس المطلوب، أو افتح قسم بورصة الورق لمعرفة المتاح.',
+                    whatsapp: 'مرحبًا، أريد الاستفسار عن أسعار وأنواع ورق التصوير والطباعة.'
+                },
+                {
+                    keywords: ['مش عارف اختار', 'انصحني', 'ارشحلي', 'اختار ايه', 'محتار'],
+                    answer: 'ولا يهمك يا فندم. خليني أحدد لك الاختيار الصح: هل الاستخدام مكتب ولا مكتبة؟ محتاج ألوان ولا أبيض وأسود؟ وورق A4 فقط ولا A3؟ بعدها أرشح لك أقرب ماكينة بدون ما تدفع في حاجة مش محتاجها.',
+                    whatsapp: 'مرحبًا، أحتاج ترشيح ماكينة مناسبة لاستخدامي.'
+                },
+                {
+                    keywords: ['تعلم', 'بتتعلم', 'ذكي', 'مساعد ذكي'],
+                    answer: 'أنا مساعد شركة العدل الذكي، متجهز ببيانات الماكينات والأسئلة المتكررة عشان أساعدك بسرعة. وكل ما نضيف بيانات جديدة عن المنتجات والأسئلة، ترشيحاتي بتبقى أدق.'
+                }
+            ];
+
+            const salesScenarios = [
+                { key: 'smallOffice', words: ['مكتب صغير', 'شركة صغيرة', 'استخدام خفيف', 'منزل', 'عيادة'], response: 'للمكتب الصغير الأفضل ماكينة عملية وموفرة، غالبًا MP 301 لو A4 كفاية، أو MP 2352 لو محتاج A3.' },
+                { key: 'library', words: ['مكتبة', 'سنتر', 'طباعة كتير', 'ضغط', 'شغل كتير', 'تصوير كتير', 'كميات'], response: 'للمكتبات والضغط العالي الأفضل ماكينة A3 تتحمل شغل يومي، مثل MP 4002 أو MP 5002 للأبيض والأسود، أو MP C3002 / MP C4502 لو محتاج ألوان.' },
+                { key: 'color', words: ['ألوان', 'الوان', 'color', 'ألوان'], response: 'لو محتاج ألوان، هنرشح موديلات MP C حسب المقاس والضغط: C307 أو C305 للمكاتب A4، و C3002/C3502/C4502 للشركات أو السناتر A3.' },
+                { key: 'bw', words: ['ابيض واسود', 'أبيض وأسود', 'اسود', 'black', 'تصوير عادي'], response: 'الأبيض والأسود اقتصادي في التشغيل، ومناسب للمكاتب والمكتبات حسب السرعة والمقاس المطلوب.' },
+                { key: 'wifi', words: ['واي فاي', 'wifi', 'wireless', 'لاسلكي'], response: 'فيه موديلات يمكن تجهيزها أو استخدامها بالشبكة حسب الحالة والتجهيز. ابعت لنا الموديل المطلوب أو الاستخدام ونأكد لك التوصيل المناسب.' },
+                { key: 'scanner', words: ['سكانر', 'اسكانر', 'scan', 'مسح'], response: 'أغلب ماكينات الريكو متعددة الوظائف فيها تصوير وطباعة وسكانر، لكن التجهيز بيختلف حسب الموديل والحالة، لذلك بنأكدها قبل الشراء.' },
+                { key: 'a3', words: ['a3', 'ايه ثري', 'ورق كبير', 'تصوير a3'], response: 'لو محتاج A3 ابعد عن موديلات A4 فقط زي MP 301 أو C307، وشوف موديلات مثل MP 2352 / 2852 / 3352 / 4002 / 5002 أو ألوان C3002 وما فوق.' },
+                { key: 'a4', words: ['a4', 'ايه فور', 'مكتب صغير', 'ورق عادي'], response: 'لو A4 كفاية، الاختيار بيكون أوفر في المساحة والسعر، زي MP 301 للأبيض والأسود أو MP C307 للألوان.' }
+            ];
+
+            function normalizeArabic(str) {
+                return (str || '')
+                    .toString()
+                    .toLowerCase()
+                    .replace(/[أإآ]/g, 'ا')
+                    .replace(/ى/g, 'ي')
+                    .replace(/ة/g, 'ه')
+                    .replace(/ؤ/g, 'و')
+                    .replace(/ئ/g, 'ي')
+                    .replace(/[\u064B-\u065F]/g, '')
+                    .replace(/[^\u0600-\u06FFa-z0-9\s]/g, ' ')
+                    .replace(/\s+/g, ' ')
+                    .trim();
             }
 
-            const systemPrompt = `
-أنت "مساعد العدل"، مندوب مبيعات وخدمة عملاء ذكي جداً، محترف، وودود، تعمل لصالح "شركة العدل" لبيع وصيانة ماكينات التصوير والطابعات (ماركة ريكو Ricoh) في مصر.
-أنت لست مجرد Chatbot، بل أنت Sales AI Consultant محترف. هدفك هو فهم نية العميل، ترشيح المنتجات المناسبة، وزيادة التحويلات.
+            function getProducts() {
+                try {
+                    if (typeof productsDB !== 'undefined' && Array.isArray(productsDB)) return productsDB;
+                } catch(e) {}
+                return [];
+            }
 
-**قواعد صارمة جداً (ممنوع مخالفتها تحت أي ظرف):**
-1. **لا توفر أي وسيلة تواصل خارجية أبداً:** (لا أرقام هواتف، لا واتساب، لا إيميلات، لا روابط سوشيال ميديا). 
-2. **التوجيه الداخلي فقط:** إذا طلب العميل التواصل، قل له مثلاً: "تقدر حضرتك تستخدم صفحة 'الدعم الفني' أو 'الشكاوى' من القائمة فوق، أو تقدر تحجز من خلال زرار الطلب الموجود في صفحة أي ماكينة بتعجبك".
-3. **لا تكشف عن هويتك البرمجية:** لا تقل أبداً "أنا نموذج ذكاء اصطناعي" أو "لا أستطيع المساعدة كوني آلة". تصرف كموظف مبيعات حقيقي.
-4. **تذكر السياق (Context):** إذا اختار العميل فئة (مثل أبيض وأسود)، لا تسأله مرة أخرى "تحب ألوان ولا أبيض وأسود؟". ابنِ على اختياراته السابقة.
-5. **الردود الديناميكية:** لا تستخدم قوالب ثابتة. افهم النية (Intent) من العامية المصرية (مثال: "عاوز حاجة رخيصة" = يبحث عن سعر اقتصادي، "مكتبة صغيرة" = يحتاج ماكينة تتحمل ضغط متوسط وبسعر مناسب).
-6. **لا ترد بردود عامة أو صامتة:** أعطِ إجابة مباشرة، قصيرة، مفيدة، وتقود لعملية البيع أو حل المشكلة. إذا لم تفهم، اسأل سؤالاً واحداً قصيراً ذكياً.
-7. **الترشيح الذكي (Recommendation):** لا تعرض قائمة طويلة. اسأل نفسك: ماذا يحتاج؟ ثم رشح 1 أو 2 كحد أقصى واشرح *لماذا* هذا الاختيار مناسب له باختصار.
+            function productSearchText(p) {
+                return normalizeArabic([
+                    p.name, p.category, p.speed, p.functions, p.paperSize, p.description,
+                    ...(p.specs || []).map(s => `${s.label} ${s.value}`)
+                ].join(' '));
+            }
 
-**بيانات المنتجات المتاحة لك لترشيحها (اقتصر عليها فقط):**
-${productsContextText}
+            function extractModelTokens(query) {
+                const q = normalizeArabic(query).replace(/\s+/g, ' ');
+                const tokens = [];
+                const patterns = [
+                    /(?:mp\s*c|mpc|c)\s*(\d{3,4})/gi,
+                    /(?:mp)\s*(\d{3,4})/gi,
+                    /(?:sp\s*c|spc)\s*(\d{3,4})/gi,
+                    /\b(\d{3,4})\b/g
+                ];
+                patterns.forEach(re => {
+                    let m;
+                    while ((m = re.exec(q)) !== null) tokens.push(m[1]);
+                });
+                return [...new Set(tokens)];
+            }
 
-**كيفية عرض الروابط (أمر حاسم):**
-لأي منتج ترشحه أو قسم توجه العميل إليه، **يجب** أن تضع صيغة JSON هذه في نهاية ردك لكي يقرأها النظام ويحولها لأزرار. 
-- لترشيح ماكينة معينة:
-[{"action": "navigate_product", "target": "اسم الماكينة بالكامل", "label": "عرض تفاصيل الماكينة"}]
-- للتوجيه لقسم معين (مثل الصيانة أو الشكاوى أو قائمة المنتجات):
-[{"action": "navigate_page", "target": "tech-support", "label": "قسم الدعم الفني"}]
-أو
-[{"action": "navigate_page", "target": "products", "label": "تصفح كل المنتجات"}]
+            function detectIntent(query) {
+                const q = normalizeArabic(query);
+                const has = arr => arr.some(w => q.includes(normalizeArabic(w)));
+                const modelTokens = extractModelTokens(query);
+                const intent = {
+                    raw: q,
+                    modelTokens,
+                    exactModelRequest: modelTokens.length > 0,
+                    wantsColor: has(['الوان', 'لون', 'color', 'cmyk']),
+                    wantsBW: has(['ابيض واسود', 'اسود', 'ابيض', 'بدون الوان', 'تصوير عادي']),
+                    wantsCheap: has(['اقتصادي', 'اقتصاديه', 'رخيص', 'رخيصه', 'موفر', 'اقل سعر', 'ميزانيه', 'على قدي']),
+                    wantsHeavy: has(['مكتبه', 'سنتر', 'ضغط', 'شغل كتير', 'استخدام عالي', 'تتحمل', 'كميات', 'تصوير كتير']),
+                    wantsSmallOffice: has(['مكتب صغير', 'شركة صغيرة', 'عيادة', 'استخدام خفيف', 'مكتب', 'منزل']),
+                    wantsA3: has(['a3', 'ايه ثري', 'ورق كبير']),
+                    wantsA4: has(['a4', 'ايه فور']),
+                    wantsPrinterOnly: has(['طابعه فقط', 'برنتر', 'printer', 'طباعة فقط']),
+                    wantsMaintenance: has(['صيانه', 'عطل', 'مشكله', 'حشر', 'كود', 'بتعلق', 'مش بتطبع']),
+                    wantsSupplies: has(['حبر', 'تونر', 'خرطوشه', 'درام', 'رول', 'قطع غيار', 'فيوزر']),
+                    wantsContact: has(['رقم', 'تليفون', 'واتساب', 'موبايل', 'اتصل', 'تواصل']),
+                    wantsPrice: has(['السعر', 'بكام', 'كام', 'تكلفه', 'اسعار'])
+                };
+                return intent;
+            }
 
-**أمثلة لأسلوب الرد (افهم النية ولا تكرر نص المثال):**
-- العميل: "أنا فاتح مكتبة وعاوز ماكينة تستحمل"
-- أنت: "ألف مبروك على المكتبة يا فندم! للمكتبات بننصح دايماً بماكينات تعيش وتستحمل ضغط الشغل وتوفر في الحبر. برشحلك بقوة ريكو Aficio MP 5002، سريعة جداً (50 ورقة ف الدقيقة) وبتصور وتطبع أبيض وأسود. تحب تشوف تفاصيلها؟
-[{"action": "navigate_product", "target": "ريكو Aficio MP 5002", "label": "تفاصيل MP 5002"}]"
+            function updateState(intent) {
+                if (intent.wantsColor) customerState.color = 'color';
+                if (intent.wantsBW) customerState.color = 'bw';
+                if (intent.wantsA3) customerState.paper = 'A3';
+                if (intent.wantsA4) customerState.paper = 'A4';
+                if (intent.wantsCheap) customerState.budget = 'economy';
+                if (intent.wantsHeavy) customerState.usage = 'heavy';
+                if (intent.wantsSmallOffice) customerState.usage = customerState.usage || 'office';
+                if (intent.wantsMaintenance) customerState.intent = 'maintenance';
+                if (intent.wantsSupplies) customerState.intent = 'supplies';
+                if (intent.wantsPrinterOnly) customerState.intent = 'printer';
+            }
 
-- العميل: "عاوز رقمكم"
-- أنت: "تحت أمرك يا فندم، أنا معاك هنا لأي استفسار يخص المبيعات أو الصيانة. لو محتاج تحجز صيانة أو تشتري ماكينة، تقدر تسجل بياناتك في قسم 'الدعم الفني' والفريق المختص هيتواصل معاك فوراً.
-[{"action": "navigate_page", "target": "tech-support", "label": "قسم الدعم الفني"}]"
-`;
+            function scoreProduct(p, intent) {
+                const t = productSearchText(p);
+                let score = 0;
+                const cat = p.category || '';
+                const speedNum = parseInt((p.speed || '').match(/\d+/)?.[0] || '0', 10);
+                const modelNums = extractModelTokens(p.name);
 
-            // Initialize chat history with system prompt
-            chatHistory.push({ role: "user", parts: [{ text: systemPrompt }] });
-            chatHistory.push({ role: "model", parts: [{ text: "علم. سألتزم بجميع التعليمات وسأتصرف كمندوب مبيعات محترف لشركة العدل." }] });
+                intent.modelTokens.forEach(num => { if (modelNums.includes(num)) score += 140; });
+                if (intent.exactModelRequest) {
+                    if (intent.wantsColor && t.includes('c' + intent.modelTokens[0])) score += 20;
+                    if (!intent.wantsColor && cat === 'bw-copiers') score += 5;
+                }
 
-            // Toggle Panel
+                const desiredColor = intent.wantsColor ? 'color' : intent.wantsBW ? 'bw' : customerState.color;
+                if (desiredColor === 'color' && cat === 'color-copiers') score += 35;
+                if (desiredColor === 'bw' && cat === 'bw-copiers') score += 35;
+                if (intent.wantsPrinterOnly && t.includes('طابعه') && !t.includes('تصوير')) score += 45;
+
+                const desiredPaper = intent.wantsA3 ? 'A3' : intent.wantsA4 ? 'A4' : customerState.paper;
+                if (desiredPaper === 'A3' && (p.paperSize || '').toUpperCase().includes('A3')) score += 25;
+                if (desiredPaper === 'A4' && (p.paperSize || '').toUpperCase().includes('A4')) score += 15;
+
+                if (intent.wantsCheap || customerState.budget === 'economy') {
+                    if (['ريكو Aficio MP 201','ريكو Aficio MP 301','ريكو Aficio MP 2352','ريكو Aficio MP 2851','ريكو Aficio MP 2852'].includes(p.name)) score += 40;
+                    if (speedNum <= 30 && cat === 'bw-copiers') score += 12;
+                    if (cat === 'color-copiers') score -= 10;
+                }
+
+                if (intent.wantsHeavy || customerState.usage === 'heavy') {
+                    if (speedNum >= 40) score += 38;
+                    if ((p.paperSize || '').toUpperCase().includes('A3')) score += 18;
+                    if (t.includes('مكتبات') || t.includes('الشركات')) score += 10;
+                }
+
+                if (intent.wantsSmallOffice || customerState.usage === 'office') {
+                    if (['ريكو Aficio MP 301','ريكو Aficio MP 201','ريكو Aficio MP C305','ريكو Aficio MP C307'].includes(p.name)) score += 35;
+                    if (speedNum <= 30) score += 10;
+                }
+
+                ['سكانر','فاكس','شبكه','دوبلكس','واي فاي','wifi'].forEach(w => { if (intent.raw.includes(normalizeArabic(w)) && t.includes(normalizeArabic(w))) score += 12; });
+                return score;
+            }
+
+            function findBestProducts(intent, limit = 2) {
+                const products = getProducts();
+                return products
+                    .map(p => ({...p, _score: scoreProduct(p, intent)}))
+                    .filter(p => p._score > 0)
+                    .sort((a,b) => b._score - a._score)
+                    .slice(0, limit);
+            }
+
+            function buildProductReason(p, intent) {
+                const reasons = [];
+                if ((p.category || '') === 'color-copiers') reasons.push('ألوان'); else reasons.push('أبيض وأسود اقتصادي');
+                if (p.paperSize) reasons.push('مقاس الورق: ' + p.paperSize);
+                if (p.speed) reasons.push('سرعة ' + p.speed);
+                if (intent.wantsCheap || customerState.budget === 'economy') reasons.push('مناسب كاختيار اقتصادي حسب الاستخدام');
+                if (intent.wantsHeavy || customerState.usage === 'heavy') reasons.push('مناسب للضغط والاستخدام اليومي');
+                if (p.functions) reasons.push('الوظائف: ' + p.functions);
+                return reasons.slice(0,4).join('، ');
+            }
+
+            function productButton(productName, label = 'عرض تفاصيل الماكينة') {
+                const safeName = String(productName).replace(/'/g, "\\'");
+                return `<a class="ai-product-link" onclick="if(typeof openProductDetails === 'function') { openProductDetails('${safeName}'); document.getElementById('aiCloseBtn').click(); }">${label} <i class="fa fa-print"></i></a>`;
+            }
+
+            function pageButton(target, label) {
+                return `<button class="ai-action-btn" onclick="if(typeof navigateTo === 'function') { navigateTo('${target}'); document.getElementById('aiCloseBtn').click(); }">${label} <i class="fa fa-arrow-left"></i></button>`;
+            }
+
+            function whatsappButton(message, label = 'تواصل عبر واتساب') {
+                const safeMsg = String(message || 'مرحبًا، أريد الاستفسار من شركة العدل.').replace(/'/g, "\'");
+                return `<button class="ai-action-btn ai-whatsapp-btn" onclick="if(typeof openWhatsApp === 'function') { openWhatsApp('201094799247', '${safeMsg}'); } else { window.open('https://wa.me/201094799247?text=' + encodeURIComponent('${safeMsg}'), '_blank'); }"><span>${label}</span><span class="ai-whatsapp-icon"><i class="fab fa-whatsapp"></i></span></button>`;
+            }
+
+            function getLearnedFAQs() {
+                try { return JSON.parse(localStorage.getItem('alAdlAssistantLearnedFAQs') || '[]'); } catch(e) { return []; }
+            }
+
+            function saveLearnedFAQ(keywords, answer, whatsapp) {
+                const list = getLearnedFAQs();
+                list.push({ keywords: Array.isArray(keywords) ? keywords : [String(keywords)], answer: String(answer || ''), whatsapp: whatsapp || '' });
+                localStorage.setItem('alAdlAssistantLearnedFAQs', JSON.stringify(list));
+                return true;
+            }
+
+            function answerLearnedFAQ(query) {
+                const q = normalizeArabic(query);
+                const learned = getLearnedFAQs();
+                for (const item of learned) {
+                    if ((item.keywords || []).some(k => q.includes(normalizeArabic(k)))) {
+                        let html = item.answer;
+                        if (item.whatsapp) html += `<br><br>${whatsappButton(item.whatsapp)}`;
+                        return html;
+                    }
+                }
+                return null;
+            }
+
+            function greetingAnswer(query) {
+                const q = normalizeArabic(query);
+                const clean = q.replace(/\s/g, '');
+                const hasSalam = q.includes('السلام عليكم') || q.includes('سلام عليكم') || clean === 'سلام' || q === 'السلام' || q.includes('سلامو عليكم');
+                const hasMorning = q.includes('صباح الخير') || q.includes('صباح الفل') || q.includes('صباح النور');
+                const hasEvening = q.includes('مساء الخير') || q.includes('مساء الفل') || q.includes('مساء النور');
+                const hasHello = ['اهلا', 'اهلين', 'هاي', 'hello', 'hi', 'ازيك', 'عامل ايه'].some(w => q.includes(normalizeArabic(w)));
+                if (!(hasSalam || hasMorning || hasEvening || hasHello)) return null;
+                if (hasSalam) return `وعليكم السلام ورحمة الله وبركاته يا فندم 🌹<br>نورت شركة العدل. قولّي محتاج ماكينة تصوير، طابعة، حبر، ولا صيانة؟ ولو معاك رقم موديل اكتبهولي زي MP C305 أو MP 301 وأنا أحدد لك الأنسب.`;
+                if (hasMorning) return `صباح النور يا فندم 🌞<br>أهلاً بحضرتك في شركة العدل. تحب نساعدك في ماكينة تصوير، طابعة، حبر، ولا صيانة؟`;
+                if (hasEvening) return `مساء النور يا فندم 🌙<br>تحت أمرك. اكتبلي احتياجك أو رقم الموديل، وأنا أرشح لك أقرب اختيار من المتاح.`;
+                return `أهلاً وسهلاً يا فندم 🌹<br>معاك مساعد شركة العدل. اكتبلي محتاج ماكينة لمكتب ولا مكتبة؟ ألوان ولا أبيض وأسود؟ وأنا أساعدك تختار.`;
+            }
+
+            function answerFAQ(query) {
+                const learned = answerLearnedFAQ(query);
+                if (learned) return learned;
+                const q = normalizeArabic(query);
+                for (const item of faqTraining) {
+                    if (item.keywords.some(k => q.includes(normalizeArabic(k)))) {
+                        let html = `${item.answer}`;
+                        if (item.page) html += `<br><br>${pageButton(item.page.target, item.page.label)}`;
+                        if (item.whatsapp) html += `<br><br>${whatsappButton(item.whatsapp)}`;
+                        return html;
+                    }
+                }
+                return null;
+            }
+
+            function findProductByNameContains(parts) {
+                const products = getProducts();
+                return products.find(p => parts.every(part => normalizeArabic(p.name).includes(normalizeArabic(part))));
+            }
+
+            function handleModelGuide(intent) {
+                if (!intent.modelTokens.length) return null;
+                const token = intent.modelTokens[0];
+                const q = intent.raw || '';
+                const wantsColorNow = intent.wantsColor || q.includes('c' + token) || q.includes('c ' + token);
+
+                if (token === '305') {
+                    if (q.includes('3053')) {
+                        const p = findProductByNameContains(['mp 3053']);
+                        if (p) return `تمام يا فندم، حضرتك تقصد <strong>${p.name}</strong>.<br>${buildProductReason(p, intent)}.<br><br>${productButton(p.name, 'عرض تفاصيل الموديل')}${whatsappButton('مرحبًا، أريد الاستفسار عن ' + p.name, 'تواصل عبر واتساب')}`;
+                    }
+                    if (q.includes('3054')) {
+                        const p = findProductByNameContains(['mp 3054']);
+                        if (p) return `تمام يا فندم، حضرتك تقصد <strong>${p.name}</strong>.<br>${buildProductReason(p, intent)}.<br><br>${productButton(p.name, 'عرض تفاصيل الموديل')}${whatsappButton('مرحبًا، أريد الاستفسار عن ' + p.name, 'تواصل عبر واتساب')}`;
+                    }
+                    const p = findProductByNameContains(['mp c305']);
+                    if (p) {
+                        customerState.lastProduct = p.name;
+                        return `تمام يا فندم، رقم <strong>305</strong> عندنا بيتفهم غالبًا على إنه <strong>${p.name}</strong> مش 3053.<br>
+                        ${buildProductReason(p, intent)}.<br><br>
+                        لو حضرتك تقصد <strong>MP 3053</strong> أو <strong>MP 3054</strong> اكتب الرقم كامل عشان أحدده بدقة.<br><br>
+                        ${productButton(p.name, 'عرض تفاصيل MP C305')}${whatsappButton('مرحبًا، أريد الاستفسار عن Ricoh MP C305.', 'تواصل عبر واتساب')}`;
+                    }
+                }
+
+                const directMap = {
+                    '305': ['mp c305'], '307': ['c307'], '301': ['mp 301'], '201': ['mp 201'], '2001': ['mp 2001'],
+                    '2352': ['mp 2352'], '2852': ['mp 2852'], '3352': ['mp 3352'],
+                    '4002': ['mp 4002'], '5002': ['mp 5002'], '3002': ['c3002'],
+                    '3502': ['c3502'], '4502': ['c4502'], '5502': ['c5502']
+                };
+                if (directMap[token]) {
+                    const p = findProductByNameContains(directMap[token]);
+                    if (p) {
+                        customerState.lastProduct = p.name;
+                        return `تمام يا فندم، الموديل الأقرب هو <strong>${p.name}</strong>.<br>
+                        ${buildProductReason(p, intent)}.<br><br>
+                        ${productButton(p.name, 'عرض تفاصيل الموديل')}
+                        ${whatsappButton('مرحبًا، أريد الاستفسار عن ' + p.name, 'تواصل عبر واتساب')}`;
+                    }
+                }
+                return null;
+            }
+
+            function compareModelsAnswer(userText) {
+                const q = normalizeArabic(userText);
+                if (!(q.includes('فرق') || q.includes('مقارنه') || q.includes('اقارن') || q.includes('انهي افضل'))) return null;
+                const nums = extractModelTokens(userText);
+                if (nums.length < 2) return 'اكتبلي الموديلين اللي عايز تقارن بينهم، مثال: الفرق بين MP 301 و MP 201.';
+                const products = getProducts();
+                const matched = nums.map(n => products.find(p => extractModelTokens(p.name).includes(n))).filter(Boolean);
+                if (matched.length >= 2) {
+                    const a = matched[0], b = matched[1];
+                    return `مقارنة سريعة:<br>
+                    <strong>${a.name}</strong>: ${buildProductReason(a, detectIntent(a.name))}.<br>
+                    <strong>${b.name}</strong>: ${buildProductReason(b, detectIntent(b.name))}.<br><br>
+                    لو الاستخدام مكتب صغير اختار الأقل تكلفة وتشغيلًا، ولو ضغط أعلى اختار الأسرع والأكبر حسب حجم الورق المطلوب.${whatsappButton('مرحبًا، أريد مقارنة بين ' + a.name + ' و ' + b.name, 'اطلب مقارنة على واتساب')}`;
+                }
+                return null;
+            }
+
+            function smartAnswer(userText) {
+                const greeting = greetingAnswer(userText);
+                if (greeting) return greeting;
+
+                const intent = detectIntent(userText);
+                updateState(intent);
+
+                const comparison = compareModelsAnswer(userText);
+                if (comparison) return comparison;
+
+                const guidedModel = handleModelGuide(intent);
+                if (guidedModel) return guidedModel;
+
+                // 1) طلب رقم موديل معين: الأولوية القصوى للبحث المباشر.
+                if (intent.exactModelRequest) {
+                    const matches = findBestProducts(intent, 3);
+                    if (matches.length) {
+                        const p = matches[0];
+                        customerState.lastProduct = p.name;
+                        let html = `تمام يا فندم، لقيت أقرب موديل لطلبك: <strong>${p.name}</strong>.<br>`;
+                        html += `${buildProductReason(p, intent)}.<br>`;
+                        html += `لو حضرتك تقصد رقم قريب من نفس السلسلة، ممكن كمان نراجع البدائل المتاحة.`;
+                        html += `<br><br>${productButton(p.name, 'عرض تفاصيل ' + p.name.replace('ريكو ', ''))}`;
+                        html += `${whatsappButton('مرحبًا، أريد الاستفسار عن ' + p.name, 'اسأل عن الماكينة على واتساب')}`;
+                        return html;
+                    }
+                    return `مش ظاهر عندي موديل بنفس الرقم بالضبط. اكتبلي الرقم كامل مثل MP 301 أو MP C307، أو ابعت صورة الموديل، وهنحدد لك الأقرب من المتاح.<br><br>${whatsappButton('مرحبًا، أريد الاستفسار عن ماكينة برقم موديل محدد.')}`;
+                }
+
+                // 2) صيانة أو أحبار: رد متخصص قبل ترشيحات البيع.
+                if (intent.wantsMaintenance || intent.wantsSupplies || intent.wantsContact || intent.wantsPrice) {
+                    const faq = answerFAQ(userText);
+                    if (faq) return faq;
+                }
+
+                // 3) ترشيح اقتصادي/مكتبة/ألوان/أبيض وأسود/مكتب.
+                const best = findBestProducts(intent, 2);
+                if (best.length) {
+                    const p = best[0];
+                    customerState.lastProduct = p.name;
+                    let intro = 'بناءً على طلبك، أنسب اختيار أرشحه لك هو';
+                    if (intent.wantsCheap) intro = 'لو عايز اختيار اقتصادي، أرشح لك';
+                    if (intent.wantsHeavy) intro = 'لو الاستخدام ضغط أو مكتبة، أرشح لك';
+                    if (intent.wantsColor) intro = 'لو محتاج ألوان، أرشح لك';
+                    if (intent.wantsSmallOffice) intro = 'للمكتب أو الاستخدام المتوسط، أرشح لك';
+
+                    let html = `${intro}: <strong>${p.name}</strong>.<br>${buildProductReason(p, intent)}.`;
+                    if (best[1]) html += `<br><br>وبديل قريب: <strong>${best[1].name}</strong> لو محتاج مقارنة.`;
+                    html += `<br><br>${productButton(p.name)}`;
+                    html += `${whatsappButton('مرحبًا، أريد الاستفسار عن ' + p.name + ' وهل مناسبة لاستخدامي.')}`;
+                    return html;
+                }
+
+                // 4) سيناريوهات عامة متوقعة.
+                const q = normalizeArabic(userText);
+                const scenario = salesScenarios.find(s => s.words.some(w => q.includes(normalizeArabic(w))));
+                if (scenario) {
+                    return `${scenario.response}<br><br>خليني أحدد لك بدقة: الاستخدام اليومي تقريبًا كام نسخة؟ ومحتاج ألوان ولا أبيض وأسود؟`;
+                }
+
+                // 5) سؤال توضيحي ذكي عند عدم وضوح الطلب.
+                return `تمام يا فندم، عشان أرشح لك ماكينة صح محتاج أعرف 3 حاجات فقط:<br>
+                1) ألوان ولا أبيض وأسود؟<br>
+                2) A4 ولا A3؟<br>
+                3) الاستخدام مكتب صغير ولا مكتبة/ضغط عالي؟<br><br>
+                مثال: "عايز ماكينة اقتصادية أبيض وأسود A3 لمكتب".`;
+            }
+
+            function appendMessage(text, sender, isHTML = false) {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = `ai-message ${sender}`;
+                if (isHTML) msgDiv.innerHTML = text; else msgDiv.textContent = text;
+                messagesContainer.insertBefore(msgDiv, typingIndicator);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+
+            function handleSend() {
+                const text = inputArea.value.trim();
+                if (!text) return;
+                appendMessage(text, 'user');
+                inputArea.value = '';
+                typingIndicator.classList.add('active');
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                setTimeout(() => {
+                    const html = smartAnswer(text);
+                    typingIndicator.classList.remove('active');
+                    appendMessage(html, 'bot', true);
+                }, 350);
+            }
+
+            let nudgeSoundTried = false;
+            function playAssistantNudgeSound() {
+                if (nudgeSoundTried) return;
+                nudgeSoundTried = true;
+                try {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    if (!AudioContext) return;
+                    const ctx = new AudioContext();
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(740, ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(980, ctx.currentTime + 0.12);
+                    gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.045, ctx.currentTime + 0.025);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.18);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.2);
+                } catch(e) {}
+            }
+
+            function announceAssistantPresence() {
+                if (!bubble) return;
+                bubble.classList.add('calling');
+                document.body.classList.add('ai-assistant-alert');
+                playAssistantNudgeSound();
+                setTimeout(() => {
+                    bubble.classList.remove('calling');
+                    document.body.classList.remove('ai-assistant-alert');
+                }, 2600);
+            }
+
+            setTimeout(announceAssistantPresence, 1200);
+
             bubble.addEventListener('click', () => {
                 isOpen = !isOpen;
                 if (isOpen) {
@@ -2121,147 +2757,33 @@ ${productsContextText}
                 panel.classList.remove('active');
             });
 
-            panel.addEventListener('click', (e) => { e.stopPropagation(); });
-
-            // Handle Send
-            const handleSend = async () => {
-                const text = inputArea.value.trim();
-                if (!text) return;
-
-                appendMessage(text, 'user');
-                inputArea.value = '';
-                
-                chatHistory.push({ role: "user", parts: [{ text: text }] });
-
-                typingIndicator.classList.add('active');
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
-                try {
-                    // API Call to Gemini
-                    const apiKey = ""; // Canvas provides this automatically
-                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-pro:generateContent?key=${apiKey}`;
-                    
-                    const payload = {
-                        contents: chatHistory,
-                        generationConfig: {
-                            temperature: 0.7,
-                            topK: 40,
-                            topP: 0.95,
-                            maxOutputTokens: 1024,
-                        }
-                    };
-
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    const result = await response.json();
-                    
-                    if (result.candidates && result.candidates.length > 0) {
-                        const modelResponse = result.candidates[0].content.parts[0].text;
-                        chatHistory.push({ role: "model", parts: [{ text: modelResponse }] });
-                        processAndAppendModelResponse(modelResponse);
-                    } else {
-                        throw new Error("Empty response from AI");
-                    }
-
-                } catch (error) {
-                    console.error("AI Error:", error);
-                    // Fallback to simple logic if API fails
-                    generateFallbackResponse(text);
-                } finally {
-                    typingIndicator.classList.remove('active');
-                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                }
-            };
-
             sendBtn.addEventListener('click', handleSend);
             inputArea.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') handleSend();
             });
 
-            function appendMessage(text, sender, isHTML = false) {
-                const msgDiv = document.createElement('div');
-                msgDiv.className = `ai-message ${sender}`;
-                
-                if (isHTML) {
-                    msgDiv.innerHTML = text;
-                } else {
-                    msgDiv.textContent = text;
-                }
-                
-                messagesContainer.insertBefore(msgDiv, typingIndicator);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }
-
-            function processAndAppendModelResponse(text) {
-                let displayHtml = text;
-                let actionsHtml = '';
-
-                // Extract JSON actions if present
-                const jsonRegex = /\[\s*\{.*?\}\s*\]/s;
-                const match = text.match(jsonRegex);
-
-                if (match) {
-                    try {
-                        const actions = JSON.parse(match[0]);
-                        // Remove the JSON string from the display text
-                        displayHtml = text.replace(match[0], '').trim();
-                        
-                        // Parse Markdown briefly (bolding)
-                        displayHtml = displayHtml.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-                        displayHtml = displayHtml.replace(/\*(.*?)\*/g, '<em>$1</em>');
-                        displayHtml = displayHtml.replace(/\n/g, '<br>');
-                        
-                        // Generate action buttons
-                        actions.forEach(act => {
-                            if (act.action === 'navigate_product') {
-                                actionsHtml += `<a class="ai-product-link" onclick="if(typeof navigateTo === 'function') { openProductDetails('${act.target}'); document.getElementById('aiCloseBtn').click(); }">${act.label} <i class="fa fa-print"></i></a>`;
-                            } else if (act.action === 'navigate_page') {
-                                actionsHtml += `<button class="ai-action-btn" onclick="if(typeof navigateTo === 'function') { navigateTo('${act.target}'); document.getElementById('aiCloseBtn').click(); }">${act.label} <i class="fa fa-arrow-left"></i></button>`;
-                            }
-                        });
-                    } catch (e) {
-                        console.error("Failed to parse action JSON from AI", e);
-                    }
-                } else {
-                    // Simple Markdown parsing if no JSON
-                    displayHtml = displayHtml.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-                    displayHtml = displayHtml.replace(/\n/g, '<br>');
-                }
-
-                const finalHtml = `<div class="ai-markdown">${displayHtml}</div>${actionsHtml ? `<div style="margin-top: 10px;">${actionsHtml}</div>` : ''}`;
-                appendMessage(finalHtml, 'bot', true);
-            }
-
-            // Fallback Logic in case API is unavailable or fails
-            function generateFallbackResponse(userQuery) {
-                userQuery = userQuery.toLowerCase();
-                let htmlResponse = "";
-
-                const contactKeywords = ['رقم', 'تليفون', 'موبايل', 'واتساب', 'ايميل', 'تواصل', 'اتصل'];
-                if (contactKeywords.some(kw => userQuery.includes(kw))) {
-                    htmlResponse = `للتواصل معنا أو طلب خدماتنا يا فندم، تقدر تستخدم قسم <strong>الدعم الفني</strong> أو <strong>مركز الصيانة</strong> من القائمة. <br><br>
-                    <button class="ai-action-btn" onclick="if(typeof navigateTo === 'function') { navigateTo('tech-support'); document.getElementById('aiCloseBtn').click(); }">الذهاب للدعم الفني <i class="fa fa-arrow-left"></i></button>`;
-                    appendMessage(htmlResponse, 'bot', true);
-                    return;
-                }
-
-                if (userQuery.includes('تصوير') || userQuery.includes('ماكينة')) {
-                    htmlResponse = `عندنا ماكينات ريكو ممتازة جداً بتتحمل ضغط الشغل، تحب تشوف ماكينات الأبيض وأسود ولا الألوان؟ <br><br>
-                    <a class="ai-product-link" onclick="if(typeof navigateTo === 'function') { navigateTo('products', 'bw-copiers'); document.getElementById('aiCloseBtn').click(); }">أبيض وأسود</a>
-                    <a class="ai-product-link" onclick="if(typeof navigateTo === 'function') { navigateTo('products', 'color-copiers'); document.getElementById('aiCloseBtn').click(); }">ألوان</a>`;
-                } else if (userQuery.includes('صيانة') || userQuery.includes('عطل')) {
-                     htmlResponse = `إحنا بنقدم خدمات صيانة فورية وعندنا عقود صيانة سنوية بخصومات بتوصل لـ 50%. تقدر تسجل بلاغ عطل أو تشوف التفاصيل. <br><br>
-                    <button class="ai-action-btn" onclick="if(typeof navigateTo === 'function') { navigateTo('maintenance-contracts'); document.getElementById('aiCloseBtn').click(); }">عقود الصيانة <i class="fa fa-file-contract"></i></button>`;
-                } else {
-                    htmlResponse = `أهلاً بيك يا فندم. أنا هنا عشان أساعدك تختار الماكينة الأنسب لشغلك أو أجاوب على أي استفسار بخصوص الصيانة. إزاي أقدر أساعدك؟`;
-                }
-
-                appendMessage(htmlResponse, 'bot', true);
-            }
+            // متاح لك من Console لإضافة إجابات تدريبية بدون تعديل المنطق الأساسي.
+            window.alAdlAssistantTraining = {
+                addFAQ: function(keywords, answer) {
+                    faqTraining.push({ keywords, answer });
+                    return 'تمت إضافة إجابة تدريبية مؤقتة جديدة.';
+                },
+                teach: function(keywords, answer, whatsapp) {
+                    saveLearnedFAQ(keywords, answer, whatsapp);
+                    return 'تم حفظ الإجابة في ذاكرة المتصفح. مثال: teach(["كلمة"], "الرد المثالي")';
+                },
+                learned: function() {
+                    return getLearnedFAQs();
+                },
+                clearLearned: function() {
+                    localStorage.removeItem('alAdlAssistantLearnedFAQs');
+                    return 'تم مسح الإجابات المتعلمة من هذا المتصفح.';
+                },
+                test: function(message) {
+                    return smartAnswer(message);
+                },
+                state: customerState
+            };
         })();
     </script>
 
