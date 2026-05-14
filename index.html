@@ -1674,6 +1674,597 @@
         </div>
     </footer>
 
+    <!-- AI Assistant Floating Overlay -->
+    <style>
+        /* Floating Bubble Styles */
+        .ai-assistant-container {
+            position: fixed;
+            bottom: 20px;
+            left: 20px; /* Changed to left to not conflict with typical WhatsApp widgets if any */
+            z-index: 999999; /* Extremely high z-index to ensure it's always on top */
+            font-family: 'Tajawal', 'Cairo', sans-serif;
+            direction: rtl;
+        }
+
+        .ai-bubble {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #be123c, #9f1239);
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(190, 18, 60, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .ai-bubble:hover {
+            transform: scale(1.1);
+        }
+
+        .ai-bubble i {
+            color: white;
+            font-size: 28px;
+        }
+
+        .ai-bubble .notification-dot {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 14px;
+            height: 14px;
+            background-color: #fbbf24; /* Yellow to match site theme */
+            border-radius: 50%;
+            border: 2px solid white;
+            display: block; /* Show dot initially */
+        }
+
+        /* Chat Panel Styles */
+        .ai-chat-panel {
+            position: absolute;
+            bottom: 80px;
+            left: 0;
+            width: 350px;
+            height: 500px;
+            max-height: calc(100vh - 120px);
+            max-width: calc(100vw - 40px);
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid #f1f5f9;
+        }
+
+        .ai-chat-panel.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .ai-chat-header {
+            background: linear-gradient(to left, #be123c, #881337);
+            color: white;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+
+        .ai-chat-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 16px;
+        }
+        
+        .ai-chat-title i {
+            font-size: 20px;
+            color: #fbbf24;
+        }
+
+        .ai-close-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .ai-close-btn:hover {
+            opacity: 1;
+        }
+
+        .ai-chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 #f8fafc;
+        }
+        
+        .ai-chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+        .ai-chat-messages::-webkit-scrollbar-track {
+            background: #f8fafc;
+        }
+        .ai-chat-messages::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .ai-message {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.5;
+            word-wrap: break-word;
+            position: relative;
+            animation: fadeInMsg 0.3s ease forwards;
+        }
+
+        @keyframes fadeInMsg {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .ai-message.bot {
+            background-color: white;
+            color: #334155;
+            align-self: flex-start;
+            border-bottom-right-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            border: 1px solid #e2e8f0;
+        }
+
+        .ai-message.user {
+            background-color: #be123c;
+            color: white;
+            align-self: flex-end;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 8px rgba(190, 18, 60, 0.2);
+        }
+
+        .ai-chat-input-area {
+            padding: 16px;
+            background-color: white;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .ai-chat-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 20px;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+            background-color: #f8fafc;
+        }
+
+        .ai-chat-input:focus {
+            border-color: #be123c;
+            background-color: white;
+        }
+
+        .ai-send-btn {
+            background-color: #be123c;
+            color: white;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            box-shadow: 0 2px 6px rgba(190, 18, 60, 0.2);
+        }
+
+        .ai-send-btn:hover {
+            background-color: #9f1239;
+        }
+        
+        .ai-send-btn:active {
+            transform: scale(0.95);
+        }
+
+        .ai-typing-indicator {
+            display: none;
+            align-self: flex-start;
+            background-color: white;
+            padding: 12px 16px;
+            border-radius: 16px;
+            border-bottom-right-radius: 4px;
+            border: 1px solid #e2e8f0;
+            gap: 4px;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+        
+        .ai-typing-indicator.active {
+            display: flex;
+        }
+
+        .ai-typing-dot {
+            width: 6px;
+            height: 6px;
+            background-color: #94a3b8;
+            border-radius: 50%;
+            animation: aiTyping 1.4s infinite ease-in-out both;
+        }
+
+        .ai-typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .ai-typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes aiTyping {
+            0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+        
+        .ai-product-link {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 8px 16px;
+            background-color: #fff1f2;
+            color: #be123c;
+            border: 1px solid #fecdd3;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 800;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 2px 4px rgba(190, 18, 60, 0.05);
+        }
+        
+        .ai-product-link:hover {
+            background-color: #be123c;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(190, 18, 60, 0.15);
+        }
+
+        .ai-action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 8px;
+            margin-left: 4px;
+            padding: 6px 12px;
+            background-color: #f8fafc;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .ai-action-btn:hover {
+            background-color: #f1f5f9;
+            color: #1e293b;
+            border-color: #94a3b8;
+        }
+
+        .ai-markdown strong {
+            color: #9f1239;
+            font-weight: 900;
+        }
+        .ai-markdown ul {
+            margin-top: 8px;
+            padding-right: 20px;
+            list-style-type: disc;
+        }
+        .ai-markdown li {
+            margin-bottom: 4px;
+        }
+
+        @media (max-width: 480px) {
+            .ai-chat-panel {
+                bottom: 80px;
+                left: 10px;
+                width: calc(100vw - 20px);
+                height: 450px;
+            }
+            .ai-assistant-container {
+                left: 10px;
+                bottom: 10px;
+            }
+        }
+    </style>
+
+    <div class="ai-assistant-container" id="aiAssistantContainer">
+        <!-- Chat Panel -->
+        <div class="ai-chat-panel" id="aiChatPanel">
+            <div class="ai-chat-header">
+                <div class="ai-chat-title">
+                    <i class="fa fa-headset"></i>
+                    <span>مساعد العدل للمبيعات</span>
+                </div>
+                <button class="ai-close-btn" id="aiCloseBtn">&times;</button>
+            </div>
+            
+            <div class="ai-chat-messages" id="aiChatMessages">
+                <div class="ai-message bot">
+                    أهلاً بك يا فندم في شركة العدل! 👋 <br>
+                    أنا مساعدك الذكي للمبيعات والدعم الفني. بتدور على ماكينة تصوير معينة ولا محتاج مساعدة في اختيار الأنسب لشغلك؟
+                </div>
+                <!-- Messages will be appended here -->
+                <div class="ai-typing-indicator" id="aiTypingIndicator">
+                    <div class="ai-typing-dot"></div>
+                    <div class="ai-typing-dot"></div>
+                    <div class="ai-typing-dot"></div>
+                </div>
+            </div>
+            
+            <div class="ai-chat-input-area">
+                <input type="text" class="ai-chat-input" id="aiChatInput" placeholder="اكتب سؤالك هنا بالعامية أو الفصحى..." autocomplete="off">
+                <button class="ai-send-btn" id="aiSendBtn">
+                    <i class="fa fa-paper-plane" style="transform: scaleX(-1);"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Floating Bubble -->
+        <div class="ai-bubble" id="aiBubble">
+            <i class="fa fa-comment-dots"></i>
+            <span class="notification-dot" id="aiNotificationDot"></span>
+        </div>
+    </div>
+
+    <script>
+        // AI Assistant Logic - Isolated Scope
+        (function() {
+            const bubble = document.getElementById('aiBubble');
+            const panel = document.getElementById('aiChatPanel');
+            const closeBtn = document.getElementById('aiCloseBtn');
+            const inputArea = document.getElementById('aiChatInput');
+            const sendBtn = document.getElementById('aiSendBtn');
+            const messagesContainer = document.getElementById('aiChatMessages');
+            const typingIndicator = document.getElementById('aiTypingIndicator');
+            const notificationDot = document.getElementById('aiNotificationDot');
+
+            let isOpen = false;
+            let chatHistory = []; // Keep track of the conversation
+
+            // Extract context from productsDB (using the global variable if available)
+            let productsContextText = "";
+            if (typeof productsDB !== 'undefined') {
+                const popularProducts = productsDB.filter(p => p.condition !== '' || p.category === 'bw-copiers' || p.category === 'color-copiers').slice(0, 15);
+                productsContextText = popularProducts.map(p => 
+                    `- اسم الماكينة: ${p.name}, الفئة: ${p.category === 'bw-copiers' ? 'أبيض وأسود' : 'ألوان'}, السرعة: ${p.speed}, الوظائف: ${p.functions}. ${p.description ? p.description.substring(0, 100) + '...' : ''}`
+                ).join("\n");
+            }
+
+            const systemPrompt = `
+أنت "مساعد العدل"، مندوب مبيعات وخدمة عملاء ذكي جداً، محترف، وودود، تعمل لصالح "شركة العدل" لبيع وصيانة ماكينات التصوير والطابعات (ماركة ريكو Ricoh) في مصر.
+أنت لست مجرد Chatbot، بل أنت Sales AI Consultant محترف. هدفك هو فهم نية العميل، ترشيح المنتجات المناسبة، وزيادة التحويلات.
+
+**قواعد صارمة جداً (ممنوع مخالفتها تحت أي ظرف):**
+1. **لا توفر أي وسيلة تواصل خارجية أبداً:** (لا أرقام هواتف، لا واتساب، لا إيميلات، لا روابط سوشيال ميديا). 
+2. **التوجيه الداخلي فقط:** إذا طلب العميل التواصل، قل له مثلاً: "تقدر حضرتك تستخدم صفحة 'الدعم الفني' أو 'الشكاوى' من القائمة فوق، أو تقدر تحجز من خلال زرار الطلب الموجود في صفحة أي ماكينة بتعجبك".
+3. **لا تكشف عن هويتك البرمجية:** لا تقل أبداً "أنا نموذج ذكاء اصطناعي" أو "لا أستطيع المساعدة كوني آلة". تصرف كموظف مبيعات حقيقي.
+4. **تذكر السياق (Context):** إذا اختار العميل فئة (مثل أبيض وأسود)، لا تسأله مرة أخرى "تحب ألوان ولا أبيض وأسود؟". ابنِ على اختياراته السابقة.
+5. **الردود الديناميكية:** لا تستخدم قوالب ثابتة. افهم النية (Intent) من العامية المصرية (مثال: "عاوز حاجة رخيصة" = يبحث عن سعر اقتصادي، "مكتبة صغيرة" = يحتاج ماكينة تتحمل ضغط متوسط وبسعر مناسب).
+6. **لا ترد بردود عامة أو صامتة:** أعطِ إجابة مباشرة، قصيرة، مفيدة، وتقود لعملية البيع أو حل المشكلة. إذا لم تفهم، اسأل سؤالاً واحداً قصيراً ذكياً.
+7. **الترشيح الذكي (Recommendation):** لا تعرض قائمة طويلة. اسأل نفسك: ماذا يحتاج؟ ثم رشح 1 أو 2 كحد أقصى واشرح *لماذا* هذا الاختيار مناسب له باختصار.
+
+**بيانات المنتجات المتاحة لك لترشيحها (اقتصر عليها فقط):**
+${productsContextText}
+
+**كيفية عرض الروابط (أمر حاسم):**
+لأي منتج ترشحه أو قسم توجه العميل إليه، **يجب** أن تضع صيغة JSON هذه في نهاية ردك لكي يقرأها النظام ويحولها لأزرار. 
+- لترشيح ماكينة معينة:
+[{"action": "navigate_product", "target": "اسم الماكينة بالكامل", "label": "عرض تفاصيل الماكينة"}]
+- للتوجيه لقسم معين (مثل الصيانة أو الشكاوى أو قائمة المنتجات):
+[{"action": "navigate_page", "target": "tech-support", "label": "قسم الدعم الفني"}]
+أو
+[{"action": "navigate_page", "target": "products", "label": "تصفح كل المنتجات"}]
+
+**أمثلة لأسلوب الرد (افهم النية ولا تكرر نص المثال):**
+- العميل: "أنا فاتح مكتبة وعاوز ماكينة تستحمل"
+- أنت: "ألف مبروك على المكتبة يا فندم! للمكتبات بننصح دايماً بماكينات تعيش وتستحمل ضغط الشغل وتوفر في الحبر. برشحلك بقوة ريكو Aficio MP 5002، سريعة جداً (50 ورقة ف الدقيقة) وبتصور وتطبع أبيض وأسود. تحب تشوف تفاصيلها؟
+[{"action": "navigate_product", "target": "ريكو Aficio MP 5002", "label": "تفاصيل MP 5002"}]"
+
+- العميل: "عاوز رقمكم"
+- أنت: "تحت أمرك يا فندم، أنا معاك هنا لأي استفسار يخص المبيعات أو الصيانة. لو محتاج تحجز صيانة أو تشتري ماكينة، تقدر تسجل بياناتك في قسم 'الدعم الفني' والفريق المختص هيتواصل معاك فوراً.
+[{"action": "navigate_page", "target": "tech-support", "label": "قسم الدعم الفني"}]"
+`;
+
+            // Initialize chat history with system prompt
+            chatHistory.push({ role: "user", parts: [{ text: systemPrompt }] });
+            chatHistory.push({ role: "model", parts: [{ text: "علم. سألتزم بجميع التعليمات وسأتصرف كمندوب مبيعات محترف لشركة العدل." }] });
+
+            // Toggle Panel
+            bubble.addEventListener('click', () => {
+                isOpen = !isOpen;
+                if (isOpen) {
+                    panel.classList.add('active');
+                    notificationDot.style.display = 'none';
+                    inputArea.focus();
+                } else {
+                    panel.classList.remove('active');
+                }
+            });
+
+            closeBtn.addEventListener('click', () => {
+                isOpen = false;
+                panel.classList.remove('active');
+            });
+
+            panel.addEventListener('click', (e) => { e.stopPropagation(); });
+
+            // Handle Send
+            const handleSend = async () => {
+                const text = inputArea.value.trim();
+                if (!text) return;
+
+                appendMessage(text, 'user');
+                inputArea.value = '';
+                
+                chatHistory.push({ role: "user", parts: [{ text: text }] });
+
+                typingIndicator.classList.add('active');
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+                try {
+                    // API Call to Gemini
+                    const apiKey = ""; // Canvas provides this automatically
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-pro:generateContent?key=${apiKey}`;
+                    
+                    const payload = {
+                        contents: chatHistory,
+                        generationConfig: {
+                            temperature: 0.7,
+                            topK: 40,
+                            topP: 0.95,
+                            maxOutputTokens: 1024,
+                        }
+                    };
+
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const result = await response.json();
+                    
+                    if (result.candidates && result.candidates.length > 0) {
+                        const modelResponse = result.candidates[0].content.parts[0].text;
+                        chatHistory.push({ role: "model", parts: [{ text: modelResponse }] });
+                        processAndAppendModelResponse(modelResponse);
+                    } else {
+                        throw new Error("Empty response from AI");
+                    }
+
+                } catch (error) {
+                    console.error("AI Error:", error);
+                    // Fallback to simple logic if API fails
+                    generateFallbackResponse(text);
+                } finally {
+                    typingIndicator.classList.remove('active');
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                }
+            };
+
+            sendBtn.addEventListener('click', handleSend);
+            inputArea.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') handleSend();
+            });
+
+            function appendMessage(text, sender, isHTML = false) {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = `ai-message ${sender}`;
+                
+                if (isHTML) {
+                    msgDiv.innerHTML = text;
+                } else {
+                    msgDiv.textContent = text;
+                }
+                
+                messagesContainer.insertBefore(msgDiv, typingIndicator);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+
+            function processAndAppendModelResponse(text) {
+                let displayHtml = text;
+                let actionsHtml = '';
+
+                // Extract JSON actions if present
+                const jsonRegex = /\[\s*\{.*?\}\s*\]/s;
+                const match = text.match(jsonRegex);
+
+                if (match) {
+                    try {
+                        const actions = JSON.parse(match[0]);
+                        // Remove the JSON string from the display text
+                        displayHtml = text.replace(match[0], '').trim();
+                        
+                        // Parse Markdown briefly (bolding)
+                        displayHtml = displayHtml.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                        displayHtml = displayHtml.replace(/\*(.*?)\*/g, '<em>$1</em>');
+                        displayHtml = displayHtml.replace(/\n/g, '<br>');
+                        
+                        // Generate action buttons
+                        actions.forEach(act => {
+                            if (act.action === 'navigate_product') {
+                                actionsHtml += `<a class="ai-product-link" onclick="if(typeof navigateTo === 'function') { openProductDetails('${act.target}'); document.getElementById('aiCloseBtn').click(); }">${act.label} <i class="fa fa-print"></i></a>`;
+                            } else if (act.action === 'navigate_page') {
+                                actionsHtml += `<button class="ai-action-btn" onclick="if(typeof navigateTo === 'function') { navigateTo('${act.target}'); document.getElementById('aiCloseBtn').click(); }">${act.label} <i class="fa fa-arrow-left"></i></button>`;
+                            }
+                        });
+                    } catch (e) {
+                        console.error("Failed to parse action JSON from AI", e);
+                    }
+                } else {
+                    // Simple Markdown parsing if no JSON
+                    displayHtml = displayHtml.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                    displayHtml = displayHtml.replace(/\n/g, '<br>');
+                }
+
+                const finalHtml = `<div class="ai-markdown">${displayHtml}</div>${actionsHtml ? `<div style="margin-top: 10px;">${actionsHtml}</div>` : ''}`;
+                appendMessage(finalHtml, 'bot', true);
+            }
+
+            // Fallback Logic in case API is unavailable or fails
+            function generateFallbackResponse(userQuery) {
+                userQuery = userQuery.toLowerCase();
+                let htmlResponse = "";
+
+                const contactKeywords = ['رقم', 'تليفون', 'موبايل', 'واتساب', 'ايميل', 'تواصل', 'اتصل'];
+                if (contactKeywords.some(kw => userQuery.includes(kw))) {
+                    htmlResponse = `للتواصل معنا أو طلب خدماتنا يا فندم، تقدر تستخدم قسم <strong>الدعم الفني</strong> أو <strong>مركز الصيانة</strong> من القائمة. <br><br>
+                    <button class="ai-action-btn" onclick="if(typeof navigateTo === 'function') { navigateTo('tech-support'); document.getElementById('aiCloseBtn').click(); }">الذهاب للدعم الفني <i class="fa fa-arrow-left"></i></button>`;
+                    appendMessage(htmlResponse, 'bot', true);
+                    return;
+                }
+
+                if (userQuery.includes('تصوير') || userQuery.includes('ماكينة')) {
+                    htmlResponse = `عندنا ماكينات ريكو ممتازة جداً بتتحمل ضغط الشغل، تحب تشوف ماكينات الأبيض وأسود ولا الألوان؟ <br><br>
+                    <a class="ai-product-link" onclick="if(typeof navigateTo === 'function') { navigateTo('products', 'bw-copiers'); document.getElementById('aiCloseBtn').click(); }">أبيض وأسود</a>
+                    <a class="ai-product-link" onclick="if(typeof navigateTo === 'function') { navigateTo('products', 'color-copiers'); document.getElementById('aiCloseBtn').click(); }">ألوان</a>`;
+                } else if (userQuery.includes('صيانة') || userQuery.includes('عطل')) {
+                     htmlResponse = `إحنا بنقدم خدمات صيانة فورية وعندنا عقود صيانة سنوية بخصومات بتوصل لـ 50%. تقدر تسجل بلاغ عطل أو تشوف التفاصيل. <br><br>
+                    <button class="ai-action-btn" onclick="if(typeof navigateTo === 'function') { navigateTo('maintenance-contracts'); document.getElementById('aiCloseBtn').click(); }">عقود الصيانة <i class="fa fa-file-contract"></i></button>`;
+                } else {
+                    htmlResponse = `أهلاً بيك يا فندم. أنا هنا عشان أساعدك تختار الماكينة الأنسب لشغلك أو أجاوب على أي استفسار بخصوص الصيانة. إزاي أقدر أساعدك؟`;
+                }
+
+                appendMessage(htmlResponse, 'bot', true);
+            }
+        })();
+    </script>
+
     <script>
         const MAIN_NUM = "201094799247";
 
