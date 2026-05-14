@@ -118,7 +118,7 @@
     <link rel="apple-touch-icon" href="https://aladlcompany.github.io/header-mobile.png?v=5">
     <link rel="icon" type="image/png" href="https://aladlcompany.github.io/header-mobile.png?v=5">
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="tailwind-local.css">
     <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@700;800&family=Cairo:wght@700;900&family=Tajawal:wght@300;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
@@ -263,9 +263,42 @@
             .product-specs-paper { font-size: 0.65rem !important; gap: 0.25rem !important; }
             .specs-badge-paper { padding: 1px 4px !important; }
         }
-    </style>
+
+
+        /* إصلاحات حماية لعدم تداخل العناصر عند فشل أي ملف خارجي */
+        *, *::before, *::after { box-sizing: border-box; }
+        img { max-width: 100%; height: auto; }
+        header img, .sticky-header img { max-width: 72px; max-height: 72px; }
+        .hero-banner-box img { display: block; width: 100%; }
+        .page-section.active { display: block; }
+        @media (max-width: 768px) {
+            .sticky-header { overflow: visible; }
+            .hero-banner-box { max-height: none; }
+            #mobile-menu { max-width: 360px; }
+        }
+    
+
+        /* إصلاح عرض بانر الهيدر: يمنع تكرار صورة الكمبيوتر والموبايل فوق بعض */
+        .adl-hero-banner {
+            display: block !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            overflow: hidden !important;
+        }
+        .adl-hero-img {
+            display: block !important;
+            width: 100% !important;
+            height: auto !important;
+            max-width: 100% !important;
+            object-fit: contain !important;
+        }
+        img[src="header-pc.png"], img[src="header-mobile.png"] {
+            max-width: 100% !important;
+            height: auto !important;
+        }
+</style>
 </head>
-<body id="mainBody" class="text-gray-800 text-right" style="opacity: 0; transition: opacity 0.3s ease-out;" ontouchstart="">
+<body id="mainBody" class="text-gray-800 text-right" style="opacity: 1; transition: opacity 0.3s ease-out;" ontouchstart="">
 
     <div id="overlay" class="menu-overlay" onclick="toggleMobileMenu()"></div>
 
@@ -453,8 +486,10 @@
     </header>
 
     <div class="hero-banner-box relative">
-        <img src="header-pc.png" alt="بانر شركة العدل لبيع وصيانة ماكينات تصوير ريكو" class="hidden md:block">
-        <img src="header-mobile.png" alt="بانر شركة العدل لبيع وصيانة ماكينات تصوير ريكو" class="block md:hidden">
+        <picture class="adl-hero-banner">
+            <source media="(min-width: 768px)" srcset="header-pc.png">
+            <img src="header-mobile.png" alt="بانر شركة العدل لبيع وصيانة ماكينات تصوير ريكو" class="adl-hero-img">
+        </picture>
     </div>
     
     <div class="bg-rose-950 text-yellow-400 py-1.5 overflow-hidden border-b-4 border-rose-700 relative w-full flex justify-center items-center">
@@ -464,7 +499,7 @@
     </div>
 
     <!-- الصفحة الرئيسية -->
-    <main id="page-start" class="page-section">
+    <main id="page-start" class="page-section active">
         <section class="pt-6 pb-12 container mx-auto px-4 md:px-12 text-right">
             
             <!-- إعلان علوي -->
