@@ -2420,7 +2420,10 @@ function alAdlPageHref(targetId, category, itemId) {
                 bottom: 10px;
             }
         }
-    </style>
+    
+        .ai-quick-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; justify-content: center; }
+        .ai-quick-actions .ai-action-btn { margin: 0; padding: 8px 10px; font-size: 12px; }
+</style>
 <div class="ai-assistant-container" id="aiAssistantContainer">
 <!-- Chat Panel -->
 <div class="ai-chat-panel" id="aiChatPanel">
@@ -2433,8 +2436,8 @@ function alAdlPageHref(targetId, category, itemId) {
 </div>
 <div class="ai-chat-messages" id="aiChatMessages">
 <div class="ai-message bot">
-                    أهلاً بحضرتك في شركة العدل 👋 <br/>
-                    معاك خدمة العملاء. اكتب رقم الموديل أو نوع الاستخدام، ونرشح لك أقرب ماكينة أو نوجهك للدعم الفني.
+                    أهلاً وسهلاً بحضرتك في شركة العدل 👋<br/>
+                    معاك خدمة العملاء. ممكن أعرف اسم حضرتك؟ وبعدها أساعدك تختار ماكينة، تتصفح الموقع، أو أوصلك بواتساب الشركة.
                 </div>
 <!-- Messages will be appended here -->
 <div class="ai-typing-indicator" id="aiTypingIndicator">
@@ -2472,13 +2475,20 @@ function alAdlPageHref(targetId, category, itemId) {
 
             let isOpen = false;
             const customerState = {
+                name: '',
+                phone: '',
+                waitingForName: true,
+                waitingForPhone: false,
                 color: null,
                 paper: null,
                 usage: null,
                 budget: null,
                 intent: null,
                 lastProduct: null,
-                asked: []
+                lastNeed: '',
+                leadReady: false,
+                asked: [],
+                conversation: []
             };
 
             const companyData = {
@@ -2849,12 +2859,133 @@ function alAdlPageHref(targetId, category, itemId) {
             }
 
             function pageButton(target, label) {
-                return `<button class="ai-action-btn" onclick="if(typeof navigateTo === 'function') { navigateTo('${target}'); document.getElementById('aiCloseBtn').click(); }">${label} <i class="fa fa-arrow-left"></i></button>`;
+                const href = (typeof alAdlPageHref === 'function') ? alAdlPageHref(target) : (target + '.html');
+                const safeHref = String(href).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+                return `<a class="ai-action-btn" href="${safeHref}" onclick="try{document.getElementById('aiCloseBtn').click();}catch(e){}">${label} <i class="fa fa-arrow-left"></i></a>`;
             }
 
             function whatsappButton(message, label = 'تواصل عبر واتساب') {
-                const safeMsg = String(message || 'مرحبًا، أريد الاستفسار من شركة العدل.').replace(/'/g, "\'");
-                return `<button class="ai-action-btn ai-whatsapp-btn" onclick="if(typeof openWhatsApp === 'function') { openWhatsApp('201094799247', '${safeMsg}'); } else { window.open('https://wa.me/201094799247?text=' + encodeURIComponent('${safeMsg}'), '_blank'); }"><span>${label}</span><span class="ai-whatsapp-icon"><i class="fab fa-whatsapp"></i></span></button>`;
+                const msg = String(message || 'مرحبًا، أريد الاستفسار من شركة العدل.');
+                const href = 'https://wa.me/' + companyData.whatsapp + '?text=' + encodeURIComponent(msg);
+                return `<a class="ai-action-btn ai-whatsapp-btn" href="${href}" target="_blank" rel="noopener"><span>${label}</span><span class="ai-whatsapp-icon"><i class="fab fa-whatsapp"></i></span></a>`;
+            }
+
+
+            function customerTitle() {
+                return customerState.name ? ` يا أستاذ ${customerState.name}` : ' يا فندم';
+            }
+
+            function isGreetingPhrase(text) {
+                const q = normalizeArabic(text);
+                const words = [
+                    'السلام عليكم','سلام عليكم','السلامو عليكم','سلامو عليكم','سلام','مرحبا','مرحبتين','اهلا','اهلا وسهلا','اهلين','هلا','هلا والله','يا هلا','يا مرحب',
+                    'صباح الخير','صباح النور','صباح الفل','صباحو','مسا الخير','مساء الخير','مساء النور','مساء الفل',
+                    'ازيك','ازيك يا باشا','ازيك يا فندم','عامل ايه','عامله ايه','اخبارك','ايه الاخبار','ايه الدنيا','كله تمام','حد موجود','في حد','انت موجود',
+                    'كيفك','كيف الحال','كيف حالك','شلونك','شو اخبارك','يعطيك العافيه','يسعد صباحك','يسعد مساك',
+                    'hi','hello','hey','good morning','good evening','salam','salaam','marhaba','hala','azyk','ezayak','ezayek','3amel eh'
+                ];
+                return words.some(w => q.includes(normalizeArabic(w))) || ['hi','hello','hey'].includes(q);
+            }
+
+            function looksLikeCustomerName(text) {
+                const q = normalizeArabic(text);
+                if (!q || q.length < 2 || q.length > 30) return false;
+                if (/\d/.test(q)) return false;
+                if (isGreetingPhrase(q)) return false;
+                const blockers = ['عايز','اريد','محتاج','ماكينه','مكنه','طابعه','حبر','صيانة','صيانه','سعر','بكام','منتجات','الموقع','واتساب','قطع غيار','السلام'];
+                if (blockers.some(w => q.includes(normalizeArabic(w)))) return false;
+                return q.split(' ').length <= 4;
+            }
+
+            function extractPhone(text) {
+                const match = String(text || '').replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).match(/01[0125][0-9]{8}/);
+                return match ? match[0] : '';
+            }
+
+            function quickReplyButtons() {
+                return `<div class="ai-quick-actions">
+                    <button class="ai-action-btn" onclick="document.getElementById('aiChatInput').value='عايز أختار ماكينة مناسبة';document.getElementById('aiSendBtn').click();">اختيار ماكينة</button>
+                    <button class="ai-action-btn" onclick="document.getElementById('aiChatInput').value='تصفح المنتجات';document.getElementById('aiSendBtn').click();">تصفح المنتجات</button>
+                    <button class="ai-action-btn" onclick="document.getElementById('aiChatInput').value='طلب صيانة';document.getElementById('aiSendBtn').click();">طلب صيانة</button>
+                    <button class="ai-action-btn" onclick="document.getElementById('aiChatInput').value='تواصل مع ممثل';document.getElementById('aiSendBtn').click();">تحدث مع ممثل</button>
+                </div>`;
+            }
+
+            function leadSummaryText() {
+                const lines = [];
+                lines.push('طلب جديد من مساعد موقع شركة العدل');
+                lines.push('الاسم: ' + (customerState.name || 'لم يذكر'));
+                lines.push('رقم العميل: ' + (customerState.phone || 'لم يذكر'));
+                lines.push('آخر منتج/موديل: ' + (customerState.lastProduct || 'غير محدد'));
+                lines.push('نوع الطلب: ' + (customerState.intent || customerState.lastNeed || 'استفسار عام'));
+                if (customerState.color) lines.push('النوع: ' + (customerState.color === 'color' ? 'ألوان' : 'أبيض وأسود'));
+                if (customerState.paper) lines.push('المقاس: ' + customerState.paper);
+                if (customerState.usage) lines.push('الاستخدام: ' + customerState.usage);
+                if (customerState.budget) lines.push('الميزانية: ' + customerState.budget);
+                lines.push('الصفحة: ' + window.location.href);
+                const recent = customerState.conversation.slice(-6).map(m => `${m.from}: ${m.text}`).join(' | ');
+                if (recent) lines.push('ملخص المحادثة: ' + recent);
+                return lines.join('\n');
+            }
+
+            function leadHandoffAnswer(query) {
+                const q = normalizeArabic(query);
+                const wantsHuman = ['ممثل','موظف','خدمة عملاء','حد يكلمني','اكلم حد','تواصل مع ممثل','ارسال الطلب','ابعت الطلب','حولني','كلموني','عايز اشتري','احجز','انهاء المحادثه','خلصنا','تمام شكرا'].some(w => q.includes(normalizeArabic(w)));
+                const phone = extractPhone(query);
+                if (phone) customerState.phone = phone;
+                if (!wantsHuman) return null;
+                if (!customerState.phone && (q.includes('يتواصل') || q.includes('كلموني') || q.includes('اتصل'))) {
+                    customerState.waitingForPhone = true;
+                    return `تمام${customerTitle()}، ابعت رقم موبايل حضرتك، وأنا أجهز ملخص الطلب لفريق شركة العدل.${whatsappButton(leadSummaryText(), 'إرسال الملخص عبر واتساب')}`;
+                }
+                return `تمام${customerTitle()}، جهزت ملخص طلب حضرتك لفريق شركة العدل.<br>اضغط الزر ده وهيفتح واتساب برسالة جاهزة فيها بيانات الطلب والموديل والصفحة الحالية.${whatsappButton(leadSummaryText(), 'إرسال ملخص الطلب لواتساب')}`;
+            }
+
+            function navigationAnswer(query) {
+                const q = normalizeArabic(query);
+                const askingSite = ['الموقع فيه ايه','تصفح الموقع','اقسام الموقع','الخريطه','خريطة الموقع','ساعدني اتصفح','افتح المنتجات','عايز اتفرج','فين المنتجات'].some(w => q.includes(normalizeArabic(w)));
+                const navItems = [
+                    {words:['المنتجات','ماكينات','مكن','تصفح المنتجات'], target:'products', label:'فتح صفحة المنتجات'},
+                    {words:['الوان','ماكينات الوان','ماكينة الوان'], target:'products', category:'color-copiers', label:'ماكينات ألوان'},
+                    {words:['ابيض واسود','تصوير عادي','ماكينات ابيض'], target:'products', category:'bw-copiers', label:'ماكينات أبيض وأسود'},
+                    {words:['احبار','تونر','خرطوشه'], target:'products', category:'toner-bw', label:'قسم الأحبار'},
+                    {words:['قطع غيار','رول','درام','فيوزر'], target:'products', category:'parts-bw', label:'قسم قطع الغيار'},
+                    {words:['صيانة','صيانه','دعم فني','عطل'], target:'tech-support', label:'الدعم الفني والصيانة'},
+                    {words:['عقود صيانة','عقد صيانة','ايجار'], target:'maintenance-contracts', label:'عقود الصيانة'},
+                    {words:['تواصل','العنوان','رقم'], target:'about', label:'بيانات الشركة'},
+                    {words:['اسئله','اسئلة','faq'], target:'faq', label:'الأسئلة الشائعة'}
+                ];
+                for (const item of navItems) {
+                    if (item.words.some(w => q.includes(normalizeArabic(w)))) {
+                        const href = item.category && typeof alAdlPageHref === 'function' ? alAdlPageHref('products', item.category) : (typeof alAdlPageHref === 'function' ? alAdlPageHref(item.target) : item.target + '.html');
+                        const safeHref = String(href).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+                        return `تمام${customerTitle()}، ده القسم المناسب لطلبك:<br><br><a class="ai-action-btn" href="${safeHref}" onclick="try{document.getElementById('aiCloseBtn').click();}catch(e){}">${item.label} <i class="fa fa-arrow-left"></i></a>`;
+                    }
+                }
+                if (askingSite) {
+                    return `الموقع مقسم لأقسام سهلة${customerTitle()}:<br>
+                    المنتجات، ماكينات ألوان، أبيض وأسود، الأحبار، قطع الغيار، الدعم الفني، عقود الصيانة، والمقالات.<br><br>
+                    ${pageButton('products','تصفح المنتجات')}
+                    ${pageButton('tech-support','طلب صيانة')}
+                    ${pageButton('maintenance-contracts','عقود الصيانة')}
+                    ${pageButton('faq','الأسئلة الشائعة')}`;
+                }
+                return null;
+            }
+
+            function handleOnboarding(query) {
+                const phone = extractPhone(query);
+                if (phone) {
+                    customerState.phone = phone;
+                    customerState.waitingForPhone = false;
+                    return `وصلني الرقم${customerTitle()} ✅<br>تحب أرسل ملخص طلبك لفريق شركة العدل، ولا نكمل اختيار الماكينة؟${whatsappButton(leadSummaryText(), 'إرسال ملخص الطلب لواتساب')}`;
+                }
+                if (customerState.waitingForName && looksLikeCustomerName(query)) {
+                    customerState.name = normalizeArabic(query).split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                    customerState.waitingForName = false;
+                    return `أهلًا وسهلًا يا أستاذ ${customerState.name} 🌹<br>تحب أساعدك في إيه؟ ممكن أختار لك ماكينة، أفتح لك قسم معين في الموقع، أو أوصلك بواتساب الشركة.${quickReplyButtons()}`;
+                }
+                return null;
             }
 
             function getLearnedFAQs() {
@@ -2883,16 +3014,21 @@ function alAdlPageHref(targetId, category, itemId) {
 
             function greetingAnswer(query) {
                 const q = normalizeArabic(query);
-                const clean = q.replace(/\s/g, '');
-                const hasSalam = q.includes('السلام عليكم') || q.includes('سلام عليكم') || clean === 'سلام' || q === 'السلام' || q.includes('سلامو عليكم');
-                const hasMorning = q.includes('صباح الخير') || q.includes('صباح الفل') || q.includes('صباح النور');
-                const hasEvening = q.includes('مساء الخير') || q.includes('مساء الفل') || q.includes('مساء النور');
-                const hasHello = ['اهلا', 'اهلين', 'هاي', 'hello', 'hi', 'ازيك', 'عامل ايه'].some(w => q.includes(normalizeArabic(w)));
-                if (!(hasSalam || hasMorning || hasEvening || hasHello)) return null;
-                if (hasSalam) return `وعليكم السلام ورحمة الله وبركاته يا فندم 🌹<br>نورت شركة العدل. قولّي محتاج ماكينة تصوير، طابعة، حبر، ولا صيانة؟ ولو معاك رقم موديل اكتبهولي زي MP C305 أو MP 301 وأنا أحدد لك الأنسب.`;
-                if (hasMorning) return `صباح النور يا فندم 🌞<br>أهلاً بحضرتك في شركة العدل. تحب نساعدك في ماكينة تصوير، طابعة، حبر، ولا صيانة؟`;
-                if (hasEvening) return `مساء النور يا فندم 🌙<br>تحت أمرك. اكتبلي احتياجك أو رقم الموديل، وأنا أرشح لك أقرب اختيار من المتاح.`;
-                return `أهلاً وسهلاً يا فندم 🌹<br>معاك مساعد شركة العدل. اكتبلي محتاج ماكينة لمكتب ولا مكتبة؟ ألوان ولا أبيض وأسود؟ وأنا أساعدك تختار.`;
+                if (!isGreetingPhrase(q)) return null;
+                const name = customerTitle();
+                if (q.includes('سلام') || q.includes('السلام')) {
+                    return `وعليكم السلام ورحمة الله وبركاته${name} 🌹<br>${name ? 'نورتنا' : 'نورت شركة العدل'}. ${customerState.name ? 'تحب أساعدك في اختيار ماكينة، صيانة، أحبار، ولا تصفح الموقع؟' : 'ممكن أعرف اسم حضرتك؟'}${quickReplyButtons()}`;
+                }
+                if (q.includes('صباح')) {
+                    return `صباح النور${name} 🌞<br>${customerState.name ? 'تحت أمرك، تحب تبدأ من المنتجات ولا الصيانة؟' : 'نورت شركة العدل. ممكن أعرف اسم حضرتك؟'}${quickReplyButtons()}`;
+                }
+                if (q.includes('مساء') || q.includes('مسا')) {
+                    return `مساء الخير${name} 🌙<br>${customerState.name ? 'تحت أمرك. اكتب رقم الموديل أو اختار من الأزرار.' : 'ممكن أعرف اسم حضرتك؟'}${quickReplyButtons()}`;
+                }
+                if (q.includes('ازيك') || q.includes('عامل') || q.includes('عامله') || q.includes('اخبارك') || q.includes('كيفك') || q.includes('كيف الحال') || q.includes('شلونك')) {
+                    return `الحمد لله${name}، نورتنا 👋<br>${customerState.name ? 'أقدر أساعدك تختار ماكينة أو أوصلك للقسم المناسب في الموقع.' : 'ممكن أعرف اسم حضرتك؟'}${quickReplyButtons()}`;
+                }
+                return `أهلاً وسهلاً${name} 👋<br>${customerState.name ? 'تحب أساعدك في ماكينة، صيانة، أحبار، قطع غيار، ولا تصفح الموقع؟' : 'ممكن أعرف اسم حضرتك؟'}${quickReplyButtons()}`;
             }
 
             function answerFAQ(query) {
@@ -2980,6 +3116,15 @@ function alAdlPageHref(targetId, category, itemId) {
                 const greeting = greetingAnswer(userText);
                 if (greeting) return greeting;
 
+                const onboarding = handleOnboarding(userText);
+                if (onboarding) return onboarding;
+
+                const navigation = navigationAnswer(userText);
+                if (navigation) return navigation;
+
+                const handoff = leadHandoffAnswer(userText);
+                if (handoff) return handoff;
+
                 const intent = detectIntent(userText);
                 updateState(intent);
 
@@ -3055,12 +3200,15 @@ function alAdlPageHref(targetId, category, itemId) {
             function handleSend() {
                 const text = inputArea.value.trim();
                 if (!text) return;
+                customerState.conversation.push({ from: 'العميل', text: text, time: new Date().toISOString() });
+                customerState.lastNeed = text;
                 appendMessage(text, 'user');
                 inputArea.value = '';
                 typingIndicator.classList.add('active');
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
                 setTimeout(() => {
                     const html = smartAnswer(text);
+                    customerState.conversation.push({ from: 'المساعد', text: String(html).replace(/<[^>]*>/g, ' '), time: new Date().toISOString() });
                     typingIndicator.classList.remove('active');
                     appendMessage(html, 'bot', true);
                 }, 350);
