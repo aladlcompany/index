@@ -5,6 +5,23 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>شركة العدل | ماكينات لوحات هندسية</title>
+    <link rel="canonical" href="https://aladlcompany.github.io/plotters.html">
+    <!-- WhatsApp / Social Share Preview -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="شركة العدل">
+    <meta property="og:title" content="شركة العدل | بيع وصيانة الطابعات وماكينات التصوير">
+    <meta property="og:description" content="شركة العدل لبيع وصيانة الطابعات وماكينات التصوير. أجهزة، أحبار، صيانة، حجز خدمة وطلب منتجك الآن.">
+    <meta property="og:url" content="https://aladlcompany.github.io/">
+    <meta property="og:image" content="https://aladlcompany.github.io/share-preview.jpg?v=20260515">
+    <meta property="og:image:secure_url" content="https://aladlcompany.github.io/share-preview.jpg?v=20260515">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="شركة العدل | بيع وصيانة الطابعات وماكينات التصوير">
+    <meta name="twitter:description" content="أجهزة، أحبار، صيانة، حجز خدمة وطلب منتجك الآن.">
+    <meta name="twitter:image" content="https://aladlcompany.github.io/share-preview.jpg?v=20260515">
+
 <meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control"/>
 <meta content="no-cache" http-equiv="Pragma"/>
 <meta content="0" http-equiv="Expires"/>
@@ -79,7 +96,7 @@
       "url": "https://aladlcompany.github.io/",
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://aladlcompany.github.io/#products?q={search_term_string}",
+        "target": "https://aladlcompany.github.io/products.html?q={search_term_string}",
         "query-input": "required name=search_term_string"
       }
     }
@@ -3120,20 +3137,70 @@ function alAdlPageHref(targetId, category, itemId) {
 
             announceAssistantPresenceOncePerSession();
 
-            bubble.addEventListener('click', () => {
-                isOpen = !isOpen;
-                if (isOpen) {
-                    panel.classList.add('active');
-                    notificationDot.style.display = 'none';
-                    inputArea.focus();
+            // Mobile Back Button Behavior:
+            // لو المساعد مفتوح على الموبايل وضغط العميل زر الرجوع، يقفل المساعد بدل الخروج من الصفحة.
+            let assistantHistoryPushed = false;
+            let assistantCloseFromHistory = false;
+
+            function isMobileAssistantView() {
+                return window.matchMedia('(max-width: 768px)').matches || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            }
+
+            function openAssistantPanel() {
+                isOpen = true;
+                panel.classList.add('active');
+                notificationDot.style.display = 'none';
+                setTimeout(() => inputArea.focus(), 80);
+
+                if (isMobileAssistantView() && !assistantHistoryPushed) {
+                    try {
+                        history.pushState({ alAdlAssistantOpen: true }, document.title, window.location.href);
+                        assistantHistoryPushed = true;
+                    } catch (e) {
+                        assistantHistoryPushed = false;
+                    }
+                }
+            }
+
+            function closeAssistantPanel(syncHistory = true) {
+                isOpen = false;
+                panel.classList.remove('active');
+
+                if (syncHistory && assistantHistoryPushed && !assistantCloseFromHistory && isMobileAssistantView()) {
+                    assistantCloseFromHistory = true;
+                    try {
+                        history.back();
+                    } catch (e) {
+                        assistantHistoryPushed = false;
+                        assistantCloseFromHistory = false;
+                    }
+                    setTimeout(() => {
+                        assistantHistoryPushed = false;
+                        assistantCloseFromHistory = false;
+                    }, 250);
                 } else {
-                    panel.classList.remove('active');
+                    assistantHistoryPushed = false;
+                    assistantCloseFromHistory = false;
+                }
+            }
+
+            window.addEventListener('popstate', () => {
+                if (isOpen || assistantHistoryPushed) {
+                    assistantCloseFromHistory = true;
+                    closeAssistantPanel(false);
+                }
+            });
+
+            bubble.addEventListener('click', () => {
+                if (isOpen) {
+                    closeAssistantPanel(true);
+                } else {
+                    openAssistantPanel();
                 }
             });
 
             closeBtn.addEventListener('click', () => {
-                isOpen = false;
-                panel.classList.remove('active');
+                closeAssistantPanel(true);
             });
 
             sendBtn.addEventListener('click', handleSend);
@@ -3609,17 +3676,52 @@ function alAdlPageHref(targetId, category, itemId) {
             openWhatsApp(MAIN_NUM, text);
         }
 
+        function normalizeArabicSearchText(value) {
+            return String(value || '')
+                .toLowerCase()
+                .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+                .replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
+                .replace(/[أإآ]/g, 'ا')
+                .replace(/ة/g, 'ه')
+                .replace(/ى/g, 'ي')
+                .replace(/[ـ\u064B-\u0652]/g, '')
+                .replace(/[^\p{L}\p{N}\s]/gu, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        function productSearchText(product) {
+            const specsText = Array.isArray(product.specs)
+                ? product.specs.map(s => `${s.label || ''} ${s.value || ''}`).join(' ')
+                : '';
+            return normalizeArabicSearchText([
+                product.name,
+                product.price,
+                product.functions,
+                product.speed,
+                product.resolution,
+                product.paperSize,
+                product.description,
+                product.condition,
+                product.category,
+                specsText
+            ].join(' '));
+        }
+
         function handleSearch() {
             const searchInput = document.getElementById('searchInput');
             if (!searchInput) return;
             const query = searchInput.value.trim();
-
             const activePage = document.querySelector('.page-section.active');
-            if (!activePage || (activePage.id !== 'page-products' && activePage.id !== 'page-product-details')) {
+
+            // البحث أصبح Global على كل المنتجات، ويعمل من أي صفحة أو صفحة تفاصيل.
+            // عند الكتابة داخل صفحة تفاصيل منتج، ننقل العميل فوراً لصفحة نتائج البحث.
+            if (!activePage || activePage.id !== 'page-products') {
                 navigateTo('products', 'all', true, 0, null, 1, false, true);
-            } else {
-                renderProducts(currentCategory, 1);
+                return;
             }
+
+            renderProducts(query ? 'all' : (window.ALADL_INITIAL_CATEGORY || currentCategory || 'all'), 1);
         }
 
         // بيانات بورصة الورق (Array)
@@ -4453,7 +4555,7 @@ function alAdlPageHref(targetId, category, itemId) {
             
             if (catTitleEl && catIconEl) {
                 const searchInput = document.getElementById('searchInput');
-                const query = searchInput ? searchInput.value.trim().toLowerCase() : "";
+                const query = searchInput ? searchInput.value.trim() : "";
                 
                 if (query !== "") {
                     catTitleEl.textContent = 'نتائج البحث';
@@ -4468,14 +4570,21 @@ function alAdlPageHref(targetId, category, itemId) {
             const catalogGrid = document.getElementById('catalogGrid');
             const paginationContainer = document.getElementById('paginationContainer');
             const searchInput = document.getElementById('searchInput');
-            const query = searchInput ? searchInput.value.trim().toLowerCase() : "";
+            const rawQuery = searchInput ? searchInput.value.trim() : "";
+            const query = normalizeArabicSearchText(rawQuery);
+            const searchTokens = query.split(' ').filter(Boolean);
+            const effectiveCategory = query ? 'all' : categoryFilter;
+            currentCategory = effectiveCategory;
 
             let filtered = [...productsDB].reverse();
-            if (categoryFilter !== 'all') {
-                filtered = filtered.filter(p => p.category === categoryFilter);
+            if (effectiveCategory !== 'all') {
+                filtered = filtered.filter(p => p.category === effectiveCategory);
             }
             if (query !== "") {
-                filtered = filtered.filter(p => p.name.toLowerCase().includes(query) || p.price.toLowerCase().includes(query) || p.functions.toLowerCase().includes(query));
+                filtered = filtered.filter(p => {
+                    const searchable = productSearchText(p);
+                    return searchTokens.every(token => searchable.includes(token));
+                });
             }
 
             const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
@@ -4489,6 +4598,7 @@ function alAdlPageHref(targetId, category, itemId) {
                         <div class="col-span-full flex flex-col items-center justify-center py-20 text-gray-400 font-bold text-lg">
                             <i class="fa fa-search-minus text-5xl mb-4 text-gray-300"></i>
                             <p>لا توجد منتجات مطابقة لعملية البحث.</p>
+                            <p class="text-sm text-gray-400 mt-2">جرّب كتابة رقم الموديل فقط مثل 305 أو C307 أو نوع المنتج مثل حبر / ألوان / A3.</p>
                         </div>`;
                 } else {
                     gridContent = `
@@ -4780,6 +4890,14 @@ function alAdlPageHref(targetId, category, itemId) {
                 let pathParts = fullPath.split('/');
                 let pageId = pathParts[0];
                 let itemId = pathParts.length > 1 ? decodeURIComponent(pathParts.slice(1).join('/')) : null;
+                const initialSearchQuery = (new URLSearchParams(window.location.search)).get('q') || (new URLSearchParams(window.location.search)).get('search') || '';
+                const initialSearchInput = document.getElementById('searchInput');
+                if (initialSearchQuery && initialSearchInput) {
+                    initialSearchInput.value = initialSearchQuery;
+                    pageId = 'products';
+                    itemId = null;
+                    window.ALADL_INITIAL_CATEGORY = 'all';
+                }
 
                 if (pageId === 'product-details' && itemId) {
                     openProductDetails(itemId, false, savedScroll, true);
