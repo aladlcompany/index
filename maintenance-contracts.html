@@ -671,7 +671,7 @@ body.ai-assistant-open {
 <script>
 window.ALADL_MULTI_PAGE_MODE = true;
 window.ALADL_PAGE_URLS = {
-  'start': 'index.html',
+  'start': '/',
   'about': 'about.html',
   'products': 'products.html',
   'paper-prices': 'paper-prices.html',
@@ -720,7 +720,7 @@ function alAdlPageHref(targetId, category, itemId) {
   if (targetId === 'single-news' && itemId) {
     return 'news.html#single-news/' + encodeURIComponent(itemId);
   }
-  return (window.ALADL_PAGE_URLS[targetId] || 'index.html#' + encodeURIComponent(targetId));
+  return (window.ALADL_PAGE_URLS[targetId] || '/#' + encodeURIComponent(targetId));
 }
 </script>
 <script>window.ALADL_INITIAL_PAGE = 'maintenance-contracts'; window.ALADL_INITIAL_CATEGORY = 'all';</script>
@@ -880,7 +880,7 @@ function alAdlPageHref(targetId, category, itemId) {
 <button class="mobile-trigger" onclick="toggleAccordion('m-serv')"><span>خدمات ما بعد البيع</span><i class="fa fa-chevron-down text-[10px] opacity-30"></i></button>
 <div class="hidden bg-gray-50 pb-2" id="m-serv">
 <a href="tech-support.html" class="nested-link" onclick="navigateTo('tech-support')">الدعم الفنى</a>
-<a href="index.html#booking" class="nested-link" onclick="navigateTo('start'); setTimeout(() =&gt; document.getElementById('booking').scrollIntoView({behavior: 'smooth'}), 100);">بلاغات الأعطال</a>
+<a href="/#booking" class="nested-link" onclick="navigateTo('start'); setTimeout(() =&gt; document.getElementById('booking').scrollIntoView({behavior: 'smooth'}), 100);">بلاغات الأعطال</a>
 <a href="complaints.html" class="nested-link" onclick="navigateTo('complaints')">الشكاوى و الأقتراحات</a>
 <a href="service-manual.html" class="nested-link" onclick="navigateTo('service-manual')">سيرفيس مانوال</a>
 </div>
@@ -921,7 +921,7 @@ function alAdlPageHref(targetId, category, itemId) {
 </div>
 <nav class="bg-white border-t border-gray-100 hidden lg:block shadow-sm">
 <div class="container mx-auto px-12 flex justify-start gap-x-8 font-black text-gray-600 text-sm">
-<a href="index.html" class="py-5 hover:text-rose-700 transition cursor-pointer" onclick="navigateTo('start')">الرئيسية</a>
+<a href="/" class="py-5 hover:text-rose-700 transition cursor-pointer" onclick="navigateTo('start')">الرئيسية</a>
 <div class="dropdown-container">
 <button class="py-5 flex items-center gap-2">من نحن <i class="fa fa-chevron-down text-[9px] opacity-40"></i></button>
 <div class="dropdown-menu text-right">
@@ -972,7 +972,7 @@ function alAdlPageHref(targetId, category, itemId) {
 <button class="py-5 flex items-center gap-2">خدمات ما بعد البيع <i class="fa fa-chevron-down text-[9px] opacity-40"></i></button>
 <div class="dropdown-menu text-right" style="left: 0; right: auto;">
 <a href="tech-support.html" class="dropdown-card" onclick="navigateTo('tech-support')">الدعم الفنى</a>
-<a href="index.html#booking" class="dropdown-card" onclick="navigateTo('start'); setTimeout(() =&gt; document.getElementById('booking').scrollIntoView({behavior: 'smooth'}), 100);">بلاغات الأعطال</a>
+<a href="/#booking" class="dropdown-card" onclick="navigateTo('start'); setTimeout(() =&gt; document.getElementById('booking').scrollIntoView({behavior: 'smooth'}), 100);">بلاغات الأعطال</a>
 <a href="complaints.html" class="dropdown-card" onclick="navigateTo('complaints')">الشكاوى و الأقتراحات</a>
 <a href="service-manual.html" class="dropdown-card" onclick="navigateTo('service-manual')">سيرفيس مانوال</a>
 </div>
