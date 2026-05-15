@@ -727,7 +727,7 @@ function alAdlPageHref(targetId, category, itemId) {
       "@type": "WebPage",
       "@id": "https://aladlcompany.github.io/#webpage",
       "url": "https://aladlcompany.github.io/",
-      "name": "شركة العدل",
+      "name": "شركة العدل | الرئيسية",
       "description": "شركة العدل لبيع وصيانة الطابعات وماكينات التصوير ريكو في مصر. أجهزة، أحبار، قطع غيار، صيانة ودعم فني باحترافية.",
       "isPartOf": {
         "@id": "https://aladlcompany.github.io/#website"
@@ -735,7 +735,29 @@ function alAdlPageHref(targetId, category, itemId) {
       "about": {
         "@id": "https://aladlcompany.github.io/#localbusiness"
       },
-      "inLanguage": "ar-EG"
+      "inLanguage": "ar-EG",
+      "breadcrumb": {
+        "@id": "https://aladlcompany.github.io/#breadcrumb"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://aladlcompany.github.io/#breadcrumb",
+      "name": "مسار التنقل - شركة العدل | الرئيسية",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://aladlcompany.github.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "شركة العدل | الرئيسية",
+          "item": "https://aladlcompany.github.io/"
+        }
+      ]
     }
   ]
 }

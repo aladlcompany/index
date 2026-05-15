@@ -1,0 +1,1 @@
+V2: Every HTML page now has WebPage + BreadcrumbList with explicit @id, name, url, and breadcrumb reference. This helps Google show detected structured data after recrawling the indexed version. Layout/CSS/images unchanged.
