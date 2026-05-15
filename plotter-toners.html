@@ -2491,6 +2491,34 @@ function alAdlPageHref(targetId, category, itemId) {
                 conversation: []
             };
 
+            // حفظ محادثة المساعد أثناء جلسة التصفح فقط.
+            // sessionStorage يحافظ على المحادثة عند التنقل بين صفحات الموقع، ويمسحها تلقائيًا بعد إغلاق التبويب/المتصفح.
+            const ASSISTANT_CHAT_SESSION_KEY = 'alAdlAssistantChatSessionV2';
+            let assistantSessionMessages = [];
+
+            function persistAssistantSession() {
+                try {
+                    sessionStorage.setItem(ASSISTANT_CHAT_SESSION_KEY, JSON.stringify({
+                        state: customerState,
+                        messages: assistantSessionMessages,
+                        savedAt: new Date().toISOString()
+                    }));
+                } catch(e) {}
+            }
+
+            function restoreAssistantSession() {
+                try {
+                    const raw = sessionStorage.getItem(ASSISTANT_CHAT_SESSION_KEY);
+                    if (!raw) return false;
+                    const saved = JSON.parse(raw);
+                    if (saved && saved.state) Object.assign(customerState, saved.state);
+                    if (saved && Array.isArray(saved.messages)) assistantSessionMessages = saved.messages;
+                    return assistantSessionMessages.length > 0;
+                } catch(e) {
+                    return false;
+                }
+            }
+
             const companyData = {
                 name: 'شركة العدل لتجارة ماكينات التصوير والطابعات',
                 phone: '01094799247',
@@ -2695,7 +2723,7 @@ function alAdlPageHref(targetId, category, itemId) {
             ];
 
             function normalizeArabic(str) {
-                return (str || '')
+                let text = (str || '')
                     .toString()
                     .toLowerCase()
                     .replace(/[أإآ]/g, 'ا')
@@ -2707,6 +2735,26 @@ function alAdlPageHref(targetId, category, itemId) {
                     .replace(/[^\u0600-\u06FFa-z0-9\s]/g, ' ')
                     .replace(/\s+/g, ' ')
                     .trim();
+
+                // طبقة تصحيح مرنة للأخطاء الإملائية الشائعة قبل فهم الرسالة.
+                // الهدف إن المساعد يفهم كلمات زي: مرخبا = مرحبا، كسفك = كيفك، سيانة = صيانة.
+                const typoCorrections = [
+                    [/مرخبا/g, 'مرحبا'], [/مرحباا/g, 'مرحبا'], [/مرحباء/g, 'مرحبا'], [/مراحب/g, 'مرحبا'],
+                    [/اهلاا/g, 'اهلا'], [/اهلن/g, 'اهلا'], [/اهلين/g, 'اهلا'], [/هلى/g, 'هلا'], [/هلاا/g, 'هلا'],
+                    [/سلامو/g, 'سلام'], [/السلم/g, 'السلام'], [/السلاام/g, 'السلام'], [/عليكو/g, 'عليكم'],
+                    [/صباحو/g, 'صباح الخير'], [/صباج/g, 'صباح'], [/صبخ/g, 'صباح'], [/مسا/g, 'مساء'], [/مساءو/g, 'مساء الخير'],
+                    [/كسفك/g, 'كيفك'], [/كيسفك/g, 'كيفك'], [/كيفيك/g, 'كيفك'], [/كفك/g, 'كيفك'], [/كف حالك/g, 'كيف حالك'],
+                    [/ازبك/g, 'ازيك'], [/اذيك/g, 'ازيك'], [/ايزيك/g, 'ازيك'], [/اخبرك/g, 'اخبارك'],
+                    [/عامل اي/g, 'عامل ايه'], [/عمل ايه/g, 'عامل ايه'], [/عاملايه/g, 'عامل ايه'],
+                    [/مكينه/g, 'ماكينه'], [/مكينة/g, 'ماكينه'], [/مكنه/g, 'ماكينه'], [/ماكينا/g, 'ماكينه'],
+                    [/طابعة/g, 'طابعه'], [/طابعهه/g, 'طابعه'], [/برنتر/g, 'printer'],
+                    [/سيانه/g, 'صيانه'], [/صينه/g, 'صيانه'], [/سيايه/g, 'صيانه'],
+                    [/عطلانه/g, 'عطل'], [/عطلان/g, 'عطل'], [/اعطال/g, 'عطل'], [/مشكل/g, 'مشكله'],
+                    [/وتساب/g, 'واتساب'], [/واتس/g, 'واتساب'], [/وستاب/g, 'واتساب'],
+                    [/ممثبل/g, 'ممثل'], [/ممثال/g, 'ممثل'], [/موظفف/g, 'موظف'], [/انسان/g, 'ممثل'], [/بني ادم/g, 'ممثل']
+                ];
+                typoCorrections.forEach(([pattern, replacement]) => { text = text.replace(pattern, replacement); });
+                return text.replace(/\s+/g, ' ').trim();
             }
 
             function getProducts() {
@@ -2930,15 +2978,35 @@ function alAdlPageHref(targetId, category, itemId) {
 
             function leadHandoffAnswer(query) {
                 const q = normalizeArabic(query);
-                const wantsHuman = ['ممثل','موظف','خدمة عملاء','حد يكلمني','اكلم حد','تواصل مع ممثل','ارسال الطلب','ابعت الطلب','حولني','كلموني','عايز اشتري','احجز','انهاء المحادثه','خلصنا','تمام شكرا'].some(w => q.includes(normalizeArabic(w)));
                 const phone = extractPhone(query);
                 if (phone) customerState.phone = phone;
+
+                const wantsMaintenanceHandoff = [
+                    'طلب صيانه','عايز صيانه','محتاج صيانه','احجز صيانه','حجز صيانه','صيانه ماكينه','صيانه طابعه',
+                    'عندي عطل','في عطل','مشكله في الماكينه','الماكينه بايظه','الطابعه بايظه','الدعم الفني'
+                ].some(w => q.includes(normalizeArabic(w)));
+
+                const wantsHuman = [
+                    'ممثل','موظف','خدمة عملاء','خدمه عملاء','حد يكلمني','اكلم حد','تحدث مع ممثل','تواصل مع ممثل',
+                    'ارسال الطلب','ابعت الطلب','حولني','كلموني','عايز اشتري','احجز','مندوب','مسؤول','ممثل فعلي',
+                    'انسان','بني ادم','انهاء المحادثه','خلصنا','تمام شكرا'
+                ].some(w => q.includes(normalizeArabic(w)));
+
+                if (wantsMaintenanceHandoff) {
+                    customerState.intent = 'طلب صيانة';
+                    const msg = leadSummaryText() + '\n\nتفاصيل مطلوبة من العميل: موديل الماكينة، وصف العطل، وصورة رسالة الخطأ إن وجدت.';
+                    return `تمام${customerTitle()}، هحوّل طلب الصيانة لواتساب شركة العدل برسالة جاهزة.<br>
+                    يفضل تبعت في الرسالة موديل الماكينة وصورة العطل أو كود الخطأ لو موجود.${whatsappButton(msg, 'إرسال طلب الصيانة عبر واتساب')}`;
+                }
+
                 if (!wantsHuman) return null;
+
+                customerState.intent = customerState.intent || 'تواصل مع ممثل';
                 if (!customerState.phone && (q.includes('يتواصل') || q.includes('كلموني') || q.includes('اتصل'))) {
                     customerState.waitingForPhone = true;
                     return `تمام${customerTitle()}، ابعت رقم موبايل حضرتك، وأنا أجهز ملخص الطلب لفريق شركة العدل.${whatsappButton(leadSummaryText(), 'إرسال الملخص عبر واتساب')}`;
                 }
-                return `تمام${customerTitle()}، جهزت ملخص طلب حضرتك لفريق شركة العدل.<br>اضغط الزر ده وهيفتح واتساب برسالة جاهزة فيها بيانات الطلب والموديل والصفحة الحالية.${whatsappButton(leadSummaryText(), 'إرسال ملخص الطلب لواتساب')}`;
+                return `تمام${customerTitle()}، هحوّلك لممثل شركة العدل على واتساب برسالة جاهزة فيها ملخص طلبك.<br>${whatsappButton(leadSummaryText(), 'تحدث مع ممثل عبر واتساب')}`;
             }
 
             function navigationAnswer(query) {
@@ -3119,11 +3187,11 @@ function alAdlPageHref(targetId, category, itemId) {
                 const onboarding = handleOnboarding(userText);
                 if (onboarding) return onboarding;
 
-                const navigation = navigationAnswer(userText);
-                if (navigation) return navigation;
-
                 const handoff = leadHandoffAnswer(userText);
                 if (handoff) return handoff;
+
+                const navigation = navigationAnswer(userText);
+                if (navigation) return navigation;
 
                 const intent = detectIntent(userText);
                 updateState(intent);
@@ -3189,19 +3257,41 @@ function alAdlPageHref(targetId, category, itemId) {
                 مثال: "عايز ماكينة اقتصادية أبيض وأسود A3 لمكتب".`;
             }
 
-            function appendMessage(text, sender, isHTML = false) {
+            function appendMessage(text, sender, isHTML = false, saveToSession = true) {
                 const msgDiv = document.createElement('div');
                 msgDiv.className = `ai-message ${sender}`;
                 if (isHTML) msgDiv.innerHTML = text; else msgDiv.textContent = text;
                 messagesContainer.insertBefore(msgDiv, typingIndicator);
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+                if (saveToSession) {
+                    assistantSessionMessages.push({
+                        text: String(text),
+                        sender: sender,
+                        isHTML: !!isHTML
+                    });
+                    persistAssistantSession();
+                }
             }
+
+            function renderRestoredAssistantConversation() {
+                const hasSavedConversation = restoreAssistantSession();
+                if (!hasSavedConversation) return;
+
+                messagesContainer.querySelectorAll('.ai-message').forEach(el => el.remove());
+                assistantSessionMessages.forEach(msg => {
+                    appendMessage(msg.text, msg.sender, !!msg.isHTML, false);
+                });
+            }
+
+            renderRestoredAssistantConversation();
 
             function handleSend() {
                 const text = inputArea.value.trim();
                 if (!text) return;
                 customerState.conversation.push({ from: 'العميل', text: text, time: new Date().toISOString() });
                 customerState.lastNeed = text;
+                persistAssistantSession();
                 appendMessage(text, 'user');
                 inputArea.value = '';
                 typingIndicator.classList.add('active');
@@ -3209,6 +3299,7 @@ function alAdlPageHref(targetId, category, itemId) {
                 setTimeout(() => {
                     const html = smartAnswer(text);
                     customerState.conversation.push({ from: 'المساعد', text: String(html).replace(/<[^>]*>/g, ' '), time: new Date().toISOString() });
+                    persistAssistantSession();
                     typingIndicator.classList.remove('active');
                     appendMessage(html, 'bot', true);
                 }, 350);
