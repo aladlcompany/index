@@ -2829,9 +2829,23 @@ function alAdlPageHref(targetId, category, itemId) {
                 return reasons.slice(0,4).join('، ');
             }
 
+            function assistantProductDetailsNav(event, href) {
+                if (event) event.preventDefault();
+                try {
+                    const target = new URL(href, window.location.href);
+                    window.location.assign(target.href);
+                } catch(e) {
+                    window.location.href = href;
+                }
+                return false;
+            }
+
             function productButton(productName, label = 'عرض تفاصيل الماكينة') {
-                const safeName = String(productName).replace(/'/g, "\\'");
-                return `<a class="ai-product-link" onclick="if(typeof openProductDetails === 'function') { openProductDetails('${safeName}'); document.getElementById('aiCloseBtn').click(); }">${label} <i class="fa fa-print"></i></a>`;
+                const productHref = (typeof alAdlPageHref === 'function')
+                    ? alAdlPageHref('product-details', null, productName)
+                    : ('products.html#product-details/' + encodeURIComponent(productName));
+                const safeHref = String(productHref).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+                return `<a class="ai-product-link" href="${safeHref}" onclick="return assistantProductDetailsNav(event, '${safeHref}');">${label} <i class="fa fa-print"></i></a>`;
             }
 
             function pageButton(target, label) {
