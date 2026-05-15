@@ -724,6 +724,130 @@ function alAdlPageHref(targetId, category, itemId) {
 }
 </script>
 <script>window.ALADL_INITIAL_PAGE = 'faq'; window.ALADL_INITIAL_CATEGORY = 'all';</script>
+
+<!-- START ALADL STRUCTURED DATA -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "LocalBusiness",
+        "Organization"
+      ],
+      "@id": "https://aladlcompany.github.io/#localbusiness",
+      "name": "شركة العدل لتجارة ماكينات التصوير والطابعات",
+      "alternateName": "El Adl Company",
+      "url": "https://aladlcompany.github.io/",
+      "logo": "https://aladlcompany.github.io/logo.png",
+      "image": "https://aladlcompany.github.io/logo.png",
+      "telephone": "+201094799247",
+      "priceRange": "$$",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "شارع الشباب بجوار مسجد السلام",
+        "addressLocality": "جمصة",
+        "addressRegion": "الدقهلية",
+        "addressCountry": "EG"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Egypt"
+      },
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "telephone": "+201094799247",
+          "contactType": "customer service",
+          "areaServed": "EG",
+          "availableLanguage": [
+            "ar",
+            "en"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://aladlcompany.github.io/#website",
+      "url": "https://aladlcompany.github.io/",
+      "name": "شركة العدل",
+      "alternateName": "El Adl Company",
+      "publisher": {
+        "@id": "https://aladlcompany.github.io/#localbusiness"
+      },
+      "inLanguage": "ar-EG"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://aladlcompany.github.io/faq.html#webpage",
+      "url": "https://aladlcompany.github.io/faq.html",
+      "name": "شركة العدل | أسئلة وأجوبة",
+      "description": "شركة العدل لبيع وصيانة الطابعات وماكينات التصوير ريكو في مصر. أجهزة، أحبار، قطع غيار، صيانة ودعم فني باحترافية.",
+      "isPartOf": {
+        "@id": "https://aladlcompany.github.io/#website"
+      },
+      "about": {
+        "@id": "https://aladlcompany.github.io/#localbusiness"
+      },
+      "inLanguage": "ar-EG",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل تقدم شركة العدل بيع وصيانة ماكينات تصوير ريكو؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "نعم، تقدم شركة العدل بيع وصيانة ماكينات التصوير والطابعات وقطع الغيار والأحبار، مع دعم فني وخدمات ما بعد البيع."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل تتوفر أحبار وقطع غيار لماكينات التصوير والطابعات؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "نعم، توفر الشركة أحبار وقطع غيار لماكينات التصوير والطابعات، مع إمكانية الاستفسار عن التوافق حسب موديل الجهاز."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "كيف يمكن التواصل مع شركة العدل؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "يمكن التواصل مع شركة العدل على رقم 01094799247 للاستفسار عن المنتجات أو الصيانة أو قطع الغيار."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "أين يقع مقر شركة العدل؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "تقع شركة العدل في جمصة بمحافظة الدقهلية، شارع الشباب بجوار مسجد السلام."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://aladlcompany.github.io/faq.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://aladlcompany.github.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "أسئلة وأجوبة",
+          "item": "https://aladlcompany.github.io/faq.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- END ALADL STRUCTURED DATA -->
 </head>
 <body class="text-gray-800 text-right" id="mainBody" ontouchstart="" style="opacity: 1; transition: opacity 0.3s ease-out;">
 <div class="menu-overlay" id="overlay" onclick="toggleMobileMenu()"></div>
