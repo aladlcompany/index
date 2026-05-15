@@ -87,7 +87,9 @@
       ],
       "description": "المنصة الرسمية المعتمدة لبيع وصيانة الطابعات وماكينات التصوير ريكو (Ricoh) في الدقهلية ومصر. نقدم خدمات الإيجار التمليكي، الصيانة الفورية، وتوريد الأحبار الأصلية وقطع الغيار."
     }
-    </script>
+    
+
+</script>
 <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -686,6 +688,24 @@
             max-width: 100% !important;
             height: auto !important;
         }
+
+
+/* AI assistant background focus blur */
+body.ai-assistant-open > *:not(.ai-assistant-container):not(script):not(style) {
+    filter: blur(4px) brightness(0.82);
+    transition: filter 0.25s ease;
+    pointer-events: none;
+    user-select: none;
+}
+body.ai-assistant-open .ai-assistant-container {
+    filter: none !important;
+    pointer-events: auto !important;
+    user-select: auto !important;
+}
+body.ai-assistant-open {
+    overflow: hidden;
+}
+
 </style>
 <script>
         /* V10: Gemini Preview يستخدم نفس قائمة الموبايل الأصلية بدل القائمة المنسدلة المخصصة.
@@ -3147,6 +3167,7 @@ function alAdlPageHref(targetId, category, itemId) {
             }
 
             function openAssistantPanel() {
+                document.body.classList.add('ai-assistant-open');
                 isOpen = true;
                 panel.classList.add('active');
                 notificationDot.style.display = 'none';
@@ -3163,6 +3184,7 @@ function alAdlPageHref(targetId, category, itemId) {
             }
 
             function closeAssistantPanel(syncHistory = true) {
+                document.body.classList.remove('ai-assistant-open');
                 isOpen = false;
                 panel.classList.remove('active');
 
@@ -5168,5 +5190,42 @@ function alAdlPageHref(targetId, category, itemId) {
             }
         });
     </script>
+
+<script>
+// فتح القائمة الرئيسية بسحب الشاشة من اليمين إلى اليسار على الموبايل
+(function enableRightToLeftSwipeMenu(){
+    let startX = 0;
+    let startY = 0;
+    let startTime = 0;
+
+    document.addEventListener('touchstart', function(e){
+        if (!e.touches || !e.touches.length) return;
+        const t = e.touches[0];
+        startX = t.clientX;
+        startY = t.clientY;
+        startTime = Date.now();
+    }, {passive:true});
+
+    document.addEventListener('touchend', function(e){
+        if (!e.changedTouches || !e.changedTouches.length) return;
+        if (window.innerWidth > 768) return;
+        if (document.body.classList.contains('ai-assistant-open')) return;
+
+        const t = e.changedTouches[0];
+        const deltaX = t.clientX - startX;
+        const deltaY = t.clientY - startY;
+        const duration = Date.now() - startTime;
+        const startedFromRightSide = startX > window.innerWidth * 0.62;
+        const isClearHorizontalSwipe = Math.abs(deltaX) > 75 && Math.abs(deltaX) > Math.abs(deltaY) * 1.8;
+
+        if (startedFromRightSide && deltaX < -75 && isClearHorizontalSwipe && duration < 900) {
+            if (typeof openMobileMenu === 'function' && !document.body.classList.contains('mobile-menu-open') && !document.body.classList.contains('menu-open')) {
+                openMobileMenu();
+            }
+        }
+    }, {passive:true});
+})();
+</script>
+
 </body>
 </html>
