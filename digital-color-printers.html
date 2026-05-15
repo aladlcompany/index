@@ -3526,7 +3526,19 @@ function alAdlPageHref(targetId, category, itemId) {
             }
         }
 
+        let mobileMenuHistoryArmed = false;
+
         window.addEventListener('popstate', (event) => {
+            const mobileMenuEl = document.getElementById('mobile-menu');
+            const overlayEl = document.getElementById('overlay');
+            if (mobileMenuEl && mobileMenuEl.classList.contains('open')) {
+                mobileMenuHistoryArmed = false;
+                mobileMenuEl.classList.remove('open');
+                if (overlayEl) overlayEl.classList.remove('show');
+                document.body.classList.remove('menu-open');
+                return;
+            }
+
             if (event.state && event.state.pageId) { 
                 const pageId = event.state.pageId;
                 const scrollY = event.state.scrollY || 0;
@@ -3562,14 +3574,39 @@ function alAdlPageHref(targetId, category, itemId) {
             }
         });
 
+        function openMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const overlay = document.getElementById('overlay');
+            if (!menu) return;
+            menu.classList.add('open');
+            if (overlay) overlay.classList.add('show');
+            document.body.classList.add('menu-open');
+
+            // إضافة خطوة وهمية في سجل المتصفح حتى زر الرجوع في الموبايل يقفل القائمة فقط
+            // بدل ما يخرج من الصفحة أو يرجع لصفحة سابقة.
+            if (!mobileMenuHistoryArmed) {
+                const currentState = history.state && typeof history.state === 'object' ? history.state : {};
+                history.pushState({ ...currentState, aladlMobileMenuOpen: true }, '', window.location.href);
+                mobileMenuHistoryArmed = true;
+            }
+        }
+
         function toggleMobileMenu() {
-            document.getElementById('mobile-menu').classList.toggle('open');
-            document.getElementById('overlay').classList.toggle('show');
+            const menu = document.getElementById('mobile-menu');
+            if (menu && menu.classList.contains('open')) {
+                closeMobileMenu();
+            } else {
+                openMobileMenu();
+            }
         }
 
         function closeMobileMenu() {
-            document.getElementById('mobile-menu').classList.remove('open');
-            document.getElementById('overlay').classList.remove('show');
+            const menu = document.getElementById('mobile-menu');
+            const overlay = document.getElementById('overlay');
+            if (menu) menu.classList.remove('open');
+            if (overlay) overlay.classList.remove('show');
+            document.body.classList.remove('menu-open');
+            mobileMenuHistoryArmed = false;
         }
 
         function toggleAccordion(id) {
