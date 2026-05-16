@@ -3,213 +3,192 @@ const path = require('path');
 
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 const MODEL = process.env.GROQ_MODEL || 'llama-3.1-8b-instant';
-const WHATSAPP_NUMBER = '201094799247';
 const SITE_URL = (process.env.SITE_URL || 'https://eladlshop.vercel.app').replace(/\/$/, '');
+const WHATSAPP_NUMBER = '201094799247';
 
-function readJson(file, fallback = []) {
-  const tries = [
-    path.join(process.cwd(), 'data', file),
-    path.join(__dirname, '..', 'data', file),
-    path.join(__dirname, 'data', file)
-  ];
-  for (const f of tries) {
-    try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch {}
-  }
+function readJson(file, fallback) {
+  const paths = [path.join(process.cwd(), 'data', file), path.join(__dirname, '..', 'data', file)];
+  for (const p of paths) { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch (_) {} }
   return fallback;
 }
 
-const products = readJson('products.json');
-const paperProducts = readJson('paper-products.json');
+const PRODUCTS = readJson('products.json', []);
+const PAPER = readJson('paper-prices.json', readJson('paper-products.json', []));
+const TEAM = readJson('team.json', { members: [], sourcePage: '/about.html', sourceLabel: 'صفحة من نحن' });
+const SERVICES = readJson('services.json', { services: [] });
 
-function esc(s = '') {
-  return String(s).replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+function esc(v = '') { return String(v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[c])); }
+function norm(v = '') {
+  return String(v).toLowerCase()
+    .replace(/[أإآا]/g, 'ا').replace(/ى/g, 'ي').replace(/ة/g, 'ه')
+    .replace(/ؤ/g, 'و').replace(/ئ/g, 'ي').replace(/ريكو|richo/g, 'ricoh')
+    .replace(/[^\p{L}\p{N}\s]/gu, ' ')
+    .replace(/\s+/g, ' ').trim();
 }
-function norm(s = '') {
-  return String(s).toLowerCase()
-    .replace(/[أإآا]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه')
-    .replace(/ريكو|richo/g,'ricoh').replace(/[^\p{L}\p{N}\s]/gu,' ')
-    .replace(/\s+/g,' ').trim();
-}
-function hasAny(text, arr) { const n=norm(text); return arr.some(w => n.includes(norm(w))); }
-function isSmallTalk(q) {
-  const n = norm(q);
-  return /^(عامل ايه|عامله ايه|اخبارك|ازيك|ازايك|كيفك|كيف الحال|السلام عليكم|هاي|هلا|صباح الخير|مساء الخير|الحمد لله|تمام|كويس)/.test(n);
-}
-function smallTalkAnswer(q) {
-  const n = norm(q);
-  if (n.includes('الحمد لله') || n.includes('تمام') || n.includes('كويس')) {
-    return `<p>الحمد لله دايمًا 🤍</p><p>تحب أساعدك في ماكينة تصوير، طابعة، حبر، قطع غيار، صيانة، أو أسعار بورصة الورق؟</p>`;
-  }
-  if (n.includes('عامل ايه') || n.includes('عامله ايه') || n.includes('ازيك') || n.includes('اخبارك') || n.includes('كيف')) {
-    return `<p>الحمد لله، أخبارك إيه؟ 😊</p><p>تحب أساعد حضرتك في إيه؟</p>`;
-  }
-  if (n.includes('السلام عليكم')) return `<p>وعليكم السلام ورحمة الله وبركاته 😊</p><p>أخبار حضرتك؟</p>`;
-  return `<p>أهلًا بحضرتك 😊</p><p>أقدر أساعدك في منتجات وخدمات شركة العدل.</p>`;
-}
-function isPaperPriceQuestion(q) {
-  const n = norm(q);
-  return /(سعر|اسعار|بكام|كام|بورصه|بورصة)/.test(n) && /(ورق|رزمة|رزم|مرام|دبل|زيروكس|روتاتريم|كوبيا)/.test(n);
+function hasAny(text, list) { const n = norm(text); return list.some(w => n.includes(norm(w))); }
+function historyText(history) { return Array.isArray(history) ? history.slice(-8).map(m => `${m.role || ''}: ${m.content || m.text || ''}`).join(' ') : ''; }
+function words(text) {
+  const stop = new Set(['عاوز','عايز','اريد','محتاج','ممكن','حضرتك','من','عن','على','في','الى','إلى','هو','هي','ده','دي','دى','بس','لو','سعر','اسعار','بكام','كام','ايه','اية','عاوزه','عاوزة']);
+  return norm(text).split(' ').filter(w => w.length > 1 && !stop.has(w));
 }
 function validPrice(price) {
-  if (!price) return false;
+  if (price === null || price === undefined) return false;
   const p = String(price).trim();
-  return p && !/غير\s*متوفر|n\/?a|na|null|undefined|0\s*جنيه/i.test(p);
+  return !!p && !/غير\s*متوفر|غير\s*مذكور|n\/?a|null|undefined|^0$|^0\s*جنيه/i.test(p);
 }
-function categoryUrl(cat) {
-  const c = norm(cat || '');
-  if (c.includes('ورق')) return '/paper-prices.html';
-  if (c.includes('قطع')) return '/color-copier-parts.html';
-  if (c.includes('احبار') || c.includes('تونر')) return '/color-toners.html';
-  if (c.includes('طابعات الوان')) return '/digital-color-printers.html';
-  if (c.includes('طابعات') && (c.includes('ابيض') || c.includes('اسود'))) return '/digital-bw-printers.html';
-  if (c.includes('ابيض') || c.includes('اسود') || c.includes('black')) return '/black-white-copiers.html';
-  if (c.includes('الوان') || c.includes('color')) return '/color-copiers.html';
-  return '/products.html';
+function absUrl(url) { if (!url) return SITE_URL + '/products.html'; if (/^https?:\/\//i.test(url)) return url; return SITE_URL + (url.startsWith('/') ? url : '/' + url); }
+function waUrl(message) { return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`; }
+function goButton(url, label) { return `<button type="button" class="ai-btn ai-go-btn" data-goto="${esc(absUrl(url))}">${esc(label)}</button>`; }
+function waButton(message, label = 'استفسر واتساب') { return `<a class="ai-btn ai-wa" href="${esc(waUrl(message))}" target="_blank" rel="noopener">${esc(label)}</a>`; }
+function actions(buttons) { return `<div class="ai-actions">${buttons.join('')}</div>`; }
+
+function isSmallTalk(q) {
+  const n = norm(q);
+  return /^(السلام عليكم|سلام عليكم|هاي|هلا|مرحبا|صباح الخير|مساء الخير|عامل ايه|عامله ايه|اخبارك|ازيك|ازايك|كيفك|كيف الحال|الحمد لله|تمام|كويس|بخير)$/.test(n);
 }
-function productUrl(p) {
-  const productName = p.name || p.title || p.model || 'product';
-  return `${SITE_URL}/products.html#product-details/${encodeURIComponent(productName)}`;
+function smallTalk(q) {
+  const n = norm(q);
+  if (n.includes('السلام')) return '<p>وعليكم السلام ورحمة الله وبركاته 😊</p><p>أخبار حضرتك؟</p>';
+  if (n === 'الحمد لله' || n === 'تمام' || n === 'كويس' || n === 'بخير') return '<p>الحمد لله دايمًا 🤍</p><p>تحب أساعدك في ماكينة تصوير، طابعة، صيانة، أحبار، قطع غيار، أو بورصة الورق؟</p>';
+  if (hasAny(q, ['عامل ايه','عامله ايه','اخبارك','ازيك','ازايك','كيفك','كيف الحال'])) return '<p>الحمد لله، أخبارك إيه؟ 😊</p><p>تحب أساعد حضرتك في إيه؟</p>';
+  return '<p>أهلًا وسهلًا بحضرتك 😊</p><p>تحب أساعدك في ماكينة، طابعة، صيانة، أحبار، قطع غيار، أو بورصة الورق؟</p>';
 }
-function waUrl(text) {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+
+function machineContext(q, h = '') {
+  const full = `${h} ${q}`;
+  return hasAny(full, ['مكن','مكنه','ماكينه','ماكينة','تصوير','طابعه','طابعة','طابعات','برنتر','printer','copier','ricoh','ريكو','افيشيو','الوان','ابيض','اسود','سكانر','فاكس','دوبلكس']);
 }
-function internalButton(url, label) {
-  return `<button type="button" class="ai-btn ai-go-btn" data-goto="${esc(url)}">${esc(label)}</button>`;
+function explicitPaperIntent(q) { return hasAny(q, ['بورصة الورق','بورصه الورق','اسعار الورق','أسعار الورق','سعر الورق','ورق تصوير','ورق طباعة','رزمة ورق','رزم ورق','طن ورق','ورق a4','ورق a3','ورق مطاوي']); }
+function productIntent(q, h = '') {
+  const full = `${h} ${q}`;
+  if (explicitPaperIntent(q)) return false;
+  return machineContext(q, h) || hasAny(full, ['حبر','تونر','خرطوشة','خرطوشه','درام','قطع غيار','فيوزر','رول','طابعة','طابعه']);
 }
-function buttons(url, waText, label = 'افتح صفحة التفاصيل') {
-  return `<div class="ai-actions">${internalButton(url, label)}<a class="ai-btn ai-wa" href="${esc(waUrl(waText))}" target="_blank" rel="noopener">استفسر واتساب</a></div>`;
+function missingMachineDetails(q, h = '') {
+  const full = norm(`${h} ${q}`);
+  const hasColor = /(الوان|ابيض|اسود|ابيض واسود|اسود وابيض|color|black|bw)/i.test(full);
+  const hasSize = /\b(a3|a4)\b/i.test(full);
+  const hasModel = /\b(mp|sp|ricoh|ريكو)\s*[a-z]*\s*\d{2,5}/i.test(full);
+  return !hasModel && (!hasColor || !hasSize);
 }
-function card(p) {
-  const url = productUrl(p);
-  const specs = [];
-  if (p.category) specs.push(`القسم: ${p.category}`);
-  if (p.description) specs.push(p.description);
-  const priceLine = validPrice(p.price)
-    ? `<div class="ai-price">السعر: ${esc(p.price)}</div>`
-    : `<div class="ai-price muted">السعر غير متوفر حاليًا على الموقع.</div>`;
-  return `<div class="ai-card"><b>${esc(p.name)}</b>${priceLine}<div class="ai-specs">${specs.slice(0,3).map(esc).join('<br>')}</div>${buttons(url, `أريد الاستفسار عن ${p.name}`)}</div>`;
+function askMachineQuestions() {
+  return `<p>تمام، عشان أرشح لحضرتك ماكينة مناسبة محتاج أعرف 3 حاجات:</p><div class="ai-list">1) ألوان ولا أبيض وأسود؟<br>2) المقاس المطلوب A4 ولا A3؟<br>3) حجم الاستخدام اليومي تقريبًا؟ قليل، متوسط، ولا كثيف؟</div><p>بعدها أعرض لك كل الماكينات المطابقة من الموقع مع زر تفاصيل لكل ماكينة.</p>`;
 }
-function words(s){ return norm(s).split(' ').filter(w => w.length > 1); }
-function scoreProduct(p, q) {
-  const nq = norm(q); const target = norm(`${p.name||''} ${p.category||''} ${p.description||''}`);
+
+function productSearchText(p) {
+  const specs = Array.isArray(p.specs) ? p.specs.map(s => `${s.label || ''} ${s.value || ''}`).join(' ') : '';
+  return norm(`${p.name || ''} ${p.model || ''} ${p.category || ''} ${p.categoryLabel || ''} ${p.description || ''} ${p.paperSize || ''} ${p.paperFormat || ''} ${p.colorMode || ''} ${p.speed || ''} ${p.functions || ''} ${specs}`);
+}
+function scoreProduct(p, q, h = '') {
+  const query = norm(`${h} ${q}`);
+  const target = productSearchText(p);
   let score = 0;
   for (const w of words(q)) if (target.includes(w)) score += w.length > 2 ? 3 : 1;
-  if (nq.includes('الوان') && target.includes('الوان')) score += 8;
-  if ((nq.includes('ابيض') || nq.includes('اسود') || nq.includes('اسود')) && (target.includes('ابيض') || target.includes('اسود') || target.includes('black'))) score += 8;
-  if (nq.includes('a3') && target.includes('a3')) score += 10;
-  if (nq.includes('a4') && target.includes('a4')) score += 10;
-  const model = (q.match(/[a-z]*\s*\d{3,5}[a-z]*/i)||[])[0];
-  if (model && target.includes(norm(model).replace(/\s/g,''))) score += 30;
+  const modelMatches = String(q).match(/(?:mp|sp|ricoh|ريكو|aficio|افيشيو)?\s*[a-z]*\s*\d{2,5}\s*[a-z]*/ig) || [];
+  for (const m of modelMatches) { const mm = norm(m).replace(/\s+/g, ''); if (target.replace(/\s+/g, '').includes(mm)) score += 35; }
+  if (/(الوان|ألوان|color)/i.test(query)) score += /(الوان|color|ألوان)/i.test(target) ? 12 : -20;
+  if (/(ابيض|أبيض|اسود|أسود|black|bw)/i.test(query)) score += /(ابيض|أبيض|اسود|أسود|black|bw)/i.test(target) ? 12 : -20;
+  if (/\ba3\b/i.test(query)) score += /\ba3\b/i.test(target) ? 14 : -18;
+  if (/\ba4\b/i.test(query)) score += /\ba4\b/i.test(target) ? 14 : -10;
+  if (hasAny(q, ['حبر','تونر']) && hasAny(target, ['حبر','تونر'])) score += 15;
+  if (hasAny(q, ['قطع غيار','رول','فيوزر','درام']) && hasAny(target, ['قطع','رول','فيوزر','درام'])) score += 15;
   return score;
 }
-function findProducts(q) {
-  const ranked = products.map(p => ({p, s: scoreProduct(p,q)})).filter(x => x.s > 2).sort((a,b)=>b.s-a.s);
-  if (ranked.length) return ranked.map(x=>x.p);
-  if (hasAny(q, ['مكنة','ماكينة','طابعة','تصوير','منتج','منتجات','ricoh','ريكو'])) return products.slice(0, 30);
-  return [];
+function findProducts(q, h = '') {
+  const scored = PRODUCTS.map(p => ({ p, score: scoreProduct(p, q, h) })).filter(x => x.score > 0);
+  scored.sort((a, b) => b.score - a.score || String(a.p.name).localeCompare(String(b.p.name), 'ar'));
+  if (!scored.length) return [];
+  const top = scored[0].score;
+  return scored.filter(x => x.score >= Math.max(1, top - 10)).map(x => x.p);
 }
-function askClarify() {
-  return `<p>تمام، علشان أرشح لك أنسب ماكينة محتاج أعرف:</p><div class="ai-list">1) ألوان ولا أبيض وأسود؟<br>2) A4 ولا A3؟<br>3) الاستخدام اليومي تقريبًا كام ورقة؟<br>4) محتاج سكانر / دوبلكس / شبكة؟</div><a class="ai-btn ai-wa" href="${esc(waUrl('أريد ترشيح ماكينة تصوير مناسبة'))}" target="_blank" rel="noopener">إرسال التفاصيل على واتساب</a>`;
+function productDetailsUrl(p) { return `/products.html#product-details/${encodeURIComponent(p.name || '')}`; }
+function productCard(p, index) {
+  const specs = [p.categoryLabel && `القسم: ${p.categoryLabel}`, p.colorMode && p.colorMode !== 'غير محدد' && `النوع: ${p.colorMode}`, p.paperFormat && p.paperFormat !== 'غير محدد' && `المقاس: ${p.paperFormat}`, p.speed && `السرعة: ${p.speed}`, p.functions && `الوظائف: ${p.functions}`].filter(Boolean);
+  const priceHtml = validPrice(p.price) ? `<div class="ai-price">السعر: ${esc(p.price)}</div>` : `<div class="ai-price muted">السعر غير متوفر حاليًا على صفحة المنتج.</div>`;
+  const detail = goButton(productDetailsUrl(p), 'تفاصيل الماكينة');
+  const wa = !validPrice(p.price) ? waButton(`أريد الاستفسار عن سعر ${p.name || 'المنتج'}`) : '';
+  return `<div class="ai-card"><b>${index}. ${esc(p.name || 'منتج')}</b>${priceHtml}<div class="ai-specs">${specs.map(esc).join('<br>')}</div>${p.description ? `<div class="ai-desc">${esc(String(p.description).slice(0, 170))}${String(p.description).length > 170 ? '...' : ''}</div>` : ''}${actions([detail, wa].filter(Boolean))}</div>`;
 }
-function productAnswer(q) {
-  const n = norm(q);
-  const needsClarify = hasAny(q, ['عايز مكنه','عاوز مكنه','اريد مكنه','رشح','انصحني','مكنه تصوير','ماكينة تصوير']) && !/(a3|a4|الوان|ابيض|اسود|black|color|ricoh|\d{3,5})/i.test(n);
-  if (needsClarify) return askClarify();
-  const results = findProducts(q);
-  if (!results.length) return null;
-  const askingPrice = /(سعر|اسعار|بكام|كام|price)/.test(n);
-  const shown = results.slice(0, 50);
-  const intro = `<p>وجدت لك ${shown.length} نتيجة مرتبطة بطلبك من بيانات الموقع:</p>`;
-  const htmlCards = shown.map(p => {
-    const url = productUrl(p);
-    const priceLine = askingPrice
-      ? (validPrice(p.price) ? `<div class="ai-price">السعر: ${esc(p.price)}</div>` : `<div class="ai-price muted">السعر غير متوفر حاليًا على صفحة المنتج.</div>`)
-      : '';
-    const specs = [];
-    if (p.category) specs.push(`القسم: ${p.category}`);
-    if (p.description) specs.push(p.description);
-    return `<div class="ai-card"><b>${esc(p.name)}</b>${priceLine}<div class="ai-specs">${specs.slice(0,4).map(esc).join('<br>')}</div>${buttons(url, 'أريد الاستفسار عن ' + (p.name||'منتج'), 'تفاصيل المنتج')}</div>`;
-  }).join('');
-  return intro + htmlCards + `<p class="ai-note">ممنوع ذكر أي سعر غير موجود على الموقع. لو السعر غير متوفر، يتم تأكيده عبر واتساب فقط.</p>`;
+function productAnswer(q, h = '') {
+  if (explicitPaperIntent(q)) return null;
+  if (!productIntent(q, h)) return null;
+  if (machineContext(q, h) && missingMachineDetails(q, h)) return askMachineQuestions();
+  const matches = findProducts(q, h);
+  if (!matches.length) return `<p>لم أجد منتجًا مطابقًا لطلب حضرتك داخل بيانات الموقع الحالية.</p><p>ممكن تكتب الموديل أو توضح: ألوان ولا أبيض وأسود؟ A4 ولا A3؟</p>${actions([waButton('أريد الاستفسار عن منتج أو بديل غير ظاهر في الموقع')])}`;
+  return `<p>دي المنتجات المطابقة لطلب حضرتك من بيانات الموقع:</p>${matches.map((p, i) => productCard(p, i + 1)).join('')}`;
 }
 
 function paperAnswer(q) {
-  if (!isPaperPriceQuestion(q) && !hasAny(q, ['ورق','اسعار الورق','بورصة الورق','سعر الورق'])) return null;
-  const all = Array.isArray(paperProducts) ? paperProducts : [];
-  if (!all.length) {
-    return `<p>أسعار بورصة الورق غير ظاهرة حاليًا من بيانات الموقع.</p><p><b>تنبيه مهم:</b> شركة العدل لا تبيع الورق؛ نشاطنا بيع وصيانة الطابعات وماكينات التصوير والأحبار وقطع الغيار.</p>${internalButton(SITE_URL + '/paper-prices.html', 'فتح صفحة بورصة الورق')}`;
-  }
-  const n = norm(q);
-  const wantA3 = /a3|ايه 3|اى 3/.test(n);
-  const wantA4 = /a4|ايه 4|اى 4/.test(n);
-  const noise = new Set(['سعر','اسعار','بكام','كام','ورق','بورصه','بورصة','عايز','عاوز','اريد','الرزمة','رزمة','رزم','الورق']);
-  const terms = words(q).filter(w => w.length > 2 && !noise.has(w));
-  let matched = all.filter(item => {
-    const h = norm(`${item.name||''} ${item.title||''} ${item.brand||''} ${item.category||''} ${item.description||''} ${item.size||''}`);
-    if (wantA3 && !h.includes('a3')) return false;
-    if (wantA4 && !h.includes('a4')) return false;
-    return !terms.length || terms.some(t => h.includes(t));
+  if (!explicitPaperIntent(q)) return null;
+  const n = norm(q); const wantA3 = /\ba3\b/.test(n); const wantA4 = /\ba4\b/.test(n);
+  const queryWords = words(q).filter(w => !['ورق','بورصه','بورصة','اسعار','سعر','كام','بكام','رزمة','رزم'].includes(w));
+  let rows = PAPER.filter(item => {
+    const hay = norm(`${item.name || ''} ${item.brand || ''} ${item.size || ''} ${item.weight || ''} ${item.description || ''}`);
+    if (wantA3 && !/\ba3\b/i.test(hay)) return false;
+    if (wantA4 && !/\ba4\b/i.test(hay)) return false;
+    return !queryWords.length || queryWords.some(w => hay.includes(w));
   });
-  if (!matched.length) matched = all;
-  matched = matched.slice(0, 40);
-  const cards = matched.map(item => {
-    const name = item.name || item.title || 'ورق';
-    const price = item.price || item.currentPrice || item.sellPrice || item.buyPrice || 'السعر غير مذكور في البورصة';
-    const desc = [item.brand, item.size, item.weight, item.description, item.category].filter(Boolean).join(' - ');
-    return `<div class="ai-card"><b>${esc(name)}</b><div class="ai-price">${esc(price)}</div><div class="ai-specs">${esc(desc)}</div></div>`;
-  }).join('');
-  return `<p>دي أسعار بورصة الورق المتاحة حاليًا من صفحة البورصة داخل الموقع:</p>${cards}<p class="ai-note"><b>تنبيه مهم:</b> دي أسعار بورصة استرشادية، وشركة العدل لا تبيع الورق. نشاطنا بيع وصيانة ماكينات التصوير والطابعات والأحبار وقطع الغيار.</p>${internalButton(SITE_URL + '/paper-prices.html', 'فتح صفحة بورصة الورق')}`;
+  if (!rows.length && PAPER.length) rows = PAPER.filter(item => { const hay = norm(`${item.size || ''} ${item.weight || ''}`); if (wantA3) return /\ba3\b/i.test(hay); if (wantA4) return /\ba4\b/i.test(hay); return true; });
+  if (!rows.length) return `<p>أسعار بورصة الورق غير متاحة حاليًا من ملف البيانات.</p><p class="ai-note"><b>تنبيه:</b> شركة العدل لا تبيع الورق؛ الأسعار استرشادية فقط.</p>${actions([goButton('/paper-prices.html', 'فتح صفحة بورصة الورق')])}`;
+  const cards = rows.map((r, i) => { const name = [r.name, r.size, r.weight].filter(Boolean).join(' - '); const price = validPrice(r.price) ? `${r.price} جنيه` : 'السعر غير مذكور'; return `<div class="ai-card"><b>${i + 1}. ${esc(name)}</b><div class="ai-price">${esc(price)}</div></div>`; }).join('');
+  return `<p>دي أسعار بورصة الورق المتاحة من صفحة البورصة:</p>${cards}<p class="ai-note"><b>تنبيه مهم:</b> الأسعار استرشادية وتتغير حسب السوق، وشركة العدل لا تبيع الورق. نشاطنا بيع وصيانة ماكينات التصوير والطابعات والأحبار وقطع الغيار.</p>${actions([goButton('/paper-prices.html', 'فتح صفحة بورصة الورق')])}`;
 }
 
-function pageButtonAnswer(q) {
-  if (!hasAny(q, ['زر','افتح','وديني','انتقل','صفحه','لينك'])) return null;
-  const n = norm(q); let url='/products.html', label='صفحة المنتجات';
-  if (n.includes('الرئيسيه') || n.includes('home')) {url='/'; label='الرئيسية';}
-  else if (n.includes('ورق')) {url='/paper-prices.html'; label='بورصة الورق';}
-  else if (n.includes('الوان')) {url='/color-copiers.html'; label='ماكينات ألوان';}
-  else if (n.includes('ابيض') || n.includes('اسود')) {url='/black-white-copiers.html'; label='ماكينات أبيض وأسود';}
-  else if (n.includes('احبار') || n.includes('تونر')) {url='/color-toners.html'; label='الأحبار والتونر';}
-  else if (n.includes('طابعات')) {url='/digital-bw-printers.html'; label='الطابعات';}
-  return `<p>تفضل، اضغط على الزر للانتقال مباشرة إلى ${esc(label)}:</p>${internalButton(SITE_URL + url, 'اذهب إلى ' + label)}`;
-}
 function teamAnswer(q) {
-  if (!hasAny(q, ['فريق العمل','مدير','صاحب الشركة','المالك','الإدارة','الاداره','من المسؤول'])) return null;
-  return `<p>معلومات فريق العمل والإدارة يتم الرجوع لها من صفحة الموقع، وليس من تخمينات خارجية.</p>${internalButton(SITE_URL + '/about.html', 'افتح صفحة من نحن / فريق العمل')}<a class="ai-btn ai-wa" href="${esc(waUrl('أريد التواصل مع إدارة شركة العدل'))}" target="_blank" rel="noopener">تواصل واتساب</a>`;
+  if (!hasAny(q, ['مدير','صاحب الشركة','مؤسس','فريق العمل','الإدارة','الاداره','خدمة العملاء','مسؤول الصيانة','مسئول الصيانة','مدير الصيانة','مدير المبيعات'])) return null;
+  const nq = norm(q); let members = TEAM.members || [];
+  if (hasAny(nq, ['مدير الصيانة','مسؤول الصيانة','مسئول الصيانة','الصيانة'])) members = members.filter(m => hasAny(`${m.role} ${m.name}`, ['الصيانة']));
+  else if (hasAny(nq, ['مدير المبيعات','المبيعات'])) members = members.filter(m => hasAny(`${m.role} ${m.name}`, ['المبيعات']));
+  else if (hasAny(nq, ['خدمة العملاء','العملاء'])) members = members.filter(m => hasAny(`${m.role} ${m.name}`, ['خدمة العملاء']));
+  else if (hasAny(nq, ['مدير الشركة','صاحب الشركة','مؤسس','المدير العام'])) members = members.filter(m => hasAny(`${m.role} ${m.name}`, ['المدير العام','المؤسس']));
+  if (!members.length) members = TEAM.members || [];
+  const cards = members.map((m, i) => `<div class="ai-card"><b>${i + 1}. ${esc(m.name)}</b><div class="ai-price muted">${esc(m.role)}</div><div class="ai-specs">${esc(m.details || '')}</div></div>`).join('');
+  return `<p>حسب بيانات ${esc(TEAM.sourceLabel || 'صفحة من نحن')}:</p>${cards}${actions([goButton(TEAM.sourcePage || '/about.html', 'فتح صفحة فريق العمل')])}`;
 }
-
+function serviceAnswer(q) {
+  if (!hasAny(q, ['صيانة','عقد صيانة','بلاغ عطل','دعم فني','شكوى','شكوي','خدمات','تقسيط','ايجار تمليكي','إيجار تمليكي'])) return null;
+  const items = SERVICES.services || []; const n = norm(q);
+  let selected = items.filter(s => norm(`${s.name} ${s.description}`).split(' ').some(w => w.length > 2 && n.includes(w)));
+  if (!selected.length) selected = items;
+  const cards = selected.slice(0, 4).map((s, i) => `<div class="ai-card"><b>${i + 1}. ${esc(s.name)}</b><div class="ai-specs">${esc(s.description || '')}</div>${actions([goButton(s.url || '/', 'فتح الصفحة')])}</div>`).join('');
+  return `<p>الخدمة المناسبة من بيانات الموقع:</p>${cards}`;
+}
+function pageNavigationAnswer(q) {
+  if (!hasAny(q, ['افتح','وديني','انتقل','زر','صفحة','صفحه'])) return null;
+  const n = norm(q);
+  if (hasAny(n, ['بورصة','ورق'])) return `<p>تفضل زر صفحة بورصة الورق:</p>${actions([goButton('/paper-prices.html', 'فتح بورصة الورق')])}`;
+  if (hasAny(n, ['الوان','ألوان'])) return `<p>تفضل زر ماكينات التصوير الألوان:</p>${actions([goButton('/color-copiers.html', 'فتح ماكينات ألوان')])}`;
+  if (hasAny(n, ['ابيض','اسود'])) return `<p>تفضل زر ماكينات التصوير الأبيض والأسود:</p>${actions([goButton('/black-white-copiers.html', 'فتح ماكينات أبيض وأسود')])}`;
+  if (hasAny(n, ['فريق','من نحن','مدير'])) return `<p>تفضل زر صفحة من نحن وفريق العمل:</p>${actions([goButton('/about.html', 'فتح صفحة من نحن')])}`;
+  if (hasAny(n, ['صيانة','دعم'])) return `<p>تفضل زر الدعم الفني:</p>${actions([goButton('/tech-support.html', 'فتح الدعم الفني')])}`;
+  return `<p>تفضل زر صفحة المنتجات:</p>${actions([goButton('/products.html', 'فتح المنتجات')])}`;
+}
 async function groqAnswer(message) {
-  const apiKey = process.env.GROQ_API_KEY || process.env.GROQ_API_KWY;
-  if (!apiKey) return 'المساعد غير مفعّل حاليًا. من فضلك أضف مفتاح Groq في Environment Variables باسم GROQ_API_KEY.';
-  const system = `أنت مساعد موقع شركة العدل. ممنوع نهائيًا اختراع أسعار أو أسماء أو مواصفات غير موجودة في بيانات الموقع. لا تذكر أي سعر لماكينات التصوير أو الطابعات أو الأحبار أو قطع الغيار إلا إذا كان السعر موجودًا صراحة في بيانات الموقع. لو السعر غير متوفر قل: السعر غير متوفر حاليًا على صفحة المنتج ويمكن الاستفسار عبر واتساب. أسعار الورق فقط تُؤخذ من صفحة بورصة الورق، مع التنبيه أن شركة العدل لا تبيع الورق. لا تضع رابط واتساب في كل رد إلا عند الاستفسار أو السعر غير المتوفر. وجّه العميل للصفحة المناسبة داخل الموقع لأنه موجود بالفعل على الموقع.`;
-  const r = await fetch(GROQ_API_URL, {method:'POST', headers:{'Authorization':`Bearer ${apiKey}`,'Content-Type':'application/json'}, body: JSON.stringify({model: MODEL, temperature: 0.1, max_tokens: 600, messages:[{role:'system',content:system},{role:'user',content:message}]})});
-  if (!r.ok) throw new Error(`Groq error ${r.status}`);
+  const apiKey = process.env.GROQ_API_KEY;
+  if (!apiKey) return '<p>المساعد غير مفعل حاليًا. أضف GROQ_API_KEY في Vercel.</p>';
+  const system = 'أنت مساعد خدمة عملاء لشركة العدل. ممنوع ذكر أي سعر أو منتج أو اسم فريق عمل من خارج بيانات الموقع. إذا كان السؤال عن منتج/سعر/ورق/فريق عمل لا تخترع بيانات. ردودك قصيرة وطبيعية باللهجة المصرية المهذبة.';
+  const r = await fetch(GROQ_API_URL, { method: 'POST', headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ model: MODEL, temperature: 0.05, max_tokens: 350, messages: [{ role: 'system', content: system }, { role: 'user', content: message }] }) });
+  if (!r.ok) throw new Error(`Groq ${r.status}`);
   const data = await r.json();
-  return data.choices?.[0]?.message?.content || 'لم أتمكن من تجهيز رد مناسب الآن.';
+  return `<p>${esc(data.choices?.[0]?.message?.content || 'لم أتمكن من تجهيز رد مناسب الآن.')}</p>`;
 }
-
 module.exports = async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   try {
-    const message = String(req.body?.message || '').trim();
-    const history = Array.isArray(req.body?.history) ? req.body.history.slice(-6).map(x => String(x || '')).join(' ') : '';
-    const context = `${history} ${message}`.trim();
-    if (!message) return res.status(400).json({ error: 'Message is required' });
-
-    const machineContext = hasAny(context, ['مكنة','ماكينة','طابعة','تصوير','ricoh','ريكو','الوان','أبيض وأسود','ابيض واسود']);
-    const paperContext = hasAny(message, ['ورق','بورصة الورق','اسعار الورق','سعر الورق','رزمة','رزم','مرام','دبل']);
-
+    const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
+    const message = String(body.message || '').trim();
+    const h = historyText(body.history);
+    if (!message) return res.status(200).json({ reply: '<p>اكتب سؤالك وأنا أساعدك.</p>', format: 'html' });
     let reply = null;
-    if (isSmallTalk(message)) reply = smallTalkAnswer(message);
-    else if (teamAnswer(message)) reply = teamAnswer(message);
-    else if (paperContext && !machineContext) reply = paperAnswer(message);
-    else reply = productAnswer(context) || (paperContext ? paperAnswer(message) : null) || pageButtonAnswer(message) || await groqAnswer(message);
-
+    reply = isSmallTalk(message) ? smallTalk(message) : null;
+    reply = reply || pageNavigationAnswer(message);
+    reply = reply || paperAnswer(message);
+    reply = reply || productAnswer(message, h);
+    reply = reply || teamAnswer(message);
+    reply = reply || serviceAnswer(message);
+    reply = reply || await groqAnswer(message);
     return res.status(200).json({ reply, format: 'html' });
   } catch (e) {
-    return res.status(200).json({ reply: 'حصل ضغط مؤقت في المساعد. جرب مرة أخرى بعد لحظات أو تواصل معنا على واتساب 01094799247.' });
+    return res.status(200).json({ reply: '<p>حصل خطأ مؤقت في المساعد. حاول مرة أخرى بعد لحظات.</p>', format: 'html' });
   }
 };
