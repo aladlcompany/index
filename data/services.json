@@ -1,0 +1,37 @@
+{
+  "sourcePages": [
+    "/maintenance-contracts.html",
+    "/tech-support.html",
+    "/complaints.html",
+    "/sales.html"
+  ],
+  "company": "شركة العدل لبيع وصيانة الطابعات وماكينات التصوير",
+  "whatsapp": "201094799247",
+  "services": [
+    {
+      "name": "بيع ماكينات تصوير وطابعات",
+      "url": "/products.html",
+      "description": "ترشيح ماكينة مناسبة حسب اللون والمقاس وحجم الاستخدام."
+    },
+    {
+      "name": "صيانة ودعم فني",
+      "url": "/tech-support.html",
+      "description": "تسجيل الأعطال ومتابعة الصيانة الفنية."
+    },
+    {
+      "name": "عقود صيانة",
+      "url": "/maintenance-contracts.html",
+      "description": "عقود صيانة عادية وشاملة وزيارات حرة حسب احتياج العميل."
+    },
+    {
+      "name": "أحبار وقطع غيار",
+      "url": "/color-toners.html",
+      "description": "أحبار وقطع غيار لماكينات التصوير والطابعات حسب التوفر."
+    },
+    {
+      "name": "بورصة أسعار الورق",
+      "url": "/paper-prices.html",
+      "description": "أسعار استرشادية فقط، والشركة لا تبيع الورق."
+    }
+  ]
+}

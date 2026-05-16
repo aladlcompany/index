@@ -1,0 +1,128 @@
+[
+  {
+    "name": "أمنيه",
+    "price": "670",
+    "size": "A4",
+    "weight": "80 جم",
+    "image": "paper/omnia-a4-80.png"
+  },
+  {
+    "name": "مرام",
+    "price": "580",
+    "size": "A4",
+    "weight": "70 جم",
+    "image": "paper/maram-a4-70.png"
+  },
+  {
+    "name": "شيمكس",
+    "price": "655",
+    "size": "A4",
+    "weight": "80 جم",
+    "image": "paper/chamex-a4-80.png"
+  },
+  {
+    "name": "شيمكس",
+    "price": "600",
+    "size": "A4",
+    "weight": "70 جم",
+    "image": "paper/chamex-a4-70.png"
+  },
+  {
+    "name": "بروجيكتا",
+    "price": "675",
+    "size": "A4",
+    "weight": "80 جم",
+    "image": "paper/projecta-a4-80.png"
+  },
+  {
+    "name": "ازهار احمر",
+    "price": "490",
+    "size": "A4",
+    "weight": "70 جم",
+    "image": "paper/azhar-red-a4-70.png"
+  },
+  {
+    "name": "مالتي أوفيس",
+    "price": "725",
+    "size": "A4",
+    "weight": "80 جم",
+    "image": "paper/multioffice-a4-80.png"
+  },
+  {
+    "name": "ازهار",
+    "price": "565",
+    "size": "A4",
+    "weight": "70 جم",
+    "image": "paper/azhar-a4-70.png"
+  },
+  {
+    "name": "بيبروان",
+    "price": "700",
+    "size": "A4",
+    "weight": "80 جم",
+    "image": "paper/paperone-a4-80.png"
+  },
+  {
+    "name": "ارتورك",
+    "price": "575",
+    "size": "A4",
+    "weight": "70 جم",
+    "image": "paper/artwork-a4-70.png"
+  },
+  {
+    "name": "بريو",
+    "price": "645",
+    "size": "A4",
+    "weight": "80 جم",
+    "image": "paper/brio-a4-80.png"
+  },
+  {
+    "name": "ايكوروكس",
+    "price": "570",
+    "size": "A4",
+    "weight": "70 جم",
+    "image": "paper/ecorox-a4-70.png"
+  },
+  {
+    "name": "ازهار",
+    "price": "685",
+    "size": "A4",
+    "weight": "80 جم",
+    "image": "paper/azhar-laser-a4-80.png"
+  },
+  {
+    "name": "بروجيكتا",
+    "price": "595",
+    "size": "A4",
+    "weight": "70 جم",
+    "image": "paper/projecta-green-a4-70.png"
+  },
+  {
+    "name": "بروجيكتا",
+    "price": "1250",
+    "size": "A3",
+    "weight": "80 جم",
+    "image": "paper/projecta-a3-80.png"
+  },
+  {
+    "name": "مالتي أوفيس",
+    "price": "1400",
+    "size": "A3",
+    "weight": "80 جم",
+    "image": "paper/multioffice-a3-80.png"
+  },
+  {
+    "name": "شيمكس",
+    "price": "1285",
+    "size": "A3",
+    "weight": "80 جم",
+    "image": "paper/chamex-a3-80.png"
+  },
+  {
+    "name": "أمنيه",
+    "price": "1275",
+    "size": "A3",
+    "weight": "80 جم",
+    "image": "paper/omnia-a3-80.png"
+  }
+]
