@@ -3016,15 +3016,37 @@ function paperAnswer(q) {
 }
 
 function teamAnswer(q) {
-  if (!hasAny(q, ['مدير','صاحب الشركة','مؤسس','فريق العمل','الإدارة','الاداره','خدمة العملاء','مسؤول الصيانة','مسئول الصيانة','مدير الصيانة','مدير المبيعات'])) return null;
-  const nq = norm(q); let members = TEAM.members || [];
-  if (hasAny(nq, ['مدير الصيانة','مسؤول الصيانة','مسئول الصيانة','الصيانة'])) members = members.filter(m => hasAny(`${m.role} ${m.name}`, ['الصيانة']));
-  else if (hasAny(nq, ['مدير المبيعات','المبيعات'])) members = members.filter(m => hasAny(`${m.role} ${m.name}`, ['المبيعات']));
-  else if (hasAny(nq, ['خدمة العملاء','العملاء'])) members = members.filter(m => hasAny(`${m.role} ${m.name}`, ['خدمة العملاء']));
-  else if (hasAny(nq, ['مدير الشركة','صاحب الشركة','مؤسس','المدير العام'])) members = members.filter(m => hasAny(`${m.role} ${m.name}`, ['المدير العام','المؤسس']));
+  const nq = norm(q)
+    .replace(/الشركو/g, 'الشركة')
+    .replace(/مسول/g, 'مسؤول')
+    .replace(/مسئول/g, 'مسؤول')
+    .replace(/خدمه/g, 'خدمة')
+    .replace(/الاداره/g, 'الإدارة');
+
+  // مرونة في فهم أسئلة الأسماء/الأشخاص حتى لو العميل كتبها بصيغة ناقصة أو بأخطاء بسيطة.
+  const looksLikeTeamQuestion = hasAny(nq, [
+    'مدير','صاحب الشركة','صاحب','مؤسس','فريق العمل','الإدارة','خدمة العملاء','خدمة المبيعات',
+    'مسؤول الصيانة','مسؤول المبيعات','مدير الصيانة','مدير المبيعات','اسم المدير','اسم مسؤول',
+    'مين المدير','مين المسؤول','مين صاحب','مين مؤسس','اسم الشركة','مدير الشركة'
+  ]);
+  if (!looksLikeTeamQuestion) return null;
+
+  let members = TEAM.members || [];
+  const hayOf = (m) => norm(`${m.role || ''} ${m.name || ''} ${m.details || ''}`);
+
+  if (hasAny(nq, ['مدير الصيانة','مسؤول الصيانة','الصيانة'])) {
+    members = members.filter(m => hasAny(hayOf(m), ['الصيانة','الدعم الفني','فني']));
+  } else if (hasAny(nq, ['مدير المبيعات','مسؤول المبيعات','خدمة المبيعات','المبيعات'])) {
+    members = members.filter(m => hasAny(hayOf(m), ['المبيعات','خدمة العملاء','العملاء']));
+  } else if (hasAny(nq, ['خدمة العملاء','العملاء','مسؤول خدمة'])) {
+    members = members.filter(m => hasAny(hayOf(m), ['خدمة العملاء','العملاء','المبيعات']));
+  } else if (hasAny(nq, ['مدير الشركة','اسم المدير','صاحب الشركة','صاحب','مؤسس','المدير العام','مين المدير','مين صاحب','مين مؤسس'])) {
+    members = members.filter(m => hasAny(hayOf(m), ['المدير العام','المؤسس','صاحب الشركة','الإدارة']));
+  }
+
   if (!members.length) members = TEAM.members || [];
   const cards = members.map((m, i) => `<div class="ai-card"><b>${i + 1}. ${esc(m.name)}</b><div class="ai-price muted">${esc(m.role)}</div><div class="ai-specs">${esc(m.details || '')}</div></div>`).join('');
-  return `<p>حسب بيانات ${esc(TEAM.sourceLabel || 'صفحة من نحن')}:</p>${cards}${actions([goButton(TEAM.sourcePage || '/about.html', 'فتح صفحة فريق العمل')])}`;
+  return `<p>تمام، دي البيانات المتاحة من ${esc(TEAM.sourceLabel || 'صفحة من نحن')}:</p>${cards}${actions([goButton(TEAM.sourcePage || '/about.html', 'فتح صفحة فريق العمل')])}`;
 }
 function serviceAnswer(q) {
   if (!hasAny(q, ['صيانة','عقد صيانة','بلاغ عطل','دعم فني','شكوى','شكوي','خدمات','تقسيط','ايجار تمليكي','إيجار تمليكي'])) return null;
@@ -3057,7 +3079,7 @@ function isolatedUnknown(q) {
 async function groqAnswer(message, historyText = '') {
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) return '<p>المساعد غير مفعل حاليًا. أضف GROQ_API_KEY في Vercel.</p>';
-  const system = 'أنت مساعد خدمة عملاء لشركة العدل. استخدم بيانات الموقع فقط في المنتجات والأسعار وفريق العمل. ممنوع اختراع أسعار أو موديلات أو أسماء أو أرقام هاتف. رقم الشركة الوحيد للتواصل والواتساب هو 01094799247. لا تكتب أي رقم آخر أو رقم تجريبي مثل 0123456789. لو السعر غير موجود قل غير متوفر على الموقع. لو السؤال عام رد باختصار وبلهجة مصرية مهذبة. لو العميل يسلم أو يسأل عامل ايه رد طبيعي: الحمد لله، أخبارك؟ وأكمل المحادثة.';
+  const system = 'أنت مساعد خدمة عملاء لشركة العدل. استخدم بيانات الموقع فقط في المنتجات والأسعار وفريق العمل. ممنوع اختراع أسعار أو موديلات أو أسماء أو أرقام هاتف. رقم الشركة الوحيد للتواصل والواتساب هو 01094799247. لا تكتب أي رقم آخر أو رقم تجريبي مثل 0123456789. لو السعر غير موجود قل غير متوفر على الموقع. لو السؤال عام أو مكتوب بأخطاء إملائية بسيطة افهم المقصود من السياق ورد بمرونة وباختصار وبلهجة مصرية مهذبة. لو العميل يسلم أو يسأل عامل ايه رد طبيعي: الحمد لله، أخبارك؟ وأكمل المحادثة.';
   const r = await fetch(GROQ_API_URL, { method: 'POST', headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ model: MODEL, temperature: 0.05, max_tokens: 350, messages: [{ role: 'system', content: system }, { role: 'user', content: `سياق المحادثة السابق:
 ${historyText.slice(-1200)}
 
@@ -3087,9 +3109,9 @@ module.exports = async function handler(req, res) {
     reply = reply || pageNavigationAnswer(message);
     reply = reply || comparisonAnswer(message);
     reply = reply || paperAnswer(message);
-    reply = reply || productAnswer(message, h);
     reply = reply || teamAnswer(message);
     reply = reply || serviceAnswer(message);
+    reply = reply || productAnswer(message, h);
     if (!reply && isolatedUnknown(message)) {
       source = 'local-clarify';
       reply = '<p>مش واضح قصد حضرتك. ممكن تكتب المطلوب بشكل أوضح؟ مثال: مواصفات ماكينة 305، الفرق بين A4 و A3، أو سعر ماكينة ألوان.</p>';
