@@ -70,17 +70,36 @@ function explicitPaperIntent(q) {
   return hasAny(q, ['بورصة الورق','بورصه الورق','اسعار الورق','أسعار الورق','سعر الورق','ورق تصوير','ورق طباعة','رزمة ورق','رزم ورق','طن ورق','ورق مطاوي'])
     || (/\bA[34]\b/i.test(String(q)) && hasAny(q, ['ورق','بورصة','بورصه','رزمة','رزم','سعر','اسعار']));
 }
+function clearProductFollowup(q) {
+  const cur = norm(q || '').trim();
+  if (!cur) return false;
+  // متابعة واضحة فقط: مقاس/لون/موديل/وظيفة/حجم استخدام. لا نعتبر أي كلمة عشوائية متابعة.
+  return /\b(a3|a4)\b/i.test(cur)
+    || /(الوان|ابيض|اسود|ابيض واسود|اسود وابيض|color|black|bw|سكانر|فاكس|واي فاي|wifi|دوبلكس|طباعة|تصوير|استعمال|استخدام|خفيف|متوسط|كثيف|قليل|غزير|يومي|حبر|تونر|درام|فيوزر|رول|قطع غيار)/i.test(cur)
+    || extractModels(cur).length > 0;
+}
+function activeProductText(q, h = '') {
+  const cur = norm(q || '');
+  const hist = norm(h || '');
+  return clearProductFollowup(cur) ? `${hist} ${cur}` : cur;
+}
 function productIntent(q, h = '') {
-  const full = `${h} ${q}`;
-  if (explicitPaperIntent(q) && !machineContext('', h)) return false;
-  return machineContext(q, h) || hasAny(full, ['حبر','تونر','خرطوشة','خرطوشه','درام','قطع غيار','فيوزر','رول','طابعة','طابعه']);
+  const cur = norm(q || '');
+  const hist = norm(h || '');
+  if (explicitPaperIntent(q) && !machineContext('', hist)) return false;
+  const nowIntent = machineContext(cur, '') || extractModels(cur).length > 0 || hasAny(cur, ['حبر','تونر','خرطوشة','خرطوشه','درام','قطع غيار','فيوزر','رول','طابعة','طابعه']);
+  if (nowIntent) return true;
+  // استخدم التاريخ فقط لو الرسالة الحالية متابعة منتج واضحة.
+  return clearProductFollowup(cur) && machineContext('', hist);
 }
 function missingMachineDetails(q, h = '') {
-  const full = norm(`${h} ${q}`);
+  const cur = norm(q || '');
+  const full = activeProductText(q, h);
   const hasColor = /(الوان|ابيض|اسود|ابيض واسود|اسود وابيض|color|black|bw)/i.test(full);
   const hasSize = /\b(a3|a4)\b/i.test(full);
-  const hasModel = machineContext('', full) && extractModels(full).length > 0;
-  return !hasModel && (!hasColor || !hasSize);
+  const hasModel = extractModels(full).length > 0;
+  const genericAsk = /(عايز|عاوز|رشح|اختار|انصح|مناسب|مواصفات|تفاصيل|ماكينات|مكن|مكنه|ماكينه|ماكينة|طابعه|طابعة|برنتر|تصوير)/i.test(cur);
+  return genericAsk && !hasModel && (!hasColor || !hasSize);
 }
 function askMachineQuestions() {
   return `<p>تمام، عشان أرشح لحضرتك ماكينة مناسبة محتاج أعرف 3 حاجات:</p><div class="ai-list">1) ألوان ولا أبيض وأسود؟<br>2) المقاس المطلوب A4 ولا A3؟<br>3) حجم الاستخدام اليومي تقريبًا؟ قليل، متوسط، ولا كثيف؟</div><p>بعدها أعرض لك كل الماكينات المطابقة من الموقع مع زر تفاصيل لكل ماكينة.</p>`;
@@ -91,11 +110,11 @@ function productSearchText(p) {
   return norm(`${p.name || ''} ${p.model || ''} ${p.category || ''} ${p.categoryLabel || ''} ${p.description || ''} ${p.paperSize || ''} ${p.paperFormat || ''} ${p.colorMode || ''} ${p.speed || ''} ${p.functions || ''} ${specs}`);
 }
 function scoreProduct(p, q, h = '') {
-  const query = norm(`${h} ${q}`);
+  const query = activeProductText(q, h);
   const target = productSearchText(p);
   let score = 0;
   for (const w of words(q)) if (target.includes(w)) score += w.length > 2 ? 3 : 1;
-  const modelMatches = extractModels(`${h} ${q}`);
+  const modelMatches = extractModels(activeProductText(q, h));
   for (const m of modelMatches) { const mm = norm(m).replace(/\s+/g, ''); if (target.replace(/\s+/g, '').includes(mm)) score += 45; }
   if (/(الوان|ألوان|color)/i.test(query)) score += /(الوان|color|ألوان)/i.test(target) ? 12 : -20;
   if (/(ابيض|أبيض|اسود|أسود|black|bw)/i.test(query)) score += /(ابيض|أبيض|اسود|أسود|black|bw)/i.test(target) ? 12 : -20;
@@ -110,7 +129,7 @@ function findProducts(q, h = '') {
   scored.sort((a, b) => b.score - a.score || String(a.p.name).localeCompare(String(b.p.name), 'ar'));
   if (!scored.length) return [];
   const top = scored[0].score;
-  const models = extractModels(`${h} ${q}`);
+  const models = extractModels(activeProductText(q, h));
   if (models.length) return scored.filter(x => x.score >= 40).slice(0, 20).map(x => x.p);
   return scored.filter(x => x.score >= Math.max(1, top - 10)).map(x => x.p);
 }
@@ -203,7 +222,7 @@ module.exports = async function handler(req, res) {
     reply = reply || productAnswer(message, h);
     reply = reply || teamAnswer(message);
     reply = reply || serviceAnswer(message);
-    reply = reply || await groqAnswer(message, historyText);
+    reply = reply || await groqAnswer(message, h)
     return res.status(200).json({ reply, format: 'html' });
   } catch (e) {
     return res.status(200).json({ reply: '<p>حصل خطأ مؤقت في المساعد. حاول مرة أخرى بعد لحظات.</p>', format: 'html' });
