@@ -6,28 +6,43 @@
   const sendBtn = document.getElementById('aiSendBtn');
   const messages = document.getElementById('aiChatMessages');
   const typing = document.getElementById('aiTypingIndicator');
+  const overlay = document.createElement('div');
+  overlay.className = 'ai-site-overlay';
+  overlay.setAttribute('aria-hidden', 'true');
 
   if (!panel || !bubble || !input || !sendBtn || !messages) return;
   if (window.__ALADL_GROQ_ASSISTANT_READY__) return;
   window.__ALADL_GROQ_ASSISTANT_READY__ = true;
 
-  function openChat() {
+  function openChat(event) {
+    if (event) event.stopPropagation();
     panel.classList.add('active');
     bubble.classList.add('active');
+    document.body.classList.add('ai-chat-open');
+    overlay.classList.add('active');
     panel.setAttribute('aria-hidden', 'false');
     setTimeout(function () { input.focus(); }, 120);
   }
 
-  function closeChat() {
+  function closeChat(event) {
+    if (event) event.stopPropagation();
     panel.classList.remove('active');
     bubble.classList.remove('active');
+    document.body.classList.remove('ai-chat-open');
+    overlay.classList.remove('active');
     panel.setAttribute('aria-hidden', 'true');
   }
 
   bubble.addEventListener('click', openChat);
   if (closeBtn) closeBtn.addEventListener('click', closeChat);
+  overlay.addEventListener('click', closeChat);
+  document.addEventListener('pointerdown', function (event) {
+    if (!panel.classList.contains('active')) return;
+    if (panel.contains(event.target) || bubble.contains(event.target)) return;
+    closeChat(event);
+  }, true);
   document.addEventListener('keydown', function (event) {
-    if (event.key === 'Escape') closeChat();
+    if (event.key === 'Escape') closeChat(event);
   });
 
 
@@ -38,25 +53,63 @@
     .ai-card b{display:block;color:#6b1f3a;font-size:15px;margin-bottom:5px}
     .ai-price{font-weight:700;color:#28334d;margin:4px 0}.ai-price.muted{color:#777;font-weight:600}
     .ai-specs{font-size:13px;color:#5d677a;margin:5px 0}
+    .ai-site-overlay{position:fixed;inset:0;z-index:998;background:rgba(255,255,255,.14);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .22s ease}
+    .ai-site-overlay.active{opacity:1;pointer-events:auto}
+    #aiChatPanel{z-index:1000!important}#aiBubble{z-index:1001!important}
+    #aiBubble.ai-attention{animation:aiAttention 1.1s ease-in-out 0s 3, aiGlow 1.8s ease-in-out 0s 2}
+    @keyframes aiAttention{0%,100%{transform:translateY(0) scale(1)}20%{transform:translateY(-8px) scale(1.05)}40%{transform:translateY(0) scale(.98)}60%{transform:translateY(-5px) scale(1.03)}80%{transform:translateY(0) scale(1)}}
+    @keyframes aiGlow{0%,100%{box-shadow:0 10px 25px rgba(141,45,87,.25)}50%{box-shadow:0 0 0 10px rgba(141,45,87,.12),0 16px 34px rgba(141,45,87,.35)}}
     .ai-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
     .ai-btn{display:inline-block;background:#8d2d57;color:#fff!important;text-decoration:none;border:0;cursor:pointer;border-radius:999px;padding:8px 14px;font-size:13px;font-weight:700;margin:6px 5px 0 0}
     .ai-btn.ai-wa{background:#25D366;color:#073b1d!important}.ai-note{font-size:12px;color:#777}.ai-list{background:#f8f4f6;border-radius:12px;padding:9px;margin:7px 0;line-height:1.9}
   `;
   document.head.appendChild(style);
+  document.body.appendChild(overlay);
 
-  const STORAGE_KEY = 'alAdlGroqAssistantHistoryV3';
+  let chimePlayed = false;
+  function playAssistantChime() {
+    if (chimePlayed) return;
+    try {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) return;
+      const ctx = new AudioContext();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(740, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(980, ctx.currentTime + 0.12);
+      gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.08, ctx.currentTime + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.22);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.24);
+      chimePlayed = true;
+    } catch (e) {}
+  }
+
+  function attractAttention() {
+    bubble.classList.add('ai-attention');
+    playAssistantChime();
+    setTimeout(function () { bubble.classList.remove('ai-attention'); }, 3800);
+  }
+
+  setTimeout(attractAttention, 700);
+  window.addEventListener('pointerdown', playAssistantChime, { once: true, passive: true });
+
+  const STORAGE_KEY = 'alAdlGroqAssistantHistoryV4_SESSION';
   let history = [];
   let isSending = false;
 
   try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || sessionStorage.getItem(STORAGE_KEY) || '[]');
+    const saved = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || '[]');
     if (Array.isArray(saved)) history = saved.slice(-8);
   } catch (e) {}
 
   function saveHistory() {
     try {
       const data = JSON.stringify(history.slice(-12));
-      localStorage.setItem(STORAGE_KEY, data);
       sessionStorage.setItem(STORAGE_KEY, data);
     } catch (e) {}
   }
