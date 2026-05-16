@@ -26,6 +26,14 @@ function norm(v = '') {
     .replace(/\s+/g, ' ').trim();
 }
 function hasAny(text, list) { const n = norm(text); return list.some(w => n.includes(norm(w))); }
+function extractModels(text = '') {
+  const source = norm(text);
+  const out = [];
+  const re = /(?:mp|sp|ricoh|aficio|افيشيو)?\s*([a-z]*\d{3,5}[a-z0-9]*)/gi;
+  let m;
+  while ((m = re.exec(source))) out.push(m[1].replace(/\s+/g,''));
+  return [...new Set(out.filter(Boolean))];
+}
 function historyText(history) { return Array.isArray(history) ? history.slice(-8).map(m => `${m.role || ''}: ${m.content || m.text || ''}`).join(' ') : ''; }
 function words(text) {
   const stop = new Set(['عاوز','عايز','اريد','محتاج','ممكن','حضرتك','من','عن','على','في','الى','إلى','هو','هي','ده','دي','دى','بس','لو','سعر','اسعار','بكام','كام','ايه','اية','عاوزه','عاوزة']);
@@ -58,17 +66,20 @@ function machineContext(q, h = '') {
   const full = `${h} ${q}`;
   return hasAny(full, ['مكن','مكنه','ماكينه','ماكينة','تصوير','طابعه','طابعة','طابعات','برنتر','printer','copier','ricoh','ريكو','افيشيو','الوان','ابيض','اسود','سكانر','فاكس','دوبلكس']);
 }
-function explicitPaperIntent(q) { return hasAny(q, ['بورصة الورق','بورصه الورق','اسعار الورق','أسعار الورق','سعر الورق','ورق تصوير','ورق طباعة','رزمة ورق','رزم ورق','طن ورق','ورق a4','ورق a3','ورق مطاوي']); }
+function explicitPaperIntent(q) {
+  return hasAny(q, ['بورصة الورق','بورصه الورق','اسعار الورق','أسعار الورق','سعر الورق','ورق تصوير','ورق طباعة','رزمة ورق','رزم ورق','طن ورق','ورق مطاوي'])
+    || (/\bA[34]\b/i.test(String(q)) && hasAny(q, ['ورق','بورصة','بورصه','رزمة','رزم','سعر','اسعار']));
+}
 function productIntent(q, h = '') {
   const full = `${h} ${q}`;
-  if (explicitPaperIntent(q)) return false;
+  if (explicitPaperIntent(q) && !machineContext('', h)) return false;
   return machineContext(q, h) || hasAny(full, ['حبر','تونر','خرطوشة','خرطوشه','درام','قطع غيار','فيوزر','رول','طابعة','طابعه']);
 }
 function missingMachineDetails(q, h = '') {
   const full = norm(`${h} ${q}`);
   const hasColor = /(الوان|ابيض|اسود|ابيض واسود|اسود وابيض|color|black|bw)/i.test(full);
   const hasSize = /\b(a3|a4)\b/i.test(full);
-  const hasModel = /\b(mp|sp|ricoh|ريكو)\s*[a-z]*\s*\d{2,5}/i.test(full);
+  const hasModel = machineContext('', full) && extractModels(full).length > 0;
   return !hasModel && (!hasColor || !hasSize);
 }
 function askMachineQuestions() {
@@ -84,8 +95,8 @@ function scoreProduct(p, q, h = '') {
   const target = productSearchText(p);
   let score = 0;
   for (const w of words(q)) if (target.includes(w)) score += w.length > 2 ? 3 : 1;
-  const modelMatches = String(q).match(/(?:mp|sp|ricoh|ريكو|aficio|افيشيو)?\s*[a-z]*\s*\d{2,5}\s*[a-z]*/ig) || [];
-  for (const m of modelMatches) { const mm = norm(m).replace(/\s+/g, ''); if (target.replace(/\s+/g, '').includes(mm)) score += 35; }
+  const modelMatches = extractModels(`${h} ${q}`);
+  for (const m of modelMatches) { const mm = norm(m).replace(/\s+/g, ''); if (target.replace(/\s+/g, '').includes(mm)) score += 45; }
   if (/(الوان|ألوان|color)/i.test(query)) score += /(الوان|color|ألوان)/i.test(target) ? 12 : -20;
   if (/(ابيض|أبيض|اسود|أسود|black|bw)/i.test(query)) score += /(ابيض|أبيض|اسود|أسود|black|bw)/i.test(target) ? 12 : -20;
   if (/\ba3\b/i.test(query)) score += /\ba3\b/i.test(target) ? 14 : -18;
@@ -99,6 +110,8 @@ function findProducts(q, h = '') {
   scored.sort((a, b) => b.score - a.score || String(a.p.name).localeCompare(String(b.p.name), 'ar'));
   if (!scored.length) return [];
   const top = scored[0].score;
+  const models = extractModels(`${h} ${q}`);
+  if (models.length) return scored.filter(x => x.score >= 40).slice(0, 20).map(x => x.p);
   return scored.filter(x => x.score >= Math.max(1, top - 10)).map(x => x.p);
 }
 function productDetailsUrl(p) { return `/products.html#product-details/${encodeURIComponent(p.name || '')}`; }
@@ -110,7 +123,7 @@ function productCard(p, index) {
   return `<div class="ai-card"><b>${index}. ${esc(p.name || 'منتج')}</b>${priceHtml}<div class="ai-specs">${specs.map(esc).join('<br>')}</div>${p.description ? `<div class="ai-desc">${esc(String(p.description).slice(0, 170))}${String(p.description).length > 170 ? '...' : ''}</div>` : ''}${actions([detail, wa].filter(Boolean))}</div>`;
 }
 function productAnswer(q, h = '') {
-  if (explicitPaperIntent(q)) return null;
+  if (explicitPaperIntent(q) && !machineContext('', h)) return null;
   if (!productIntent(q, h)) return null;
   if (machineContext(q, h) && missingMachineDetails(q, h)) return askMachineQuestions();
   const matches = findProducts(q, h);
@@ -163,11 +176,15 @@ function pageNavigationAnswer(q) {
   if (hasAny(n, ['صيانة','دعم'])) return `<p>تفضل زر الدعم الفني:</p>${actions([goButton('/tech-support.html', 'فتح الدعم الفني')])}`;
   return `<p>تفضل زر صفحة المنتجات:</p>${actions([goButton('/products.html', 'فتح المنتجات')])}`;
 }
-async function groqAnswer(message) {
+async function groqAnswer(message, historyText = '') {
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) return '<p>المساعد غير مفعل حاليًا. أضف GROQ_API_KEY في Vercel.</p>';
-  const system = 'أنت مساعد خدمة عملاء لشركة العدل. ممنوع ذكر أي سعر أو منتج أو اسم فريق عمل من خارج بيانات الموقع. إذا كان السؤال عن منتج/سعر/ورق/فريق عمل لا تخترع بيانات. ردودك قصيرة وطبيعية باللهجة المصرية المهذبة.';
-  const r = await fetch(GROQ_API_URL, { method: 'POST', headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ model: MODEL, temperature: 0.05, max_tokens: 350, messages: [{ role: 'system', content: system }, { role: 'user', content: message }] }) });
+  const system = 'أنت مساعد خدمة عملاء لشركة العدل. استخدم بيانات الموقع فقط في المنتجات والأسعار وفريق العمل. ممنوع اختراع أسعار أو موديلات أو أسماء. لو السعر غير موجود قل غير متوفر على الموقع. لو السؤال عام رد باختصار وبلهجة مصرية مهذبة. لو العميل يسلم أو يسأل عامل ايه رد طبيعي: الحمد لله، أخبارك؟ وأكمل المحادثة.';
+  const r = await fetch(GROQ_API_URL, { method: 'POST', headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ model: MODEL, temperature: 0.05, max_tokens: 350, messages: [{ role: 'system', content: system }, { role: 'user', content: `سياق المحادثة السابق:
+${historyText.slice(-1200)}
+
+رسالة العميل الحالية:
+${message}` }] }) });
   if (!r.ok) throw new Error(`Groq ${r.status}`);
   const data = await r.json();
   return `<p>${esc(data.choices?.[0]?.message?.content || 'لم أتمكن من تجهيز رد مناسب الآن.')}</p>`;
@@ -186,7 +203,7 @@ module.exports = async function handler(req, res) {
     reply = reply || productAnswer(message, h);
     reply = reply || teamAnswer(message);
     reply = reply || serviceAnswer(message);
-    reply = reply || await groqAnswer(message);
+    reply = reply || await groqAnswer(message, historyText);
     return res.status(200).json({ reply, format: 'html' });
   } catch (e) {
     return res.status(200).json({ reply: '<p>حصل خطأ مؤقت في المساعد. حاول مرة أخرى بعد لحظات.</p>', format: 'html' });

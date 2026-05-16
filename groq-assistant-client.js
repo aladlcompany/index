@@ -22,16 +22,20 @@
   `;
   document.head.appendChild(style);
 
-  const STORAGE_KEY = 'alAdlGroqAssistantHistoryV2';
+  const STORAGE_KEY = 'alAdlGroqAssistantHistoryV3';
   let history = [];
 
   try {
-    const saved = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || '[]');
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || sessionStorage.getItem(STORAGE_KEY) || '[]');
     if (Array.isArray(saved)) history = saved.slice(-8);
   } catch (e) {}
 
   function saveHistory() {
-    try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(history.slice(-8))); } catch (e) {}
+    try {
+      const data = JSON.stringify(history.slice(-12));
+      localStorage.setItem(STORAGE_KEY, data);
+      sessionStorage.setItem(STORAGE_KEY, data);
+    } catch (e) {}
   }
 
   function addMessage(content, sender, isHtml) {
@@ -39,18 +43,28 @@
     div.className = 'ai-message ' + (sender === 'user' ? 'user' : 'bot');
     if (isHtml) {
       div.innerHTML = String(content || '');
-      div.querySelectorAll('[data-goto]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          const url = btn.getAttribute('data-goto');
-          if (url) window.location.href = url;
-        });
-      });
     } else {
       div.textContent = String(content || '');
     }
     messages.insertBefore(div, typing || null);
     messages.scrollTop = messages.scrollHeight;
   }
+
+
+  // استرجاع المحادثة عند الانتقال بين صفحات الموقع بدل أن تبدأ من جديد
+  if (history.length) {
+    history.forEach(function (m) {
+      addMessage(m.content, m.role === 'user' ? 'user' : 'bot', false);
+    });
+  }
+
+  messages.addEventListener('click', function(event){
+    const btn = event.target.closest('[data-goto]');
+    if (!btn) return;
+    event.preventDefault();
+    const url = btn.getAttribute('data-goto');
+    if (url) window.location.assign(url);
+  });
 
   function setLoading(isLoading) {
     if (typing) typing.classList.toggle('active', !!isLoading);
