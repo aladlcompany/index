@@ -1,12 +1,34 @@
 (function () {
+  const panel = document.getElementById('aiChatPanel');
+  const bubble = document.getElementById('aiBubble');
+  const closeBtn = document.getElementById('aiCloseBtn');
   const input = document.getElementById('aiChatInput');
   const sendBtn = document.getElementById('aiSendBtn');
   const messages = document.getElementById('aiChatMessages');
   const typing = document.getElementById('aiTypingIndicator');
 
-  if (!input || !sendBtn || !messages) return;
+  if (!panel || !bubble || !input || !sendBtn || !messages) return;
   if (window.__ALADL_GROQ_ASSISTANT_READY__) return;
   window.__ALADL_GROQ_ASSISTANT_READY__ = true;
+
+  function openChat() {
+    panel.classList.add('active');
+    bubble.classList.add('active');
+    panel.setAttribute('aria-hidden', 'false');
+    setTimeout(function () { input.focus(); }, 120);
+  }
+
+  function closeChat() {
+    panel.classList.remove('active');
+    bubble.classList.remove('active');
+    panel.setAttribute('aria-hidden', 'true');
+  }
+
+  bubble.addEventListener('click', openChat);
+  if (closeBtn) closeBtn.addEventListener('click', closeChat);
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') closeChat();
+  });
 
 
   const style = document.createElement('style');
