@@ -3048,6 +3048,23 @@ function teamAnswer(q) {
   const cards = members.map((m, i) => `<div class="ai-card"><b>${i + 1}. ${esc(m.name)}</b><div class="ai-price muted">${esc(m.role)}</div><div class="ai-specs">${esc(m.details || '')}</div></div>`).join('');
   return `<p>تمام، دي البيانات المتاحة من ${esc(TEAM.sourceLabel || 'صفحة من نحن')}:</p>${cards}${actions([goButton(TEAM.sourcePage || '/about.html', 'فتح صفحة فريق العمل')])}`;
 }
+function maintenanceRedirectAnswer(message) {
+  const text = norm(message || '');
+  const maintenanceWords = [
+    'صيانة', 'صيانه', 'عطل', 'اعطال', 'بايظة', 'بايظه', 'مش شغالة', 'مش شغاله',
+    'تصلح', 'اصلح', 'تصليح', 'إصلاح', 'اصلاح', 'مهندس', 'فني', 'فنى', 'مركز الصيانة', 'مركز الصيانه'
+  ];
+  const machineWords = [
+    'مكنة', 'مكنه', 'ماكينة', 'ماكينه', 'طابعة', 'طباعه', 'برنتر', 'printer', 'ricoh', 'ريكو', 'الة تصوير', 'آلة تصوير', 'تصوير'
+  ];
+  if (!hasAny(text, maintenanceWords)) return null;
+  const hasMachine = hasAny(text, machineWords) || hasAny(text, ['طلب صيانة', 'اطلب صيانة', 'محتاج صيانة', 'عايز صيانة', 'صيانة لمكنة', 'صيانة ماكينة']);
+  if (!hasMachine && !hasAny(text, ['صيانة', 'صيانه', 'عطل', 'مهندس صيانة', 'فني صيانة'])) return null;
+  const url = absUrl('/tech-support.html');
+  const reply = `<div class="bot-card"><b>تمام، هحوّلك لصفحة مركز الصيانة الآن.</b><br>سجّل بيانات الماكينة والمشكلة، وهيتم التواصل معاك من فريق الصيانة في أسرع وقت.<br>${goButton(url, 'فتح مركز الصيانة')}</div>`;
+  return { reply, redirectUrl: url };
+}
+
 function serviceAnswer(q) {
   if (!hasAny(q, ['صيانة','عقد صيانة','بلاغ عطل','دعم فني','شكوى','شكوي','خدمات','تقسيط','ايجار تمليكي','إيجار تمليكي'])) return null;
   const items = SERVICES.services || []; const n = norm(q);
@@ -3107,6 +3124,16 @@ module.exports = async function handler(req, res) {
     reply = isSmallTalk(message) ? smallTalk(message) : null;
     reply = reply || contactAnswer(message);
     reply = reply || pageNavigationAnswer(message);
+    const maintenanceRedirect = !reply ? maintenanceRedirectAnswer(message) : null;
+    if (maintenanceRedirect) {
+      return res.status(200).json({
+        reply: sanitizeContactNumbers(maintenanceRedirect.reply),
+        redirectUrl: maintenanceRedirect.redirectUrl,
+        redirectDelayMs: 1200,
+        format: 'html',
+        debug: { source: 'local-json-maintenance-redirect' }
+      });
+    }
     reply = reply || comparisonAnswer(message);
     reply = reply || paperAnswer(message);
     reply = reply || teamAnswer(message);

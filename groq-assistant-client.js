@@ -187,6 +187,17 @@
       history.push({ role: 'assistant', content: isHtml ? reply.replace(/<[^>]*>/g, ' ') : reply });
       history = history.slice(-8);
       saveHistory();
+
+      if (data.redirectUrl) {
+        const redirectDelay = Number(data.redirectDelayMs || 1200);
+        window.setTimeout(function () {
+          try {
+            window.location.href = data.redirectUrl;
+          } catch (err) {
+            window.location.assign(data.redirectUrl);
+          }
+        }, redirectDelay);
+      }
     } catch (e) {
       addMessage('حصل خطأ مؤقت. حاول مرة أخرى بعد لحظات.', 'bot', false);
     } finally {
