@@ -24,6 +24,7 @@
 
   const STORAGE_KEY = 'alAdlGroqAssistantHistoryV3';
   let history = [];
+  let isSending = false;
 
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || sessionStorage.getItem(STORAGE_KEY) || '[]');
@@ -80,8 +81,10 @@
     }
 
     const text = input.value.trim();
-    if (!text) return false;
+    if (!text || isSending) return false;
+    isSending = true;
 
+    const requestHistory = history.slice(-8); // السياق قبل الرسالة الحالية فقط
     input.value = '';
     addMessage(text, 'user', false);
     history.push({ role: 'user', content: text });
@@ -95,7 +98,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: text,
-          history,
+          history: requestHistory,
           pageTitle: document.title,
           pageUrl: window.location.href
         })
@@ -103,6 +106,7 @@
 
       const data = await response.json().catch(function () { return {}; });
       const reply = data.reply || data.fallback || 'حصل ضغط مؤقت. حاول مرة أخرى بعد لحظات.';
+      if (data.debug && window.console) console.info('ElAdl assistant:', data.debug);
       const isHtml = data.format === 'html' || /<\/?(p|div|a|button|br|b|strong)/i.test(reply);
       addMessage(reply, 'bot', isHtml);
       history.push({ role: 'assistant', content: isHtml ? reply.replace(/<[^>]*>/g, ' ') : reply });
@@ -112,6 +116,7 @@
       addMessage('حصل خطأ مؤقت. حاول مرة أخرى بعد لحظات.', 'bot', false);
     } finally {
       setLoading(false);
+      isSending = false;
       input.focus();
     }
 
@@ -120,5 +125,4 @@
 
   sendBtn.addEventListener('click', askGroq, true);
   input.addEventListener('keydown', function (event) { if (event.key === 'Enter') askGroq(event); }, true);
-  input.addEventListener('keypress', function (event) { if (event.key === 'Enter') askGroq(event); }, true);
 })();
