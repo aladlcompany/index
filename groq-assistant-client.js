@@ -8,7 +8,7 @@
   if (window.__ALADL_GROQ_ASSISTANT_READY__) return;
   window.__ALADL_GROQ_ASSISTANT_READY__ = true;
 
-  const STORAGE_KEY = 'alAdlGroqAssistantHistoryV1';
+  const STORAGE_KEY = 'alAdlGroqAssistantHistoryV2';
   let history = [];
 
   try {
@@ -20,10 +20,14 @@
     try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(history.slice(-8))); } catch (e) {}
   }
 
-  function addMessage(text, sender) {
+  function addMessage(content, sender, isHtml) {
     const div = document.createElement('div');
     div.className = 'ai-message ' + (sender === 'user' ? 'user' : 'bot');
-    div.textContent = text;
+    if (isHtml) {
+      div.innerHTML = String(content || '');
+    } else {
+      div.textContent = String(content || '');
+    }
     messages.insertBefore(div, typing || null);
     messages.scrollTop = messages.scrollHeight;
   }
@@ -45,7 +49,7 @@
     if (!text) return false;
 
     input.value = '';
-    addMessage(text, 'user');
+    addMessage(text, 'user', false);
     history.push({ role: 'user', content: text });
     history = history.slice(-8);
     saveHistory();
@@ -64,13 +68,14 @@
       });
 
       const data = await response.json().catch(function () { return {}; });
-      const reply = data.reply || data.fallback || 'حصل ضغط مؤقت. ابعت لنا طلبك على واتساب 01094799247 وهنرد عليك فورًا.';
-      addMessage(reply, 'bot');
-      history.push({ role: 'assistant', content: reply });
+      const reply = data.reply || data.fallback || 'حصل ضغط مؤقت. حاول مرة أخرى بعد لحظات.';
+      const isHtml = data.format === 'html';
+      addMessage(reply, 'bot', isHtml);
+      history.push({ role: 'assistant', content: isHtml ? reply.replace(/<[^>]*>/g, ' ') : reply });
       history = history.slice(-8);
       saveHistory();
     } catch (e) {
-      addMessage('حصل خطأ مؤقت. تقدر تتواصل معنا مباشرة على واتساب 01094799247.', 'bot');
+      addMessage('حصل خطأ مؤقت. حاول مرة أخرى بعد لحظات.', 'bot', false);
     } finally {
       setLoading(false);
       input.focus();
@@ -80,12 +85,6 @@
   }
 
   sendBtn.addEventListener('click', askGroq, true);
-
-  input.addEventListener('keydown', function (event) {
-    if (event.key === 'Enter') askGroq(event);
-  }, true);
-
-  input.addEventListener('keypress', function (event) {
-    if (event.key === 'Enter') askGroq(event);
-  }, true);
+  input.addEventListener('keydown', function (event) { if (event.key === 'Enter') askGroq(event); }, true);
+  input.addEventListener('keypress', function (event) { if (event.key === 'Enter') askGroq(event); }, true);
 })();

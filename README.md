@@ -1,5 +1,5 @@
 # شركة العدل لتجارة وصيانة ماكينات التصوير والطابعات
 
-الموقع الرسمي: https://aladlcompany.github.io/
+الموقع الرسمي: https://eladlshop.vercel.app/
 
-Sitemap: https://aladlcompany.github.io/sitemap.xml
+Sitemap: https://eladlshop.vercel.app/sitemap.xml
