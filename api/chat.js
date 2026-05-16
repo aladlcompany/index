@@ -2805,6 +2805,7 @@ function productIntent(q, h = '') {
   if (explicitPaperIntent(q) && !machineContext('', hist)) return false;
   const explicit = machineContext(cur, '') || extractModels(cur).length > 0 || hasAny(cur, ['حبر','تونر','خرطوشة','خرطوشه','درام','قطع غيار','فيوزر','رول','طابعة','طابعه']);
   if (explicit) return true;
+  if (otherAlternativeIntent(cur) && mentionedProductsInText(h).length) return true;
   const commercialButVague = hasAny(cur, ['سعر','بكام','كام','مواصفات','تفاصيل','متاح','متوفر','عايز','عاوز','رشح','اختار','اشتري','شراء']);
   if (commercialButVague && (machineContext('', hist) || /\b(a3|a4)\b/i.test(cur) || hasAny(cur, ['الوان','ابيض','اسود']))) return true;
   // استخدم التاريخ فقط لو الرسالة الحالية متابعة منتج واضحة.
@@ -2812,15 +2813,48 @@ function productIntent(q, h = '') {
 }
 function missingMachineDetails(q, h = '') {
   const cur = norm(q || '');
-  const full = activeProductText(q, h);
+  // الموديل الصريح في رسالة العميل يكفي للبحث ولا نطلب أسئلة.
+  const hasModel = extractModels(cur).length > 0;
+  const full = productConstraintText(q, h);
   const hasColor = /(الوان|ابيض|اسود|ابيض واسود|اسود وابيض|color|black|bw)/i.test(full);
   const hasSize = /\b(a3|a4)\b/i.test(full);
-  const hasModel = extractModels(full).length > 0;
+  const currentLooksMachine = machineContext(cur, '') || clearProductFollowup(cur);
   const genericAsk = /(عايز|عاوز|رشح|اختار|انصح|مناسب|مواصفات|تفاصيل|ماكينات|مكن|مكنه|ماكينه|ماكينة|طابعه|طابعة|برنتر|تصوير)/i.test(cur);
-  return genericAsk && !hasModel && (!hasColor || !hasSize);
+  // لو العميل قال: "عاوز ماكينة" أو رد بمتابعة ناقصة مثل "ألوان" فقط، نسأل باقي القيود بدل ما نرشح أول نتيجة عشوائيًا.
+  return !hasModel && (genericAsk || currentLooksMachine) && (!hasColor || !hasSize);
 }
 function askMachineQuestions() {
   return `<p>تمام، عشان أرشح لحضرتك ماكينة مناسبة محتاج أعرف 3 حاجات:</p><div class="ai-list">1) ألوان ولا أبيض وأسود؟<br>2) المقاس المطلوب A4 ولا A3؟<br>3) حجم الاستخدام اليومي تقريبًا؟ قليل، متوسط، ولا كثيف؟</div><p>بعدها أعرض لك كل الماكينات المطابقة من الموقع مع زر تفاصيل لكل ماكينة.</p>`;
+}
+
+
+function colorConstraintText(t) {
+  const n = norm(t || '');
+  if (/(الوان|ألوان|color)/i.test(n)) return ' الوان color ';
+  if (/(ابيض|أبيض|اسود|أسود|ابيض واسود|اسود وابيض|black|bw)/i.test(n)) return ' ابيض اسود black bw ';
+  return '';
+}
+function sizeConstraintText(t) {
+  const n = norm(t || '');
+  if (/\ba3\b/i.test(n)) return ' A3 ';
+  if (/\ba4\b/i.test(n)) return ' A4 ';
+  return '';
+}
+function userHistoryTextOnly(h = '') {
+  const raw = String(h || '');
+  const matches = raw.match(/user:\s*([\s\S]*?)(?=\s+(?:assistant|system|user):|$)/gi);
+  return matches ? matches.map(x => x.replace(/^user:\s*/i, '')).join(' ') : raw;
+}
+function productConstraintText(q, h = '') {
+  const cur = norm(q || '');
+  const hist = norm(userHistoryTextOnly(h || ''));
+  // ناخد القيود الحالية أولًا. لو العميل كتب A3 بعد ما كان ظاهر A4 في الرد السابق، A3 هي اللي تكسب.
+  const color = colorConstraintText(cur) || colorConstraintText(hist);
+  const size = sizeConstraintText(cur) || sizeConstraintText(hist);
+  return `${cur} ${color} ${size}`;
+}
+function otherAlternativeIntent(q) {
+  return /(غير\s*(دي|ده|ذلك|كده|كدا|ها|ه)|بديل|بدائل|الموجود|متاح|متوفر)/i.test(norm(q || ''));
 }
 
 function productSearchText(p) {
@@ -2842,38 +2876,57 @@ function modelTokenMatchesQuery(productTokens, queryToken) {
   return productTokens.includes(q);
 }
 function scoreProduct(p, q, h = '') {
-  const query = activeProductText(q, h);
+  const query = productConstraintText(q, h);
   const target = productSearchText(p);
   const qOnlyModels = extractModels(q).map(x => norm(x).replace(/\s+/g, '')).filter(Boolean);
   const pTokens = productModelTokens(p);
 
-  // أهم إصلاح: الموديل المكتوب في رسالة العميل هو مصدر الحقيقة.
-  // ممنوع نستخدم موديلات ظاهرة في الصفحة أو الهيدر أو منتجات أخرى لتوسيع النتيجة.
+  // الموديل الصريح في رسالة العميل فقط هو مصدر الحقيقة.
+  // لا نستخدم موديلات ظهرت في رد سابق، حتى لا يظل البوت متمسكًا بـ C307 مثلًا عند كتابة "ألوان A3".
   if (qOnlyModels.length && !qOnlyModels.some(m => modelTokenMatchesQuery(pTokens, m))) return 0;
 
   let score = 0;
   for (const w of words(q)) if (!qOnlyModels.length && target.includes(w)) score += w.length > 2 ? 3 : 1;
 
-  const modelMatches = qOnlyModels.length ? qOnlyModels : extractModels(query).map(x => norm(x).replace(/\s+/g, '')).filter(Boolean);
-  for (const mm of modelMatches) {
+  for (const mm of qOnlyModels) {
     if (pTokens.includes(mm)) score += 1000;
     else if (/^\d{2,5}$/.test(mm) && pTokens.some(t => t.replace(/^[a-z]+/i, '').includes(mm))) score += 650;
     else if (/^[a-z]+\d+$/i.test(mm) && pTokens.includes(mm)) score += 500;
   }
-  if (/(الوان|ألوان|color)/i.test(query)) score += /(الوان|color|ألوان)/i.test(target) ? 12 : -20;
-  if (/(ابيض|أبيض|اسود|أسود|black|bw)/i.test(query)) score += /(ابيض|أبيض|اسود|أسود|black|bw)/i.test(target) ? 12 : -20;
-  if (/\ba3\b/i.test(query)) score += /\ba3\b/i.test(target) ? 14 : -18;
-  if (/\ba4\b/i.test(query)) score += /\ba4\b/i.test(target) ? 14 : -10;
+  if (/(الوان|ألوان|color)/i.test(query)) score += /(الوان|color|ألوان)/i.test(target) ? 25 : -80;
+  if (/(ابيض|أبيض|اسود|أسود|black|bw)/i.test(query)) score += /(ابيض|أبيض|اسود|أسود|black|bw)/i.test(target) ? 25 : -80;
+  if (/\ba3\b/i.test(query)) score += /\ba3\b/i.test(target) ? 35 : -90;
+  if (/\ba4\b/i.test(query)) score += /\ba4\b/i.test(target) ? 25 : -45;
   if (hasAny(q, ['حبر','تونر']) && hasAny(target, ['حبر','تونر'])) score += 15;
   if (hasAny(q, ['قطع غيار','رول','فيوزر','درام']) && hasAny(target, ['قطع','رول','فيوزر','درام'])) score += 15;
   return score;
 }
+
+function mentionedProductsInText(t = '') {
+  const hay = norm(t || '');
+  return PRODUCTS.filter(p => {
+    const name = norm(p.name || '');
+    const tokens = productModelTokens(p);
+    return (name && hay.includes(name)) || tokens.some(tok => tok.length >= 3 && hay.includes(tok));
+  });
+}
+
 function findProducts(q, h = '') {
-  const scored = PRODUCTS.map(p => ({ p, score: scoreProduct(p, q, h) })).filter(x => x.score > 0);
+  let pool = PRODUCTS;
+  let q2 = q;
+  if (otherAlternativeIntent(q)) {
+    const mentioned = mentionedProductsInText(h);
+    if (mentioned.length) {
+      const last = mentioned[mentioned.length - 1];
+      pool = PRODUCTS.filter(p => p !== last && !productModelTokens(p).some(t => productModelTokens(last).includes(t)));
+      q2 = [q, last.categoryLabel || '', last.category || '', last.colorMode || '', last.paperFormat || '', last.functions || ''].join(' ');
+    }
+  }
+  const scored = pool.map(p => ({ p, score: scoreProduct(p, q2, h) })).filter(x => x.score > 0);
   scored.sort((a, b) => b.score - a.score || String(a.p.name).localeCompare(String(b.p.name), 'ar'));
   if (!scored.length) return [];
   const top = scored[0].score;
-  const models = extractModels(q); // قفل النتائج بناءً على سؤال العميل فقط وليس محتوى الصفحة
+  const models = extractModels(q2); // قفل النتائج بناءً على سؤال العميل فقط وليس محتوى الصفحة
   if (models.length) return scored.filter(x => x.score >= 600).slice(0, 12).map(x => x.p);
   return scored.filter(x => x.score >= Math.max(1, top - 10)).map(x => x.p);
 }
@@ -2888,7 +2941,7 @@ function productCard(p, index) {
 function productAnswer(q, h = '') {
   if (explicitPaperIntent(q) && !machineContext('', h)) return null;
   if (!productIntent(q, h)) return null;
-  if (machineContext(q, h) && missingMachineDetails(q, h)) return askMachineQuestions();
+  if (!otherAlternativeIntent(q) && machineContext(q, h) && missingMachineDetails(q, h)) return askMachineQuestions();
   const matches = findProducts(q, h);
   if (!matches.length) return `<p>لم أجد منتجًا مطابقًا لطلب حضرتك داخل بيانات الموقع الحالية.</p><p>ممكن تكتب الموديل أو توضح: ألوان ولا أبيض وأسود؟ A4 ولا A3؟</p>${actions([waButton('أريد الاستفسار عن منتج أو بديل غير ظاهر في الموقع')])}`;
   return `<p>دي المنتجات المطابقة لطلب حضرتك من بيانات الموقع:</p>${matches.map((p, i) => productCard(p, i + 1)).join('')}`;
