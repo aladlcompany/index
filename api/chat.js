@@ -5,6 +5,7 @@ const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 const MODEL = process.env.GROQ_MODEL || 'llama-3.1-8b-instant';
 const SITE_URL = (process.env.SITE_URL || 'https://eladlshop.vercel.app').replace(/\/$/, '');
 const WHATSAPP_NUMBER = '201094799247';
+const WHATSAPP_LOCAL = '01094799247';
 
 // Embedded fallback data: يعمل حتى لو Vercel لم يقرأ ملفات data/*.json
 const EMBEDDED_PRODUCTS = [
@@ -2743,6 +2744,26 @@ function absUrl(url) { if (!url) return SITE_URL + '/products.html'; if (/^https
 function waUrl(message) { return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`; }
 function goButton(url, label) { return `<button type="button" class="ai-btn ai-go-btn" data-goto="${esc(absUrl(url))}">${esc(label)}</button>`; }
 function waButton(message, label = 'استفسر واتساب') { return `<a class="ai-btn ai-wa" href="${esc(waUrl(message))}" target="_blank" rel="noopener">${esc(label)}</a>`; }
+
+function sanitizeContactNumbers(html) {
+  const allowedLocal = WHATSAPP_LOCAL;
+  const allowedIntl = WHATSAPP_NUMBER;
+  return String(html || '')
+    .replace(/\+?20\s?1[0125][\s-]?\d{3}[\s-]?\d{4}/g, (m) => {
+      const digits = String(m).replace(/\D/g, '');
+      return digits === allowedIntl ? m : allowedLocal;
+    })
+    .replace(/01[0125][\s-]?\d{3}[\s-]?\d{4}/g, (m) => {
+      const digits = String(m).replace(/\D/g, '');
+      return digits === allowedLocal ? m : allowedLocal;
+    });
+}
+
+function contactAnswer(message) {
+  const q = norm(message);
+  if (!/(واتساب|واتس|whatsapp|رقم|تليفون|هاتف|موبايل|اتصال|اكلم|كلم|تواصل)/i.test(q)) return null;
+  return `<p>رقم واتساب وخدمة عملاء شركة العدل هو: <b>${WHATSAPP_LOCAL}</b></p><p>اضغط على الزر للتواصل مباشرة:</p>${waButton('مرحبًا، أريد الاستفسار عن منتجات شركة العدل', 'تواصل واتساب الآن')}`;
+}
 function actions(buttons) { return `<div class="ai-actions">${buttons.join('')}</div>`; }
 
 function isSmallTalk(q) {
@@ -2840,6 +2861,35 @@ function sizeConstraintText(t) {
   if (/\ba4\b/i.test(n)) return ' A4 ';
   return '';
 }
+function sizeConstraintValue(q, h = '') {
+  const cur = norm(q || '');
+  const hist = norm(userHistoryTextOnly(h || ''));
+  // الحالي يكسب التاريخ: لو العميل كتب A4 لا نخلطه مع A3 ظاهر في رد سابق.
+  if (/\ba3\b/i.test(cur)) return 'A3';
+  if (/\ba4\b/i.test(cur)) return 'A4';
+  if (/\ba3\b/i.test(hist)) return 'A3';
+  if (/\ba4\b/i.test(hist)) return 'A4';
+  return '';
+}
+function productMatchesRequestedSize(p, wanted) {
+  if (!wanted) return true;
+  const format = norm(p.paperFormat || '');
+  const paperSize = norm(p.paperSize || '');
+  const specs = Array.isArray(p.specs) ? norm(p.specs.map(s => `${s.label || ''} ${s.value || ''}`).join(' ')) : '';
+  const hay = `${format} ${paperSize} ${specs}`;
+
+  // مهم: طلب A4 يعني ماكينة A4 فقط، وليس ماكينة A3/A4.
+  // لأن ماكينة A3 تدعم A4 طبيعي، لكن العميل لما يقول A4 يقصد فئة A4 الأصغر.
+  if (wanted === 'A4') {
+    if (/\ba3\b/i.test(format)) return false;
+    if (/حتى\s*a3|الى\s*a3|إلى\s*a3|to\s*a3|a3\/a4|a4\/a3/i.test(hay)) return false;
+    return /\ba4\b/i.test(hay);
+  }
+
+  // طلب A3 يعني ماكينة تقبل A3، حتى لو مكتوب A3/A4.
+  if (wanted === 'A3') return /\ba3\b/i.test(hay);
+  return true;
+}
 function userHistoryTextOnly(h = '') {
   const raw = String(h || '');
   const matches = raw.match(/user:\s*([\s\S]*?)(?=\s+(?:assistant|system|user):|$)/gi);
@@ -2876,6 +2926,8 @@ function modelTokenMatchesQuery(productTokens, queryToken) {
   return productTokens.includes(q);
 }
 function scoreProduct(p, q, h = '') {
+  const requestedSize = sizeConstraintValue(q, h);
+  if (requestedSize && !productMatchesRequestedSize(p, requestedSize)) return 0;
   const query = productConstraintText(q, h);
   const target = productSearchText(p);
   const qOnlyModels = extractModels(q).map(x => norm(x).replace(/\s+/g, '')).filter(Boolean);
@@ -3005,7 +3057,7 @@ function isolatedUnknown(q) {
 async function groqAnswer(message, historyText = '') {
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) return '<p>المساعد غير مفعل حاليًا. أضف GROQ_API_KEY في Vercel.</p>';
-  const system = 'أنت مساعد خدمة عملاء لشركة العدل. استخدم بيانات الموقع فقط في المنتجات والأسعار وفريق العمل. ممنوع اختراع أسعار أو موديلات أو أسماء. لو السعر غير موجود قل غير متوفر على الموقع. لو السؤال عام رد باختصار وبلهجة مصرية مهذبة. لو العميل يسلم أو يسأل عامل ايه رد طبيعي: الحمد لله، أخبارك؟ وأكمل المحادثة.';
+  const system = 'أنت مساعد خدمة عملاء لشركة العدل. استخدم بيانات الموقع فقط في المنتجات والأسعار وفريق العمل. ممنوع اختراع أسعار أو موديلات أو أسماء أو أرقام هاتف. رقم الشركة الوحيد للتواصل والواتساب هو 01094799247. لا تكتب أي رقم آخر أو رقم تجريبي مثل 0123456789. لو السعر غير موجود قل غير متوفر على الموقع. لو السؤال عام رد باختصار وبلهجة مصرية مهذبة. لو العميل يسلم أو يسأل عامل ايه رد طبيعي: الحمد لله، أخبارك؟ وأكمل المحادثة.';
   const r = await fetch(GROQ_API_URL, { method: 'POST', headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ model: MODEL, temperature: 0.05, max_tokens: 350, messages: [{ role: 'system', content: system }, { role: 'user', content: `سياق المحادثة السابق:
 ${historyText.slice(-1200)}
 
@@ -3013,7 +3065,13 @@ ${historyText.slice(-1200)}
 ${message}` }] }) });
   if (!r.ok) throw new Error(`Groq ${r.status}`);
   const data = await r.json();
-  return `<p>${esc(data.choices?.[0]?.message?.content || 'لم أتمكن من تجهيز رد مناسب الآن.')}</p>`;
+  let text = data.choices?.[0]?.message?.content || 'لم أتمكن من تجهيز رد مناسب الآن.';
+  text = sanitizeContactNumbers(text);
+  let html = `<p>${esc(text).replace(/\n/g, '<br>')}</p>`;
+  if (/(واتساب|واتس|whatsapp|تواصل|اتصال|رقم)/i.test(norm(message))) {
+    html += waButton('مرحبًا، أريد الاستفسار عن منتجات شركة العدل', 'تواصل واتساب الآن');
+  }
+  return sanitizeContactNumbers(html);
 }
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
@@ -3025,6 +3083,7 @@ module.exports = async function handler(req, res) {
     let reply = null;
     let source = 'local';
     reply = isSmallTalk(message) ? smallTalk(message) : null;
+    reply = reply || contactAnswer(message);
     reply = reply || pageNavigationAnswer(message);
     reply = reply || comparisonAnswer(message);
     reply = reply || paperAnswer(message);
@@ -3039,6 +3098,7 @@ module.exports = async function handler(req, res) {
       source = 'groq';
       reply = await groqAnswer(message, h);
     }
+    reply = sanitizeContactNumbers(reply);
     return res.status(200).json({ reply, format: 'html', debug: { source } });
   } catch (e) {
     console.error('Assistant error:', e && (e.message || e));
