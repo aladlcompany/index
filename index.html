@@ -4108,5 +4108,33 @@ function alAdlPageHref(targetId, category, itemId) {
 })();
 </script>
 <script src="/groq-assistant-client.js"></script>
+
+    <script>
+        // عند فتح الرابط index.html?scroll=maintenance من الشات، نفتح الصفحة الرئيسية وننزل مباشرة لمربع مركز الصيانة.
+        (function enableMaintenanceHashScroll(){
+            function scrollToMaintenanceBoxFromHash() {
+                const hash = (window.location.hash || '').replace('#', '');
+                const urlParams = new URLSearchParams(window.location.search);
+                const shouldScroll = ['maintenance-form-anchor', 'maintenance-form', 'booking'].includes(hash) || urlParams.get('scroll') === 'maintenance';
+                if (!shouldScroll) return;
+
+                if (typeof navigateTo === 'function') {
+                    navigateTo('start', 'all', false, 0, null, 1, true);
+                }
+
+                setTimeout(function(){
+                    const target = document.getElementById('booking') || document.getElementById('maintenance-form-anchor') || document.getElementById('page-booking') || document.getElementById('maintenance-form');
+                    if (!target) return;
+                    const headerOffset = 135;
+                    const top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+                    window.scrollTo({ top: Math.max(top, 0), behavior: 'smooth' });
+                    target.classList.add('ai-highlight-target');
+                    setTimeout(function(){ target.classList.remove('ai-highlight-target'); }, 1800);
+                }, 400);
+            }
+            window.addEventListener('load', scrollToMaintenanceBoxFromHash);
+            window.addEventListener('hashchange', scrollToMaintenanceBoxFromHash);
+        })();
+    </script>
 </body>
 </html>

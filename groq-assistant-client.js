@@ -209,18 +209,46 @@ document.addEventListener('click', function(e) {
     if (!btn) return;
     e.preventDefault();
 
-    const targetSelector = '#maintenance-form, #page-booking, .maintenance-form-anchor';
-    const localTarget = document.querySelector(targetSelector);
+    // المطلوب: زر الصيانة ينقل العميل لمربع "مركز الصيانة" الموجود في نهاية الصفحة الرئيسية تحت البانر.
+    function scrollToHomeMaintenanceBox() {
+        const targetSelector = '#booking, #maintenance-form-anchor, #page-booking, #maintenance-form, .maintenance-form-anchor';
+        const localTarget = document.querySelector(targetSelector);
+        if (!localTarget) return false;
 
-    if (localTarget) {
         try { if (typeof closeChat === 'function') closeChat(); } catch (_) {}
-        localTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        const headerOffset = 135;
+        const top = localTarget.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+        window.scrollTo({ top: Math.max(top, 0), behavior: 'smooth' });
+
         localTarget.classList.add('ai-highlight-target');
         setTimeout(() => localTarget.classList.remove('ai-highlight-target'), 1800);
+
+        setTimeout(function(){
+            const firstInput = document.querySelector('#maintenance-form input, #maintenance-form textarea, #maintenance-form select');
+            if (firstInput) {
+                try { firstInput.focus({ preventScroll: true }); } catch (_) { firstInput.focus(); }
+            }
+        }, 750);
+        return true;
+    }
+
+    const currentFile = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
+    const isHomePage = currentFile === '' || currentFile === 'index.html';
+
+    if (isHomePage) {
+        if (typeof window.navigateTo === 'function') {
+            window.navigateTo('start', 'all', false, 0, null, 1, true);
+        }
+        setTimeout(function(){
+            if (!scrollToHomeMaintenanceBox()) {
+                window.location.href = 'index.html?scroll=maintenance';
+            }
+        }, 150);
         return;
     }
 
-    window.location.href = 'tech-support.html#maintenance-form';
+    window.location.href = 'index.html?scroll=maintenance';
 });
 
 })();
