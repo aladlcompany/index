@@ -62,6 +62,24 @@ function smallTalk(q) {
   return '<p>أهلًا وسهلًا بحضرتك 😊</p><p>تحب أساعدك في ماكينة، طابعة، صيانة، أحبار، قطع غيار، أو بورصة الورق؟</p>';
 }
 
+
+function comparisonAnswer(q) {
+  const n = norm(q);
+  const wantsDiff = /(فرق|الفرق|مقارنه|مقارنة|قارن|ايهما|انهي|اختار)/.test(n);
+  const wantsA4A3 = /\ba4\b/i.test(q) && /\ba3\b/i.test(q);
+  const machineWords = /(مكن|مكنه|ماكينه|ماكينة|تصوير|طابعة|طابعه|printer|copier)/i.test(q);
+  if (!(wantsDiff && wantsA4A3 && machineWords)) return null;
+  return `<p><b>الفرق ببساطة بين ماكينة تصوير A4 و A3:</b></p>
+  <p><b>ماكينة A4</b>: مناسبة للمكاتب الصغيرة والمتوسطة، تطبع وتصوّر مقاس A4 فقط تقريبًا، حجمها أصغر وسعرها وتشغيلها غالبًا أوفر.</p>
+  <p><b>ماكينة A3</b>: مناسبة للمكاتب والشركات ومراكز الطباعة، تقبل A3 و A4، أكبر في الحجم وأقوى في الشغل، وغالبًا سعرها أعلى لكنها أنسب لو عندك تصوير مستندات كبيرة أو شغل تقيل.</p>
+  <p><b>اختيار سريع:</b><br>لو شغلك فواتير ومستندات عادية: A4 كفاية.<br>لو عندك رسومات هندسية، كراسات، ملازم، أو حجم تصوير كبير: A3 أفضل.</p>
+  <p>تحب أرشح لك موديلات مناسبة من المتاح عندنا؟</p>`;
+}
+function vagueOrNoise(q) {
+  const n = norm(q).trim();
+  return !n || (n.length <= 2 && !/a3|a4|305|307|301|2001|161|171|201/i.test(n)) || /^[\W_]+$/.test(n);
+}
+
 function machineContext(q, h = '') {
   const full = `${h} ${q}`;
   return hasAny(full, ['مكن','مكنه','ماكينه','ماكينة','تصوير','طابعه','طابعة','طابعات','برنتر','printer','copier','ricoh','ريكو','افيشيو','الوان','ابيض','اسود','سكانر','فاكس','دوبلكس']);
@@ -87,8 +105,10 @@ function productIntent(q, h = '') {
   const cur = norm(q || '');
   const hist = norm(h || '');
   if (explicitPaperIntent(q) && !machineContext('', hist)) return false;
-  const nowIntent = machineContext(cur, '') || extractModels(cur).length > 0 || hasAny(cur, ['حبر','تونر','خرطوشة','خرطوشه','درام','قطع غيار','فيوزر','رول','طابعة','طابعه']);
-  if (nowIntent) return true;
+  const explicit = machineContext(cur, '') || extractModels(cur).length > 0 || hasAny(cur, ['حبر','تونر','خرطوشة','خرطوشه','درام','قطع غيار','فيوزر','رول','طابعة','طابعه']);
+  if (explicit) return true;
+  const commercialButVague = hasAny(cur, ['سعر','بكام','كام','مواصفات','تفاصيل','متاح','متوفر','عايز','عاوز','رشح','اختار','اشتري','شراء']);
+  if (commercialButVague && (machineContext('', hist) || /\b(a3|a4)\b/i.test(cur) || hasAny(cur, ['الوان','ابيض','اسود']))) return true;
   // استخدم التاريخ فقط لو الرسالة الحالية متابعة منتج واضحة.
   return clearProductFollowup(cur) && machineContext('', hist);
 }
@@ -195,6 +215,16 @@ function pageNavigationAnswer(q) {
   if (hasAny(n, ['صيانة','دعم'])) return `<p>تفضل زر الدعم الفني:</p>${actions([goButton('/tech-support.html', 'فتح الدعم الفني')])}`;
   return `<p>تفضل زر صفحة المنتجات:</p>${actions([goButton('/products.html', 'فتح المنتجات')])}`;
 }
+
+function isolatedUnknown(q) {
+  const n = norm(q).trim();
+  if (!n) return true;
+  if (isSmallTalk(n) || machineContext(n,'') || explicitPaperIntent(n) || pageNavigationAnswer(n)) return false;
+  const words = n.split(/\s+/).filter(Boolean);
+  if (words.length === 1 && !/[؟?]/.test(n) && n.length < 14) return true;
+  return false;
+}
+
 async function groqAnswer(message, historyText = '') {
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) return '<p>المساعد غير مفعل حاليًا. أضف GROQ_API_KEY في Vercel.</p>';
@@ -216,15 +246,28 @@ module.exports = async function handler(req, res) {
     const h = historyText(body.history);
     if (!message) return res.status(200).json({ reply: '<p>اكتب سؤالك وأنا أساعدك.</p>', format: 'html' });
     let reply = null;
+    let source = 'local';
     reply = isSmallTalk(message) ? smallTalk(message) : null;
     reply = reply || pageNavigationAnswer(message);
+    reply = reply || comparisonAnswer(message);
     reply = reply || paperAnswer(message);
     reply = reply || productAnswer(message, h);
     reply = reply || teamAnswer(message);
     reply = reply || serviceAnswer(message);
-    reply = reply || await groqAnswer(message, h)
-    return res.status(200).json({ reply, format: 'html' });
+    if (!reply && isolatedUnknown(message)) {
+      source = 'local-clarify';
+      reply = '<p>مش واضح قصد حضرتك. ممكن تكتب المطلوب بشكل أوضح؟ مثال: مواصفات ماكينة 305، الفرق بين A4 و A3، أو سعر ماكينة ألوان.</p>';
+    }
+    if (!reply) {
+      source = 'groq';
+      reply = await groqAnswer(message, h);
+    }
+    return res.status(200).json({ reply, format: 'html', debug: { source } });
   } catch (e) {
-    return res.status(200).json({ reply: '<p>حصل خطأ مؤقت في المساعد. حاول مرة أخرى بعد لحظات.</p>', format: 'html' });
+    console.error('Assistant error:', e && (e.message || e));
+    const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
+    const msg = String(body.message || '').trim();
+    if (vagueOrNoise(msg)) return res.status(200).json({ reply: '<p>مش واضح قصد حضرتك. ممكن تكتب اسم الموديل أو المطلوب بالضبط؟</p>', format: 'html', debug: { source: 'fallback-vague' } });
+    return res.status(200).json({ reply: '<p>حصل خطأ مؤقت في المساعد الذكي. حاول مرة أخرى بعد لحظات أو تواصل على واتساب 01094799247.</p>', format: 'html', debug: { source: 'fallback-error' } });
   }
 };
