@@ -2794,6 +2794,9 @@ function clearProductFollowup(q) {
 function activeProductText(q, h = '') {
   const cur = norm(q || '');
   const hist = norm(h || '');
+  // لو المستخدم كتب موديل صريح مثل 305 أو C305، لا نخلط تاريخ المحادثة
+  // لأن التاريخ يحتوي نتائج سابقة مثل 3053/3054 فيتسع البحث بالغلط.
+  if (extractModels(cur).length > 0) return cur;
   return clearProductFollowup(cur) ? `${hist} ${cur}` : cur;
 }
 function productIntent(q, h = '') {
@@ -2824,18 +2827,38 @@ function productSearchText(p) {
   const specs = Array.isArray(p.specs) ? p.specs.map(s => `${s.label || ''} ${s.value || ''}`).join(' ') : '';
   return norm(`${p.name || ''} ${p.model || ''} ${p.category || ''} ${p.categoryLabel || ''} ${p.description || ''} ${p.paperSize || ''} ${p.paperFormat || ''} ${p.colorMode || ''} ${p.speed || ''} ${p.functions || ''} ${specs}`);
 }
+function productModelTokens(p) {
+  return extractModels(`${p.name || ''} ${p.model || ''}`)
+    .map(x => norm(x).replace(/\\s+/g, ''))
+    .filter(Boolean);
+}
+function modelTokenMatchesQuery(productTokens, queryToken) {
+  const q = norm(queryToken).replace(/\s+/g, '');
+  if (!q) return false;
+  // لو العميل كتب موديل حرف+رقم مثل C305، لازم نفس الموديل بالضبط فقط.
+  if (/^[a-z]+\d+$/i.test(q)) return productTokens.includes(q);
+  // لو كتب رقم فقط مثل 305، نرجع أي موديل رقمه يحتوي 305: MP 3053 / MP 3054 / MP C305.
+  if (/^\d{2,5}$/.test(q)) return productTokens.some(t => t === q || t.replace(/^[a-z]+/i, '').includes(q));
+  return productTokens.includes(q);
+}
 function scoreProduct(p, q, h = '') {
   const query = activeProductText(q, h);
   const target = productSearchText(p);
+  const qOnlyModels = extractModels(q).map(x => norm(x).replace(/\s+/g, '')).filter(Boolean);
+  const pTokens = productModelTokens(p);
+
+  // أهم إصلاح: الموديل المكتوب في رسالة العميل هو مصدر الحقيقة.
+  // ممنوع نستخدم موديلات ظاهرة في الصفحة أو الهيدر أو منتجات أخرى لتوسيع النتيجة.
+  if (qOnlyModels.length && !qOnlyModels.some(m => modelTokenMatchesQuery(pTokens, m))) return 0;
+
   let score = 0;
-  for (const w of words(q)) if (target.includes(w)) score += w.length > 2 ? 3 : 1;
-  const modelMatches = extractModels(activeProductText(q, h));
-  for (const m of modelMatches) {
-    const mm = norm(m).replace(/\s+/g, '');
-    const compact = target.replace(/\s+/g, '');
-    const targetTokens = target.split(/\s+/).map(t => t.replace(/[^a-z0-9]/gi, ''));
-    if (targetTokens.includes(mm)) score += 75; // موديل مطابق ككلمة مستقلة: 301 أو c305
-    else if (compact.includes(mm)) score += 35; // تطابق جزئي: 305 داخل 3053 مثلًا
+  for (const w of words(q)) if (!qOnlyModels.length && target.includes(w)) score += w.length > 2 ? 3 : 1;
+
+  const modelMatches = qOnlyModels.length ? qOnlyModels : extractModels(query).map(x => norm(x).replace(/\s+/g, '')).filter(Boolean);
+  for (const mm of modelMatches) {
+    if (pTokens.includes(mm)) score += 1000;
+    else if (/^\d{2,5}$/.test(mm) && pTokens.some(t => t.replace(/^[a-z]+/i, '').includes(mm))) score += 650;
+    else if (/^[a-z]+\d+$/i.test(mm) && pTokens.includes(mm)) score += 500;
   }
   if (/(الوان|ألوان|color)/i.test(query)) score += /(الوان|color|ألوان)/i.test(target) ? 12 : -20;
   if (/(ابيض|أبيض|اسود|أسود|black|bw)/i.test(query)) score += /(ابيض|أبيض|اسود|أسود|black|bw)/i.test(target) ? 12 : -20;
@@ -2850,8 +2873,8 @@ function findProducts(q, h = '') {
   scored.sort((a, b) => b.score - a.score || String(a.p.name).localeCompare(String(b.p.name), 'ar'));
   if (!scored.length) return [];
   const top = scored[0].score;
-  const models = extractModels(activeProductText(q, h));
-  if (models.length) return scored.filter(x => x.score >= 40).slice(0, 20).map(x => x.p);
+  const models = extractModels(q); // قفل النتائج بناءً على سؤال العميل فقط وليس محتوى الصفحة
+  if (models.length) return scored.filter(x => x.score >= 600).slice(0, 12).map(x => x.p);
   return scored.filter(x => x.score >= Math.max(1, top - 10)).map(x => x.p);
 }
 function productDetailsUrl(p) { return `/products.html#product-details/${encodeURIComponent(p.name || '')}`; }
