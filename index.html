@@ -609,7 +609,10 @@ body.ai-assistant-open {
     overflow: hidden;
 }
 
-</style>
+
+        .ai-product-card{background:#fff;border:1px solid rgba(120,30,55,.14);border-radius:18px;padding:12px 14px;margin:10px 0;text-align:right;box-shadow:0 8px 22px rgba(40,20,30,.06);line-height:1.9;color:#334155}
+        .ai-product-card b{color:#7a243f;font-size:1rem}.ai-product-card span{font-size:.9rem}.ai-card-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.ai-action-btn{border:0;border-radius:999px;padding:9px 14px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}.ai-details-btn{background:#7a243f;color:white}.ai-whatsapp-btn{background:#22c55e;color:white}
+        </style>
 <script>
         /* V10: Gemini Preview يستخدم نفس قائمة الموبايل الأصلية بدل القائمة المنسدلة المخصصة.
            نترك دوال toggleMobileMenu / toggleAccordion الأصلية تعمل كما هي. */
@@ -2488,14 +2491,13 @@ function alAdlPageHref(targetId, category, itemId) {
                 conversation: []
             };
 
-            // حفظ محادثة المساعد أثناء جلسة التصفح فقط.
-            // sessionStorage يحافظ على المحادثة عند التنقل بين صفحات الموقع، ويمسحها تلقائيًا بعد إغلاق التبويب/المتصفح.
-            const ASSISTANT_CHAT_SESSION_KEY = 'alAdlAssistantChatSessionV2';
+            // حفظ محادثة المساعد أثناء التنقل بين صفحات الموقع حتى لا يبدأ من جديد.
+            const ASSISTANT_CHAT_SESSION_KEY = 'alAdlAssistantChatSessionV6';
             let assistantSessionMessages = [];
 
             function persistAssistantSession() {
                 try {
-                    sessionStorage.setItem(ASSISTANT_CHAT_SESSION_KEY, JSON.stringify({
+                    localStorage.setItem(ASSISTANT_CHAT_SESSION_KEY, JSON.stringify({
                         state: customerState,
                         messages: assistantSessionMessages,
                         savedAt: new Date().toISOString()
@@ -2505,7 +2507,7 @@ function alAdlPageHref(targetId, category, itemId) {
 
             function restoreAssistantSession() {
                 try {
-                    const raw = sessionStorage.getItem(ASSISTANT_CHAT_SESSION_KEY);
+                    const raw = localStorage.getItem(ASSISTANT_CHAT_SESSION_KEY);
                     if (!raw) return false;
                     const saved = JSON.parse(raw);
                     if (saved && saved.state) Object.assign(customerState, saved.state);
@@ -3214,84 +3216,138 @@ function alAdlPageHref(targetId, category, itemId) {
                 return null;
             }
 
-            function smartAnswer(userText) {
-                const greeting = greetingAnswer(userText);
-                if (greeting) return greeting;
+            function smartAnswer(rawText) {
+                const text = (rawText || '').trim();
+                const q = normalizeArabic(text);
+                const smallTalk = handleSmallTalk(q);
+                if (smallTalk) return smallTalk;
 
-                const onboarding = handleOnboarding(userText);
-                if (onboarding) return onboarding;
+                const teamInfo = handleTeamQuestion(q);
+                if (teamInfo) return teamInfo;
 
-                const handoff = leadHandoffAnswer(userText);
-                if (handoff) return handoff;
+                const paperInfo = handlePaperQuestion(q);
+                if (paperInfo) return paperInfo;
 
-                const team = teamAnswer(userText);
-                if (team) return team;
+                const directProductInfo = handleDirectProductQuestion(text, q);
+                if (directProductInfo) return directProductInfo;
 
-                const navigation = navigationAnswer(userText);
-                if (navigation) return navigation;
-
-                const intent = detectIntent(userText);
-                updateState(intent);
-
-                const comparison = compareModelsAnswer(userText);
-                if (comparison) return comparison;
-
-                const guidedModel = handleModelGuide(intent);
-                if (guidedModel) return guidedModel;
-
-                // 1) طلب رقم موديل معين: الأولوية القصوى للبحث المباشر.
-                if (intent.exactModelRequest) {
-                    const matches = findBestProducts(intent, 3);
-                    if (matches.length) {
-                        const p = matches[0];
-                        customerState.lastProduct = p.name;
-                        let html = `تمام يا فندم، لقيت أقرب موديل لطلبك: <strong>${p.name}</strong>.<br>`;
-                        html += `${buildProductReason(p, intent)}.<br>`;
-                        html += `لو حضرتك تقصد رقم قريب من نفس السلسلة، ممكن كمان نراجع البدائل المتاحة.`;
-                        html += `<br><br>${productButton(p.name, 'عرض تفاصيل ' + p.name.replace('ريكو ', ''))}`;
-                        html += `${whatsappButton('مرحبًا، أريد الاستفسار عن ' + p.name, 'اسأل عن الماكينة على واتساب')}`;
-                        return html;
-                    }
-                    return `مش ظاهر عندي موديل بنفس الرقم بالضبط. اكتبلي الرقم كامل مثل MP 301 أو MP C307، أو ابعت صورة الموديل، وهنحدد لك الأقرب من المتاح.<br><br>${whatsappButton('مرحبًا، أريد الاستفسار عن ماكينة برقم موديل محدد.')}`;
+                if (isMachineIntent(q)) {
+                    return `تمام، عشان أرشح لحضرتك ماكينة مناسبة محتاج أعرف 3 حاجات:<br><br>
+                    1) ألوان ولا أبيض وأسود؟<br>
+                    2) المقاس المطلوب A4 ولا A3؟<br>
+                    3) حجم الاستخدام اليومي تقريبًا: قليل، متوسط، ولا كثيف؟<br><br>
+                    بعدها أعرض لك كل الماكينات المطابقة من الموقع، ومع كل ماكينة زر <b>عرض التفاصيل</b>.`;
                 }
 
-                // 2) صيانة أو أحبار: رد متخصص قبل ترشيحات البيع.
-                if (intent.wantsMaintenance || intent.wantsSupplies || intent.wantsContact || intent.wantsPrice) {
-                    const faq = answerFAQ(userText);
-                    if (faq) return faq;
+                const found = findMatchingProducts(text, q);
+                if (found.length) return renderProductsAnswer(found, `لقيت لحضرتك المنتجات المطابقة على الموقع:`);
+
+                const nav = handleNavigationQuestion(q);
+                if (nav) return nav;
+
+                if (q.includes('سعر') || q.includes('بكام') || q.includes('تكلف')) {
+                    return `الأسعار غير معروضة حالياً لهذا الطلب داخل بيانات الموقع.<br>
+                    ممكن تستفسر من خدمة العملاء على واتساب للحصول على السعر الحالي حسب الحالة والتوفر.<br><br>
+                    ${whatsappButton('استفسار عن السعر')}`;
                 }
 
-                // 3) ترشيح اقتصادي/مكتبة/ألوان/أبيض وأسود/مكتب.
-                const best = findBestProducts(intent, 2);
-                if (best.length) {
-                    const p = best[0];
-                    customerState.lastProduct = p.name;
-                    let intro = 'بناءً على طلبك، أنسب اختيار أرشحه لك هو';
-                    if (intent.wantsCheap) intro = 'لو عايز اختيار اقتصادي، أرشح لك';
-                    if (intent.wantsHeavy) intro = 'لو الاستخدام ضغط أو مكتبة، أرشح لك';
-                    if (intent.wantsColor) intro = 'لو محتاج ألوان، أرشح لك';
-                    if (intent.wantsSmallOffice) intro = 'للمكتب أو الاستخدام المتوسط، أرشح لك';
+                return `أنا مع حضرتك. اكتب اسم الماكينة أو نوعها، مثال: <b>Ricoh 305</b> أو <b>ماكينة ألوان A3</b>، وسأعرض لك النتائج من بيانات الموقع فقط مع زر تفاصيل لكل ماكينة.`;
+            }
 
-                    let html = `${intro}: <strong>${p.name}</strong>.<br>${buildProductReason(p, intent)}.`;
-                    if (best[1]) html += `<br><br>وبديل قريب: <strong>${best[1].name}</strong> لو محتاج مقارنة.`;
-                    html += `<br><br>${productButton(p.name)}`;
-                    html += `${whatsappButton('مرحبًا، أريد الاستفسار عن ' + p.name + ' وهل مناسبة لاستخدامي.')}`;
-                    return html;
+            function isMachineIntent(q) {
+                return /مكن|ماكين|تصوير|طابع|طابعة|برنتر|ريكو|ricoh|افيشيو|aficio/.test(q);
+            }
+
+            function extractModelTokens(text) {
+                const tokens = [];
+                const latinNums = (text.match(/[a-zA-Z]*\s*\d{2,5}\s*[a-zA-Z]*/g) || []).map(x => x.trim());
+                tokens.push(...latinNums);
+                const arabicNum = (text.match(/[٠-٩0-9]{2,5}/g) || []);
+                tokens.push(...arabicNum.map(toEnglishDigits));
+                return [...new Set(tokens.map(t => normalizeArabic(t).replace(/\s+/g,'')))].filter(t => /\d/.test(t));
+            }
+
+            function toEnglishDigits(str) {
+                return String(str).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+            }
+
+            function getAllProductsSafe() {
+                return Array.isArray(window.productsDB) ? window.productsDB : (typeof productsDB !== 'undefined' && Array.isArray(productsDB) ? productsDB : []);
+            }
+
+            function handleDirectProductQuestion(text, q) {
+                const modelTokens = extractModelTokens(text);
+                const asksDetails = /مواصف|تفاصيل|امكانيات|بيانات|سرعة|دقة|وظائف|سكانر|فاكس|طباعة|تعريف|درایفر|driver|سعر|بكام/.test(q);
+                const hasProductWords = isMachineIntent(q) || modelTokens.length > 0;
+                if (!hasProductWords) return '';
+
+                const products = findMatchingProducts(text, q);
+                if (products.length) {
+                    const title = asksDetails ? `دي المنتجات المطابقة من الموقع:` : `لقيت لحضرتك النتائج الأقرب من الموقع:`;
+                    return renderProductsAnswer(products, title);
                 }
 
-                // 4) سيناريوهات عامة متوقعة.
-                const q = normalizeArabic(userText);
-                const scenario = salesScenarios.find(s => s.words.some(w => q.includes(normalizeArabic(w))));
-                if (scenario) {
-                    return `${scenario.response}<br><br>خليني أحدد لك بدقة: الاستخدام اليومي تقريبًا كام نسخة؟ ومحتاج ألوان ولا أبيض وأسود؟`;
+                if (modelTokens.length || asksDetails) {
+                    return `لم أجد منتجًا مطابقًا لطلب حضرتك داخل بيانات الموقع الحالية.<br>
+                    جرّب كتابة الموديل كاملًا، أو حدّد: ألوان ولا أبيض وأسود؟ A4 ولا A3؟<br><br>
+                    ${whatsappButton('استفسار عن ماكينة غير موجودة')}`;
                 }
+                return '';
+            }
 
-                // 5) سؤال توضيحي ذكي عند عدم وضوح الطلب.
-                return `تمام يا فندم، عشان أرشح لك ماكينة صح محتاج أعرف 3 حاجات فقط:<br>
-                1) ألوان ولا أبيض وأسود؟<br>
-                2) A4 ولا A3؟<br>
-                3) الاستخدام مكتب صغير ولا مكتبة/ضغط عالي؟<br><br>
-                مثال: "عايز ماكينة اقتصادية أبيض وأسود A3 لمكتب".`;
+            function findMatchingProducts(text, q) {
+                const products = getAllProductsSafe();
+                if (!products.length) return [];
+                const modelTokens = extractModelTokens(text);
+                const wantColor = /الوان|ألوان|color|colour/.test(q);
+                const wantBW = /ابيض|أبيض|اسود|أسود|bw|black|mono/.test(q);
+                const wantA4 = /a4|ايه فور|اى فور/.test(q);
+                const wantA3 = /a3|ايه ثري|اى ثري/.test(q);
+                const queryWords = q.split(/\s+/).filter(w => w.length > 2 && !['مواصفات','مواصفه','عاوز','عايز','اريد','محتاج','مكنه','مكنة','ماكينة','تصوير','طابعة','طابعه','سعر','بكام'].includes(w));
+
+                let scored = products.map(p => {
+                    const hay = normalizeArabic([p.name, p.category, p.functions, p.paperSize, p.speed, p.resolution, p.description, p.price, ...(p.specs||[]).map(s=>`${s.label} ${s.value}`)].join(' '));
+                    const hayCompact = hay.replace(/\s+/g,'');
+                    let score = 0;
+                    modelTokens.forEach(tok => { if (hayCompact.includes(tok)) score += 80; });
+                    queryWords.forEach(w => { if (hay.includes(w)) score += 8; });
+                    if (wantColor && /الوان|ألوان|color|colour/.test(hay)) score += 20;
+                    if (wantBW && /ابيض|أبيض|اسود|أسود|black|mono|ليزر/.test(hay) && !/الوان|color/.test(hay)) score += 20;
+                    if (wantA4 && /a4/.test(hay)) score += 18;
+                    if (wantA3 && /a3/.test(hay)) score += 18;
+                    return {p, score};
+                }).filter(x => x.score > 0);
+
+                if (!scored.length) return [];
+                const max = Math.max(...scored.map(x=>x.score));
+                const threshold = max >= 80 ? 60 : Math.max(8, max - 10);
+                return scored.filter(x => x.score >= threshold).sort((a,b)=>b.score-a.score).map(x=>x.p);
+            }
+
+            function renderProductsAnswer(products, intro) {
+                const items = products.map(p => {
+                    const specsLine = productSummaryLine(p);
+                    return `<div class="ai-product-card">
+                        <b>${escapeHTML(p.name)}</b><br>
+                        ${specsLine ? `<span>${specsLine}</span><br>` : ''}
+                        <div class="ai-card-actions">${productButton(p.name)} ${whatsappButton('استفسار عن ' + p.name)}</div>
+                    </div>`;
+                }).join('');
+                return `${intro}<br><br>${items}`;
+            }
+
+            function productSummaryLine(p) {
+                const bits = [];
+                if (p.functions) bits.push(`الوظائف: ${escapeHTML(p.functions)}`);
+                if (p.speed) bits.push(`السرعة: ${escapeHTML(p.speed)}`);
+                if (p.paperSize) bits.push(`المقاس: ${escapeHTML(p.paperSize)}`);
+                if (p.price && !/غير|استفس/.test(p.price)) bits.push(`السعر: ${escapeHTML(p.price)}`);
+                else bits.push('السعر: غير معروض على الموقع');
+                return bits.join(' | ');
+            }
+
+            function escapeHTML(v) {
+                return String(v || '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
             }
 
             function appendMessage(text, sender, isHTML = false, saveToSession = true) {
