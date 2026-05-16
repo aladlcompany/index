@@ -48,7 +48,7 @@ function smallTalkAnswer(q) {
 }
 function isPaperPriceQuestion(q) {
   const n = norm(q);
-  return /(سعر|اسعار|بكام|كام|بورصه|بورصة)/.test(n) && /(ورق|رزمة|رزم|مرام|دبل|زيروكس|روتاتريم|كوبيا|a4|a3)/.test(n);
+  return /(سعر|اسعار|بكام|كام|بورصه|بورصة)/.test(n) && /(ورق|رزمة|رزم|مرام|دبل|زيروكس|روتاتريم|كوبيا)/.test(n);
 }
 function validPrice(price) {
   if (!price) return false;
@@ -67,14 +67,17 @@ function categoryUrl(cat) {
   return '/products.html';
 }
 function productUrl(p) {
-  const q = encodeURIComponent(p.name || '');
-  return `${SITE_URL}${categoryUrl(p.category)}?search=${q}`;
+  const productName = p.name || p.title || p.model || 'product';
+  return `${SITE_URL}/products.html#product-details/${encodeURIComponent(productName)}`;
 }
 function waUrl(text) {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
 }
-function buttons(url, waText) {
-  return `<div class="ai-actions"><a class="ai-btn" href="${esc(url)}" target="_self">افتح صفحة التفاصيل</a><a class="ai-btn ai-wa" href="${esc(waUrl(waText))}" target="_blank" rel="noopener">استفسر واتساب</a></div>`;
+function internalButton(url, label) {
+  return `<button type="button" class="ai-btn ai-go-btn" data-goto="${esc(url)}">${esc(label)}</button>`;
+}
+function buttons(url, waText, label = 'افتح صفحة التفاصيل') {
+  return `<div class="ai-actions">${internalButton(url, label)}<a class="ai-btn ai-wa" href="${esc(waUrl(waText))}" target="_blank" rel="noopener">استفسر واتساب</a></div>`;
 }
 function card(p) {
   const url = productUrl(p);
@@ -125,7 +128,7 @@ function productAnswer(q) {
     const specs = [];
     if (p.category) specs.push(`القسم: ${p.category}`);
     if (p.description) specs.push(p.description);
-    return `<div class="ai-card"><b>${esc(p.name)}</b>${priceLine}<div class="ai-specs">${specs.slice(0,4).map(esc).join('<br>')}</div><div class="ai-actions"><a class="ai-btn" href="${esc(url)}" target="_self">افتح تفاصيل المنتج</a><a class="ai-btn ai-wa" href="${esc(waUrl('أريد الاستفسار عن ' + (p.name||'منتج')))}" target="_blank" rel="noopener">استفسر واتساب</a></div></div>`;
+    return `<div class="ai-card"><b>${esc(p.name)}</b>${priceLine}<div class="ai-specs">${specs.slice(0,4).map(esc).join('<br>')}</div>${buttons(url, 'أريد الاستفسار عن ' + (p.name||'منتج'), 'تفاصيل المنتج')}</div>`;
   }).join('');
   return intro + htmlCards + `<p class="ai-note">ممنوع ذكر أي سعر غير موجود على الموقع. لو السعر غير متوفر، يتم تأكيده عبر واتساب فقط.</p>`;
 }
@@ -134,7 +137,7 @@ function paperAnswer(q) {
   if (!isPaperPriceQuestion(q) && !hasAny(q, ['ورق','اسعار الورق','بورصة الورق','سعر الورق'])) return null;
   const all = Array.isArray(paperProducts) ? paperProducts : [];
   if (!all.length) {
-    return `<p>أسعار بورصة الورق غير ظاهرة حاليًا من بيانات الموقع.</p><p><b>تنبيه مهم:</b> شركة العدل لا تبيع الورق؛ نشاطنا بيع وصيانة الطابعات وماكينات التصوير والأحبار وقطع الغيار.</p><a class="ai-btn" href="${SITE_URL}/paper-prices.html" target="_self">فتح صفحة بورصة الورق</a>`;
+    return `<p>أسعار بورصة الورق غير ظاهرة حاليًا من بيانات الموقع.</p><p><b>تنبيه مهم:</b> شركة العدل لا تبيع الورق؛ نشاطنا بيع وصيانة الطابعات وماكينات التصوير والأحبار وقطع الغيار.</p>${internalButton(SITE_URL + '/paper-prices.html', 'فتح صفحة بورصة الورق')}`;
   }
   const n = norm(q);
   const wantA3 = /a3|ايه 3|اى 3/.test(n);
@@ -155,7 +158,7 @@ function paperAnswer(q) {
     const desc = [item.brand, item.size, item.weight, item.description, item.category].filter(Boolean).join(' - ');
     return `<div class="ai-card"><b>${esc(name)}</b><div class="ai-price">${esc(price)}</div><div class="ai-specs">${esc(desc)}</div></div>`;
   }).join('');
-  return `<p>دي أسعار بورصة الورق المتاحة حاليًا من صفحة البورصة داخل الموقع:</p>${cards}<p class="ai-note"><b>تنبيه مهم:</b> دي أسعار بورصة استرشادية، وشركة العدل لا تبيع الورق. نشاطنا بيع وصيانة ماكينات التصوير والطابعات والأحبار وقطع الغيار.</p><a class="ai-btn" href="${SITE_URL}/paper-prices.html" target="_self">فتح صفحة بورصة الورق</a>`;
+  return `<p>دي أسعار بورصة الورق المتاحة حاليًا من صفحة البورصة داخل الموقع:</p>${cards}<p class="ai-note"><b>تنبيه مهم:</b> دي أسعار بورصة استرشادية، وشركة العدل لا تبيع الورق. نشاطنا بيع وصيانة ماكينات التصوير والطابعات والأحبار وقطع الغيار.</p>${internalButton(SITE_URL + '/paper-prices.html', 'فتح صفحة بورصة الورق')}`;
 }
 
 function pageButtonAnswer(q) {
@@ -167,11 +170,11 @@ function pageButtonAnswer(q) {
   else if (n.includes('ابيض') || n.includes('اسود')) {url='/black-white-copiers.html'; label='ماكينات أبيض وأسود';}
   else if (n.includes('احبار') || n.includes('تونر')) {url='/color-toners.html'; label='الأحبار والتونر';}
   else if (n.includes('طابعات')) {url='/digital-bw-printers.html'; label='الطابعات';}
-  return `<p>تفضل، اضغط على الزر للانتقال مباشرة إلى ${esc(label)}:</p><a class="ai-btn" href="${SITE_URL}${url}" target="_self">اذهب إلى ${esc(label)}</a>`;
+  return `<p>تفضل، اضغط على الزر للانتقال مباشرة إلى ${esc(label)}:</p>${internalButton(SITE_URL + url, 'اذهب إلى ' + label)}`;
 }
 function teamAnswer(q) {
   if (!hasAny(q, ['فريق العمل','مدير','صاحب الشركة','المالك','الإدارة','الاداره','من المسؤول'])) return null;
-  return `<p>معلومات فريق العمل والإدارة يتم الرجوع لها من صفحة الموقع، وليس من تخمينات خارجية.</p><a class="ai-btn" href="${SITE_URL}/about.html" target="_self">افتح صفحة من نحن / فريق العمل</a><a class="ai-btn ai-wa" href="${esc(waUrl('أريد التواصل مع إدارة شركة العدل'))}" target="_blank" rel="noopener">تواصل واتساب</a>`;
+  return `<p>معلومات فريق العمل والإدارة يتم الرجوع لها من صفحة الموقع، وليس من تخمينات خارجية.</p>${internalButton(SITE_URL + '/about.html', 'افتح صفحة من نحن / فريق العمل')}<a class="ai-btn ai-wa" href="${esc(waUrl('أريد التواصل مع إدارة شركة العدل'))}" target="_blank" rel="noopener">تواصل واتساب</a>`;
 }
 
 async function groqAnswer(message) {
@@ -192,8 +195,19 @@ module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   try {
     const message = String(req.body?.message || '').trim();
+    const history = Array.isArray(req.body?.history) ? req.body.history.slice(-6).map(x => String(x || '')).join(' ') : '';
+    const context = `${history} ${message}`.trim();
     if (!message) return res.status(400).json({ error: 'Message is required' });
-    const reply = smallTalkAnswer(message) && isSmallTalk(message) ? smallTalkAnswer(message) : (paperAnswer(message) || pageButtonAnswer(message) || teamAnswer(message) || productAnswer(message) || await groqAnswer(message));
+
+    const machineContext = hasAny(context, ['مكنة','ماكينة','طابعة','تصوير','ricoh','ريكو','الوان','أبيض وأسود','ابيض واسود']);
+    const paperContext = hasAny(message, ['ورق','بورصة الورق','اسعار الورق','سعر الورق','رزمة','رزم','مرام','دبل']);
+
+    let reply = null;
+    if (isSmallTalk(message)) reply = smallTalkAnswer(message);
+    else if (teamAnswer(message)) reply = teamAnswer(message);
+    else if (paperContext && !machineContext) reply = paperAnswer(message);
+    else reply = productAnswer(context) || (paperContext ? paperAnswer(message) : null) || pageButtonAnswer(message) || await groqAnswer(message);
+
     return res.status(200).json({ reply, format: 'html' });
   } catch (e) {
     return res.status(200).json({ reply: 'حصل ضغط مؤقت في المساعد. جرب مرة أخرى بعد لحظات أو تواصل معنا على واتساب 01094799247.' });

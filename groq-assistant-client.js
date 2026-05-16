@@ -17,7 +17,7 @@
     .ai-price{font-weight:700;color:#28334d;margin:4px 0}.ai-price.muted{color:#777;font-weight:600}
     .ai-specs{font-size:13px;color:#5d677a;margin:5px 0}
     .ai-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
-    .ai-btn{display:inline-block;background:#8d2d57;color:#fff!important;text-decoration:none;border-radius:999px;padding:7px 12px;font-size:13px;font-weight:700;margin:6px 5px 0 0}
+    .ai-btn{display:inline-block;background:#8d2d57;color:#fff!important;text-decoration:none;border:0;cursor:pointer;border-radius:999px;padding:8px 14px;font-size:13px;font-weight:700;margin:6px 5px 0 0}
     .ai-btn.ai-wa{background:#25D366;color:#073b1d!important}.ai-note{font-size:12px;color:#777}.ai-list{background:#f8f4f6;border-radius:12px;padding:9px;margin:7px 0;line-height:1.9}
   `;
   document.head.appendChild(style);
@@ -39,6 +39,12 @@
     div.className = 'ai-message ' + (sender === 'user' ? 'user' : 'bot');
     if (isHtml) {
       div.innerHTML = String(content || '');
+      div.querySelectorAll('[data-goto]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          const url = btn.getAttribute('data-goto');
+          if (url) window.location.href = url;
+        });
+      });
     } else {
       div.textContent = String(content || '');
     }
@@ -83,7 +89,7 @@
 
       const data = await response.json().catch(function () { return {}; });
       const reply = data.reply || data.fallback || 'حصل ضغط مؤقت. حاول مرة أخرى بعد لحظات.';
-      const isHtml = data.format === 'html' || /<\/?(p|div|a|br|b|strong)/i.test(reply);
+      const isHtml = data.format === 'html' || /<\/?(p|div|a|button|br|b|strong)/i.test(reply);
       addMessage(reply, 'bot', isHtml);
       history.push({ role: 'assistant', content: isHtml ? reply.replace(/<[^>]*>/g, ' ') : reply });
       history = history.slice(-8);
