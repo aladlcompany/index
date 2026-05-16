@@ -3060,8 +3060,8 @@ function maintenanceRedirectAnswer(message) {
   if (!hasAny(text, maintenanceWords)) return null;
   const hasMachine = hasAny(text, machineWords) || hasAny(text, ['طلب صيانة', 'اطلب صيانة', 'محتاج صيانة', 'عايز صيانة', 'صيانة لمكنة', 'صيانة ماكينة']);
   if (!hasMachine && !hasAny(text, ['صيانة', 'صيانه', 'عطل', 'مهندس صيانة', 'فني صيانة'])) return null;
-  const url = absUrl('/tech-support.html');
-  const reply = `<div class="bot-card"><b>تمام، هحوّلك لصفحة مركز الصيانة الآن.</b><br>سجّل بيانات الماكينة والمشكلة، وهيتم التواصل معاك من فريق الصيانة في أسرع وقت.<br>${goButton(url, 'فتح مركز الصيانة')}</div>`;
+  const url = '/tech-support.html#booking';
+  const reply = `<div class="bot-card"><b>تمام يا فندم، افتح مربع مركز الصيانة وسجّل بيانات الماكينة.</b><br>بعد تسجيل البيانات هيتواصل معاك المختص في أسرع وقت.<br><button type="button" data-ai-action="maintenance-form" style="background:#be123c;color:#fff;border:0;border-radius:999px;padding:10px 18px;font-weight:800;cursor:pointer;box-shadow:0 8px 18px rgba(190,18,60,.25);">افتح مركز الصيانة</button></div>`;
   return { reply, redirectUrl: url };
 }
 
@@ -3128,8 +3128,7 @@ module.exports = async function handler(req, res) {
     if (maintenanceRedirect) {
       return res.status(200).json({
         reply: sanitizeContactNumbers(maintenanceRedirect.reply),
-        redirectUrl: maintenanceRedirect.redirectUrl,
-        redirectDelayMs: 1200,
+        action: 'maintenance_form',
         format: 'html',
         debug: { source: 'local-json-maintenance-redirect' }
       });

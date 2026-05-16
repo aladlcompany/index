@@ -627,6 +627,12 @@ body.ai-assistant-open {
     overflow: hidden;
 }
 
+
+        .ai-message { white-space: pre-wrap; }
+        .ai-message.bot { white-space: pre-wrap; }
+        .ai-message.bot button { font-family: inherit; }
+        .ai-highlight-target { outline: 3px solid rgba(190,18,60,.35); outline-offset: 8px; border-radius: 20px; transition: outline .3s ease; }
+
 </style>
 <script>
         /* V10: Gemini Preview يستخدم نفس قائمة الموبايل الأصلية بدل القائمة المنسدلة المخصصة.
@@ -1149,6 +1155,7 @@ function alAdlPageHref(targetId, category, itemId) {
 </div>
 </div>
 </div>
+<div id="maintenance-form" class="maintenance-form-anchor" style="position:relative;top:-120px;"></div>
 <section class="pt-4 pb-12 bg-white" id="booking">
 <div class="container mx-auto px-4 md:px-6 max-w-5xl">
 <div class="bg-rose-950 rounded-[3rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row border-b-8 border-rose-700">

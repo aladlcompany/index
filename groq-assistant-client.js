@@ -130,7 +130,7 @@
   // استرجاع المحادثة عند الانتقال بين صفحات الموقع بدل أن تبدأ من جديد
   if (history.length) {
     history.forEach(function (m) {
-      addMessage(m.content, m.role === 'user' ? 'user' : 'bot', false);
+      addMessage(m.content, m.role === 'user' ? 'user' : 'bot', !!m.isHtml);
     });
   }
 
@@ -162,7 +162,7 @@
     const requestHistory = history.slice(-8); // السياق قبل الرسالة الحالية فقط
     input.value = '';
     addMessage(text, 'user', false);
-    history.push({ role: 'user', content: text });
+    history.push({ role: 'user', content: text, isHtml: false });
     history = history.slice(-8);
     saveHistory();
     setLoading(true);
@@ -184,20 +184,11 @@
       if (data.debug && window.console) console.info('ElAdl assistant:', data.debug);
       const isHtml = data.format === 'html' || /<\/?(p|div|a|button|br|b|strong)/i.test(reply);
       addMessage(reply, 'bot', isHtml);
-      history.push({ role: 'assistant', content: isHtml ? reply.replace(/<[^>]*>/g, ' ') : reply });
+      history.push({ role: 'assistant', content: reply, isHtml: isHtml });
       history = history.slice(-8);
       saveHistory();
 
-      if (data.redirectUrl) {
-        const redirectDelay = Number(data.redirectDelayMs || 1200);
-        window.setTimeout(function () {
-          try {
-            window.location.href = data.redirectUrl;
-          } catch (err) {
-            window.location.assign(data.redirectUrl);
-          }
-        }, redirectDelay);
-      }
+      // No automatic page change. The user clicks the action button when ready.
     } catch (e) {
       addMessage('حصل خطأ مؤقت. حاول مرة أخرى بعد لحظات.', 'bot', false);
     } finally {
@@ -211,4 +202,25 @@
 
   sendBtn.addEventListener('click', askGroq, true);
   input.addEventListener('keydown', function (event) { if (event.key === 'Enter') askGroq(event); }, true);
+
+// Handles buttons inside chat messages, including the maintenance form button.
+document.addEventListener('click', function(e) {
+    const btn = e.target.closest('[data-ai-action="maintenance-form"]');
+    if (!btn) return;
+    e.preventDefault();
+
+    const targetSelector = '#maintenance-form, #page-booking, .maintenance-form-anchor';
+    const localTarget = document.querySelector(targetSelector);
+
+    if (localTarget) {
+        try { if (typeof closeChat === 'function') closeChat(); } catch (_) {}
+        localTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        localTarget.classList.add('ai-highlight-target');
+        setTimeout(() => localTarget.classList.remove('ai-highlight-target'), 1800);
+        return;
+    }
+
+    window.location.href = 'tech-support.html#maintenance-form';
+});
+
 })();

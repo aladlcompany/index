@@ -630,7 +630,13 @@ body.ai-assistant-open {
 
         .ai-product-card{background:#fff;border:1px solid rgba(120,30,55,.14);border-radius:18px;padding:12px 14px;margin:10px 0;text-align:right;box-shadow:0 8px 22px rgba(40,20,30,.06);line-height:1.9;color:#334155}
         .ai-product-card b{color:#7a243f;font-size:1rem}.ai-product-card span{font-size:.9rem}.ai-card-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.ai-action-btn{border:0;border-radius:999px;padding:9px 14px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}.ai-details-btn{background:#7a243f;color:white}.ai-whatsapp-btn{background:#22c55e;color:white}
-        </style>
+        
+        .ai-message { white-space: pre-wrap; }
+        .ai-message.bot { white-space: pre-wrap; }
+        .ai-message.bot button { font-family: inherit; }
+        .ai-highlight-target { outline: 3px solid rgba(190,18,60,.35); outline-offset: 8px; border-radius: 20px; transition: outline .3s ease; }
+
+</style>
 <script>
         /* V10: Gemini Preview يستخدم نفس قائمة الموبايل الأصلية بدل القائمة المنسدلة المخصصة.
            نترك دوال toggleMobileMenu / toggleAccordion الأصلية تعمل كما هي. */
@@ -1134,6 +1140,7 @@ function alAdlPageHref(targetId, category, itemId) {
 </div>
 </div>
 </div>
+<div id="maintenance-form" class="maintenance-form-anchor" style="position:relative;top:-120px;"></div>
 <section class="pt-4 pb-12 bg-white" id="booking">
 <div class="container mx-auto px-4 md:px-6 max-w-5xl">
 <div class="bg-rose-950 rounded-[3rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row border-b-8 border-rose-700">
