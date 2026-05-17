@@ -800,6 +800,19 @@ function alAdlPageHref(targetId, category, itemId) {
 
 
 
+
+<style id="aladl-interaction-fixes">
+/* يجعل أي عنصر قابل للضغط يظهر بعلامة اليد بوضوح */
+a[href], button, [role="button"], [onclick], .cursor-pointer, .dropdown-card, .nested-link, .mobile-menu-item, .ai-btn, .ai-bubble, .article-reco-card, input[type="button"], input[type="submit"], summary {
+  cursor: pointer !important;
+}
+button:disabled, [aria-disabled="true"], .disabled {
+  cursor: not-allowed !important;
+}
+.article-reco-link, .article-smart-link {
+  cursor: pointer !important;
+}
+</style>
 </head>
 <body class="text-gray-800 text-right" id="mainBody" ontouchstart="" style="opacity: 1; transition: opacity 0.3s ease-out;">
 <div class="menu-overlay" id="overlay" onclick="toggleMobileMenu()"></div>
@@ -1330,7 +1343,7 @@ function alAdlPageHref(targetId, category, itemId) {
 </section>
 </main>
 <main class="page-section text-right active" id="page-articles">
-<section class="pt-8 pb-12 container mx-auto px-6 max-w-7xl text-right">
+<section class="pt-8 pb-12 container mx-auto px-6 max-w-5xl text-right">
 <!-- عنوان صفحة المقالات -->
 <div class="text-center mb-12 w-full relative">
 <div class="inline-flex flex-col items-center justify-center gap-3 bg-gradient-to-r from-rose-50 via-white to-rose-50 px-6 md:px-12 py-4 md:py-6 rounded-[2rem] border border-rose-100 shadow-sm relative overflow-hidden group">
@@ -1338,20 +1351,12 @@ function alAdlPageHref(targetId, category, itemId) {
 <div class="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-rose-700 to-rose-900 text-white rounded-xl md:rounded-2xl flex items-center justify-center text-2xl md:text-3xl shadow-md z-10 relative transform group-hover:-rotate-6 transition-transform duration-300">
 <i class="fa fa-newspaper"></i>
 </div>
-<h2 class="text-xl md:text-3xl font-black font-cairo text-rose-950 z-10 relative tracking-wide mt-1">المقالات والعروض</h2>
-<p class="text-sm md:text-base text-gray-500 font-bold mt-2 z-10 relative">مقالات منسقة في عمودين + إعلانات مباشرة من صفحة المنتجات</p>
+<h2 class="text-xl md:text-3xl font-black font-cairo text-rose-950 z-10 relative tracking-wide mt-1">
+                        المقالات والعروض
+                    </h2>
 </div>
 </div>
-<div class="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_340px] gap-8 items-start">
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10" id="articlesGrid"></div>
-<aside class="xl:sticky xl:top-28">
-<div class="bg-white rounded-[2rem] p-5 md:p-6 shadow-xl border border-gray-100">
-<h3 class="text-xl font-black text-rose-950 font-cairo mb-2">إعلانات ماكينات التصوير</h3>
-<p class="text-sm text-gray-500 font-bold leading-7 mb-5">اضغط على أي إعلان للدخول مباشرة إلى صفحة تفاصيل الماكينة.</p>
-<div id="articlesProductAds" class="space-y-4"></div>
-</div>
-</aside>
-</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12" id="articlesGrid"></div>
 </section>
 </main>
 <main class="page-section text-right" id="page-single-article">
@@ -2716,10 +2721,12 @@ function alAdlPageHref(targetId, category, itemId) {
                 const currentFile = (window.location.pathname.split('/').pop() || 'index.html');
                 const targetFile = targetUrl.split('?')[0].split('#')[0];
                 if (!dynamicPages.includes(targetId) && targetFile && currentFile !== targetFile) {
+                    try { sessionStorage.setItem('aladlIntentionalTopNavigation', '1'); } catch(e) {}
                     window.location.href = targetUrl;
                     return;
                 }
                 if (targetId === 'products' && category && category !== 'all' && targetFile && currentFile !== targetFile) {
+                    try { sessionStorage.setItem('aladlIntentionalTopNavigation', '1'); } catch(e) {}
                     window.location.href = targetUrl;
                     return;
                 }
@@ -3096,6 +3103,78 @@ function alAdlPageHref(targetId, category, itemId) {
         const productsDB = loadElAdlJsonData('products.json', []);
 
 
+        let articleRecommendationIndex = 0;
+        let articleRecommendationTimer = null;
+
+        function getArticleRecommendationProducts() {
+            return productsDB.filter(p => p && (p.category === 'bw-copiers' || p.category === 'color-copiers'));
+        }
+
+        function articleProductUrl(productName) {
+            return 'products.html#product-details/' + encodeURIComponent(productName || '');
+        }
+
+        function renderArticleRecommendations() {
+            const containers = document.querySelectorAll('[data-article-recommendations]');
+            if (!containers.length) return;
+
+            const items = getArticleRecommendationProducts();
+            if (!items.length) {
+                containers.forEach(container => container.innerHTML = '');
+                return;
+            }
+
+            const perView = window.innerWidth < 768 ? 1 : 3;
+            const selected = [];
+            for (let i = 0; i < Math.min(perView, items.length); i++) {
+                selected.push(items[(articleRecommendationIndex + i) % items.length]);
+            }
+
+            const cardsHtml = selected.map(prod => `
+                <article class="article-reco-card group bg-white rounded-[2rem] border border-rose-100 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col">
+                    <button type="button" onclick="openProductDetails('${String(prod.name || '').replace(/'/g, "\\'")}')" class="block w-full text-right p-5 md:p-6 flex-1">
+                        <div class="h-44 md:h-52 mb-5 flex items-center justify-center bg-gradient-to-br from-rose-50/70 to-white rounded-[1.5rem] p-4">
+                            <img loading="lazy" src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain mix-blend-multiply drop-shadow-md group-hover:scale-105 transition-transform duration-500" onerror="handleGenericError(this)">
+                        </div>
+                        <div class="flex items-center justify-between gap-3 mb-3">
+                            <span class="inline-flex items-center rounded-full bg-rose-50 text-rose-700 px-3 py-1 text-[11px] font-black border border-rose-100">${prod.category === 'color-copiers' ? 'ألوان' : 'أبيض وأسود'}</span>
+                            <span class="text-xs font-black text-gray-400">${prod.speed || ''}</span>
+                        </div>
+                        <h3 class="text-lg md:text-xl font-black text-rose-950 font-cairo leading-tight mb-3 group-hover:text-rose-700 transition-colors">${prod.name}</h3>
+                        <p class="text-sm md:text-base text-gray-600 font-bold leading-relaxed mb-4">${prod.functions || prod.paperSize || 'ماكينة تصوير مناسبة للأعمال اليومية'}</p>
+                        <div class="flex items-center justify-between border-t border-gray-100 pt-4 mt-auto">
+                            <span class="text-rose-900 font-black text-sm md:text-base">${prod.price || 'غير متوفر'}</span>
+                            <span class="bg-rose-700 text-white px-4 py-2 rounded-xl text-xs md:text-sm font-black shadow-md group-hover:bg-rose-900 transition-colors">شوف التفاصيل <i class="fa fa-arrow-left mr-1"></i></span>
+                        </div>
+                    </button>
+                </article>
+            `).join('');
+
+            const html = `
+                <section class="mt-12 md:mt-16 bg-gradient-to-br from-white via-rose-50/45 to-white border border-rose-100 rounded-[2.5rem] p-5 md:p-8 shadow-xl">
+                    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mb-6">
+                        <div>
+                            <span class="inline-flex items-center gap-2 bg-rose-700 text-white px-4 py-1.5 rounded-full text-xs font-black shadow-md"><i class="fa fa-star"></i> ترشيح اليوم</span>
+                            <h2 class="text-2xl md:text-3xl font-black text-rose-950 font-cairo mt-3">ماكينات تصوير مناسبة لاحتياجك</h2>
+                        </div>
+                        <p class="text-gray-500 font-bold text-sm md:text-base">اختيارات من صفحة المنتجات وتتغير تلقائيًا كل دقيقة بترتيب كامل.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">${cardsHtml}</div>
+                </section>
+            `;
+            containers.forEach(container => { container.innerHTML = html; });
+
+            if (articleRecommendationTimer) clearInterval(articleRecommendationTimer);
+            articleRecommendationTimer = setInterval(() => {
+                const list = getArticleRecommendationProducts();
+                if (!list.length) return;
+                articleRecommendationIndex = (articleRecommendationIndex + perView) % list.length;
+                renderArticleRecommendations();
+            }, 60000);
+        }
+
+
+
         // حقن روابط التعريفات للماكينات المطابقة تلقائياً
         const driversMap = {
             'ريكو MP 4054': 'http://support.ricoh.com/bb/html/dr_ut_e/re2/model/mp2554/mp2554.htm?lang=en',
@@ -3157,41 +3236,20 @@ function alAdlPageHref(targetId, category, itemId) {
         });
 
         const articlesDB = [
-
-        {
-            id: 'article-mp-201',
-            title: 'ماكينة ريكو MP 201: الأداء العملي والاعتمادية في بيئة العمل',
-            category: 'ماكينات تصوير',
-            date: '16 مايو 2026',
-            image: 'images/MP 201.png',
-            excerpt: 'دليل عملي يوضح لماذا تظل Ricoh MP 201 اختيارًا اقتصاديًا وموثوقًا للمكاتب والشركات ومراكز التصوير.',
-            relatedProduct: 'ريكو Aficio MP 201',
-            productLabel: 'شاهد تفاصيل ماكينة ريكو MP 201',
-            content: `<p>تُعد Ricoh MP 201 من أشهر ماكينات التصوير متعددة الوظائف التي اعتمدت عليها الشركات والمكاتب الصغيرة والمتوسطة لسنوات، وذلك بسبب قدرتها على الجمع بين الطباعة والتصوير والمسح الضوئي في جهاز واحد يتميز بالاعتمادية وسهولة الاستخدام.</p>
-<p>تقدم الماكينة أداءً ثابتًا يناسب الأعمال اليومية مثل طباعة المستندات والعقود والفواتير، مع سرعة جيدة تساعد على إنجاز المهام دون تأخير. كما تتميز بجودة طباعة واضحة سواء للنصوص أو المستندات التفصيلية، وهو ما يجعلها خيارًا مناسبًا للمكاتب التي تحتاج إلى إنتاج مستمر وبتكلفة تشغيل اقتصادية.</p>
-<p>من أهم مزايا ماكينة ريكو MP 201 أنها تدعم وظائف متعددة داخل جهاز واحد، حيث يمكن استخدامها في: تصوير المستندات، الطباعة من الكمبيوتر، المسح الضوئي (Scanner)، وإرسال الملفات رقمياً داخل الشبكة.</p>
-<p>كما توفر واجهة تشغيل بسيطة تسهّل التعامل معها حتى للمستخدمين غير المتخصصين، بالإضافة إلى سهولة صيانة قطع الغيار وتوافر الأحبار والإكسسوارات الخاصة بها في الأسواق.</p>
-<p>وتشتهر الماكينة أيضًا بتحملها ضغط العمل اليومي، لذلك تنتشر بشكل واسع داخل: الشركات، المكاتب الهندسية، مراكز التصوير، المؤسسات التعليمية، العيادات والإدارات الحكومية.</p>
-<p>ومن الجوانب المهمة التي يبحث عنها المستخدمون انخفاض استهلاك الحبر والكهرباء مقارنة ببعض الموديلات الأخرى، مما يساعد على تقليل تكاليف التشغيل على المدى الطويل.</p>
-<p>ورغم ظهور موديلات أحدث، ما زالت ماكينة ريكو MP 201 تحافظ على مكانتها بفضل الاعتمادية وسهولة الاستخدام وسعرها المناسب مقارنة بالإمكانات التي تقدمها، وهو ما يجعلها خيارًا عمليًا للعديد من بيئات العمل التي تحتاج إلى جهاز قوي واقتصادي في الوقت نفسه.</p>`
-        },
-        {
-            id: 'article-mp-301',
-            title: 'ماكينة ريكو MP 301: الحل العملي للمكاتب والشركات',
-            category: 'ماكينات تصوير',
-            date: '16 مايو 2026',
-            image: 'images/MP 301.png',
-            excerpt: 'تعرف على إمكانيات Ricoh MP 301 ولماذا تناسب المكاتب والشركات التي تحتاج سرعة واعتمادية وتكلفة تشغيل اقتصادية.',
-            relatedProduct: 'ريكو Aficio MP 301',
-            productLabel: 'شاهد تفاصيل ماكينة ريكو MP 301',
-            content: `<p>تعتبر Ricoh MP 301 من أشهر ماكينات التصوير والطباعة متعددة الوظائف التي حققت انتشارًا واسعًا في المكاتب والشركات، وذلك بفضل إمكانياتها العملية وسهولة استخدامها وتكلفة تشغيلها الاقتصادية.</p>
-<p>تجمع الماكينة بين عدة وظائف مهمة داخل جهاز واحد، حيث توفر: التصوير، الطباعة، المسح الضوئي (Scanner)، والفاكس في بعض الإصدارات.</p>
-<p>كما تتميز بتصميم مدمج يناسب المساحات الصغيرة مع أداء قوي يتحمل ضغط العمل اليومي داخل الشركات والمكاتب. وتصل سرعة الطباعة والتصوير إلى حوالي 30 صفحة في الدقيقة، مما يساعد على إنجاز الأعمال بسرعة وكفاءة.</p>
-<p>ومن أهم المميزات التي جعلت ماكينة ريكو MP 301 خيارًا مفضلًا لدى الكثير من المستخدمين: دعم الطباعة والتصوير على الوجهين أوتوماتيكياً، شاشة تشغيل سهلة الاستخدام، إمكانية الطباعة من USB، دعم التوصيل بالشبكات داخل الشركات، وجودة طباعة عالية تصل إلى 600 dpi.</p>
-<p>وتتميز الماكينة أيضًا بوجود ذاكرة RAM بسعة 1 جيجابايت، مع دعم لخيارات تخزين إضافية في بعض النسخ، ما يساعد على تحسين الأداء أثناء تنفيذ المهام المتعددة.</p>
-<p>كما تشتهر ريكو MP 301 بسهولة الصيانة وتوافر الأحبار وقطع الغيار، وهو ما يقلل من تكاليف التشغيل والصيانة على المدى الطويل. لذلك تعتمد عليها العديد من: مراكز التصوير، المدارس، العيادات، المكاتب الإدارية، والشركات الصغيرة والمتوسطة.</p>
-<p>ورغم ظهور موديلات أحدث، ما زالت ماكينة ريكو MP 301 تحتفظ بمكانتها بسبب الاعتمادية العالية وقوة الأداء مقارنة بسعرها، مما يجعلها من أفضل الخيارات الاقتصادية للأعمال المكتبية اليومية.</p>`
-        },
+{
+                "id": "article-mp-201",
+                "title": "ماكينة ريكو MP 201: الأداء العملي والاعتمادية في بيئة العمل",
+                "image": "images/MP 201.png",
+                "date": "دليل ماكينات ريكو",
+                "content": "\n<p class=\"mb-5 text-lg font-bold text-gray-700 leading-loose\">تُعد Ricoh <a href=\"products.html#product-details/%D8%B1%D9%8A%D9%83%D9%88%20Aficio%20MP%20201\" onclick=\"openProductDetails('ريكو Aficio MP 201'); return false;\" class=\"article-smart-link text-rose-800 underline decoration-rose-300 underline-offset-4 hover:text-rose-950 hover:decoration-rose-700 transition font-black\">MP 201</a> من أشهر ماكينات التصوير متعددة الوظائف التي اعتمدت عليها الشركات والمكاتب الصغيرة والمتوسطة لسنوات، وذلك بسبب قدرتها على الجمع بين الطباعة والتصوير والمسح الضوئي في جهاز واحد يتميز بالاعتمادية وسهولة الاستخدام.</p>\n<p class=\"mb-5 text-lg font-bold text-gray-700 leading-loose\">تقدم الماكينة أداءً ثابتًا يناسب الأعمال اليومية مثل طباعة المستندات والعقود والفواتير، مع سرعة جيدة تساعد على إنجاز المهام دون تأخير. كما تتميز بجودة طباعة واضحة سواء للنصوص أو المستندات التفصيلية، وهو ما يجعلها خيارًا مناسبًا للمكاتب التي تحتاج إلى إنتاج مستمر وبتكلفة تشغيل اقتصادية.</p>\n<h4 class=\"text-2xl font-black text-rose-950 mb-4 mt-8 font-cairo border-r-4 border-rose-600 pr-4\">أهم استخدامات ماكينة ريكو <a href=\"products.html#product-details/%D8%B1%D9%8A%D9%83%D9%88%20Aficio%20MP%20201\" onclick=\"openProductDetails('ريكو Aficio MP 201'); return false;\" class=\"article-smart-link text-rose-800 underline decoration-rose-300 underline-offset-4 hover:text-rose-950 hover:decoration-rose-700 transition font-black\">MP 201</a></h4>\n<p class=\"mb-4 text-lg font-bold text-gray-700 leading-loose\">من أهم مزايا ماكينة ريكو <a href=\"products.html#product-details/%D8%B1%D9%8A%D9%83%D9%88%20Aficio%20MP%20201\" onclick=\"openProductDetails('ريكو Aficio MP 201'); return false;\" class=\"article-smart-link text-rose-800 underline decoration-rose-300 underline-offset-4 hover:text-rose-950 hover:decoration-rose-700 transition font-black\">MP 201</a> أنها تدعم وظائف متعددة داخل جهاز واحد، حيث يمكن استخدامها في:</p>\n<ul class=\"list-disc list-inside pr-5 mb-8 space-y-3 text-rose-800 font-bold text-lg\"><li>تصوير المستندات</li><li>الطباعة من الكمبيوتر</li><li>المسح الضوئي (Scanner)</li><li>إرسال الملفات رقمياً داخل الشبكة</li></ul>\n<p class=\"mb-5 text-lg font-bold text-gray-700 leading-loose\">كما توفر واجهة تشغيل بسيطة تسهّل التعامل معها حتى للمستخدمين غير المتخصصين، بالإضافة إلى سهولة صيانة قطع الغيار وتوافر الأحبار والإكسسوارات الخاصة بها في الأسواق.</p>\n<p class=\"mb-4 text-lg font-bold text-gray-700 leading-loose\">وتشتهر الماكينة أيضًا بتحملها ضغط العمل اليومي، لذلك تنتشر بشكل واسع داخل:</p>\n<ul class=\"list-disc list-inside pr-5 mb-8 space-y-3 text-rose-800 font-bold text-lg\"><li>الشركات</li><li>المكاتب الهندسية</li><li>مراكز التصوير</li><li>المؤسسات التعليمية</li><li>العيادات والإدارات الحكومية</li></ul>\n<p class=\"mb-5 text-lg font-bold text-gray-700 leading-loose\">ومن الجوانب المهمة التي يبحث عنها المستخدمون انخفاض استهلاك الحبر والكهرباء مقارنة ببعض الموديلات الأخرى، مما يساعد على تقليل تكاليف التشغيل على المدى الطويل.</p>\n<p class=\"mb-5 text-lg font-bold text-gray-700 leading-loose\">ورغم ظهور موديلات أحدث، ما زالت ماكينة ريكو <a href=\"products.html#product-details/%D8%B1%D9%8A%D9%83%D9%88%20Aficio%20MP%20201\" onclick=\"openProductDetails('ريكو Aficio MP 201'); return false;\" class=\"article-smart-link text-rose-800 underline decoration-rose-300 underline-offset-4 hover:text-rose-950 hover:decoration-rose-700 transition font-black\">MP 201</a> تحافظ على مكانتها بفضل الاعتمادية وسهولة الاستخدام وسعرها المناسب مقارنة بالإمكانات التي تقدمها، وهو ما يجعلها خيارًا عمليًا للعديد من بيئات العمل التي تحتاج إلى جهاز قوي واقتصادي في الوقت نفسه.</p>\n<p class=\"mb-4 text-base font-black text-rose-900 leading-loose bg-rose-50 border border-rose-100 rounded-2xl p-4\">لو محتاج مقارنة أسرع، تقدر تشوف أيضًا ماكينة ريكو <a href=\"products.html#product-details/%D8%B1%D9%8A%D9%83%D9%88%20Aficio%20MP%20301\" onclick=\"openProductDetails('ريكو Aficio MP 301'); return false;\" class=\"article-smart-link text-rose-800 underline decoration-rose-300 underline-offset-4 hover:text-rose-950 hover:decoration-rose-700 transition font-black\">MP 301</a> كاختيار أعلى في السرعة للمكاتب التي تحتاج إنتاج أكبر.</p>\n"
+},
+{
+                "id": "article-mp-301",
+                "title": "ماكينة ريكو MP 301: الحل العملي للمكاتب والشركات",
+                "image": "images/MP 301.png",
+                "date": "دليل ماكينات ريكو",
+                "content": "\n<p class=\"mb-5 text-lg font-bold text-gray-700 leading-loose\">تعتبر Ricoh <a href=\"products.html#product-details/%D8%B1%D9%8A%D9%83%D9%88%20Aficio%20MP%20301\" onclick=\"openProductDetails('ريكو Aficio MP 301'); return false;\" class=\"article-smart-link text-rose-800 underline decoration-rose-300 underline-offset-4 hover:text-rose-950 hover:decoration-rose-700 transition font-black\">MP 301</a> من أشهر ماكينات التصوير والطباعة متعددة الوظائف التي حققت انتشارًا واسعًا في المكاتب والشركات، وذلك بفضل إمكانياتها العملية وسهولة استخدامها وتكلفة تشغيلها الاقتصادية.</p>\n<p class=\"mb-4 text-lg font-bold text-gray-700 leading-loose\">تجمع الماكينة بين عدة وظائف مهمة داخل جهاز واحد، حيث توفر:</p>\n<ul class=\"list-disc list-inside pr-5 mb-8 space-y-3 text-rose-800 font-bold text-lg\"><li>التصوير</li><li>الطباعة</li><li>المسح الضوئي (Scanner)</li><li>الفاكس في بعض الإصدارات</li></ul>\n<p class=\"mb-5 text-lg font-bold text-gray-700 leading-loose\">كما تتميز بتصميم مدمج يناسب المساحات الصغيرة مع أداء قوي يتحمل ضغط العمل اليومي داخل الشركات والمكاتب. وتصل سرعة الطباعة والتصوير إلى حوالي 30 صفحة في الدقيقة، مما يساعد على إنجاز الأعمال بسرعة وكفاءة.</p>\n<h4 class=\"text-2xl font-black text-rose-950 mb-4 mt-8 font-cairo border-r-4 border-rose-600 pr-4\">مميزات ماكينة ريكو <a href=\"products.html#product-details/%D8%B1%D9%8A%D9%83%D9%88%20Aficio%20MP%20301\" onclick=\"openProductDetails('ريكو Aficio MP 301'); return false;\" class=\"article-smart-link text-rose-800 underline decoration-rose-300 underline-offset-4 hover:text-rose-950 hover:decoration-rose-700 transition font-black\">MP 301</a></h4>\n<p class=\"mb-4 text-lg font-bold text-gray-700 leading-loose\">ومن أهم المميزات التي جعلت ماكينة ريكو <a href=\"products.html#product-details/%D8%B1%D9%8A%D9%83%D9%88%20Aficio%20MP%20301\" onclick=\"openProductDetails('ريكو Aficio MP 301'); return false;\" class=\"article-smart-link text-rose-800 underline decoration-rose-300 underline-offset-4 hover:text-rose-950 hover:decoration-rose-700 transition font-black\">MP 301</a> خيارًا مفضلًا لدى الكثير من المستخدمين:</p>\n<ul class=\"list-disc list-inside pr-5 mb-8 space-y-3 text-rose-800 font-bold text-lg\"><li>دعم الطباعة والتصوير على الوجهين أوتوماتيكياً</li><li>شاشة تشغيل سهلة الاستخدام</li><li>إمكانية الطباعة من USB</li><li>دعم التوصيل بالشبكات داخل الشركات</li><li>جودة طباعة عالية تصل إلى 600 dpi</li></ul>\n<p class=\"mb-5 text-lg font-bold text-gray-700 leading-loose\">وتتميز الماكينة أيضًا بوجود ذاكرة RAM بسعة 1 جيجابايت، مع دعم لخيارات تخزين إضافية في بعض النسخ، ما يساعد على تحسين الأداء أثناء تنفيذ المهام المتعددة.</p>\n<p class=\"mb-4 text-lg font-bold text-gray-700 leading-loose\">كما تشتهر ريكو <a href=\"products.html#product-details/%D8%B1%D9%8A%D9%83%D9%88%20Aficio%20MP%20301\" onclick=\"openProductDetails('ريكو Aficio MP 301'); return false;\" class=\"article-smart-link text-rose-800 underline decoration-rose-300 underline-offset-4 hover:text-rose-950 hover:decoration-rose-700 transition font-black\">MP 301</a> بسهولة الصيانة وتوافر الأحبار وقطع الغيار، وهو ما يقلل من تكاليف التشغيل والصيانة على المدى الطويل. لذلك تعتمد عليها العديد من:</p>\n<ul class=\"list-disc list-inside pr-5 mb-8 space-y-3 text-rose-800 font-bold text-lg\"><li>مراكز التصوير</li><li>المدارس</li><li>العيادات</li><li>المكاتب الإدارية</li><li>الشركات الصغيرة والمتوسطة</li></ul>\n<p class=\"mb-5 text-lg font-bold text-gray-700 leading-loose\">ورغم ظهور موديلات أحدث، ما زالت ماكينة ريكو <a href=\"products.html#product-details/%D8%B1%D9%8A%D9%83%D9%88%20Aficio%20MP%20301\" onclick=\"openProductDetails('ريكو Aficio MP 301'); return false;\" class=\"article-smart-link text-rose-800 underline decoration-rose-300 underline-offset-4 hover:text-rose-950 hover:decoration-rose-700 transition font-black\">MP 301</a> تحتفظ بمكانتها بسبب الاعتمادية العالية وقوة الأداء مقارنة بسعرها، مما يجعلها من أفضل الخيارات الاقتصادية للأعمال المكتبية اليومية.</p>\n<p class=\"mb-4 text-base font-black text-rose-900 leading-loose bg-rose-50 border border-rose-100 rounded-2xl p-4\">لو احتياجك اليومي أقل وتبحث عن اختيار اقتصادي، راجع أيضًا ماكينة ريكو <a href=\"products.html#product-details/%D8%B1%D9%8A%D9%83%D9%88%20Aficio%20MP%20201\" onclick=\"openProductDetails('ريكو Aficio MP 201'); return false;\" class=\"article-smart-link text-rose-800 underline decoration-rose-300 underline-offset-4 hover:text-rose-950 hover:decoration-rose-700 transition font-black\">MP 201</a> من صفحة التفاصيل.</p>\n"
+},
             {
                 id: 'article-4',
                 title: 'أسعار ورق A4 في مصر وأفضل الأنواع للطباعة والتصوير',
@@ -3750,47 +3808,25 @@ function alAdlPageHref(targetId, category, itemId) {
             const grid = document.getElementById('articlesGrid');
             if (!grid) return;
             grid.innerHTML = '';
-            grid.className = "grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10";
+            grid.className = "flex flex-col max-w-4xl mx-auto bg-white rounded-[3rem] p-4 md:p-10 shadow-xl border border-gray-100";
             articlesDB.forEach(art => {
                 grid.insertAdjacentHTML('beforeend', `
-                    <article class="group bg-white rounded-[2rem] overflow-hidden shadow-xl border border-gray-100 hover:shadow-2xl transition-all duration-300 flex flex-col h-full">
-                        <div class="h-56 bg-gray-50 flex items-center justify-center p-5 border-b border-gray-100">
-                            <img loading="lazy" src="${art.image}" class="max-w-full max-h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500">
+                    <div class="flex items-center gap-4 md:gap-6 bg-transparent py-6 border-b border-gray-100 last:border-0 hover:bg-rose-50/50 hover:pl-2 md:hover:pl-4 transition-all cursor-pointer group rounded-2xl px-2 md:px-4" onclick="openSingleArticle('${art.id}')">
+                        <div class="w-24 h-24 md:w-32 md:h-32 shrink-0 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
+                            <img loading="lazy" src="${art.image}" class="max-w-full max-h-full object-contain mix-blend-multiply">
                         </div>
-                        <div class="p-6 flex flex-col flex-1">
-                            <span class="text-gray-400 text-xs md:text-sm font-bold mb-3"><i class="fa fa-calendar-alt text-rose-600 ml-1"></i> ${art.date}</span>
-                            <h4 class="text-lg md:text-xl font-black text-gray-800 font-tajawal leading-relaxed mb-3 group-hover:text-rose-700 transition">${art.title}</h4>
-                            <p class="text-gray-500 font-bold leading-7 mb-5 flex-1">${art.excerpt || ''}</p>
-                            <div class="flex flex-wrap gap-3 mt-auto">
-                                <button class="bg-rose-700 text-white px-5 py-3 rounded-2xl font-black hover:bg-rose-900 transition" onclick="openSingleArticle('${art.id}')">اقرأ المقال</button>
-                                ${art.relatedProduct ? `<button class="bg-gray-100 text-gray-800 px-5 py-3 rounded-2xl font-black hover:bg-gray-200 transition" onclick="openProductDetails('${art.relatedProduct}')">تفاصيل الماكينة</button>` : ''}
+                        <div class="flex flex-col text-right flex-1">
+                            <h4 class="text-base md:text-xl font-bold text-gray-800 font-tajawal leading-relaxed mb-2 group-hover:text-rose-700 transition">${art.title}</h4>
+                            <div class="flex justify-between items-center mt-auto">
+                                <span class="text-gray-400 text-xs md:text-sm font-bold"><i class="fa fa-calendar-alt text-rose-600 ml-1"></i> ${art.date}</span>
+                                <span class="text-rose-700 font-bold text-xs md:text-sm flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">اقرأ التفاصيل <i class="fa fa-arrow-left"></i></span>
                             </div>
                         </div>
-                    </article>
+                    </div>
                 `);
             });
-            renderArticlesProductAds();
-        }
-
-        function renderArticlesProductAds() {
-            const ads = document.getElementById('articlesProductAds');
-            if (!ads || !Array.isArray(productsDB)) return;
-            const adNames = ['ريكو Aficio MP 201', 'ريكو Aficio MP 301', 'ريكو Aficio MP C307', 'ريكو MP C3003'];
-            const selected = adNames.map(name => productsDB.find(p => p.name === name)).filter(Boolean);
-            ads.innerHTML = selected.map(product => `
-                <button onclick="openProductDetails('${product.name}')" class="w-full text-right bg-gradient-to-br from-white to-gray-50 border border-gray-100 rounded-[1.7rem] p-4 shadow hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
-                    <div class="flex items-center gap-4">
-                        <div class="w-24 h-24 bg-white rounded-2xl border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden">
-                            <img src="${product.image}" alt="${product.name}" class="w-full h-full object-contain p-2 mix-blend-multiply group-hover:scale-105 transition-transform duration-300">
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="text-xs text-rose-700 font-black mb-1">إعلان ماكينة</div>
-                            <h3 class="font-black text-gray-900 leading-6 mb-2">${product.name}</h3>
-                            <span class="inline-flex items-center gap-2 text-sm font-black text-white bg-rose-700 px-3 py-2 rounded-xl">عرض التفاصيل <i class="fa fa-arrow-left"></i></span>
-                        </div>
-                    </div>
-                </button>
-            `).join('');
+            grid.insertAdjacentHTML('beforeend', `<div class="w-full pt-4" data-article-recommendations></div>`);
+            renderArticleRecommendations();
         }
 
         function renderNewsGrid() {
@@ -3835,20 +3871,12 @@ function alAdlPageHref(targetId, category, itemId) {
                             <div class="article-body text-gray-600 leading-loose text-lg md:text-xl font-bold">
                                 ${article.content}
                             </div>
-                            ${article.relatedProduct ? `
-                                <div class="mt-10 p-5 md:p-6 rounded-[2rem] bg-gradient-to-l from-rose-50 to-white border border-rose-100 flex flex-col md:flex-row gap-4 md:items-center md:justify-between shadow-sm">
-                                    <div>
-                                        <h3 class="text-xl font-black text-rose-950 mb-2">عايز تشوف مواصفات الماكينة؟</h3>
-                                        <p class="text-gray-500 font-bold">اضغط على الزر للدخول مباشرة إلى صفحة تفاصيل المنتج داخل الموقع.</p>
-                                    </div>
-                                    <button onclick="openProductDetails('${article.relatedProduct}')" class="bg-rose-700 text-white px-6 py-4 rounded-2xl font-black hover:bg-rose-900 transition-colors shadow-lg whitespace-nowrap">
-                                        ${article.productLabel || 'شاهد تفاصيل الماكينة'}
-                                    </button>
-                                </div>` : ''}
+                            <div data-article-recommendations></div>
                         </div>
                     </div>
                 `;
             }
+            renderArticleRecommendations();
             navigateTo('single-article', 'all', addToHistory, scrollPos, articleId, 1, isImmediate);
         }
 
@@ -3878,13 +3906,29 @@ function alAdlPageHref(targetId, category, itemId) {
             navigateTo('single-news', 'all', addToHistory, scrollPos, newsId, 1, isImmediate);
         }
 
+
+        document.addEventListener('click', (event) => {
+            const anchor = event.target.closest && event.target.closest('a[href]');
+            if (!anchor) return;
+            const href = anchor.getAttribute('href') || '';
+            if (!href || href.startsWith('#') || anchor.target === '_blank') return;
+            if (/^[^#?]+\.html(\?|#|$)/i.test(href) || href.startsWith('/')) {
+                try { sessionStorage.setItem('aladlIntentionalTopNavigation', '1'); } catch(e) {}
+            }
+        }, true);
+
         window.addEventListener('beforeunload', () => {
             sessionStorage.setItem('savedScrollPosition', window.scrollY);
         });
 
         document.addEventListener('DOMContentLoaded', () => {
             let savedScroll = 0;
-            if (sessionStorage.getItem('savedScrollPosition')) {
+            const intentionalTopNavigation = sessionStorage.getItem('aladlIntentionalTopNavigation') === '1';
+            if (intentionalTopNavigation) {
+                sessionStorage.removeItem('aladlIntentionalTopNavigation');
+                sessionStorage.removeItem('savedScrollPosition');
+            }
+            if (!intentionalTopNavigation && sessionStorage.getItem('savedScrollPosition')) {
                 savedScroll = parseInt(sessionStorage.getItem('savedScrollPosition'), 10);
                 sessionStorage.removeItem('savedScrollPosition');
             }
