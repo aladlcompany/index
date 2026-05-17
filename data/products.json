@@ -2278,5 +2278,509 @@
         "value": "طابعة شبكة - الطباعة على الوجهين (دوبلكس)"
       }
     ]
+  },
+  {
+    "name": "شفرة درام ريكو 161 - 301",
+    "image": "images/spare-parts/161/cleaning-drum-ricoh-161-301.png",
+    "condition": "",
+    "speed": "MP 161 – MP 171 – MP 201 - MP 301",
+    "resolution": "حسب المتوفر",
+    "functions": "قطعة غيار لماكينات تصوير أبيض وأسود",
+    "paperSize": "201 / 301",
+    "price": "100 جنيه",
+    "category": "parts-bw",
+    "description": "شفرة درام ريكو 161 - 301 من قطع غيار ماكينات تصوير ريكو أبيض وأسود — الموديل: 201 / 301 — متوافق مع: MP 161 – MP 171 – MP 201 - MP 301.",
+    "specs": [
+      {
+        "label": "نوع المنتج",
+        "value": "قطعة غيار"
+      },
+      {
+        "label": "القسم",
+        "value": "قطع غيار ماكينات تصوير أبيض وأسود"
+      },
+      {
+        "label": "الموديل",
+        "value": "201 / 301"
+      },
+      {
+        "label": "الماكينات المتوافقة",
+        "value": "MP 161 – MP 171 – MP 201 - MP 301"
+      },
+      {
+        "label": "الحالة / الجودة",
+        "value": "حسب المتوفر"
+      },
+      {
+        "label": "السعر",
+        "value": "100 جنيه"
+      }
+    ],
+    "colorMode": "أبيض وأسود",
+    "paperFormat": "201 / 301",
+    "categoryLabel": "قطع غيار ماكينات تصوير أبيض وأسود",
+    "detailsUrl": "/products.html#product-details/شفرة درام ريكو 161 - 301"
+  },
+  {
+    "name": "شفرة درام ريكو 161 - 301 - جودة عالية",
+    "image": "images/spare-parts/161/cleaning-drum-ricoh-161-301-high-quality.png.png",
+    "condition": "جودة عالية",
+    "speed": "MP 161 – MP 171 – MP 201 - MP 301",
+    "resolution": "جودة عالية",
+    "functions": "قطعة غيار لماكينات تصوير أبيض وأسود",
+    "paperSize": "201 / 301",
+    "price": "150 جنيه",
+    "category": "parts-bw",
+    "description": "شفرة درام ريكو 161 - 301 - جودة عالية من قطع غيار ماكينات تصوير ريكو أبيض وأسود — الحالة/الجودة: جودة عالية — الموديل: 201 / 301 — متوافق مع: MP 161 – MP 171 – MP 201 - MP 301.",
+    "specs": [
+      {
+        "label": "نوع المنتج",
+        "value": "قطعة غيار"
+      },
+      {
+        "label": "القسم",
+        "value": "قطع غيار ماكينات تصوير أبيض وأسود"
+      },
+      {
+        "label": "الموديل",
+        "value": "201 / 301"
+      },
+      {
+        "label": "الماكينات المتوافقة",
+        "value": "MP 161 – MP 171 – MP 201 - MP 301"
+      },
+      {
+        "label": "الحالة / الجودة",
+        "value": "جودة عالية"
+      },
+      {
+        "label": "السعر",
+        "value": "150 جنيه"
+      }
+    ],
+    "colorMode": "أبيض وأسود",
+    "paperFormat": "201 / 301",
+    "categoryLabel": "قطع غيار ماكينات تصوير أبيض وأسود",
+    "detailsUrl": "/products.html#product-details/شفرة درام ريكو 161 - 301 - جودة عالية"
+  },
+  {
+    "name": "درام ريكو 161 - 301",
+    "image": "images/spare-parts/161/ricoh-fuser-upper-roller-161-high-quality.png",
+    "condition": "جودة عالية",
+    "speed": "MP 161 – MP 171 – MP 201 - MP 301",
+    "resolution": "جودة عالية",
+    "functions": "قطعة غيار لماكينات تصوير أبيض وأسود",
+    "paperSize": "201 / 301",
+    "price": "275 جنيه",
+    "category": "parts-bw",
+    "description": "درام ريكو 161 - 301 من قطع غيار ماكينات تصوير ريكو أبيض وأسود — الحالة/الجودة: جودة عالية — الموديل: 201 / 301 — متوافق مع: MP 161 – MP 171 – MP 201 - MP 301.",
+    "specs": [
+      {
+        "label": "نوع المنتج",
+        "value": "قطعة غيار"
+      },
+      {
+        "label": "القسم",
+        "value": "قطع غيار ماكينات تصوير أبيض وأسود"
+      },
+      {
+        "label": "الموديل",
+        "value": "201 / 301"
+      },
+      {
+        "label": "الماكينات المتوافقة",
+        "value": "MP 161 – MP 171 – MP 201 - MP 301"
+      },
+      {
+        "label": "الحالة / الجودة",
+        "value": "جودة عالية"
+      },
+      {
+        "label": "السعر",
+        "value": "275 جنيه"
+      }
+    ],
+    "colorMode": "أبيض وأسود",
+    "paperFormat": "201 / 301",
+    "categoryLabel": "قطع غيار ماكينات تصوير أبيض وأسود",
+    "detailsUrl": "/products.html#product-details/درام ريكو 161 - 301"
+  },
+  {
+    "name": "رول سخان علوي ريكو 161 - صيني",
+    "image": "images/spare-parts/161/ricoh-fuser-upper-roller-161-chinese.png",
+    "condition": "صيني",
+    "speed": "MP 161 – MP 171 – MP 201",
+    "resolution": "صيني",
+    "functions": "قطعة غيار لماكينات تصوير أبيض وأسود",
+    "paperSize": "201",
+    "price": "200 جنيه",
+    "category": "parts-bw",
+    "description": "رول سخان علوي ريكو 161 - صيني من قطع غيار ماكينات تصوير ريكو أبيض وأسود — الحالة/الجودة: صيني — الموديل: 201 — متوافق مع: MP 161 – MP 171 – MP 201.",
+    "specs": [
+      {
+        "label": "نوع المنتج",
+        "value": "قطعة غيار"
+      },
+      {
+        "label": "القسم",
+        "value": "قطع غيار ماكينات تصوير أبيض وأسود"
+      },
+      {
+        "label": "الموديل",
+        "value": "201"
+      },
+      {
+        "label": "الماكينات المتوافقة",
+        "value": "MP 161 – MP 171 – MP 201"
+      },
+      {
+        "label": "الحالة / الجودة",
+        "value": "صيني"
+      },
+      {
+        "label": "السعر",
+        "value": "200 جنيه"
+      }
+    ],
+    "colorMode": "أبيض وأسود",
+    "paperFormat": "201",
+    "categoryLabel": "قطع غيار ماكينات تصوير أبيض وأسود",
+    "detailsUrl": "/products.html#product-details/رول سخان علوي ريكو 161 - صيني"
+  },
+  {
+    "name": "رول سخان علوي ريكو 161 - جودة عالية",
+    "image": "images/spare-parts/161/ricoh-fuser-upper-roller-161-high-quality.png",
+    "condition": "جودة عالية",
+    "speed": "MP 161 – MP 171 – MP 201",
+    "resolution": "جودة عالية",
+    "functions": "قطعة غيار لماكينات تصوير أبيض وأسود",
+    "paperSize": "201",
+    "price": "250 جنيه",
+    "category": "parts-bw",
+    "description": "رول سخان علوي ريكو 161 - جودة عالية من قطع غيار ماكينات تصوير ريكو أبيض وأسود — الحالة/الجودة: جودة عالية — الموديل: 201 — متوافق مع: MP 161 – MP 171 – MP 201.",
+    "specs": [
+      {
+        "label": "نوع المنتج",
+        "value": "قطعة غيار"
+      },
+      {
+        "label": "القسم",
+        "value": "قطع غيار ماكينات تصوير أبيض وأسود"
+      },
+      {
+        "label": "الموديل",
+        "value": "201"
+      },
+      {
+        "label": "الماكينات المتوافقة",
+        "value": "MP 161 – MP 171 – MP 201"
+      },
+      {
+        "label": "الحالة / الجودة",
+        "value": "جودة عالية"
+      },
+      {
+        "label": "السعر",
+        "value": "250 جنيه"
+      }
+    ],
+    "colorMode": "أبيض وأسود",
+    "paperFormat": "201",
+    "categoryLabel": "قطع غيار ماكينات تصوير أبيض وأسود",
+    "detailsUrl": "/products.html#product-details/رول سخان علوي ريكو 161 - جودة عالية"
+  },
+  {
+    "name": "رول سخان علوي ريكو 301",
+    "image": "images/spare-parts/161/ricoh-fuser-upper-roller-301.png",
+    "condition": "جودة عالية",
+    "speed": "MP 301",
+    "resolution": "جودة عالية",
+    "functions": "قطعة غيار لماكينات تصوير أبيض وأسود",
+    "paperSize": "301",
+    "price": "250 جنيه",
+    "category": "parts-bw",
+    "description": "رول سخان علوي ريكو 301 من قطع غيار ماكينات تصوير ريكو أبيض وأسود — الحالة/الجودة: جودة عالية — الموديل: 301 — متوافق مع: MP 301.",
+    "specs": [
+      {
+        "label": "نوع المنتج",
+        "value": "قطعة غيار"
+      },
+      {
+        "label": "القسم",
+        "value": "قطع غيار ماكينات تصوير أبيض وأسود"
+      },
+      {
+        "label": "الموديل",
+        "value": "301"
+      },
+      {
+        "label": "الماكينات المتوافقة",
+        "value": "MP 301"
+      },
+      {
+        "label": "الحالة / الجودة",
+        "value": "جودة عالية"
+      },
+      {
+        "label": "السعر",
+        "value": "250 جنيه"
+      }
+    ],
+    "colorMode": "أبيض وأسود",
+    "paperFormat": "301",
+    "categoryLabel": "قطع غيار ماكينات تصوير أبيض وأسود",
+    "detailsUrl": "/products.html#product-details/رول سخان علوي ريكو 301"
+  },
+  {
+    "name": "طقم تروس التنك ريكو 161 - جودة عالية",
+    "image": "images/spare-parts/161/ricoh-tank-gear-set-161-high-quality.png",
+    "condition": "جودة عالية",
+    "speed": "MP 161 – MP 171 – MP 201 - MP 301",
+    "resolution": "جودة عالية",
+    "functions": "قطعة غيار لماكينات تصوير أبيض وأسود",
+    "paperSize": "1515",
+    "price": "125 جنيه",
+    "category": "parts-bw",
+    "description": "طقم تروس التنك ريكو 161 - جودة عالية من قطع غيار ماكينات تصوير ريكو أبيض وأسود — الحالة/الجودة: جودة عالية — الموديل: 1515 — متوافق مع: MP 161 – MP 171 – MP 201 - MP 301.",
+    "specs": [
+      {
+        "label": "نوع المنتج",
+        "value": "قطعة غيار"
+      },
+      {
+        "label": "القسم",
+        "value": "قطع غيار ماكينات تصوير أبيض وأسود"
+      },
+      {
+        "label": "الموديل",
+        "value": "1515"
+      },
+      {
+        "label": "الماكينات المتوافقة",
+        "value": "MP 161 – MP 171 – MP 201 - MP 301"
+      },
+      {
+        "label": "الحالة / الجودة",
+        "value": "جودة عالية"
+      },
+      {
+        "label": "السعر",
+        "value": "125 جنيه"
+      }
+    ],
+    "colorMode": "أبيض وأسود",
+    "paperFormat": "1515",
+    "categoryLabel": "قطع غيار ماكينات تصوير أبيض وأسود",
+    "detailsUrl": "/products.html#product-details/طقم تروس التنك ريكو 161 - جودة عالية"
+  },
+  {
+    "name": "طقم تروس التنك ريكو 161 - CET",
+    "image": "images/spare-parts/161/ricoh-tank-gear-set-161-cet.png",
+    "condition": "CET",
+    "speed": "MP 161 – MP 171 – MP 201 - MP 301",
+    "resolution": "CET",
+    "functions": "قطعة غيار لماكينات تصوير أبيض وأسود",
+    "paperSize": "1515",
+    "price": "250 جنيه",
+    "category": "parts-bw",
+    "description": "طقم تروس التنك ريكو 161 - CET من قطع غيار ماكينات تصوير ريكو أبيض وأسود — الحالة/الجودة: CET — الموديل: 1515 — متوافق مع: MP 161 – MP 171 – MP 201 - MP 301.",
+    "specs": [
+      {
+        "label": "نوع المنتج",
+        "value": "قطعة غيار"
+      },
+      {
+        "label": "القسم",
+        "value": "قطع غيار ماكينات تصوير أبيض وأسود"
+      },
+      {
+        "label": "الموديل",
+        "value": "1515"
+      },
+      {
+        "label": "الماكينات المتوافقة",
+        "value": "MP 161 – MP 171 – MP 201 - MP 301"
+      },
+      {
+        "label": "الحالة / الجودة",
+        "value": "CET"
+      },
+      {
+        "label": "السعر",
+        "value": "250 جنيه"
+      }
+    ],
+    "colorMode": "أبيض وأسود",
+    "paperFormat": "1515",
+    "categoryLabel": "قطع غيار ماكينات تصوير أبيض وأسود",
+    "detailsUrl": "/products.html#product-details/طقم تروس التنك ريكو 161 - CET"
+  },
+  {
+    "name": "مسطرة سوداء سخان ريكو 161",
+    "image": "images/spare-parts/161/ricoh-black-fuser-strip-161.png",
+    "condition": "",
+    "speed": "MP 161 – MP 171 – MP 201",
+    "resolution": "حسب المتوفر",
+    "functions": "قطعة غيار لماكينات تصوير أبيض وأسود",
+    "paperSize": "201",
+    "price": "175 جنيه",
+    "category": "parts-bw",
+    "description": "مسطرة سوداء سخان ريكو 161 من قطع غيار ماكينات تصوير ريكو أبيض وأسود — الموديل: 201 — متوافق مع: MP 161 – MP 171 – MP 201.",
+    "specs": [
+      {
+        "label": "نوع المنتج",
+        "value": "قطعة غيار"
+      },
+      {
+        "label": "القسم",
+        "value": "قطع غيار ماكينات تصوير أبيض وأسود"
+      },
+      {
+        "label": "الموديل",
+        "value": "201"
+      },
+      {
+        "label": "الماكينات المتوافقة",
+        "value": "MP 161 – MP 171 – MP 201"
+      },
+      {
+        "label": "الحالة / الجودة",
+        "value": "حسب المتوفر"
+      },
+      {
+        "label": "السعر",
+        "value": "175 جنيه"
+      }
+    ],
+    "colorMode": "أبيض وأسود",
+    "paperFormat": "201",
+    "categoryLabel": "قطع غيار ماكينات تصوير أبيض وأسود",
+    "detailsUrl": "/products.html#product-details/مسطرة سوداء سخان ريكو 161"
+  },
+  {
+    "name": "مسطرة سوداء ريكو 301",
+    "image": "images/spare-parts/161/ricoh-black-strip-301.png",
+    "condition": "",
+    "speed": "MP 301",
+    "resolution": "حسب المتوفر",
+    "functions": "قطعة غيار لماكينات تصوير أبيض وأسود",
+    "paperSize": "301",
+    "price": "175 جنيه",
+    "category": "parts-bw",
+    "description": "مسطرة سوداء ريكو 301 من قطع غيار ماكينات تصوير ريكو أبيض وأسود — الموديل: 301 — متوافق مع: MP 301.",
+    "specs": [
+      {
+        "label": "نوع المنتج",
+        "value": "قطعة غيار"
+      },
+      {
+        "label": "القسم",
+        "value": "قطع غيار ماكينات تصوير أبيض وأسود"
+      },
+      {
+        "label": "الموديل",
+        "value": "301"
+      },
+      {
+        "label": "الماكينات المتوافقة",
+        "value": "MP 301"
+      },
+      {
+        "label": "الحالة / الجودة",
+        "value": "حسب المتوفر"
+      },
+      {
+        "label": "السعر",
+        "value": "175 جنيه"
+      }
+    ],
+    "colorMode": "أبيض وأسود",
+    "paperFormat": "301",
+    "categoryLabel": "قطع غيار ماكينات تصوير أبيض وأسود",
+    "detailsUrl": "/products.html#product-details/مسطرة سوداء ريكو 301"
+  },
+  {
+    "name": "مسطرة السخان الزرقاء ريكو 171",
+    "image": "images/spare-parts/161/ricoh-blue-fuser-strip-171.png",
+    "condition": "",
+    "speed": "MP 161 – MP 171 – MP 201",
+    "resolution": "حسب المتوفر",
+    "functions": "قطعة غيار لماكينات تصوير أبيض وأسود",
+    "paperSize": "201",
+    "price": "250 جنيه",
+    "category": "parts-bw",
+    "description": "مسطرة السخان الزرقاء ريكو 171 من قطع غيار ماكينات تصوير ريكو أبيض وأسود — الموديل: 201 — متوافق مع: MP 161 – MP 171 – MP 201.",
+    "specs": [
+      {
+        "label": "نوع المنتج",
+        "value": "قطعة غيار"
+      },
+      {
+        "label": "القسم",
+        "value": "قطع غيار ماكينات تصوير أبيض وأسود"
+      },
+      {
+        "label": "الموديل",
+        "value": "201"
+      },
+      {
+        "label": "الماكينات المتوافقة",
+        "value": "MP 161 – MP 171 – MP 201"
+      },
+      {
+        "label": "الحالة / الجودة",
+        "value": "حسب المتوفر"
+      },
+      {
+        "label": "السعر",
+        "value": "250 جنيه"
+      }
+    ],
+    "colorMode": "أبيض وأسود",
+    "paperFormat": "201",
+    "categoryLabel": "قطع غيار ماكينات تصوير أبيض وأسود",
+    "detailsUrl": "/products.html#product-details/مسطرة السخان الزرقاء ريكو 171"
+  },
+  {
+    "name": "يد هبر الحبر",
+    "image": "images/spare-parts/161/ricoh-hopper-hand-201.png",
+    "condition": "",
+    "speed": "MP 161 – MP 171 – MP 201",
+    "resolution": "حسب المتوفر",
+    "functions": "قطعة غيار لماكينات تصوير أبيض وأسود",
+    "paperSize": "201",
+    "price": "70 جنيه",
+    "category": "parts-bw",
+    "description": "يد هبر الحبر من قطع غيار ماكينات تصوير ريكو أبيض وأسود — الموديل: 201 — متوافق مع: MP 161 – MP 171 – MP 201.",
+    "specs": [
+      {
+        "label": "نوع المنتج",
+        "value": "قطعة غيار"
+      },
+      {
+        "label": "القسم",
+        "value": "قطع غيار ماكينات تصوير أبيض وأسود"
+      },
+      {
+        "label": "الموديل",
+        "value": "201"
+      },
+      {
+        "label": "الماكينات المتوافقة",
+        "value": "MP 161 – MP 171 – MP 201"
+      },
+      {
+        "label": "الحالة / الجودة",
+        "value": "حسب المتوفر"
+      },
+      {
+        "label": "السعر",
+        "value": "70 جنيه"
+      }
+    ],
+    "colorMode": "أبيض وأسود",
+    "paperFormat": "201",
+    "categoryLabel": "قطع غيار ماكينات تصوير أبيض وأسود",
+    "detailsUrl": "/products.html#product-details/يد هبر الحبر"
   }
 ]
