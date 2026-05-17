@@ -3035,6 +3035,95 @@ function productAnswer(q, h = '') {
   return `<p>دي المنتجات المطابقة لطلب حضرتك من بيانات الموقع:</p>${matches.map((p, i) => productCard(p, i + 1)).join('')}`;
 }
 
+function assistantProductRoute(q, h = '') {
+  if (explicitPaperIntent(q) && !machineContext('', h)) return '';
+  if (!productIntent(q, h)) return '';
+  const n = norm(`${q} ${h}`);
+  const isSparePart = requestedPartKind(q) || hasAny(n, ['قطع غيار','قطعة غيار','قطعه غيار','شفرة','شفره','شفرات','درام','رول','سخان','فيوزر','مسطرة','مسطره','تروس','تنك','هبر']);
+  return isSparePart ? 'spare_parts_route' : 'products_route';
+}
+
+function productForGroq(p, index) {
+  const isPart = (p.category || '').includes('parts');
+  return {
+    index,
+    name: p.name || '',
+    price: validPrice(p.price) ? String(p.price) : 'غير متوفر على الموقع',
+    section: p.categoryLabel || p.category || '',
+    compatibleModels: isPart ? (p.speed || '') : '',
+    speed: isPart ? '' : (p.speed || ''),
+    functions: p.functions || '',
+    paperSize: p.paperSize || p.paperFormat || '',
+    condition: p.condition || '',
+    detailsUrl: productDetailsUrl(p)
+  };
+}
+
+async function groqProductAnswer(q, h = '') {
+  const route = assistantProductRoute(q, h);
+  if (!route) return null;
+
+  let localFallback = '';
+  let matches = [];
+  let needsClarification = false;
+
+  if (!otherAlternativeIntent(q) && machineContext(q, h) && missingMachineDetails(q, h)) {
+    needsClarification = true;
+    localFallback = askMachineQuestions();
+  } else {
+    matches = findProducts(q, h);
+    if (!matches.length) {
+      localFallback = `<p>لم أجد منتجًا مطابقًا لطلب حضرتك داخل بيانات الموقع الحالية.</p><p>ممكن تكتب الموديل أو توضح المطلوب أكثر.</p>${actions([waButton('أريد الاستفسار عن منتج أو بديل غير ظاهر في الموقع')])}`;
+    } else {
+      localFallback = `<p>دي المنتجات المطابقة لطلب حضرتك من بيانات الموقع:</p>${matches.map((p, i) => productCard(p, i + 1)).join('')}`;
+    }
+  }
+
+  const apiKey = process.env.GROQ_API_KEY;
+  if (!apiKey) return localFallback;
+
+  const matchedData = matches.slice(0, 12).map((p, i) => productForGroq(p, i + 1));
+  const routeLabel = route === 'spare_parts_route' ? 'قطع غيار' : 'منتجات وماكينات';
+  const system = `أنت مساعد مبيعات لشركة العدل لتجارة ماكينات التصوير والطابعات.
+المسار الحالي: ${routeLabel}.
+اعتمد فقط على بيانات الموقع المرسلة لك في Site Data. ممنوع اختراع سعر أو منتج أو موديل أو رقم هاتف. رقم التواصل الوحيد 01094799247.
+لو Site Data فارغة اطلب توضيحًا مناسبًا أو وجّه العميل للواتساب.
+لو السؤال عن قطع غيار مثل شفرة/رول/تروس/مسطرة/درام/هبر اعرض نفس نوع القطعة فقط ولا توسع البحث لكل موديل.
+اكتب ردًا مصريًا مهذبًا قصيرًا. لا تكتب HTML. لا تكرر كل التفاصيل إذا كانت كروت المنتجات ستظهر بعد ردك.`;
+
+  const userPayload = `سياق المحادثة السابق:
+${h.slice(-1200)}
+
+رسالة العميل الحالية:
+${q}
+
+هل يحتاج السؤال توضيحًا قبل الترشيح؟ ${needsClarification ? 'نعم' : 'لا'}
+
+Site Data - النتائج المطابقة من الموقع فقط:
+${JSON.stringify(matchedData, null, 2)}`;
+
+  try {
+    const r = await fetch(GROQ_API_URL, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: MODEL,
+        temperature: 0.03,
+        max_tokens: 420,
+        messages: [{ role: 'system', content: system }, { role: 'user', content: userPayload }]
+      })
+    });
+    if (!r.ok) throw new Error(`Groq ${r.status}`);
+    const data = await r.json();
+    let text = sanitizeContactNumbers(data.choices?.[0]?.message?.content || '');
+    const intro = text ? `<p>${esc(text).replace(/\n/g, '<br>')}</p>` : '';
+    if (needsClarification || !matches.length) return intro || localFallback;
+    return `${intro}${matches.map((p, i) => productCard(p, i + 1)).join('')}`;
+  } catch (e) {
+    return localFallback;
+  }
+}
+
 function paperAnswer(q) {
   if (!explicitPaperIntent(q)) return null;
   const n = norm(q); const wantA3 = /\ba3\b/.test(n); const wantA4 = /\ba4\b/.test(n);
@@ -3173,7 +3262,11 @@ module.exports = async function handler(req, res) {
     reply = reply || paperAnswer(message);
     reply = reply || teamAnswer(message);
     reply = reply || serviceAnswer(message);
-    reply = reply || productAnswer(message, h);
+    const productRoute = !reply ? assistantProductRoute(message, h) : '';
+    if (!reply && productRoute) {
+      source = `groq-${productRoute}`;
+      reply = await groqProductAnswer(message, h);
+    }
     if (!reply && isolatedUnknown(message)) {
       source = 'local-clarify';
       reply = '<p>مش واضح قصد حضرتك. ممكن تكتب المطلوب بشكل أوضح؟ مثال: مواصفات ماكينة 305، الفرق بين A4 و A3، أو سعر ماكينة ألوان.</p>';
