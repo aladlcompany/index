@@ -450,6 +450,7 @@
         body { font-family: 'Tajawal', sans-serif; scroll-behavior: smooth; background-color: #f8fafc; overflow-x: hidden; }
         .font-cairo { font-family: 'Cairo', sans-serif; }
         .font-almarai { font-family: 'Almarai', sans-serif; }
+        .product-title-readable { font-family: 'Tajawal', Tahoma, Arial, sans-serif !important; letter-spacing: 0 !important; line-height: 1.55 !important; text-rendering: optimizeLegibility; }
         
         .page-section { display: none; }
         .page-section.active { display: block; animation: premiumFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
@@ -1027,9 +1028,9 @@ button:disabled, [aria-disabled="true"], .disabled {
                     </h2>
 <span class="absolute -top-1 -left-8 text-xl md:text-2xl text-yellow-500 animate-bounce"><i class="fa fa-star"></i></span>
 </div>
-<p class="text-gray-500 font-bold text-sm mt-1 font-tajawal">تصفح أخر الماكينات المضافة حديثاً</p>
+<p class="text-gray-500 font-bold text-sm mt-1 font-tajawal">تصفح آخر المنتجات وقطع الغيار المضافة حديثاً</p>
 </div>
-<!-- سلايدر أحدث ماكينات التصوير اللانهائي المطور -->
+<!-- سلايدر أحدث المنتجات وقطع الغيار اللانهائي المطور -->
 <div class="w-full max-w-6xl mx-auto mb-16 relative flex items-center justify-center px-4 group" id="topCopiersSliderWrapper">
 <!-- الأزرار مرئية ومتاحة بشكل دائم -->
 <button aria-label="الماكينة السابقة" class="absolute right-2 md:right-4 z-20 w-10 h-10 md:w-12 md:h-12 bg-white border border-rose-100 hover:bg-rose-700 hover:text-white hover:border-transparent rounded-full flex items-center justify-center text-rose-900 transition-all duration-300 shadow-xl transform hover:scale-110 focus:outline-none" onclick="prevTopCopier()"><i class="fa fa-chevron-right text-lg md:text-xl"></i></button>
@@ -3685,13 +3686,13 @@ button:disabled, [aria-disabled="true"], .disabled {
                     gridContent += `
                         <div class="group flex flex-col w-full max-w-[320px] bg-transparent transition-all duration-300 py-4 mx-auto">
                             <div class="h-48 md:h-64 flex items-center justify-center mb-6 relative group-hover:scale-105 transition-transform duration-500">
-                                <img loading="lazy" src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain drop-shadow-xl">
+                                <img loading="lazy" decoding="async" src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain drop-shadow-xl">
                                 ${prod.condition ? `<div class="absolute top-2 left-2 bg-rose-700 text-white text-xs font-black px-3 py-1 rounded-full shadow-md z-10">${prod.condition}</div>` : ''}
                             </div>
-                            <h3 class="text-lg md:text-xl font-black text-rose-950 mb-3 text-center font-cairo leading-tight">${prod.name}</h3>
+                            <h3 class="text-lg md:text-xl font-black text-rose-950 mb-3 text-center product-title-readable leading-tight">${prod.name}</h3>
                             
                             <ul class="space-y-2 mb-6 text-xs font-bold text-gray-600 flex-1 px-2">
-                                <li class="flex items-start gap-2"><i class="fa fa-bolt text-rose-600 mt-1"></i> <span class="flex flex-col gap-1"><strong>السرعة:</strong> <span>${prod.speed}</span></span></li>
+                                <li class="flex items-start gap-2"><i class="fa fa-bolt text-rose-600 mt-1"></i> <span class="flex flex-col gap-1"><strong>${prod.category === 'parts-bw' ? 'الموديلات المتوافقة:' : 'السرعة:'}</strong> <span>${prod.speed}</span></span></li>
                             </ul>
                             
                             <div class="mt-auto flex flex-col gap-3">
@@ -3744,27 +3745,30 @@ button:disabled, [aria-disabled="true"], .disabled {
                 return;
             }
 
+            const isSparePart = prod.category === 'parts-bw' || prod.category === 'parts-color' || prod.category === 'digital-printer-parts' || prod.category === 'plotter-parts';
             const content = document.getElementById('productDetailsContent');
             content.innerHTML = `
                 <div class="w-full flex flex-col lg:flex-row items-start gap-8 lg:gap-12 w-full">
                     
                     <div class="w-full lg:w-4/12 relative lg:sticky lg:top-32 shrink-0 flex justify-center pt-4">
                         ${prod.condition ? `<div class="absolute top-0 right-4 bg-rose-700 text-white text-xs md:text-sm font-black px-4 py-1.5 rounded-full shadow-md z-10">${prod.condition}</div>` : ''}
-                        <img src="${prod.image}" alt="${prod.name}" class="w-full h-auto max-h-[350px] lg:max-h-[500px] object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-700">
+                        <img loading="eager" decoding="async" src="${prod.image}" alt="${prod.name}" class="w-full h-auto max-h-[350px] lg:max-h-[500px] object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-700">
                     </div>
 
                     <div class="w-full lg:w-8/12 flex flex-col justify-center">
-                        <h1 class="text-2xl md:text-3xl lg:text-4xl font-black font-cairo text-rose-950 mb-5 leading-tight text-center">${prod.name}</h1>
+                        <h1 class="text-2xl md:text-3xl lg:text-4xl font-black product-title-readable text-rose-950 mb-5 leading-tight text-center">${prod.name}</h1>
                         
                         ${prod.description ? `<p class="text-gray-600 mb-6 font-bold leading-relaxed text-sm md:text-base border-r-4 border-rose-600 pr-4">${prod.description}</p>` : ''}
                         
                         <div class="flex flex-col gap-6 w-full mb-6">
+                            ${!isSparePart ? `
                             <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 font-bold text-base md:text-lg ${prod.description ? 'border-r-4 border-rose-100 pr-4' : 'border-r-4 border-rose-600 pr-4'}">
                                 <li class="flex items-start gap-2"><i class="fa fa-print text-rose-600 mt-1"></i> <span>الوظائف: ${prod.functions}</span></li>
                                 <li class="flex items-start gap-2"><i class="fa fa-bolt text-rose-600 mt-1"></i> <span>السرعة: ${prod.speed}</span></li>
                                 <li class="flex items-start gap-2"><i class="fa fa-expand text-rose-600 mt-1"></i> <span>الدقة: ${prod.resolution}</span></li>
                                 <li class="flex items-start gap-2"><i class="fa fa-file-alt text-rose-600 mt-1"></i> <span>مقاس الورق: ${prod.paperSize}</span></li>
                             </ul>
+                            ` : ''}
 
                             ${prod.specs && prod.specs.length > 0 ? `
                             <div class="bg-gray-50 rounded-2xl p-5 border border-gray-100 shadow-inner w-full mt-2">
@@ -3798,16 +3802,16 @@ button:disabled, [aria-disabled="true"], .disabled {
 
             const slider = document.getElementById('similarProductsSlider');
             slider.innerHTML = '';
-            const similarProducts = productsDB.filter(p => p.name !== productName && (p.category === 'bw-copiers' || p.category === 'color-copiers'));
+            const similarProducts = productsDB.filter(p => p.name !== productName && (isSparePart ? p.category === prod.category : (p.category === 'bw-copiers' || p.category === 'color-copiers')));
             
             if (similarProducts.length > 0) {
                 similarProducts.forEach(sim => {
                     slider.insertAdjacentHTML('beforeend', `
                         <div class="w-[220px] md:w-[260px] shrink-0 snap-center group cursor-pointer bg-white rounded-[2rem] shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 p-5 flex flex-col" onclick="openProductDetails('${sim.name}')">
                             <div class="h-36 md:h-48 mb-5 flex items-center justify-center relative group-hover:scale-105 transition-transform duration-500">
-                                <img loading="lazy" src="${sim.image}" alt="${sim.name}" class="max-w-full max-h-full object-contain drop-shadow-md">
+                                <img loading="lazy" decoding="async" src="${sim.image}" alt="${sim.name}" class="max-w-full max-h-full object-contain drop-shadow-md">
                             </div>
-                            <h4 class="text-sm md:text-base font-black text-rose-950 text-center leading-tight mb-3 font-cairo">${sim.name}</h4>
+                            <h4 class="text-sm md:text-base font-black text-rose-950 text-center leading-tight mb-3 product-title-readable">${sim.name}</h4>
                             <div class="mt-auto pt-4 border-t border-gray-50 flex items-center justify-between">
                                 <span class="text-rose-900 font-black text-xs md:text-sm">${sim.price}</span>
                                 <span class="bg-rose-50 text-rose-700 px-4 py-1.5 rounded-xl text-[10px] font-bold group-hover:bg-rose-700 group-hover:text-white transition-colors shadow-sm">التفاصيل</span>
@@ -4077,21 +4081,21 @@ button:disabled, [aria-disabled="true"], .disabled {
                 }, {passive: true});
             }
 
-            // Populate Top Copiers Slider (أحدث 5 ماكينات تصوير)
+            // Populate Top Products Slider (أحدث 5 منتجات وقطع غيار)
             const topCopiersContainer = document.getElementById('topCopiersSliderTrack');
             if (topCopiersContainer) {
-                // تصفية المنتجات لجلب ماكينات التصوير فقط (ألوان أو أبيض وأسود) وعكس الترتيب لجلب الأحدث ثم قص أول 5
-                const copiers = productsDB.filter(p => p.category === 'bw-copiers' || p.category === 'color-copiers').reverse().slice(0, 5);
+                // تصفية المنتجات لجلب أحدث المنتجات وقطع الغيار المضافة حديثاً
+                const copiers = productsDB.filter(p => p.category === 'bw-copiers' || p.category === 'color-copiers' || p.category === 'parts-bw').reverse().slice(0, 5);
                 
                 copiers.forEach(prod => {
                     topCopiersContainer.insertAdjacentHTML('beforeend', `
                         <div class="w-full md:w-1/3 shrink-0 snap-center flex flex-col items-center justify-center cursor-pointer group pb-6 px-2" onclick="openProductDetails('${prod.name}')">
                             <div class="h-64 md:h-[400px] w-full flex items-center justify-center mb-6 relative transition-transform duration-700 group-hover:scale-105">
                                 <div class="absolute inset-0 bg-rose-100/40 blur-3xl rounded-full scale-75 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-                                <img loading="lazy" src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain mix-blend-multiply relative z-10 transition-transform duration-500 group-hover:-translate-y-2">
+                                <img loading="lazy" decoding="async" src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain mix-blend-multiply relative z-10 transition-transform duration-500 group-hover:-translate-y-2">
                                 ${prod.condition ? `<div class="absolute top-4 right-4 md:right-10 bg-rose-700 text-white text-xs md:text-sm font-black px-4 py-1.5 rounded-full shadow-lg z-20">${prod.condition}</div>` : ''}
                             </div>
-                            <h3 class="text-2xl md:text-3xl font-black text-rose-950 text-center font-cairo tracking-wide px-4 mb-5">${prod.name}</h3>
+                            <h3 class="text-2xl md:text-3xl font-black text-rose-950 text-center product-title-readable tracking-normal px-4 mb-5">${prod.name}</h3>
                             <div class="flex justify-center items-center gap-2">
                                 <span class="text-sm font-bold text-gray-500">السعر:</span>
                                 <span class="text-xl font-black text-rose-700 bg-rose-50 px-4 py-1.5 rounded-xl shadow-sm border border-rose-100">${prod.price}</span>
