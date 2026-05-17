@@ -888,6 +888,70 @@ button:disabled, [aria-disabled="true"], .disabled {
 .article-reco-card:hover .article-reco-cta {
   transform: translateX(-3px);
 }
+
+.article-reco-shell {
+  width: 100%;
+  max-width: 100%;
+}
+.article-reco-stage,
+.article-reco-grid,
+.article-reco-card,
+.article-reco-card button {
+  min-width: 0;
+}
+.article-reco-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  align-items: stretch;
+}
+.article-reco-card {
+  width: 100%;
+  max-width: 100%;
+  contain: layout paint;
+}
+.article-reco-card button {
+  display: flex !important;
+  flex-direction: column;
+  height: 100%;
+}
+.article-reco-img-box {
+  flex: 0 0 auto;
+}
+.article-reco-img-box img {
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+@media (max-width: 767px) {
+  .article-reco-shell {
+    border-radius: 1.75rem !important;
+    padding: 1rem !important;
+    margin-top: 2rem !important;
+  }
+  .article-reco-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+  .article-reco-card {
+    border-radius: 1.5rem !important;
+    transform: none !important;
+  }
+  .article-reco-card:hover {
+    transform: none !important;
+  }
+  .article-reco-card button {
+    padding: 1rem !important;
+  }
+  .article-reco-img-box {
+    height: 13rem !important;
+    margin-bottom: 1rem !important;
+  }
+  .article-reco-title {
+    font-size: 1.45rem !important;
+    line-height: 1.35 !important;
+  }
+}
+
 @keyframes articleRecoFadeIn {
   from {
     opacity: 0;
@@ -3299,8 +3363,8 @@ button:disabled, [aria-disabled="true"], .disabled {
             return selected.map(prod => `
                 <article class="article-reco-card group bg-white/95 rounded-[2rem] border border-rose-100 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col backdrop-blur-sm">
                     <button type="button" onclick='openProductDetails(${JSON.stringify(String(prod.name || ''))})' class="block w-full text-right p-5 md:p-6 flex-1">
-                        <div class="h-44 md:h-52 mb-5 flex items-center justify-center bg-gradient-to-br from-white via-rose-50/70 to-white rounded-[1.5rem] p-4 ring-1 ring-rose-100/60">
-                            <img loading="lazy" src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain mix-blend-multiply drop-shadow-md group-hover:scale-105 transition-transform duration-500" onerror="handleGenericError(this)">
+                        <div class="article-reco-img-box h-44 md:h-52 mb-5 flex items-center justify-center bg-gradient-to-br from-white via-rose-50/70 to-white rounded-[1.5rem] p-4 ring-1 ring-rose-100/60">
+                            <img loading="eager" decoding="async" src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain mix-blend-multiply drop-shadow-md group-hover:scale-105 transition-transform duration-500" onerror="handleGenericError(this)">
                         </div>
                         <div class="flex items-center justify-between gap-3 mb-3">
                             <span class="inline-flex items-center rounded-full bg-rose-50 text-rose-700 px-3 py-1 text-[11px] font-black border border-rose-100 shadow-sm">${prod.category === 'color-copiers' ? 'ألوان' : 'أبيض وأسود'}</span>
@@ -3328,7 +3392,7 @@ button:disabled, [aria-disabled="true"], .disabled {
                                 <h2 class="article-reco-title text-2xl md:text-3xl font-black text-rose-950 font-cairo mt-4 leading-snug">ماكينات تصوير مناسبة لاحتياجك</h2>
                             </div>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">${cardsHtml}</div>
+                        <div class="article-reco-grid">${cardsHtml}</div>
                     </div>
                 </section>
             `;
@@ -3355,19 +3419,52 @@ button:disabled, [aria-disabled="true"], .disabled {
             startArticleRecommendationRotation();
         }
 
+        function preloadArticleRecommendationImages(products) {
+            const imageUrls = [...new Set(products.map(product => product && product.image).filter(Boolean))];
+            if (!imageUrls.length) return Promise.resolve();
+
+            const loaders = imageUrls.map(src => new Promise(resolve => {
+                const img = new Image();
+                img.onload = () => {
+                    if (img.decode) {
+                        img.decode().catch(() => {}).finally(resolve);
+                    } else {
+                        resolve();
+                    }
+                };
+                img.onerror = resolve;
+                img.src = src;
+            }));
+
+            return Promise.race([
+                Promise.all(loaders),
+                new Promise(resolve => setTimeout(resolve, 1200))
+            ]);
+        }
+
         function rotateArticleRecommendations() {
             const containers = document.querySelectorAll('[data-article-recommendations]');
             const list = getArticleRecommendationProducts();
             if (!containers.length || !list.length || articleRecommendationAnimating) return;
 
-            const stages = document.querySelectorAll('[data-article-recommendation-stage]');
+            const perView = getArticleRecommendationPerView();
+            const nextSelected = getArticleRecommendationSelected(list, perView, true);
             articleRecommendationAnimating = true;
-            stages.forEach(stage => stage.classList.add('is-fading'));
 
-            setTimeout(() => {
-                mountArticleRecommendations(true);
-                articleRecommendationAnimating = false;
-            }, 360);
+            preloadArticleRecommendationImages(nextSelected).then(() => {
+                const stages = document.querySelectorAll('[data-article-recommendation-stage]');
+                if (!stages.length) {
+                    mountArticleRecommendations(false);
+                    articleRecommendationAnimating = false;
+                    return;
+                }
+
+                stages.forEach(stage => stage.classList.add('is-fading'));
+                setTimeout(() => {
+                    mountArticleRecommendations(false);
+                    articleRecommendationAnimating = false;
+                }, 420);
+            });
         }
 
         function startArticleRecommendationRotation() {
@@ -3903,7 +4000,7 @@ button:disabled, [aria-disabled="true"], .disabled {
                     gridContent += `
                         <div class="group flex flex-col w-full max-w-[320px] bg-transparent transition-all duration-300 py-4 mx-auto">
                             <div class="h-48 md:h-64 flex items-center justify-center mb-6 relative group-hover:scale-105 transition-transform duration-500">
-                                <img loading="lazy" src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain drop-shadow-xl">
+                                <img loading="eager" decoding="async" src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain drop-shadow-xl">
                                 ${prod.condition ? `<div class="absolute top-2 left-2 bg-rose-700 text-white text-xs font-black px-3 py-1 rounded-full shadow-md z-10">${prod.condition}</div>` : ''}
                             </div>
                             <h3 class="text-lg md:text-xl font-black text-rose-950 mb-3 text-center font-cairo leading-tight">${prod.name}</h3>
@@ -4306,7 +4403,7 @@ button:disabled, [aria-disabled="true"], .disabled {
                         <div class="w-full md:w-1/3 shrink-0 snap-center flex flex-col items-center justify-center cursor-pointer group pb-6 px-2" onclick="openProductDetails('${prod.name}')">
                             <div class="h-64 md:h-[400px] w-full flex items-center justify-center mb-6 relative transition-transform duration-700 group-hover:scale-105">
                                 <div class="absolute inset-0 bg-rose-100/40 blur-3xl rounded-full scale-75 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-                                <img loading="lazy" src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain mix-blend-multiply relative z-10 transition-transform duration-500 group-hover:-translate-y-2">
+                                <img loading="eager" decoding="async" src="${prod.image}" alt="${prod.name}" class="max-w-full max-h-full object-contain mix-blend-multiply relative z-10 transition-transform duration-500 group-hover:-translate-y-2">
                                 ${prod.condition ? `<div class="absolute top-4 right-4 md:right-10 bg-rose-700 text-white text-xs md:text-sm font-black px-4 py-1.5 rounded-full shadow-lg z-20">${prod.condition}</div>` : ''}
                             </div>
                             <h3 class="text-2xl md:text-3xl font-black text-rose-950 text-center font-cairo tracking-wide px-4 mb-5">${prod.name}</h3>
