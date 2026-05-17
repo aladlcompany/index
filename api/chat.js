@@ -2809,7 +2809,7 @@ function clearProductFollowup(q) {
   if (!cur) return false;
   // متابعة واضحة فقط: مقاس/لون/موديل/وظيفة/حجم استخدام. لا نعتبر أي كلمة عشوائية متابعة.
   return /\b(a3|a4)\b/i.test(cur)
-    || /(الوان|ابيض|اسود|ابيض واسود|اسود وابيض|color|black|bw|سكانر|فاكس|واي فاي|wifi|دوبلكس|طباعة|تصوير|استعمال|استخدام|خفيف|متوسط|كثيف|قليل|غزير|يومي|حبر|تونر|درام|فيوزر|رول|قطع غيار)/i.test(cur)
+    || /(الوان|ابيض|اسود|ابيض واسود|اسود وابيض|color|black|bw|سكانر|فاكس|واي فاي|wifi|دوبلكس|طباعة|تصوير|استعمال|استخدام|خفيف|متوسط|كثيف|قليل|غزير|يومي|حبر|تونر|درام|شفرة|شفره|شفرات|فيوزر|رول|قطع غيار|مسطرة|مسطره|تروس|تنك|هبر)/i.test(cur)
     || extractModels(cur).length > 0;
 }
 function activeProductText(q, h = '') {
@@ -2824,7 +2824,7 @@ function productIntent(q, h = '') {
   const cur = norm(q || '');
   const hist = norm(h || '');
   if (explicitPaperIntent(q) && !machineContext('', hist)) return false;
-  const explicit = machineContext(cur, '') || extractModels(cur).length > 0 || hasAny(cur, ['حبر','تونر','خرطوشة','خرطوشه','درام','قطع غيار','فيوزر','رول','طابعة','طابعه']);
+  const explicit = machineContext(cur, '') || extractModels(cur).length > 0 || hasAny(cur, ['حبر','تونر','خرطوشة','خرطوشه','درام','شفرة','شفره','شفرات','قطع غيار','فيوزر','رول','مسطرة','مسطره','تروس','تنك','هبر','طابعة','طابعه']);
   if (explicit) return true;
   if (otherAlternativeIntent(cur) && mentionedProductsInText(h).length) return true;
   const commercialButVague = hasAny(cur, ['سعر','بكام','كام','مواصفات','تفاصيل','متاح','متوفر','عايز','عاوز','رشح','اختار','اشتري','شراء']);
@@ -2911,6 +2911,31 @@ function productSearchText(p) {
   const specs = Array.isArray(p.specs) ? p.specs.map(s => `${s.label || ''} ${s.value || ''}`).join(' ') : '';
   return norm(`${p.name || ''} ${p.model || ''} ${p.category || ''} ${p.categoryLabel || ''} ${p.description || ''} ${p.paperSize || ''} ${p.paperFormat || ''} ${p.colorMode || ''} ${p.speed || ''} ${p.functions || ''} ${specs}`);
 }
+
+function requestedPartKind(q = '') {
+  const n = norm(q || '');
+  // الأهم: لو العميل كتب شفرة/شفرات حتى مع موديل 161، نعرض الشفرات فقط وليس كل قطع غيار 161.
+  if (/(شفرة|شفره|شفرات|الشفره|الشفرة|الشفرت)/i.test(n)) return 'blade';
+  if (/(رول|روله|رولة|سخان|فيوزر|fuser)/i.test(n)) return 'fuser_roller';
+  if (/(تروس|ترس|التنك|تنك|gear)/i.test(n)) return 'gear';
+  if (/(مسطرة|مسطره|strip)/i.test(n)) return 'strip';
+  if (/(يد\s*هبر|هبر|hopper)/i.test(n)) return 'hopper';
+  // كلمة درام وحدها تفضل أوسع لأنها قد تعني درام أو شفرة درام حسب كلام العميل.
+  if (/(درام|drum)/i.test(n)) return 'drum';
+  return '';
+}
+function productMatchesPartKind(p, kind) {
+  if (!kind) return true;
+  const hay = norm(`${p.name || ''} ${p.description || ''} ${(Array.isArray(p.specs) ? p.specs.map(s => `${s.label || ''} ${s.value || ''}`).join(' ') : '')}`);
+  if (kind === 'blade') return /(شفرة|شفره|شفرات)/i.test(hay);
+  if (kind === 'fuser_roller') return /(رول|سخان|فيوزر|fuser)/i.test(hay);
+  if (kind === 'gear') return /(تروس|ترس|التنك|تنك|gear)/i.test(hay);
+  if (kind === 'strip') return /(مسطرة|مسطره|strip)/i.test(hay);
+  if (kind === 'hopper') return /(هبر|hopper)/i.test(hay);
+  if (kind === 'drum') return /(درام|drum)/i.test(hay);
+  return true;
+}
+
 function productModelTokens(p) {
   return extractModels(`${p.name || ''} ${p.model || ''}`)
     .map(x => norm(x).replace(/\\s+/g, ''))
@@ -2950,7 +2975,10 @@ function scoreProduct(p, q, h = '') {
   if (/\ba3\b/i.test(query)) score += /\ba3\b/i.test(target) ? 35 : -90;
   if (/\ba4\b/i.test(query)) score += /\ba4\b/i.test(target) ? 25 : -45;
   if (hasAny(q, ['حبر','تونر']) && hasAny(target, ['حبر','تونر'])) score += 15;
-  if (hasAny(q, ['قطع غيار','رول','فيوزر','درام']) && hasAny(target, ['قطع','رول','فيوزر','درام'])) score += 15;
+  if (hasAny(q, ['قطع غيار','رول','فيوزر','درام','شفرة','شفره','شفرات','مسطرة','مسطره','تروس','تنك','هبر']) && hasAny(target, ['قطع','رول','فيوزر','درام','شفرة','شفره','مسطرة','مسطره','تروس','تنك','هبر'])) score += 15;
+  const kind = requestedPartKind(q);
+  if (kind && productMatchesPartKind(p, kind)) score += 250;
+  if (kind && !productMatchesPartKind(p, kind) && (p.category || '').includes('parts')) score -= 900;
   return score;
 }
 
@@ -2974,7 +3002,10 @@ function findProducts(q, h = '') {
       q2 = [q, last.categoryLabel || '', last.category || '', last.colorMode || '', last.paperFormat || '', last.functions || ''].join(' ');
     }
   }
-  const scored = pool.map(p => ({ p, score: scoreProduct(p, q2, h) })).filter(x => x.score > 0);
+  const kind = requestedPartKind(q);
+  const scored = pool.map(p => ({ p, score: scoreProduct(p, q2, h) }))
+    .filter(x => x.score > 0)
+    .filter(x => !kind || productMatchesPartKind(x.p, kind));
   scored.sort((a, b) => b.score - a.score || String(a.p.name).localeCompare(String(b.p.name), 'ar'));
   if (!scored.length) return [];
   const top = scored[0].score;
@@ -2984,9 +3015,10 @@ function findProducts(q, h = '') {
 }
 function productDetailsUrl(p) { return `/products.html#product-details/${encodeURIComponent(p.name || '')}`; }
 function productCard(p, index) {
-  const specs = [p.categoryLabel && `القسم: ${p.categoryLabel}`, p.colorMode && p.colorMode !== 'غير محدد' && `النوع: ${p.colorMode}`, p.paperFormat && p.paperFormat !== 'غير محدد' && `المقاس: ${p.paperFormat}`, p.speed && `السرعة: ${p.speed}`, p.functions && `الوظائف: ${p.functions}`].filter(Boolean);
+  const speedLabel = (p.category || '').includes('parts') ? 'الموديلات المتوافقة' : 'السرعة';
+  const specs = [p.categoryLabel && `القسم: ${p.categoryLabel}`, p.colorMode && p.colorMode !== 'غير محدد' && `النوع: ${p.colorMode}`, p.paperFormat && p.paperFormat !== 'غير محدد' && `المقاس: ${p.paperFormat}`, p.speed && `${speedLabel}: ${p.speed}`, p.functions && `الوظائف: ${p.functions}`].filter(Boolean);
   const priceHtml = validPrice(p.price) ? `<div class="ai-price">السعر: ${esc(p.price)}</div>` : `<div class="ai-price muted">السعر غير متوفر حاليًا على صفحة المنتج.</div>`;
-  const detail = goButton(productDetailsUrl(p), 'تفاصيل الماكينة');
+  const detail = goButton(productDetailsUrl(p), (p.category || '').includes('parts') ? 'تفاصيل القطعة' : 'تفاصيل الماكينة');
   const wa = !validPrice(p.price) ? waButton(`أريد الاستفسار عن سعر ${p.name || 'المنتج'}`) : '';
   return `<div class="ai-card"><b>${index}. ${esc(p.name || 'منتج')}</b>${priceHtml}<div class="ai-specs">${specs.map(esc).join('<br>')}</div>${p.description ? `<div class="ai-desc">${esc(String(p.description).slice(0, 170))}${String(p.description).length > 170 ? '...' : ''}</div>` : ''}${actions([detail, wa].filter(Boolean))}</div>`;
 }

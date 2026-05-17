@@ -3759,7 +3759,7 @@ button:disabled, [aria-disabled="true"], .disabled {
                             <div class="bg-gray-50 rounded-2xl p-5 border border-gray-100 shadow-inner w-full mt-2">
                                 <h4 class="font-black text-rose-900 mb-4 font-cairo text-lg border-b border-gray-200 pb-2">المواصفات الفنية</h4>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm font-bold text-gray-700">
-                                    ${prod.specs.map(spec => `
+                                    ${prod.specs.filter(spec => !String(spec.label || '').toLowerCase().includes('السعر') && !String(spec.label || '').toLowerCase().includes('price')).map(spec => `
                                         <div class="flex flex-col bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:border-rose-100 transition-colors">
                                             <span class="text-rose-700 text-xs md:text-sm font-black uppercase mb-1.5 tracking-wider">${spec.label}</span>
                                             <span class="text-gray-900 font-bold text-base md:text-lg">${spec.value}</span>
