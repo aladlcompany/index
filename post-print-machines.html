@@ -453,7 +453,7 @@
         .product-title-readable { font-family: 'Tajawal', Tahoma, Arial, sans-serif !important; letter-spacing: 0 !important; line-height: 1.55 !important; text-rendering: optimizeLegibility; }
         
         .page-section { display: none; }
-        .page-section.active { display: block; animation: premiumFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .page-section.active { display: block; animation: premiumFade 0.18s ease-out forwards; }
         @keyframes premiumFade { 
             0% { opacity: 0; transform: translateY(15px) scale(0.98); } 
             100% { opacity: 1; transform: translateY(0) scale(1); } 
@@ -849,7 +849,7 @@ button:disabled, [aria-disabled="true"], .disabled {
 }
 </style>
 </head>
-<body class="text-gray-800 text-right" id="mainBody" ontouchstart="" style="opacity: 1; transition: opacity 0.3s ease-out;">
+<body class="text-gray-800 text-right" id="mainBody" ontouchstart="" style="opacity: 1;">
 <div class="menu-overlay" id="overlay" onclick="toggleMobileMenu()"></div>
 <div class="overflow-y-auto" id="mobile-menu">
 <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-white">
@@ -3945,13 +3945,29 @@ button:disabled, [aria-disabled="true"], .disabled {
         }
 
 
+        // Smooth single navigation fix: prevent inline onclick + href from running together
+        // because that made the page feel like it opens twice.
         document.addEventListener('click', (event) => {
             const anchor = event.target.closest && event.target.closest('a[href]');
             if (!anchor) return;
+            if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
             const href = anchor.getAttribute('href') || '';
             if (!href || href.startsWith('#') || anchor.target === '_blank') return;
-            if (/^[^#?]+\.html(\?|#|$)/i.test(href) || href.startsWith('/')) {
-                try { sessionStorage.setItem('aladlIntentionalTopNavigation', '1'); } catch(e) {}
+            if (/^(tel:|mailto:|javascript:|https?:\/\/|wa\.me|whatsapp:)/i.test(href)) return;
+
+            const isInternalPageLink = /^[^#?]+\.html(\?|#|$)/i.test(href) || href === '/' || href.startsWith('./') || href.startsWith('/');
+            if (!isInternalPageLink) return;
+
+            try { sessionStorage.setItem('aladlIntentionalTopNavigation', '1'); } catch(e) {}
+
+            // Stop the old inline onclick handler so the browser performs only one clean navigation.
+            event.preventDefault();
+            event.stopImmediatePropagation();
+
+            const targetUrl = new URL(href, window.location.href).href;
+            if (targetUrl !== window.location.href) {
+                window.location.assign(targetUrl);
             }
         }, true);
 

@@ -2834,6 +2834,10 @@ function productIntent(q, h = '') {
 }
 function missingMachineDetails(q, h = '') {
   const cur = norm(q || '');
+  // لو السؤال عن قطعة غيار محددة مثل شفرة/رول/تروس/مسطرة لا نسأل أسئلة ترشيح الماكينات.
+  // هنا المطلوب عرض القطع المطابقة فقط حتى لو ذُكر ريكو أو موديل مثل 161.
+  const isPartRequest = requestedPartKind(cur) || /(قطع\s*غيار|قطعة\s*غيار|قطعه\s*غيار|حبر|تونر|درام|شفرة|شفره|شفرات|فيوزر|رول|مسطرة|مسطره|تروس|تنك|هبر)/i.test(cur);
+  if (isPartRequest) return false;
   // الموديل الصريح في رسالة العميل يكفي للبحث ولا نطلب أسئلة.
   const hasModel = extractModels(cur).length > 0;
   const full = productConstraintText(q, h);
